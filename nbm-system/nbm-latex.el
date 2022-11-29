@@ -664,10 +664,10 @@ Two lines from arxiv or a bibtex code from mathscinet must be copied first."
       (setq file-name (read-string "Enter a suitable file name: "
 				   (if mathscinet (nbm-mathscinet-make-filename)
 				     (nbm-arxiv-make-filename))))
-      (setq choice (read-char (format "Move \"%s\"\ninto \"%s\"\nunder the following name?\n%s\n\ny:yes"
-				      file *nbm-pdf* file-name)))
+      (setq choice (read-char (format "Move \"%s\"\ninto \"%s\"\nunder the following name?\n%s\n\n(Type y for yes)."
+				      pdf *nbm-pdf* file-name)))
       (when (equal choice ?y)
-	(rename-file file (concat *nbm-pdf* file-name) 1)
+	(rename-file pdf (concat *nbm-pdf* file-name) 1)
 	(message "File moved!"))
       (if (equal choice ?q) (message "Aborted.")))))
 
