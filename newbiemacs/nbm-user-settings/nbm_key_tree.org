@@ -1,0 +1,134 @@
+#+title: nbm-key-tree
+
+# Key-tree starts here.
+# The title of a top bullet point must be a mode name.
+# Every line except the top bullet point must be of the following form.
+# ** key: a, description: none, function: none
+# A key must be a single letter.
+# A description or a function may be missing.
+
+* description: global
+** key: SPC, description: M-x, function: nbm-M-x
+** key: RET, description: bookmark, function: helm-filtered-bookmarks
+** key: TAB, description: Last buffer, function: evil-switch-to-windows-last-buffer
+** key: 0, function: nbm-test
+** key: ', function: eshell
+** key: a, description: Applications
+*** key: a, description: agenda, function: org-agenda-list
+*** key: m, function: nbm-magnet
+*** key: g, description: game, function: torus
+*** key: c, function: quick-calc
+** key: b, description: Buffers
+*** key: b, function: helm-buffers-list
+*** key: d, function: kill-this-buffer
+*** key: R, function: revert-buffer
+** key: c, description: Comment/Color
+*** key: l, function: nbm-comment-or-uncomment-line
+*** key: c, function: helm-colors
+** key: e, description: Find el, function: nbm-find-el
+** key: f, description: Files, function:
+*** key: b, function: bookmark-set
+*** key: f, function: nbm-find-files
+*** key: r, function: helm-recentf
+*** key: j, function: dired-jump
+*** key: m, function: nbm-move-files-from-downloads
+*** key: n, function: nbm-new-file
+*** key: p, function: nbm-move-pdf-from-downloads
+*** key: s, function: save-buffer
+*** key: D, function: nbm-copy-to-desktop
+*** key: F, function: nbm-show-in-finder
+*** key: T, function: nbm-show-trash-bin
+*** key: U, description: Updates
+**** key: e, function: nbm-update-string-in-el
+**** key: n, function: nbm-update-string-in-newbiemacs
+*** key: y, description: Yank/Copy
+**** key: d, function: nbm-copy-directory-path
+**** key: n, function: nbm-copy-file-name
+**** key: y, function: nbm-copy-file-path
+** key: g, description: git
+*** key: s, function: magit-status
+** key: h, description: Help
+*** key: f, function: describe-function
+*** key: v, function: describe-variable
+** key: j, description: jump to word, function: evil-avy-goto-word-or-subword-1
+** key: k, description: key bindings
+*** key: t, function: nbm-open-key-tree
+*** key: b, function: nbm-latex-create-bib-item
+** key: n, function: nbm-latex-new-file
+** key: o, function: nbm-key-tree-org-mode
+** key: p, description: Find pdf, function: nbm-find-pdf
+** key: r, function: org-roam-node-find
+** key: s, function: nbm-find-sage
+** key: t, function: nbm-find-tex
+** key: u, function: universal-argument
+** key: w, description: Windows
+*** key: /, function: split-window-right
+*** key: -, function: split-window-below
+*** key: m, function: delete-other-windows
+*** key: d, function: delete-window
+*** key: o, function: nbm-other-window
+** key: x, description: Text
+*** key: d, description: Delete
+**** key: w, function: delete-trailing-whitespace
+**** key: l, function: nbm-delete-double-empty-lines
+** key: G, function: nbm-rgrep
+** key: R, function: nbm-org-roam-search
+** key: S, description: Spell-check
+*** key: b, function: flyspell-buffer
+*** key: i, description: ispell, function: ispell
+** key: T, description: toggle
+*** key: F, function: toggle-frame-fullscreen
+** key: N, description: Newbiemacs
+*** key: c, function: nbm-config
+*** key: r, function: nbm-reload
+** key: Y, description: yasnippet
+*** key: i, function: yas-insert-snippet
+*** key: n, function: yas-new-snippet
+*** key: f, function: yas-visit-snippet-file
+*** key: t, function: yas-describe-tables
+* description: latex-mode
+** key: b, function: nbm-tex-build
+** key: v, function: TeX-view
+** key: c, function: nbm-latex-copy-math
+** key: C, function: nbm-latex-copy-math-with-paren
+** key: d, function: nbm-latex-delete-math
+** key: f, description: Files
+*** key: s, function: nbm-latex-add-to-symlinks
+** key: D, function: nbm-latex-delete-math-with-paren
+** key: ., function: LaTeX-mark-environment
+** key: *, function: LaTeX-mark-section
+** key: s, function: LaTeX-section
+** key: i, description: Insert
+*** key: m, function: nbm-latex-add-macro
+*** key: F, function: nbm-latex-insert-figure
+*** key: l, function: nbm-latex-insert-label
+*** key: b, function: nbm-latex-create-bib-item
+*** key: c, function: helm-bibtex
+** key: T, description: Toggle
+*** key: b, function: nbm-latex-toggle-bbl-file
+*** key: e, function: nbm-latex-toggle-equation
+*** key: *, function: evil-tex-toggle-env
+*** key: p, function: nbm-latex-toggle-pgml
+*** key: h, function: nbm-latex-convert-to-hwp
+*** key: v, function: nbm-latex-change-variable
+* description: org-mode
+** key: a, description: agenda, function: org-agenda-list
+** key: c, function: org-ctrl-c-ctrl-c
+** key: e, function: org-export-dispatch
+** key: d, description: Dates
+*** key: d, function: nbm-org-deadline
+*** key: s, function: nbm-org-schedule
+*** key: T, function: org-time-stamp-inactive
+** key: i, function: org-roam-node-insert
+** key: k, function: nbm-key-tree-add-keybinding
+** key: u, function: org-roam-ui-mode
+** key: p, function: nbm-make-permanant-note
+** key: x, description: Text
+*** key: i, function: org-insert-item
+*** key: s, function: nbm-org-toggle-strike-through
+** key: T, function: nbm-org-roam-today
+* description: emacs-lisp-mode
+** key: e, description: eval
+*** key: b, function: eval-buffer
+** key: f, description: Find
+*** key: f, function: nbm-find-function

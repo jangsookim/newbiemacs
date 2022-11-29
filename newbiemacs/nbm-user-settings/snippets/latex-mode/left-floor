@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: left-floor
+# key: lf
+# --
+\\lfloor $1 \\rfloor

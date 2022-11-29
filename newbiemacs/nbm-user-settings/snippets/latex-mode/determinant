@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: determinant
+# key: det
+# --
+\det\left( $2 \right)_{1\le i,j\le ${1:n}}

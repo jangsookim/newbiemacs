@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name:cases
+# key: bca
+# --
+\begin{cases}
+$1 & \mbox{if $2},\\\
+$3 & \mbox{${4:otherwise}.}
+\end{cases}
