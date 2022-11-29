@@ -1,1 +1,1 @@
-(load-file "~/nbm-root/nbm-system/nbm-init.el")
+(load-file "~/nbm-root/nbm-init.el")
