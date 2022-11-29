@@ -314,17 +314,4 @@
     (newbie)))
 
 (defun nbm-reload ()
-  (load-file (nbm-f "nbm-user-settings/dotnewbiemacs.el")))
-
-
-(defun nbm-initial-install ()
-  (unless (file-exists-p "./nbm-home.txt")
-    (let (dir)
-      (setq dir (read-file-name "Choose the directory where you want to put the newbiemacs folder.
-(Press enter for the default folder, which is your home folder.)"))
-      (defvar *nbm-home* (concat (getenv "HOME") "/Dropbox/newbiemacs/"))
-      (setq *nbm-home* dir)
-      )
-    )
-
-  )
+  (load-file (concat (getenv "HOME") "/nbm-root/nbm-init.el")))
