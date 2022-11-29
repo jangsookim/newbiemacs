@@ -380,7 +380,7 @@ and END are the starting and ending points of the environment."
     (let (beg end)
       (setq beg (car (LaTeX-env-beginning-pos-col)))
       (LaTeX-find-matching-end)
-      (while (search-backward "\\label" nil t)
+      (while (search-backward "\\label" beg t)
 	(when (eq ?y (read-char "Are you sure to delete this label? (Type y for yes): "))
 	  (setq beg (point)) (forward-char 6) (forward-sexp)
 	  (delete-region beg (point)) (delete-blank-lines))))))
