@@ -1,56 +1,31 @@
+(defun nbm-find-file-with-extension (ext)
+  "Find a file with extension EXT in the EXT folder.
+EXT should be tex, pdf, el, or sage."
+  (let (buf)
+    (find-file (nbm-f (concat ext "/")))
+    (setq buf (current-buffer))
+    (defun nbm-temp-insert () (insert (concat ext "$ ")) (kill-buffer buf))
+  (minibuffer-with-setup-hook 'nbm-temp-insert (call-interactively 'helm-projectile))))
 
 (defun nbm-find-pdf ()
   "Find a pdf file in the pdf folder."
   (interactive)
-  (defun nbm-temp-insert () (insert "pdf$ ") (kill-buffer "pdf"))
-  (find-file (nbm-f "pdf/"))
-  (minibuffer-with-setup-hook 'nbm-temp-insert (call-interactively 'helm-projectile)))
+  (nbm-find-file-with-extension "pdf"))
 
 (defun nbm-find-tex ()
   "Find a tex file in the tex folder."
   (interactive)
-  (defun nbm-temp-insert () (insert "tex$ ") (kill-buffer "tex"))
-  (find-file (nbm-f "tex/"))
-  (minibuffer-with-setup-hook 'nbm-temp-insert (call-interactively 'helm-projectile)))
+  (nbm-find-file-with-extension "tex"))
 
 (defun nbm-find-el ()
   "Find a el file in the el folder."
   (interactive)
-  (defun nbm-temp-insert () (insert "el$ ") (kill-buffer "el"))
-  (find-file (nbm-f "el/"))
-  (minibuffer-with-setup-hook 'nbm-temp-insert (call-interactively 'helm-projectile)))
+  (nbm-find-file-with-extension "el"))
 
 (defun nbm-find-sage ()
   "Find a sage file in the sage folder."
   (interactive)
-  (defun nbm-temp-insert () (insert "sage$ ") (kill-buffer "sage"))
-  (find-file (nbm-f "sage/"))
-  (minibuffer-with-setup-hook 'nbm-temp-insert (call-interactively 'helm-projectile)))
-
-(defun nbm-find-file-with-extension ()
-  "Find a file with a chosen EXTENSION in the folder newbiemacs/EXTENSION."
-  (interactive)
-  (let (extension)
-    (setq extension (read-char "Choose the extension of the file you are looking for:
-p) pdf (default)
-t) tex
-o) org
-s) sage
-e) el"))
-    (if (memq extension (list ?t ?p ?s ?e ?\^M ?o))
-          (progn
-            (setq extension (cond ((equal extension ?t) "tex")
-                                  ((memq extension '(?p ?\^M)) "pdf")
-                                  ((equal extension ?o) "org")
-                                  ((equal extension ?s) "sage")
-                                  ((equal extension ?e) "el")))
-	    (defun nbm-temp-insert ()
-	      (insert extension "$ ") (kill-buffer extension))
-            (find-file (nbm-f (concat extension "/")))
-            (minibuffer-with-setup-hook 'nbm-temp-insert (call-interactively 'helm-projectile))
-            )
-      (message "Wrong choice of extension!")
-          )))
+  (nbm-find-file-with-extension "sage"))
 
 (defun nbm-new-file ()
   "Create a new file with a chosen EXTENSION in the folder newbiemacs/EXTENSION."
