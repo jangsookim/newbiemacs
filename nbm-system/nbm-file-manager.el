@@ -73,6 +73,10 @@ e) el"))
   "Return FILENAME with prefix *nbm-home*."
   (concat *nbm-home* filename))
 
+(defun nbm-root-f (filename)
+  "Return FILENAME with prefix ~/nbm-root/"
+  (concat (getenv "HOME") "/nbm-root/" filename))
+
 (defun nbm-rgrep ()
   "Do rgrep on the current folder on the files *.el *.tex *.org."
   (interactive)

@@ -47,4 +47,4 @@
 					 (beginning-of-buffer) (end-of-line)
 					 (buffer-substring (point-min) (point))))
 
-(org-babel-load-file (concat *nbm-home* "nbm-user-settings/nbm_config.org"))
+(org-babel-load-file (concat (getenv "HOME") "/nbm-root/nbm-system/nbm_config.org"))

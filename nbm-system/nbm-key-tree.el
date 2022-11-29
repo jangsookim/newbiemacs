@@ -40,7 +40,7 @@ If there is no property, it returns the empty string \"\"."
 A key-tree structure is (level key description function)."
   (save-excursion
     (let (nodes line new-node level beg end)
-      (find-file (nbm-f "nbm-user-settings/nbm_key_tree.org"))
+      (find-file (nbm-root-f "nbm-system/nbm_key_tree.org"))
       (setq nodes '())
       (beginning-of-buffer)
       (while (re-search-forward "\\(^[*]+\\)" nil t)

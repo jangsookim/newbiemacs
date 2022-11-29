@@ -52,9 +52,9 @@
 c) nbm-config.org
 k) nbm_key_tree.org"))
     (if (equal choice ?k)
-	(find-file (nbm-f "nbm-user-settings/nbm_key_tree.org")))
+	(find-file (nbm-root-f "nbm-system/nbm_key_tree.org")))
     (if (equal choice ?c)
-	(find-file (nbm-f "nbm-user-settings/nbm_config.org")))
+	(find-file (nbm-root-f "nbm-system/nbm_config.org")))
     ))
 
 (defun nbm-other-window ()
@@ -67,7 +67,7 @@ k) nbm_key_tree.org"))
 
 (defun nbm-open-key-tree ()
   (interactive)
-  (find-file (nbm-f "nbm-user-settings/nbm_key_tree.org")))
+  (find-file (nbm-root-f "nbm-system/nbm_key_tree.org")))
 
 (defun nbm-org-roam-search ()
   "Grep my org roam folder."
