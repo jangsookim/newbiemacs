@@ -101,7 +101,7 @@ If there is no title, return the filename."
     (next-line) (recenter-top-bottom) (save-buffer)
     (message "Created a new file.")))
 
-(defun nbm-latex-add-macro ()
+(defun nbm-latex-new-macro ()
   "Add a new macro after the following flag line.
 
 % DO NOT DELETE THIS COMMENT!!! MACROS BELOW:
@@ -359,32 +359,31 @@ and END are the starting and ending points of the environment."
                  (message "\\[ \\] has been changed to Equation."))))))
 
 (defun nbm-latex-insert-label ()
-  "Insert a label."
+  "Insert the label in the current environment."
   (interactive)
   (save-excursion
-    (let (current start env label)
-      (setq current (point))
-      (if (search-backward "\\begin{")
-          (progn (setq start (point))
-                 (setq env (buffer-substring (+ (point) 7) (+ (point) 11)))
-                 (if (equal (substring env -1) "}")
-                     (setq env (substring env 0 -1)))
-                 (if (member env '("equa" "alig" "mult"))
-                     (setq env "eq"))
-                 (search-forward "\\end{")
-                 (if (< current (point))
-                     (progn (if (search-backward "\\label{" nil t nil)
-                                (if (< start (point))
-                                    (delete-region (point) (search-forward "}"))
-                                  ))
-                            (goto-char start)
-                            (search-forward "}")
-                            (setq label (read-string "Enter a label: "
-                                                 ""
-                                                 nil nil nil))
-                            (insert (concat "\\label{" env ":" label "}"))
-                            )
-                   (message "You are not inside an environment!")))))))
+    (let (env label)
+      (setq env (LaTeX-current-environment))
+      (goto-char (car (LaTeX-env-beginning-pos-col)))
+      (if (> (length env) 3)
+	  (setq env (substring env 0 3)))
+      (search-forward "\\begin" nil t) (forward-sexp)
+      (if (member env '("equ" "ali" "mul"))
+	  (setq env "eq"))
+      (setq label (read-string "Enter a label: "))
+      (insert (format "\\label{%s:%s}" env label)))))
+
+(defun nbm-latex-delete-label ()
+  "Delete the labels in the current environment."
+  (interactive)
+  (save-excursion
+    (let (beg end)
+      (setq beg (car (LaTeX-env-beginning-pos-col)))
+      (LaTeX-find-matching-end)
+      (while (search-backward "\\label" nil t)
+	(when (eq ?y (read-char "Are you sure to delete this label? (Type y for yes): "))
+	  (setq beg (point)) (forward-char 6) (forward-sexp)
+	  (delete-region beg (point)) (delete-blank-lines))))))
 
 (defun nbm-latex-toggle-bbl-file ()
   "Insert the bib file or remove it."
@@ -410,7 +409,7 @@ and END are the starting and ending points of the environment."
 			       (nbm-f "nbm-user-settings/references/ref.bib")))
 	       (message "Bibtex toggled: bibtex ON"))))))
 
-(defun nbm-latex-create-bib-item ()
+(defun nbm-latex-new-bib-item ()
   "Create a bib item in the main bib file using citation data from arxiv or MathSciNet.
 https://beta.mathscinet.ams.org/mathscinet/beta"
   (interactive)
@@ -672,9 +671,46 @@ Two lines from arxiv or a bibtex code from mathscinet must be copied first."
 	(message "File moved!"))
       (if (equal choice ?q) (message "Aborted.")))))
 
-
-(defun nbm-latex-compile ()
+(defun nbm-latex-Cref ()
+  "Reftex with Cref."
   (interactive)
-  (save-buffer)
-  (shell-command (concat "latexmk -pdf -pv ") (buffer-file-name))
-  (TeX-view))
+  (let ((reftex-refstyle "\\Cref"))
+       (reftex-reference " ")))
+
+(defun nbm-latex-eqref ()
+  "Reftex with eqref."
+  (interactive)
+  (let ((reftex-refstyle "\\eqref"))
+       (reftex-reference "e")))
+
+(defun nbm-latex-fig-ref ()
+  "Reftex with figure."
+  (interactive)
+  (let ((reftex-refstyle "\\Cref"))
+       (reftex-reference "f")))
+
+(defun nbm-latex-sec-ref ()
+  "Reftex with section."
+  (interactive)
+  (let ((reftex-refstyle "\\Cref"))
+       (reftex-reference "s")))
+
+(defun nbm-latex-section ()
+  "Reftex with section."
+  (interactive)
+  (LaTeX-section 2))
+
+(defun nbm-latex-toggle-star ()
+  "Toggle the current environment between ENV with ENV*.
+Delete or insert a label accordingly."
+  (interactive)
+  (let (env)
+    (setq env (LaTeX-current-environment))
+    (if (s-suffix? "*" env)
+	(progn
+	  (setq env (substring env 0 -1))
+	  (nbm-latex-insert-label))
+      (progn
+	(setq env (concat env "*"))
+	(nbm-latex-delete-label)))
+    (LaTeX-modify-environment env)))

@@ -129,7 +129,8 @@
   (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
   (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
   (add-hook 'LaTeX-mode-hook (lambda () (setq TeX-command-default "LatexMk")))
-  
+  ;; (add-hook 'LaTeX-mode-hook #'evil-tex-mode)  ;evil-tex is not found in MELPA
+
   (setq LaTeX-math-list
         '((?, "dots" nil nil )
           (?. "cdots" nil nil )

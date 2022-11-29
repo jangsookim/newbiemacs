@@ -53,7 +53,6 @@
 ** key: j, description: jump to word, function: evil-avy-goto-word-or-subword-1
 ** key: k, description: key bindings
 *** key: t, function: nbm-open-key-tree
-*** key: b, function: nbm-latex-create-bib-item
 ** key: n, function: nbm-latex-new-file
 ** key: o, function: nbm-key-tree-org-mode
 ** key: p, description: Find pdf, function: nbm-find-pdf
@@ -87,30 +86,42 @@
 *** key: f, function: yas-visit-snippet-file
 *** key: t, function: yas-describe-tables
 * description: latex-mode
-** key: b, function: nbm-tex-build
+** key: b, description: TeX-build, function: nbm-tex-build
 ** key: v, function: TeX-view
-** key: c, function: nbm-latex-copy-math
-** key: C, function: nbm-latex-copy-math-with-paren
-** key: d, function: nbm-latex-delete-math
+** key: c, description: copy math, function: nbm-latex-copy-math
+** key: C, description: copy math with \( \), function: nbm-latex-copy-math-with-paren
+** key: d, description: delete math, function: nbm-latex-delete-math
+** key: D, description: delete math with \( \), function: nbm-latex-delete-math-with-paren
 ** key: f, description: Files
-*** key: s, function: nbm-latex-add-to-symlinks
-** key: D, function: nbm-latex-delete-math-with-paren
+*** key: s, description: make symlink, function: nbm-latex-add-to-symlinks
 ** key: ., function: LaTeX-mark-environment
 ** key: *, function: LaTeX-mark-section
-** key: s, function: LaTeX-section
 ** key: i, description: Insert
-*** key: m, function: nbm-latex-add-macro
-*** key: F, function: nbm-latex-insert-figure
-*** key: l, function: nbm-latex-insert-label
-*** key: b, function: nbm-latex-create-bib-item
-*** key: c, function: helm-bibtex
+*** key: e, description: insert-environment, function: LaTeX-environment
+*** key: i, description: insert-item, function: LaTeX-insert-item
+*** key: F, description: insert-figure, function: nbm-latex-insert-figure
+*** key: l, description: insert-label, function: nbm-latex-insert-label
+** key: n, description: new item/macro/section
+*** key: b, description: new-bib-item, function: nbm-latex-new-bib-item
+*** key: m, description: new-macro, function: nbm-latex-new-macro
+*** key: s, description: new-section, function: nbm-latex-section
+** key: r, description: reference
+*** key: =, description: table of contents, function: reftex-toc
+*** key: c, description: citation, function: helm-bibtex
+*** key: e, description: eqref, function: nbm-latex-eqref
+*** key: f, description: fig-ref, function: nbm-latex-fig-ref
+*** key: r, description: reftex-reference, function: reftex-reference
+*** key: s, description: sec-ref, function: nbm-latex-sec-ref
+*** key: C, description: Cref, function: nbm-latex-Cref
 ** key: T, description: Toggle
-*** key: b, function: nbm-latex-toggle-bbl-file
-*** key: e, function: nbm-latex-toggle-equation
-*** key: *, function: evil-tex-toggle-env
-*** key: p, function: nbm-latex-toggle-pgml
-*** key: h, function: nbm-latex-convert-to-hwp
-*** key: v, function: nbm-latex-change-variable
+*** key: b, description: toggle-bbl-file, function: nbm-latex-toggle-bbl-file
+*** key: e, description: toggle-equation, function: nbm-latex-toggle-equation
+*** key: *, description: toggle environ *, function: nbm-latex-toggle-star
+*** key: p, description: toggle-pgml, function: nbm-latex-toggle-pgml
+*** key: h, description: convert-to-hwp, function: nbm-latex-convert-to-hwp
+*** key: v, description: change-variable, function: nbm-latex-change-variable
+** key: x, description: Delete
+*** key: l, description: Delete labels, function: nbm-latex-delete-label
 * description: org-mode
 ** key: a, description: agenda, function: org-agenda-list
 ** key: c, function: org-ctrl-c-ctrl-c
