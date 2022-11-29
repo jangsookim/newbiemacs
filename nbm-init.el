@@ -39,8 +39,10 @@
   (find-file (concat (getenv "HOME") "/nbm-root/nbm-home.txt"))
   (insert (concat (getenv "HOME") "/newbiemacs/"))
   (save-buffer) (kill-buffer)
-  (copy-directory (concat (getenv "HOME") "/nbm-root/newbiemacs/")
-		  (concat (getenv "HOME") "/"))
+  (unless (file-exists-p (concat (getenv "HOME") "/nbm-root/newbiemacs/"))
+    (copy-directory (concat (getenv "HOME") "/nbm-root/newbiemacs/")
+		    (concat (getenv "HOME") "/"))
+    )
   )
 
 (defvar *nbm-home* (with-temp-buffer (insert-file-contents "~/nbm-root/nbm-home.txt")
