@@ -627,14 +627,17 @@ Return the string \"Author1, Author2. Year. Title.pdf\"."
       (if (> (length authors) 0) (setq filename (concat ", " filename))))
     filename))
 
+
 (defun nbm-arxiv-make-filename ()
   "The two lines with title and authors from arxiv homepage must be copied. Return the string \"Author1, Author2. Title.pdf\"."
-  (let (title authors temp filename)
+  (let (title authors temp filename line arxiv)
     (setq temp (split-string (current-kill 0) "\n"))
-    (if (equal (car temp) "")		; Sometimes the newline \n is copied at the beginning.
-	(setq temp (cdr temp)))
-    (setq title (car temp))
-    (setq authors (split-string (nth 1 temp) ","))
+    (setq arxiv '())
+    (dolist (line temp)
+      (unless (equal line "")     ; Sometimes the newline \n is copied in between.
+	(setq arxiv (nbm-append line arxiv))))
+    (setq title (car arxiv))
+    (setq authors (split-string (nth 1 arxiv) ","))
     (setq filename "")
     (while authors
       (if (> (length filename) 0)
