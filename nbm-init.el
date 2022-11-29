@@ -39,7 +39,7 @@
   (find-file (concat (getenv "HOME") "/nbm-root/nbm-home.txt"))
   (insert (concat (getenv "HOME") "/newbiemacs/"))
   (save-buffer) (kill-buffer)
-  (unless (file-exists-p (concat (getenv "HOME") "/nbm-root/newbiemacs/"))
+  (unless (file-exists-p (concat (getenv "HOME") "/newbiemacs/"))
     (copy-directory (concat (getenv "HOME") "/nbm-root/newbiemacs/")
 		    (concat (getenv "HOME") "/"))
     )
