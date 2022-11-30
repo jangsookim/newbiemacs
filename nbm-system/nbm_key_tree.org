@@ -11,7 +11,9 @@
 ** key: SPC, description: M-x, function: nbm-M-x
 ** key: RET, description: bookmark, function: helm-filtered-bookmarks
 ** key: TAB, description: Last buffer, function: evil-switch-to-windows-last-buffer
-** key: 0, function: nbm-test
+** key: 0, description: Developer only
+*** key: 0, function: nbm-test
+*** key: 9, function: nbm-toggle-nbm-home
 ** key: ', function: eshell
 ** key: ., function: nbm-org-roam-today
 ** key: a, description: Applications
