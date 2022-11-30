@@ -57,11 +57,14 @@
   (let (choice)
     (setq choice (read-char "Which file do you want to open?
 c) nbm-config.org
-k) nbm_key_tree.org"))
+k) nbm_key_tree.org
+u) user-init.el"))
     (if (equal choice ?k)
 	(find-file (nbm-root-f "nbm_key_tree.org")))
     (if (equal choice ?c)
 	(find-file (nbm-root-f "nbm_config.org")))
+    (if (equal choice ?u)
+	(find-file (nbm-f "nbm-user-settings/user-init.el")))
     ))
 
 (defun nbm-other-window ()
