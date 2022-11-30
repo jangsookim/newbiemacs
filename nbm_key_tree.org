@@ -143,12 +143,19 @@
 ** key: k, description: add keybinding, function: nbm-key-tree-add-keybinding
 ** key: u, function: org-roam-ui-mode
 ** key: p, function: nbm-make-permanant-note
+** key: t, description: Tables
+*** key: c, description: Columns
+**** key: d, function: org-table-delete-column
+**** key: i, function: org-table-insert-column
+**** key: l, function: org-table-move-column-left
+**** key: r, function: org-table-move-column-right
 ** key: x, description: Text
 *** key: c, description: checkbox, function: nbm-org-toggle-checkbox
 *** key: i, description: insert-item, function: org-insert-item
 *** key: s, description: strike-through, function: nbm-org-toggle-strike-through
-** key: t, function: org-todo
 ** key: T, description: Toggle
+*** key: T, function: org-todo
+*** key: v, description: toggle valign, function: nbm-toggle-valign
 * description: emacs-lisp-mode
 ** key: e, description: eval
 *** key: b, function: eval-buffer

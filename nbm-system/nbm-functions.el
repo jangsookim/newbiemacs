@@ -183,3 +183,6 @@ If there is no checkbox, create one."
   (interactive)
   (message "This is a test."))
 
+(defun nbm-toggle-valign ()
+  "Toggle valign mode."
+  (if valign-mode (valign-mode -1) (valign-mode)))
