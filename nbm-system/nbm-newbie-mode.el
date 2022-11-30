@@ -236,57 +236,60 @@
 
 (defun newbie-setting ()
   (interactive)
-  (let ((inhibit-read-only t) choice)
-    (erase-buffer)
-    (insert "\n  Current variables are shown below.\n\n")
-    (newbie-print-variables)
-    (insert "\n  To change a variable ")
-    (nbm-insert 9 "*VAR*")
-    (insert ", edit the content of the file \"VAR.txt\".")
-    (insert "\n\n  ")
-    (nbm-insert 9 "*nbm-home*")
-    (insert " and ")
-    (nbm-insert 9 "*nbm-pdf*")
-    (nbm-insert 5 " cannot be changed.")
-    (insert "\n  Each of ")
-    (nbm-insert 9 "*nbm-downloads*")
-    (insert " and ")
-    (nbm-insert 9 "*nbm-desktop*")
-    (insert " must have only one folder path.")
-    (nbm-insert 9 "\n\n  *nbm-screenshots*")
-    (insert " may have several folder paths, ")
-    (nbm-insert 8 "one folder path in one line.")
-    (nbm-insert 5 "\n\n  Warning:")
-    (insert " Make sure that the last string of a folder path is \"/\".")
-    (insert "\n  For example, it should be something like \"~/Desktop/\" rather than \"~/Desktop\".")
-    (insert "\n  There must be ")
-    (nbm-insert 5 "no space")
-    (insert " before or after each folder path.")
-    (nbm-insert 2 "\n\n  See the minibuffer at the bottom of this screen.
-  You need to reload Newbiemacs after you change a variable.
-  (Newbiemacs reload short-cut: SPC N r)")
-    (setq choice (read-char "What do you want to do?
+  (with-output-to-temp-buffer "newbie-setting"
+    (let ((inhibit-read-only t) choice)
+      (switch-to-buffer "newbie-setting")
+      (insert "\n  Current variables are shown below.\n\n")
+      (newbie-print-variables)
+      (insert "\n  To change a variable ")
+      (nbm-insert 9 "*VAR*")
+      (insert ", edit the content of the file \"VAR.txt\".")
+      (insert "\n\n  ")
+      (nbm-insert 9 "*nbm-home*")
+      (insert " and ")
+      (nbm-insert 9 "*nbm-pdf*")
+      (nbm-insert 5 " cannot be changed.")
+      (insert "\n  Each of ")
+      (nbm-insert 9 "*nbm-downloads*")
+      (insert " and ")
+      (nbm-insert 9 "*nbm-desktop*")
+      (insert " must have only one folder path.")
+      (nbm-insert 9 "\n\n  *nbm-screenshots*")
+      (insert " may have several folder paths, ")
+      (nbm-insert 8 "one folder path in one line.")
+      (nbm-insert 5 "\n\n  Warning:")
+      (insert " Make sure that the last string of a folder path is \"/\".")
+      (insert "\n  For example, it should be something like \"~/Desktop/\" rather than \"~/Desktop\".")
+      (insert "\n  There must be ")
+      (nbm-insert 5 "no space")
+      (insert " before or after each folder path.")
+      (nbm-insert 2 "\n\n  See the minibuffer at the bottom of this screen.
+  You need to reload Newbiemacs if you change a variable.")
+      (setq choice (read-char "What do you want to do?
 1) Change the variable *nbm-desktop*
 2) Change the variable *nbm-downloads*
 3) Change the variable *nbm-screenshots*
 4) Update template tex files (The default file is \"template.tex\". You can add any number of tex files here.)
-5) Update the bib file \"ref.bib\"
-"))
-    (cond
-     ((equal choice ?1)
-      (shell-command (format "open \"%s%s\"" *nbm-home*
-                             "nbm-user-settings/nbm-variables/nbm-desktop.txt")))
-     ((equal choice ?2)
-      (shell-command (format "open \"%s%s\"" *nbm-home*
-                             "nbm-user-settings/nbm-variables/nbm-downloads.txt")))
-     ((equal choice ?3)
-      (shell-command (format "open \"%s%s\"" *nbm-home*
-                             "nbm-user-settings/nbm-variables/nbm-screenshots.txt")))
-     ((equal choice ?4)
-      (shell-command (format "open \"%s%s\"" *nbm-home*
-                             "nbm-user-settings/templates/")))
-     ((equal choice ?5)
-      (shell-command (format "open \"%s%s\"" *nbm-home*
-                             "nbm-user-settings/references"))))
-    (newbie)))
+5) Update the main bib file \"ref.bib\"
+q) quit"))
+      (unless (equal choice ?q)
+	(cond
+	 ((equal choice ?1)
+	  (shell-command (format "open \"%s%s\"" *nbm-home*
+				 "nbm-user-settings/nbm-variables/nbm-desktop.txt")))
+	 ((equal choice ?2)
+	  (shell-command (format "open \"%s%s\"" *nbm-home*
+				 "nbm-user-settings/nbm-variables/nbm-downloads.txt")))
+	 ((equal choice ?3)
+	  (shell-command (format "open \"%s%s\"" *nbm-home*
+				 "nbm-user-settings/nbm-variables/nbm-screenshots.txt")))
+	 ((equal choice ?4)
+	  (shell-command (format "open \"%s%s\"" *nbm-home*
+				 "nbm-user-settings/templates/")))
+	 ((equal choice ?5)
+	  (shell-command (format "open \"%s%s\"" *nbm-home*
+				 "nbm-user-settings/references"))))
+	(setq choice (read-char "What do you want to do?\nr) Reload Newbiemacs\nq) quit"))
+	(if (equal choice ?r) (nbm-reload)))
+      (kill-buffer))))
 
