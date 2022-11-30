@@ -46,6 +46,7 @@
 **** key: n, function: nbm-copy-file-name
 **** key: y, function: nbm-copy-file-path
 ** key: g, description: git
+*** key: i, function: magit-init
 *** key: s, function: magit-status
 ** key: h, description: Help
 *** key: f, function: describe-function
@@ -135,9 +136,11 @@
 ** key: u, function: org-roam-ui-mode
 ** key: p, function: nbm-make-permanant-note
 ** key: x, description: Text
-*** key: i, function: org-insert-item
-*** key: s, function: nbm-org-toggle-strike-through
-** key: T, function: nbm-org-roam-today
+*** key: c, description: checkbox, function: nbm-org-toggle-checkbox
+*** key: i, description: insert-item, function: org-insert-item
+*** key: s, description: strike-through, function: nbm-org-toggle-strike-through
+** key: t, function: nbm-org-roam-today
+** key: T, description: Toggle
 * description: emacs-lisp-mode
 ** key: e, description: eval
 *** key: b, function: eval-buffer

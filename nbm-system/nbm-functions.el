@@ -80,7 +80,7 @@ k) nbm_key_tree.org"))
   (interactive)
   (let (end)
     (end-of-line) (setq end (point))
-    (beginning-of-line) (re-search-forward "[*]+ \\|[-+] \\| [0-9]+[.)] " end t)
+    (beginning-of-line) (re-search-forward "[*]+ \\|[-+] \\|[0-9]+[.)] " end t)
     (when (string= (char-to-string (char-after)) "[")
 	(forward-sexp) (forward-char))
     (if (equal (char-after) ?+)
@@ -88,6 +88,18 @@ k) nbm_key_tree.org"))
 	  (delete-char 1) (end-of-line) (delete-char -1))
       (progn
 	(insert "+") (end-of-line) (insert "+")))))
+
+(defun nbm-org-toggle-checkbox ()
+  "Toggle checkbox in the current item.
+If there is no checkbox, create one."
+  (interactive)
+  (save-excursion
+    (let (end)
+    (end-of-line) (setq end (point))
+    (beginning-of-line) (re-search-forward "[*]+ \\|[-+] \\|[0-9]+[.)] " end t)
+    (unless (string= (char-to-string (char-after)) "[")
+      (insert "[X] "))
+    (org-toggle-checkbox))))
 
 (defun nbm-org-deadline ()
   (interactive)
