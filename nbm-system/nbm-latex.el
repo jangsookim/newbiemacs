@@ -409,99 +409,86 @@ and END are the starting and ending points of the environment."
 			       (nbm-f "nbm-user-settings/references/ref.bib")))
 	       (message "Bibtex toggled: bibtex ON"))))))
 
+
+
+(defun nbm-bib-item-create-key (bib-str choice)
+  "Create a key for the bib item given by BIB-STR.
+CHOICE should be a char ?1, ?2, or ?3.
+CHOICE 1: Cho2022 (default)
+CHOICE 2: CKL2022
+CHOICE 3: ChoKimLee2022"
+  (interactive)
+  (let (authors year key keys a)
+    (setq year (nbm-get-bibtex-entry "year" bib-str))
+    (setq authors (nbm-get-bibtex-entry "author" bib-str))
+    (setq authors (split-string authors " and "))
+    (setq key "")
+    (while authors
+      (setq name (pop authors))
+      ;; get the last name depending on whether name is written Jack Sparrow or Sparrow, Jack.
+      (if (string-match "," name)
+	  (setq name (car (split-string name ",")))
+	(setq name (car (last (split-string name " ")))))
+      (cond ((equal choice ?2)
+	     (setq key (concat key (substring name 0 1))))
+	    ((equal choice ?3)
+	     (setq key (concat key name)))
+	    (t (if (equal (length key) 0) (setq key (concat key name)))) ; choice 1 is default
+	    )
+      )
+    (if year (setq key (concat key year)))
+    (setq keys (nbm-latex-get-bib-key-list))
+    ;; Check if the key is already used.
+    (when (member key keys)
+      (setq a ?a)
+      (while (member (format "%s%c" key a) keys) ; Attach a or b ... if the key is already used.
+	(setq a (+ a 1)))
+      (setq key (format "%s%c" key a)))
+    key))
+
 (defun nbm-latex-new-bib-item ()
   "Create a bib item in the main bib file using citation data from arxiv or MathSciNet.
 https://beta.mathscinet.ams.org/mathscinet/beta"
   (interactive)
   (save-excursion
-    (let (bib-item beg end str name authors year choice key-one key-two key-three key keys a)
-      (setq keys (nbm-latex-get-bib-key-list))
-      (find-file (nbm-f "nbm-user-settings/references/ref.bib"))
-      (end-of-buffer) (newline)
-      (setq beg (point))
-      (insert (current-kill 0))
-      (narrow-to-region beg (point-max))
+    (let (str choice beg end)
+      (with-output-to-temp-buffer "bib-item-temp-buffer"
+	(setq str (current-kill 0))
+	(switch-to-buffer "bib-item-temp-buffer")
+	(insert str) (beginning-of-buffer)
+	;; If the bib item is @Online, change it to @misc.
+	(when (search-forward "@Online" nil t)
+	  (replace-match "@misc")
+	  (search-forward "eprint" nil t) (search-forward "{" nil t)
+	  (setq arxiv (buffer-substring (point) (- (search-forward "}") 1)))
+	  (setq url (concat "https://arxiv.org/abs/" arxiv))
+	  (end-of-line)
+	  (insert (concat "\n  howpublished = {{\\it Preprint}, \\href{" url "}{arXiv:"
+			  arxiv "}},")))
+	(beginning-of-buffer)
+	;; If title has {...} make it {{...}}.
+	(search-forward "title") (search-forward "{")
+	(unless (equal (buffer-substring (- (point) 1) (+ (point) 1)) "{{")
+	  (insert "{") (search-forward "}") (insert "}"))
+	;; If the bibitem contains month, remove it.
+	(beginning-of-buffer)
+	(when (search-forward "month" nil t)
+	  (beginning-of-line) (kill-line 2))
 
-      ;; If it has @Online, change it to @misc.
-      (beginning-of-buffer)
-      (when (search-forward "@Online" nil t)
-	(replace-match "@misc")
-	(search-forward "eprint" nil t) (search-forward "{" nil t)
-	(setq arxiv (buffer-substring (point) (- (search-forward "}") 1)))
-	(setq url (concat "https://arxiv.org/abs/" arxiv))
-	(end-of-line)
-	(insert (concat "\n  howpublished = {{\\it Preprint}, \\href{" url "}{arXiv:"
-			arxiv "}},")))
-      (beginning-of-buffer)
-      ;; If title has {...} make it {{...}}.
-      (search-forward "title") (search-forward "{")
-      (unless (equal (buffer-substring (- (point) 1) (+ (point) 1)) "{{")
-	(insert "{") (search-forward "}") (insert "}"))
+	(setq choice (read-char "Choose the key scheme. (Suppose the authors are Cho, Kim, and Lee.)\n1: Cho2022 (default)\n2: CKL2022\n3: ChoKimLee2022"))
+	(setq key (nbm-bib-item-create-key str choice))
+	;; Replace the original bib key with the new key.
+	(beginning-of-buffer)
+	(search-forward "{") (setq beg (point))
+	(search-forward ",") (setq end (- (point) 1))
+	(delete-region beg end) (backward-char) (insert key)
 
-      ;; If the bibitem contains month, remove it.
-      (beginning-of-buffer)
-      (when (search-forward "month" nil t)
-	(beginning-of-line) (kill-line 2))
-
-      ;; Get year
-      (beginning-of-buffer)
-      (when (search-forward "year" nil nil)
-	(re-search-forward "\\([0-9]+\\)")
-	(setq year (match-string 1)))
-      (setq key-one "" key-two "" key-three "")
-
-      ;; Get authors' last names
-      (beginning-of-buffer)
-      (search-forward "author") (search-forward "{")
-      (setq beg (point)) (backward-char) (forward-sexp) (setq end (- (point) 1))
-      (setq authors (split-string (buffer-substring beg end) " and "))
-      (while authors
-	(setq name (pop authors))
-	;; get the last name depending on whether name is written Jack Sparrow or Sparrow, Jack.
-	(if (string-match "," name)
-	    (setq name (car (split-string name ",")))
-	  (setq name (car (last (split-string name " ")))))
-	(if (equal (length key-one) 0)
-	    (setq key-one (concat key-one name)))
-	(setq key-two (concat key-two (substring name 0 1)))
-	(setq key-three (concat key-three name)))
-
-      ;; Attach year after authors' names
-      (if year (setq key-one (concat key-one year)
-		     key-two (concat key-two year)
-		     key-three (concat key-three year)))
-
-      ;; A function to check if the key is already used.
-      (defun nbm-latex-temp-key-gen (key)
-	(let (new-key)
-	  (setq new-key key)
-	  (when (member key keys)
-	    (setq a ?a)
-	    (while (member (format "%s%c" key a) keys) ; Attach a or b ... if the key is already used.
-	      (setq a (+ a 1)))
-	    (setq new-key (format "%s%c" key a)))
-	  new-key))
-      (setq key-one (nbm-latex-temp-key-gen key-one))
-      (setq key-two (nbm-latex-temp-key-gen key-two))
-      (setq key-three (nbm-latex-temp-key-gen key-three))
-
-      ;; Delete the original bib key.
-      (beginning-of-buffer)
-      (search-forward "{") (setq beg (point))
-      (search-forward ",") (setq end (- (point) 1))
-      (delete-region beg end) (backward-char)
-
-      ;; Make a choice for the key naming scheme.
-      (setq choice (read-char (format "Which bib key do you want to use?\n1) %s\n2) %s\n3) %s\n4) custom"
-				      key-one key-two key-three)))
-      (cond ((equal choice ?1) (insert key-one))
-	    ((equal choice ?2) (insert key-two))
-	    ((equal choice ?3) (insert key-three))
-	    ((equal choice ?4)
-	     (insert (read-string "Enter a bib key: "))))
-      (if (equal (read-char "Do you want to save this bib item? (Type y or n)") ?y)
-	  (save-buffer) (revert-buffer))
-      (kill-buffer))))
+	(when (equal (read-char "Do you want to save this bib item? (Type y or n)") ?y)
+	  (setq str (buffer-string))
+	  (find-file (nbm-f "nbm-user-settings/references/ref.bib"))
+	  (end-of-buffer) (insert str) (save-buffer) (kill-buffer))
+	)
+      (kill-buffer "bib-item-temp-buffer"))))
 
 (defun nbm-latex-get-bib-key-list ()
   "Return the list of all bib item keys in the main bib file."
