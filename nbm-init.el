@@ -1,3 +1,7 @@
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(package-initialize)
+
 ;; packages here
 
 (unless (package-installed-p 'undo-tree) (package-install 'undo-tree))
