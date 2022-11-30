@@ -89,8 +89,7 @@
 
 (setq *newbie-current-file* *nbm-home*)
 
-(org-babel-load-file (concat (getenv "HOME") "/nbm-root/nbm-system/nbm_config.org"))
+(org-babel-load-file (concat (getenv "HOME") "/nbm-root/nbm_config.org"))
 
-(if (file-exists-p (concat *nbm-home* "nbm-user-settings/my_config.org"))
-    (org-babel-load-file (concat *nbm-home* "nbm-user-settings/my_config.org")))
-
+;; Read the user init file.
+(load-file (concat *nbm-home* "nbm-user-settings/user-init.el"))

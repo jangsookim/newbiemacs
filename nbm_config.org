@@ -7,7 +7,7 @@
 #+begin_src emacs-lisp :tangle yes
   (require 'evil)
   (evil-mode 1)
-  (dolist (file (directory-files (concat (getenv "HOME") "/nbm-root/nbm-system") t "\\`nbm-.*[.]el$"))
+  (dolist (file (directory-files (concat (getenv "HOME") "/nbm-root/nbm-system") t "[.]el$"))
     (load-file file))
   (setq bookmark-default-file (concat *nbm-home* "nbm-user-settings/references/bookmark.el"))
 #+end_src
