@@ -262,7 +262,9 @@
     (insert "\n  There must be ")
     (nbm-insert 5 "no space")
     (insert " before or after each folder path.")
-    (nbm-insert 2 "\n\n  See the minibuffer at the bottom of this screen.")
+    (nbm-insert 2 "\n\n  See the minibuffer at the bottom of this screen.
+  You need to reload Newbiemacs after you change a variable.
+  (Newbiemacs reload short-cut: SPC N r)")
     (setq choice (read-char "What do you want to do?
 1) Change *nbm-desktop*
 2) Change *nbm-downloads*
