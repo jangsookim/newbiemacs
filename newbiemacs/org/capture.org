@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       5886966F-F774-4A6E-B2E6-A178FE835643
+:END:
+#+title: capture
+
+# This is the org-capture file.
+# Press "C-c [" to add it to the agenda.
+# Then pressing "C-c c" will create an entry available in the agenda.
