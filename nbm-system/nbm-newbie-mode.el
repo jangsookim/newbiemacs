@@ -266,11 +266,11 @@
   You need to reload Newbiemacs after you change a variable.
   (Newbiemacs reload short-cut: SPC N r)")
     (setq choice (read-char "What do you want to do?
-1) Change *nbm-desktop*
-2) Change *nbm-downloads*
-3) Change *nbm-screenshots*
-4) Change the tex template file \"template.tex\"
-5) Change the bib file \"ref.bib\"
+1) Change the variable *nbm-desktop*
+2) Change the variable *nbm-downloads*
+3) Change the variable *nbm-screenshots*
+4) Update template tex files (The default file is \"template.tex\". You can add any number of tex files here.)
+5) Update the bib file \"ref.bib\"
 "))
     (cond
      ((equal choice ?1)
