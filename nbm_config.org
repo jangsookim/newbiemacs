@@ -193,6 +193,7 @@
 
   (setq org-todo-keywords '((type "TODO" "WAIT" "|" "DONE")))
   (setq org-todo-keyword-faces '(("WAIT" . "gray")))
+  (setq org-log-done 'time)
 
   (setq org-return-follows-link t)
   (evil-define-key 'normal org-mode-map (kbd "RET") 'org-open-at-point)

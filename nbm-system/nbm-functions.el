@@ -56,9 +56,15 @@
   (interactive)
   (let (choice)
     (setq choice (read-char "Which file do you want to open?
+e) .emacs
+i) nbm-init.el
 c) nbm-config.org
 k) nbm_key_tree.org
 u) user-init.el"))
+    (if (equal choice ?e)
+	(find-file (concat (getenv "HOME") "/.emacs")))
+    (if (equal choice ?i)
+	(find-file (nbm-root-f "nbm-init.el")))
     (if (equal choice ?k)
 	(find-file (nbm-root-f "nbm_key_tree.org")))
     (if (equal choice ?c)

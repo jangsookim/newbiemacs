@@ -272,24 +272,24 @@
 4) Update template tex files (The default file is \"template.tex\". You can add any number of tex files here.)
 5) Update the main bib file \"ref.bib\"
 q) quit"))
-      (unless (equal choice ?q)
-	(cond
-	 ((equal choice ?1)
-	  (shell-command (format "open \"%s%s\"" *nbm-home*
-				 "nbm-user-settings/nbm-variables/nbm-desktop.txt")))
-	 ((equal choice ?2)
-	  (shell-command (format "open \"%s%s\"" *nbm-home*
-				 "nbm-user-settings/nbm-variables/nbm-downloads.txt")))
-	 ((equal choice ?3)
-	  (shell-command (format "open \"%s%s\"" *nbm-home*
-				 "nbm-user-settings/nbm-variables/nbm-screenshots.txt")))
-	 ((equal choice ?4)
-	  (shell-command (format "open \"%s%s\"" *nbm-home*
-				 "nbm-user-settings/templates/")))
-	 ((equal choice ?5)
-	  (shell-command (format "open \"%s%s\"" *nbm-home*
-				 "nbm-user-settings/references"))))
-	(setq choice (read-char "What do you want to do?\nr) Reload Newbiemacs\nq) quit"))
-	(if (equal choice ?r) (nbm-reload)))
-      (kill-buffer))))
+      (if (equal choice ?q) (kill-buffer)
+	(progn
+	  (cond
+	   ((equal choice ?1)
+	    (shell-command (format "open \"%s%s\"" *nbm-home*
+				   "nbm-user-settings/nbm-variables/nbm-desktop.txt")))
+	   ((equal choice ?2)
+	    (shell-command (format "open \"%s%s\"" *nbm-home*
+				   "nbm-user-settings/nbm-variables/nbm-downloads.txt")))
+	   ((equal choice ?3)
+	    (shell-command (format "open \"%s%s\"" *nbm-home*
+				   "nbm-user-settings/nbm-variables/nbm-screenshots.txt")))
+	   ((equal choice ?4)
+	    (shell-command (format "open \"%s%s\"" *nbm-home*
+				   "nbm-user-settings/templates/")))
+	   ((equal choice ?5)
+	    (shell-command (format "open \"%s%s\"" *nbm-home*
+				   "nbm-user-settings/references"))))
+	  (setq choice (read-char "What do you want to do?\nr) Reload Newbiemacs\nq) quit"))
+	  (if (equal choice ?r) (nbm-reload) (kill-buffer)))))))
 
