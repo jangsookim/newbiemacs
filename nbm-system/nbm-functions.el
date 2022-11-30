@@ -10,6 +10,7 @@
   (interactive)
   (TeX-command-run-all nil))
 
+
 (defun nbm-M-x ()
   (interactive)
   (helm-M-x nil))
@@ -17,6 +18,10 @@
 (defun nbm-find-files ()
   (interactive)
   (helm-find-files nil))
+
+(defun nbm-org-time-stamp ()
+  (interactive)
+  (org-time-stamp nil))
 
 (defun nbm-org-roam-today ()
   "Open org-roam-today file and move the point at the end."
