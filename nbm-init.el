@@ -53,11 +53,44 @@
     )
   )
 
-(defvar *nbm-home* (with-temp-buffer (insert-file-contents "~/nbm-root/nbm-home.txt")
+(defvar *nbm-home*)	; defvar only assigns the inital value and will not be updated
+(defvar *nbm-pdf*)
+(defvar *nbm-desktop*)
+(defvar *nbm-downloads*)
+(defvar *nbm-screenshots*)
+(defvar *newbie-current-file*)
+
+(setq *nbm-home* (with-temp-buffer (insert-file-contents "~/nbm-root/nbm-home.txt")
 					 (beginning-of-buffer) (end-of-line)
 					 (buffer-substring (point-min) (point))))
+
+(setq *nbm-pdf* (concat *nbm-home* "pdf/"))
+
+(setq *nbm-desktop*
+  (with-temp-buffer
+    (insert-file-contents (concat *nbm-home* "nbm-user-settings/nbm-variables/nbm-desktop.txt"))
+    (beginning-of-buffer) (end-of-line)
+    (buffer-substring (point-min) (point))))
+
+(setq *nbm-downloads*
+  (with-temp-buffer
+    (insert-file-contents (concat *nbm-home* "nbm-user-settings/nbm-variables/nbm-downloads.txt"))
+    (beginning-of-buffer) (end-of-line)
+    (buffer-substring (point-min) (point))))
+
+(setq *nbm-screenshots*
+  (let (temp line dirs)
+    (setq temp (split-string
+		(with-temp-buffer
+		  (insert-file-contents (concat *nbm-home* "nbm-user-settings/nbm-variables/nbm-screenshots.txt"))
+		  (buffer-string)) "\n"))
+    (dolist (line temp dirs)
+      (if (> (length line) 0) (setq dirs (cons line dirs))))))
+
+(setq *newbie-current-file* *nbm-home*)
 
 (org-babel-load-file (concat (getenv "HOME") "/nbm-root/nbm-system/nbm_config.org"))
 
 (if (file-exists-p (concat *nbm-home* "nbm-user-settings/my_config.org"))
     (org-babel-load-file (concat *nbm-home* "nbm-user-settings/my_config.org")))
+

@@ -1,3 +1,6 @@
+(defun nbm-reload ()
+  (load-file (concat (getenv "HOME") "/nbm-root/nbm-init.el")))
+
 (defun nbm-key-tree-org-mode ()
   (interactive)
   (nbm-key-tree-mode "org-mode"))
@@ -9,7 +12,6 @@
 (defun nbm-tex-build ()
   (interactive)
   (TeX-command-run-all nil))
-
 
 (defun nbm-M-x ()
   (interactive)
