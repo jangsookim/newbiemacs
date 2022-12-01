@@ -70,6 +70,7 @@
     (make-directory trash-directory))
 
   (setq default-input-method "korean-hangul")
+  (global-visual-line-mode)
 
   (setq help-window-select t)
   (defalias 'yes-or-no-p 'y-or-n-p)
@@ -129,7 +130,7 @@
   (setq TeX-electric-math (cons "\\( " " \\)"))
   ;; (setq TeX-insert-braces nil)
   (setq reftex-plug-into-AUCTeX t)
-  (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+  ;; (add-hook 'LaTeX-mode-hook 'visual-line-mode)
   (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
   (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
   (add-hook 'LaTeX-mode-hook (lambda () (setq TeX-command-default "LatexMk")))
