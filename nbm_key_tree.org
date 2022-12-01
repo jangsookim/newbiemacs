@@ -145,10 +145,20 @@
 ** key: p, function: nbm-make-permanant-note
 ** key: t, description: Tables
 *** key: c, description: Columns
-**** key: d, function: org-table-delete-column
-**** key: i, function: org-table-insert-column
-**** key: l, function: org-table-move-column-left
-**** key: r, function: org-table-move-column-right
+**** key: d, description: delete-column, function: org-table-delete-column
+**** key: i, description: insert-column, function: org-table-insert-column
+**** key: h, description: move-column-left, function: org-table-move-column-left
+**** key: l, description: move-column-right, function: org-table-move-column-right
+*** key: r, description: Rows
+**** key: d, description: delete-row, function: org-table-kill-row
+**** key: i, description: insert-row, function: org-table-insert-row
+**** key: j, description: move-row-down, function: org-table-move-row-down
+**** key: k, description: move-row-up, function: org-table-move-row-up
+*** key: C, description: Cells
+**** key: h, description: move-cell-left, function: org-table-move-cell-left
+**** key: j, description: move-cell-down, function: org-table-move-cell-down
+**** key: k, description: move-cell-up, function: org-table-move-cell-up
+**** key: l, description: move-cell-right, function: org-table-move-cell-right
 ** key: x, description: Text
 *** key: c, description: checkbox, function: nbm-org-toggle-checkbox
 *** key: i, description: insert-item, function: org-insert-item
