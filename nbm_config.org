@@ -33,6 +33,7 @@
 
   (setq evil-undo-system 'undo-redo)
 
+  (evil-define-key '(normal visual motion) 'global (kbd "<f5>") 'nbm-key-tree-global)
   (evil-define-key '(normal visual motion) 'global (kbd "SPC") 'nbm-key-tree-global)
   (evil-define-key '(normal visual motion) 'global (kbd ",") 'nbm-key-tree-mode)
   (evil-define-key '(normal visual motion insert) 'global (kbd "M-RET") 'nbm-key-tree-mode)
@@ -67,6 +68,8 @@
   (setq trash-directory (nbm-f "trash-bin/"))
   (unless (file-exists-p trash-directory)
     (make-directory trash-directory))
+
+  (setq default-input-method "korean-hangul")
 
   (setq help-window-select t)
   (defalias 'yes-or-no-p 'y-or-n-p)
@@ -112,6 +115,7 @@
   (setq display-time-mode t)
   (setq size-indication-mode t)
   (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
+  (spaceline-toggle-input-method-on)
 #+end_src
 
 * latex

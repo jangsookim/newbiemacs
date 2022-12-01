@@ -11,6 +11,7 @@
 ** key: SPC, description: M-x, function: nbm-M-x
 ** key: RET, description: bookmark, function: helm-filtered-bookmarks
 ** key: TAB, description: Last buffer, function: evil-switch-to-windows-last-buffer
+** key: ;, description: Toggle Korean/English, function: toggle-input-method
 ** key: 0, description: Developer only
 *** key: 0, function: nbm-test
 *** key: 9, function: nbm-toggle-nbm-home
@@ -94,6 +95,7 @@
 *** key: f, function: yas-visit-snippet-file
 *** key: t, function: yas-describe-tables
 * description: latex-mode
+** key: RET, description: Korean/English, function: toggle-input-method
 ** key: b, description: TeX-build, function: nbm-tex-build
 ** key: v, function: TeX-view
 ** key: c, description: copy math, function: nbm-latex-copy-math
@@ -132,6 +134,7 @@
 *** key: l, description: Delete labels, function: nbm-latex-delete-label
 * description: org-mode
 ** key: a, description: agenda, function: org-agenda-list
+** key: RET, description: Korean/English, function: toggle-input-method
 ** key: c, function: org-ctrl-c-ctrl-c
 ** key: e, function: org-export-dispatch
 ** key: d, description: Dates
