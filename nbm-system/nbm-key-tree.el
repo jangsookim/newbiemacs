@@ -20,7 +20,7 @@
 (defun nbm-parse-property (line property)
   "LINE is a string of the following form.
 
-key: z, description: calculator,function: quick-calc
+key: z, description: calculator, function: quick-calc
 
 In the above example, if  PROPERTY is \"mode\",
 then it returns \"global\".
@@ -34,13 +34,13 @@ If there is no property, it returns the empty string \"\"."
           (substring line beg end))
       "")))
 
-(defun nbm-key-tree-nodes-from-org-file ()
-  "Let a list of key-tree from nbm-key-tree.org file, in which each line looks like this.
+(defun nbm-key-tree-nodes-from-org-file (org-file)
+  "Return a list of key-tree from ORG-FILE, in which each line looks like this.
 *** key: z, description: calculator, function: quick-calc
 A key-tree structure is (level key description function)."
   (save-excursion
     (let (nodes line new-node level beg end)
-      (find-file (nbm-root-f "nbm_key_tree.org"))
+      (find-file org-file)
       (setq nodes '())
       (beginning-of-buffer)
       (while (re-search-forward "\\(^[*]+\\)" nil t)
@@ -55,6 +55,60 @@ A key-tree structure is (level key description function)."
         (setq nodes (nbm-append new-node nodes)))
       (kill-buffer "nbm_key_tree.org")
       nodes)))
+
+;; (setq *nbm-key-nodes* (nbm-key-tree-nodes-from-org-file))
+
+;; *nbm-key-nodes* is a list of nodes.
+;; Each node is of the following form.
+;; (level key description function) 
+;; LEVEL is a nonnegative integer.
+;; If LEVEL=0 or 1 then, KEY and FUNCTION are both the empty string "".
+;; If LEVEL=0, then DESCRIPTION is either "system" or "user".
+;; If LEVEL=1, then DESCRIPTION is a mode name such as "global" or "latex-mode".
+
+;; A key-seq is a list of the following form.
+;; ()
+
+;; (setq node (nth 80 *nbm-key-nodes*))
+;; (nbm-get-ancestors node *nbm-key-nodes*)
+;; (nbm-get-key-sequence node *nbm-key-nodes*)
+;; (nbm-all-key-sequences *nbm-key-nodes*)
+
+(defun nbm-get-ancestors (node tree)
+  "Return the list of ancestors of NODE in TREE."
+  (let (level index ancestors)
+    (setq index (-elem-index node tree))
+    (setq level (car node))
+    (while (>= index 0)
+      (setq temp (nth index tree))
+      (if (< (car temp) level)
+	  (setq level (- level 1)
+		ancestors (cons temp ancestors)))
+      (setq index (- index 1)))
+    ancestors))
+
+(defun nbm-get-key-seq (node tree)
+  "Return the list of keys to reach NODE in TREE."
+  (let (keys ancestor)
+    (setq ancestors (nbm-get-ancestors node tree))
+    (setq ancestors (reverse ancestors))
+    (setq keys (list (nth 1 node)))
+    (dolist (ancestor ancestors keys)
+      (setq keys (cons (if (nth 1 ancestor)
+			   (nth 2 ancestor)) ; if no key, get decription
+		       keys)))))
+
+(defun nbm-all-key-seqs (tree)
+  "Return the list of all key sequences from TREE."
+  (let (node k key-seqs)
+    (dolist (node tree key-seqs)
+      (setq k (nbm-get-key-sequence node tree))
+      (setq key-seqs (nbm-append (cons )
+				 key-seqs))
+      )))
+
+
+
 
 (defun nbm-key-tree-key-tree-from-nodes (nodes)
   "Create a key-tree from NODES."
@@ -82,7 +136,8 @@ A key-tree structure is (level key description function)."
 
 (defun nbm-key-tree-load ()
   (let (nodes tree)
-    (setq nodes (nbm-key-tree-nodes-from-org-file))
+    (setq nodes (nbm-key-tree-nodes-from-org-file
+		 (nbm-root-f "nbm_key_tree.org")))
     (setq tree (nbm-key-tree-key-tree-from-nodes nodes))
     (setq *nbm-key-tree* tree)))
 
