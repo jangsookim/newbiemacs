@@ -1,48 +1,26 @@
-(defun nbm-key-seq-level (key-seq)
-  (length (car key-seq)))
+(defun nbm-key-tree-level (tree)
+  (nth 0 tree))
 
-(defun nbm-key-seq-keys (key-seq)
-  (car key-seq))
+(defun nbm-key-tree-key (tree)
+  (nth 1 tree))
 
-(defun nbm-key-seq-key (key-seq)
-  (car (last (car key-seq))))
-
-(defun nbm-key-seq-description (key-seq)
+(defun nbm-key-tree-description (tree)
   (let (str)
-    (setq str (nth 1 key-seq))
-    (if (equal str "") (setq str (nbm-key-seq-function key-seq)))
+    (setq str (nth 2 tree))
+    (if (equal str "") (setq str (nbm-key-tree-function tree)))
     (if (equal str "") (setq str "prefix"))
     str))
 
-(defun nbm-key-seq-function (key-seq)
-  (nth 2 tree))
+(defun nbm-key-tree-function (tree)
+  (nth 3 tree))
 
-;; (defun nbm-key-tree-subtrees (tree)
-;;   (nth 4 tree))
-
-;; (defun nbm-key-tree-level (tree)
-;;   (nth 0 tree))
-
-;; (defun nbm-key-tree-key (tree)
-;;   (nth 1 tree))
-
-;; (defun nbm-key-tree-description (tree)
-;;   (let (str)
-;;     (setq str (nth 2 tree))
-;;     (if (equal str "") (setq str (nbm-key-tree-function tree)))
-;;     (if (equal str "") (setq str "prefix"))
-;;     str))
-
-;; (defun nbm-key-tree-function (tree)
-;;   (nth 3 tree))
-
-;; (defun nbm-key-tree-subtrees (tree)
-;;   (nth 4 tree))
+(defun nbm-key-tree-subtrees (tree)
+  (nth 4 tree))
 
 (defun nbm-parse-property (line property)
   "LINE is a string of the following form.
 
-key: z, description: calculator, function: quick-calc
+key: z, description: calculator,function: quick-calc
 
 In the above example, if  PROPERTY is \"mode\",
 then it returns \"global\".
@@ -57,7 +35,7 @@ If there is no property, it returns the empty string \"\"."
       "")))
 
 (defun nbm-key-tree-nodes-from-org-file (org-file)
-  "Return a list of key-tree from ORG-FILE, in which each line looks like this.
+  "Let a list of key-tree from ORG-FILE, in which each line looks like this.
 *** key: z, description: calculator, function: quick-calc
 A key-tree structure is (level key description function)."
   (save-excursion
@@ -75,10 +53,39 @@ A key-tree structure is (level key description function)."
                              (nbm-parse-property line "description")
                              (nbm-parse-property line "function")))
         (setq nodes (nbm-append new-node nodes)))
-      (kill-buffer (current-buffer))
+      (kill-buffer "nbm_key_tree.org")
       nodes)))
 
-;; (setq *nbm-key-nodes* (nbm-key-tree-nodes-from-org-file))
+(defun nbm-key-tree-key-tree-from-nodes (nodes)
+  "Create a key-tree from NODES."
+  (save-excursion
+    (let (tree level node first-node subnodes second-part)
+      (when nodes
+        (setq first-node (car nodes))
+        (setq level (nbm-key-tree-level first-node))
+        (setq nodes (cdr nodes)))
+      (setq subnodes '())
+      (while (and nodes (not second-part))
+        (setq node (car nodes))
+        (if (> (nbm-key-tree-level node) level)
+            (setq subnodes (nbm-append node subnodes)
+                  nodes (cdr nodes))
+          (setq second-part t)))
+      (if subnodes
+          (setq first-node (nbm-append (nbm-key-tree-key-tree-from-nodes subnodes)
+                                       first-node))
+        (setq first-node (nbm-append nil first-node)))
+      (if nodes
+          (setq tree (cons first-node (nbm-key-tree-key-tree-from-nodes nodes)))
+        (setq tree (list first-node)))
+      tree)))
+
+(defun nbm-key-tree-load ()
+  (let (nodes tree)
+    (setq nodes (nbm-key-tree-nodes-from-org-file
+		 (nbm-root-f "nbm_key_tree.org")))
+    (setq tree (nbm-key-tree-key-tree-from-nodes nodes))
+    (setq *nbm-key-tree* tree)))
 
 ;; *nbm-key-nodes* is a list of nodes.
 ;; Each node is of the following form.
@@ -112,68 +119,15 @@ A key-tree structure is (level key description function)."
   (let (nbm-nodes user-nodes tree)
     (setq nbm-nodes (nbm-key-tree-nodes-from-org-file
 		 (nbm-root-f "nbm_key_tree.org")))
-    (setq user-nodes (nbm-key-tree-nodes-from-org-file
-		 (nbm-f "nbm-user-settings/user_key_tree.org")))
+    ;; (setq user-nodes (nbm-key-tree-nodes-from-org-file
+    ;; 		 (nbm-f "nbm-user-settings/user_key_tree.org")))
     (setq key-seqs (append (nbm-key-seqs-from-nodes user-nodes)
 			   (nbm-key-seqs-from-nodes nbm-nodes)))
     (setq *nbm-key-seqs* key-seqs)))
 
-;; (defun nbm-key-tree-key-tree-from-nodes (nodes)
-;;   "Create a key-tree from NODES."
-;;   (save-excursion
-;;     (let (tree level node first-node subnodes second-part)
-;;       (when nodes
-;;         (setq first-node (car nodes))
-;;         (setq level (nbm-key-tree-level first-node))
-;;         (setq nodes (cdr nodes)))
-;;       (setq subnodes '())
-;;       (while (and nodes (not second-part))
-;;         (setq node (car nodes))
-;;         (if (> (nbm-key-tree-level node) level)
-;;             (setq subnodes (nbm-append node subnodes)
-;;                   nodes (cdr nodes))
-;;           (setq second-part t)))
-;;       (if subnodes
-;;           (setq first-node (nbm-append (nbm-key-tree-key-tree-from-nodes subnodes)
-;;                                        first-node))
-;;         (setq first-node (nbm-append nil first-node)))
-;;       (if nodes
-;;           (setq tree (cons first-node (nbm-key-tree-key-tree-from-nodes nodes)))
-;;         (setq tree (list first-node)))
-;;       tree)))
-
-;; (defun nbm-key-tree-load ()
-;;   (let (nodes tree)
-;;     (setq nodes (nbm-key-tree-nodes-from-org-file
-;; 		 (nbm-root-f "nbm_key_tree.org")))
-;;     (setq tree (nbm-key-tree-key-tree-from-nodes nodes))
-;;     (setq *nbm-key-tree* tree)))
-
 (defun nbm-append (last list)
   "Append LAST at the end of LIST."
   (reverse (cons last (reverse list))))
-
-(defun nbm-key-tree-prompt (key-seq key-seqs)
-  "Run key-tree for KEY-SEQS with current KEY-SEQ."
-  (let (prompt next-key-seqs func match K level)
-    (setq level (nbm-key-seq-level key-seq))
-    (setq func (nbm-key-seq-function key-seq))
-    (if (not (string= func "")) (funcall (intern func)))
-    (dolist (k key-seqs)
-      )
-    (while (and key-seqs (not match))
-      (setq k (pop key-seqs))
-
-      (setq subtrees (nbm-key-tree-subtrees tree))
-      (setq key (char-to-string (read-char (nbm-key-tree-prompt-string subtrees))))
-      (setq subtrees (nbm-key-tree-subtrees tree))
-      (while subtrees
-	(setq T (pop subtrees))
-	(when (nbm-key-tree-compare-key key T)
-	  (setq match t)
-	  (nbm-key-tree-prompt T)))
-      (unless match
-	(message "You typed an undefined key sequence.")))))
 
 (defun nbm-key-tree-prompt (tree)
   "Run key-tree from TREE."
