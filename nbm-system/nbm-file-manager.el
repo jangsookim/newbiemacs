@@ -27,6 +27,14 @@ EXT should be tex, pdf, el, or sage."
   (interactive)
   (nbm-find-file-with-extension "sage"))
 
+(defun nbm-find-misc ()
+  "Find a sage file in the sage folder."
+  (interactive)
+  (let (buf)
+    (find-file (nbm-f "misc/"))
+    (setq buf (current-buffer))
+    (helm-projectile)))
+
 (defun nbm-new-file ()
   "Create a new file with a chosen EXTENSION in the folder newbiemacs/EXTENSION."
   (interactive)

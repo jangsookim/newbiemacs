@@ -9,6 +9,18 @@
   (interactive)
   (find-function (read-command "Find function: ")))
 
+(defun nbm-magit-init ()
+  (interactive)
+  (magit-init (file-name-directory (nbm-get-file-name))))
+
+(defun nbm-latex-environment ()
+  (interactive)
+  (LaTeX-environment nil))
+
+(defun nbm-latex-environment-update ()
+  (interactive)
+  (LaTeX-environment t))
+
 (defun nbm-tex-build ()
   (interactive)
   (TeX-command-run-all nil))
@@ -192,3 +204,12 @@ If there is no checkbox, create one."
 (defun nbm-toggle-valign ()
   "Toggle valign mode."
   (if valign-mode (valign-mode -1) (valign-mode)))
+
+(defun nbm-add-to-misc-symlinks ()
+  "Create a symbolic link of the current file in the misc-symlinks folder."
+  (interactive)
+  (shell-command (format "ln -s \"%s\" \"%smisc/symlinks/%s\""
+                         (nbm-get-file-name) *nbm-home*
+                         (read-string "Enter the symlink file name: "
+				      (file-name-nondirectory (nbm-get-file-name)))))
+  (message (format "A symbolic link created in the following directory.\n%s" (nbm-f "misc/symlinks/"))))

@@ -43,6 +43,7 @@
 *** key: s, function: save-buffer
 *** key: D, function: nbm-copy-to-desktop
 *** key: F, function: nbm-show-in-finder
+*** key: S, function: nbm-add-to-misc-symlinks
 *** key: T, function: nbm-show-trash-bin
 *** key: U, description: Updates
 **** key: e, function: nbm-update-string-in-el
@@ -52,12 +53,13 @@
 **** key: n, function: nbm-copy-file-name
 **** key: y, function: nbm-copy-file-path
 ** key: g, description: git
-*** key: i, function: magit-init
+*** key: i, function: nbm-magit-init
 *** key: s, function: magit-status
 ** key: h, description: Help
 ** key: j, description: jump to word, function: evil-avy-goto-word-or-subword-1
 ** key: k, description: key bindings
 *** key: t, function: nbm-open-key-tree
+** key: m, function: nbm-find-misc
 ** key: n, function: nbm-latex-new-file
 ** key: o, function: nbm-key-tree-org-mode
 ** key: p, description: Find pdf, function: nbm-find-pdf
@@ -107,7 +109,8 @@
 ** key: ., function: LaTeX-mark-environment
 ** key: *, function: LaTeX-mark-section
 ** key: i, description: Insert
-*** key: e, description: insert-environment, function: LaTeX-environment
+*** key: e, description: insert-environment, function: nbm-latex-environment
+*** key: E, description: update-environment, function: nbm-latex-environment-update
 *** key: i, description: insert-item, function: LaTeX-insert-item
 *** key: F, description: insert-figure, function: nbm-latex-insert-figure
 *** key: l, description: insert-label, function: nbm-latex-insert-label
