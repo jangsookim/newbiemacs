@@ -56,8 +56,7 @@
     (find-file (concat (getenv "HOME") "/newbiemacs/sage"))
     (with-temp-buffer (shell-command "git init" t))
     (find-file (concat (getenv "HOME") "/newbiemacs/misc"))
-    (with-temp-buffer (shell-command "mkdir symilinks")
-		      (shell-command "git init" t))
+    (with-temp-buffer (shell-command "git init" t))
     )
   )
 
