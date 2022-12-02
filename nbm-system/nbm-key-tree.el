@@ -97,6 +97,41 @@ A key-tree structure is (level key description function)."
 
 ;; A key-seq is a list of the following form.
 ;; (keys description function)
+;; KEYS is a list of the form e.g. ("global" "a" "e")
+
+(defun nbm-key-seq< (A B)
+  "Return t if A occurs earlier than B."
+  (let (a b keyA keyB done result)
+    (setq keyA (car A) keyB (car B))
+    (while (and (not done) keyA keyB)
+      (setq a (pop keyA) b (pop keyB))
+      (if (string< a b) (setq result t done t))
+      (if (string> a b) (setq result nil done t)))
+    (if keyA (setq result nil))
+    (if keyB (setq result t))
+    result))
+
+(defun nbm-key-tree-from-key-seqs (sorted-key-seqs)
+  "Create a key-tree from SORTED-KEY-SEQS."
+  (save-excursion
+    (let (tree level key-seq first-key-seq subkey-seqs second-part)
+      (setq subtree '())
+      (while (and key-seqs (not second-part))
+        (setq key-seq (car key-seqs))
+        (if (> (nbm-key-tree-level key-seq) level)
+            (setq subkey-seqs (nbm-append key-seq subkey-seqs)
+                  key-seqs (cdr key-seqs))
+          (setq second-part t)))
+      (if subkey-seqs
+          (setq first-key-seq (nbm-append (nbm-key-tree-key-tree-from-key-seqs subkey-seqs)
+                                       first-key-seq))
+        (setq first-key-seq (nbm-append nil first-key-seq)))
+      (if key-seqs
+          (setq tree (cons first-key-seq (nbm-key-tree-key-tree-from-key-seqs key-seqs)))
+        (setq tree (list first-key-seq)))
+      tree)))
+
+
 
 (defun nbm-key-seqs-from-nodes (nodes)
   "Create key-seqs from NODES."
