@@ -438,8 +438,9 @@
   (with-eval-after-load 'helm (diminish 'helm-mode))
   (with-eval-after-load 'reftex (diminish 'reftex-mode))
   (with-eval-after-load 'evil-org (diminish 'evil-org-mode))
-  (with-eval-after-load 'auto-revert (diminish 'auto-revert-mode))
+  (with-eval-after-load 'autorevert (diminish 'auto-revert-mode))
   (with-eval-after-load 'smartparens (diminish 'smartparens-mode))
+  (with-eval-after-load 'eldoc (diminish 'eldoc-mode))
   (diminish 'visual-line-mode)
 #+end_src
 
