@@ -4,6 +4,7 @@
 
 ;; packages here
 
+(unless (package-installed-p 'diminish) (package-install 'diminish))
 (unless (package-installed-p 'undo-tree) (package-install 'undo-tree))
 (unless (package-installed-p 'company) (package-install 'company))
 (unless (package-installed-p 'spaceline) (package-install 'spaceline))

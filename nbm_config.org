@@ -85,14 +85,10 @@
 #+end_src
 ** theme
 #+begin_src emacs-lisp :tangle yes
-(load-theme 'spacemacs-dark t)
-;; (load-theme 'mood-one t)
-;; (load-theme 'zenburn t)
+  (load-theme 'spacemacs-dark t)
 #+end_src
 ** appearance
 #+begin_src emacs-lisp :tangle yes
-  ;; (scroll-bar-mode -1)
-  ;; (global-display-line-numbers-mode)
   (tool-bar-mode -1)
   (setq scroll-step 1) ;; keyboard scroll one line at a time
 
@@ -107,7 +103,7 @@
 #+end_src
 ** mode line
 #+begin_src emacs-lisp :tangle yes
-  (require 'spaceline-config)
+  ;; (require 'spaceline-config)
   (spaceline-spacemacs-theme)
   (spaceline-helm-mode)
   (spaceline-info-mode)
@@ -117,6 +113,10 @@
   (setq size-indication-mode t)
   (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
   (spaceline-toggle-input-method-on)
+  (spaceline-toggle-version-control-off)
+  (spaceline-toggle-window-number-off)
+  (spaceline-toggle-buffer-encoding-abbrev-off)
+  (setq spaceline-org-clock-p t)
 #+end_src
 
 * latex
@@ -184,9 +184,9 @@
   (setq auctex-latexmk-inherit-TeX-PDF-mode t)
   ;; To make latexmk use pdflatex we need ~/.latexmkrc file.
   (unless (file-exists-p "~/.latexmkrc")
-      (find-file "~/.latexmkrc")
-      (insert "$pdf_mode = 1;")
-      (save-buffer) (kill-buffer))
+    (find-file "~/.latexmkrc")
+    (insert "$pdf_mode = 1;")
+    (save-buffer) (kill-buffer))
 #+end_src
 
 * org-mode
@@ -205,36 +205,33 @@
   (evil-define-key 'insert org-mode-map (kbd "C-d") 'delete-char)
 
   (evil-define-key 'motion org-agenda-mode-map
-                 (kbd "h") 'org-agenda-earlier
-                 (kbd "l") 'org-agenda-later
-                 (kbd "v") 'org-agenda-view-mode-dispatch
-                 (kbd "s") 'org-save-all-org-buffers)
+    (kbd "h") 'org-agenda-earlier
+    (kbd "l") 'org-agenda-later
+    (kbd "v") 'org-agenda-view-mode-dispatch
+    (kbd "s") 'org-save-all-org-buffers)
 
-  (with-eval-after-load 'org
-    (setq org-directory (concat *nbm-home* "org/"))
-    (setq org-default-notes-file (concat org-directory "/capture.org"))
-    (setq spaceline-org-clock-p t)
-    (setq org-agenda-span 1)
-    (setq org-log-into-drawer t)
-    (setq org-startup-with-inline-images nil)
-    (setq org-duration-format (quote h:mm))
-    (setq org-startup-indented t)
-    (setq org-ref-default-bibliography(concat *nbm-home* "nbm-user-settings/references/ref.bib")
-          bibtex-completion-bibliography (concat *nbm-home* "nbm-user-settings/references/ref.bib"))
-    )
+  (setq org-directory (concat *nbm-home* "org/"))
+  (setq org-default-notes-file (concat org-directory "/capture.org"))
+  (setq org-agenda-span 1)
+  (setq org-log-into-drawer t)
+  (setq org-startup-with-inline-images nil)
+  (setq org-duration-format (quote h:mm))
+  (setq org-startup-indented t)
+  (setq org-ref-default-bibliography(concat *nbm-home* "nbm-user-settings/references/ref.bib")
+        bibtex-completion-bibliography (concat *nbm-home* "nbm-user-settings/references/ref.bib"))
 
-    #+end_src
+#+end_src
 ** Org-Roam
 #+begin_src emacs-lisp :tangle yes
-    (setq org-roam-directory (concat *nbm-home* "org/"))
-    (setq org-roam-graph-viewer "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
-    (org-roam-db-autosync-mode)
-    (setq org-roam-capture-templates '(("d" "default" plain "%?"
-                                        :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-                                                           "#+title: ${title}\n "
-                                                           ;; "#+title: ${title}\n#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup\n "
-                                                           )
-                                        :unnarrowed t)))
+  (setq org-roam-directory (concat *nbm-home* "org/"))
+  (setq org-roam-graph-viewer "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
+  (org-roam-db-autosync-mode)
+  (setq org-roam-capture-templates '(("d" "default" plain "%?"
+                                      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                                                         "#+title: ${title}\n "
+                                                         ;; "#+title: ${title}\n#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup\n "
+                                                         )
+                                      :unnarrowed t)))
 #+end_src
 ** org-projectile
 #+begin_src emacs-lisp :tangle yes
@@ -248,18 +245,18 @@
 #+end_src
 ** org-bullets
 #+begin_src emacs-lisp :tangle yes
-(require 'org-bullets)
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+  (require 'org-bullets)
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 #+end_src
 
 * helm
 #+begin_src emacs-lisp :tangle yes
-(global-set-key (kbd "M-x") 'helm-M-x)
-;(setq helm-echo-input-in-header-line t)
-(setq helm-autoresize-mode t)
-(setq helm-display-header-line nil)
-(helm-mode 1)
-(add-hook 'helm-minibuffer-set-up-hook 'helm-exchange-minibuffer-and-header-line)
+  (global-set-key (kbd "M-x") 'helm-M-x)
+                                          ;(setq helm-echo-input-in-header-line t)
+  (setq helm-autoresize-mode t)
+  (setq helm-display-header-line nil)
+  (helm-mode 1)
+  (add-hook 'helm-minibuffer-set-up-hook 'helm-exchange-minibuffer-and-header-line)
 
 #+end_src
 ** helm-bibtex
@@ -301,20 +298,20 @@
 #+end_src
 * Minor packages
 ** rgrep
-  #+begin_src emacs-lisp :tangle yes
-    (eval-after-load "grep" '(grep-compute-defaults))
-  #+end_src
-  # this is needed if an error occurs when grep is used the first time in the session.
+#+begin_src emacs-lisp :tangle yes
+  (eval-after-load "grep" '(grep-compute-defaults))
+#+end_src
+# this is needed if an error occurs when grep is used the first time in the session.
 ** ispell
-  #+begin_src emacs-lisp :tangle yes
-    (setq ispell-program-name "/usr/local/bin/ispell")
-    (setq ispell-personal-dictionary (concat *nbm-home* "nbm-user-settings/references/my-dictionary"))
-  #+end_src
+#+begin_src emacs-lisp :tangle yes
+  (setq ispell-program-name "/usr/local/bin/ispell")
+  (setq ispell-personal-dictionary (concat *nbm-home* "nbm-user-settings/references/my-dictionary"))
+#+end_src
 ** Magit
 #+begin_src emacs-lisp :tangle yes
-; To install magit do the following.
-; M-x package-refresh-contents RET
-; M-x package-install RET magit RET
+                                          ; To install magit do the following.
+                                          ; M-x package-refresh-contents RET
+                                          ; M-x package-install RET magit RET
   (when (package-installed-p 'magit)
     (setq transient-values
           '((magit-log:magit-log-mode "-n256" "--graph" "--color" "--decorate")))
@@ -328,20 +325,20 @@
 #+end_src
 ** openwith
 #+begin_src emacs-lisp :tangle yes
-(openwith-mode t)
-(setq openwith-associations '(("\\.pdf\\'" "open" (file))
-                              ("\\.hwp\\'" "open" (file))
-                              ("\\.xlsx\\'" "open" (file))
-                              ("\\.djvu\\'" "/Applications/DjView.app/Contents/bin/djview" (file))))
+  (openwith-mode t)
+  (setq openwith-associations '(("\\.pdf\\'" "open" (file))
+                                ("\\.hwp\\'" "open" (file))
+                                ("\\.xlsx\\'" "open" (file))
+                                ("\\.djvu\\'" "/Applications/DjView.app/Contents/bin/djview" (file))))
 #+end_src
 ** Yasnippet
-  #+begin_src emacs-lisp :tangle yes
-    (require 'yasnippet)
-    (setq yas/root-directory (list (concat *nbm-home* "nbm-user-settings/snippets/")))
-    (yas-global-mode 1)
-    (yas-reload-all)
-    (setq yas/triggers-in-field t); Enable nested triggering of snippets
-  #+end_src
+#+begin_src emacs-lisp :tangle yes
+  (require 'yasnippet)
+  (setq yas/root-directory (list (concat *nbm-home* "nbm-user-settings/snippets/")))
+  (yas-global-mode 1)
+  (yas-reload-all)
+  (setq yas/triggers-in-field t); Enable nested triggering of snippets
+#+end_src
 ** rainbow-delimiters
 #+begin_src emacs-lisp :tangle yes
   (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
@@ -412,7 +409,7 @@
 #+end_src
 ** company
 #+begin_src emacs-lisp :tangle yes
-  (add-hook 'after-init-hook 'global-company-mode)
+  (global-company-mode)
 #+end_src
 ** undo-tree
 #+begin_src emacs-lisp :tangle yes
@@ -421,13 +418,30 @@
 #+end_src
 ** valign
 #+begin_src emacs-lisp :tangle yes
-(add-hook 'org-mode-hook #'valign-mode)
+  (add-hook 'org-mode-hook #'valign-mode)
 #+end_src
 ** projectile
 #+begin_src emacs-lisp :tangle yes
-(projectile-mode)
+  (projectile-mode)
 #+end_src
-
+** diminish
+#+begin_src emacs-lisp :tangle yes
+  (require 'diminish)
+  (with-eval-after-load 'valign (diminish 'valign-mode))
+  (with-eval-after-load 'org-indent (diminish 'org-indent-mode))
+  (with-eval-after-load 'projectile (diminish 'projectile-mode))
+  (with-eval-after-load 'company (diminish 'company-mode))
+  (with-eval-after-load 'beacon (diminish 'beacon-mode))
+  (with-eval-after-load 'which-key (diminish 'which-key-mode))
+  (with-eval-after-load 'anzu (diminish 'anzu-mode))
+  (with-eval-after-load 'yasnippet (diminish 'yas-minor-mode))
+  (with-eval-after-load 'helm (diminish 'helm-mode))
+  (with-eval-after-load 'reftex (diminish 'reftex-mode))
+  (with-eval-after-load 'evil-org (diminish 'evil-org-mode))
+  (with-eval-after-load 'auto-revert (diminish 'auto-revert-mode))
+  (with-eval-after-load 'smartparens (diminish 'smartparens-mode))
+  (diminish 'visual-line-mode)
+#+end_src
 
 * welcome page
 #+begin_src emacs-lisp :tangle yes
