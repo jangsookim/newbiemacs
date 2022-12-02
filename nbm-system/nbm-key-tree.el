@@ -245,3 +245,15 @@ A key-tree structure is (level key description function)."
     (nbm-temp-prompt terminals 1)
     (nbm-temp-prompt internals 2)
     prompt))
+
+(defun nbm-string-key (string)
+  "Return STRING with font for keys."
+  (propertize string 'face '(:foreground "MediumSpringGreen" :weight bold)))
+
+(defun nbm-string-terminal-node (string)
+  "Return STRING with font for keys."
+  (propertize string 'face '(:foreground "SandyBrown")))
+
+(defun nbm-string-internal-node (string)
+  "Return STRING with font for keys."
+  (propertize string 'face '(:foreground "Deepskyblue1")))

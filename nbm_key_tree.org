@@ -88,8 +88,8 @@
 ** key: T, description: toggle
 *** key: F, function: toggle-frame-fullscreen
 ** key: N, description: Newbiemacs
-*** key: c, function: nbm-config
-*** key: r, function: nbm-reload
+*** key: c, function: newbie-config
+*** key: r, function: newbie-reload
 *** key: s, description: Settings, function: newbie-setting
 ** key: Y, description: yasnippet
 *** key: i, function: yas-insert-snippet

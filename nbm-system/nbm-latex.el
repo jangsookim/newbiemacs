@@ -1,5 +1,4 @@
 ;; Making a file name from data in tex file
-
 (defun nbm-latex-get-title ()
   "Return the title of the current tex file."
   (save-excursion
@@ -79,7 +78,6 @@ If there is no title, return the filename."
                          (buffer-file-name) *nbm-home*
                            (read-string "Enter the symlink file name: " (nbm-get-lowest-dir-name))))
   (message (format "A symbolic link created: %s.tex" (nbm-get-lowest-dir-name))))
-
 
 (defun nbm-latex-new-file ()
   "Create a new latex file from a template."
@@ -408,8 +406,6 @@ and END are the starting and ending points of the environment."
 	       (insert (format "\\bibliographystyle{abbrv}\n\\bibliography{%s}"
 			       (nbm-f "nbm-user-settings/references/ref.bib")))
 	       (message "Bibtex toggled: bibtex ON"))))))
-
-
 
 (defun nbm-bib-item-create-key (bib-str choice)
   "Create a key for the bib item given by BIB-STR.

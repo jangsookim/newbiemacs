@@ -1,3 +1,11 @@
+(defun nbm-f (filename)
+  "Return FILENAME with prefix *nbm-home*."
+  (concat *nbm-home* filename))
+
+(defun nbm-root-f (filename)
+  "Return FILENAME with prefix ~/nbm-root/"
+  (concat (getenv "HOME") "/nbm-root/" filename))
+
 (defun nbm-find-file-with-extension (ext)
   "Find a file with extension EXT in the EXT folder.
 EXT should be tex, pdf, el, or sage."
@@ -35,6 +43,15 @@ EXT should be tex, pdf, el, or sage."
     (setq buf (current-buffer))
     (helm-projectile)))
 
+(defun nbm-add-to-misc-symlinks ()
+  "Create a symbolic link of the current file in the misc-symlinks folder."
+  (interactive)
+  (shell-command (format "ln -s \"%s\" \"%smisc/symlinks/%s\""
+                         (nbm-get-file-name) *nbm-home*
+                         (read-string "Enter the symlink file name: "
+				      (file-name-nondirectory (nbm-get-file-name)))))
+  (message (format "A symbolic link created in the following directory.\n%s" (nbm-f "misc/symlinks/"))))
+
 (defun nbm-new-file ()
   "Create a new file with a chosen EXTENSION in the folder newbiemacs/EXTENSION."
   (interactive)
@@ -51,14 +68,6 @@ e) el"))
               ((equal extension ?e) (message "el under construction"))
               )
       (message "Wrong choice of extension!"))))
-
-(defun nbm-f (filename)
-  "Return FILENAME with prefix *nbm-home*."
-  (concat *nbm-home* filename))
-
-(defun nbm-root-f (filename)
-  "Return FILENAME with prefix ~/nbm-root/"
-  (concat (getenv "HOME") "/nbm-root/" filename))
 
 (defun nbm-rgrep ()
   "Do rgrep on the current folder on the files *.el *.tex *.org."
@@ -212,22 +221,6 @@ e) el"))
     (setq to-string (read-string "String to change to: "))
     (nbm-query-replace-in-dir (nbm-f "el") from-string to-string)
     (message (format "%s has been replaced by %s" from-string to-string))))
-
-
-(defun nbm-make-permanant-note ()
-  "Delete the 15 digits in the current temporary org-roam file to make it a public note.
-For example, 20221109090747-test.org will be changed to test.org."
-  (interactive)
-  (let (old new choice)
-    (setq old (file-name-nondirectory (buffer-file-name)))
-    (if (string-match "[0-9]\\{14\\}-" "20221109090747-test_2.org")
-        (progn
-          (setq new (substring old 15))
-          (setq choice (read-char (format "Rename the file?: (Type y for yes.)\nOld name: %s\nNew name: %s" old new)))
-          (when (equal choice ?y)
-            (rename-file old new) (find-file new) (kill-buffer old)
-            (message "File name changed.")))
-      (message "Invalid filename. Check if the current file is a temporary org-roam, e.g. 20221109090747-test.org."))))
 
 (defun nbm-delete-double-empty-lines ()
   "Delete all double empty lines in the current buffer."
