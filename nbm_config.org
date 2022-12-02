@@ -92,7 +92,7 @@
   (tool-bar-mode -1)
   (setq scroll-step 1) ;; keyboard scroll one line at a time
 
-  (set-face-attribute 'default nil :height 145)
+  (set-face-attribute 'default nil :height 150)
   (setq ring-bell-function 'ignore)
   (setq resize-mini-windows t)
   (setq show-trailing-whitespace t)
@@ -107,6 +107,7 @@
   (spaceline-spacemacs-theme)
   (spaceline-helm-mode)
   (spaceline-info-mode)
+  (setq winum-auto-setup-mode-line nil)
 
   (setq mode-line-position (list "(%l,%c)"))
   (setq display-time-mode t)
@@ -114,7 +115,7 @@
   (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
   (spaceline-toggle-input-method-on)
   (spaceline-toggle-version-control-off)
-  (spaceline-toggle-window-number-off)
+  ;; (spaceline-toggle-window-number-off)
   (spaceline-toggle-buffer-encoding-abbrev-off)
   (setq spaceline-org-clock-p t)
 #+end_src

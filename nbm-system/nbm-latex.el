@@ -697,3 +697,42 @@ Delete or insert a label accordingly."
 	(setq env (concat env "*"))
 	(nbm-latex-delete-label)))
     (LaTeX-modify-environment env)))
+
+
+;; latex fonts
+
+(defun nbm-latex-font-emph ()
+  (interactive)
+  (TeX-font nil 5))
+
+(defun nbm-latex-font-bold ()
+  (interactive)
+  (TeX-font nil 2))
+
+(defun nbm-latex-font-roman ()
+  (interactive)
+  (TeX-font nil 18))
+
+(defun nbm-latex-font-mathbb ()
+  (interactive)
+  (TeX-font nil 19))
+
+(defun nbm-latex-font-truetype ()
+  (interactive)
+  (TeX-font nil 20))
+
+(defun nbm-latex-font-sc ()
+  (interactive)
+  (TeX-font nil 3))
+
+(defun nbm-latex-font-mathcal ()
+  (interactive)
+  (TeX-font nil 1))
+
+(defun nbm-latex-font-mathfrak ()
+  (interactive)
+  (TeX-font nil 11))
+
+(defun nbm-latex-font-delete ()
+  (interactive)
+  (TeX-font nil 4))

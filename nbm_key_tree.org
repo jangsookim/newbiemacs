@@ -103,14 +103,24 @@
 ** key: c, description: copy math, function: nbm-latex-copy-math
 ** key: C, description: copy math with \( \), function: nbm-latex-copy-math-with-paren
 ** key: d, description: delete math, function: nbm-latex-delete-math
+** key: e, description: Environments
+*** key: d, description: delete labels, function: nbm-latex-delete-label
+*** key: u, description: update-environment, function: nbm-latex-environment-update
 ** key: D, description: delete math with \( \), function: nbm-latex-delete-math-with-paren
-** key: f, description: Files
-*** key: s, description: make symlink, function: nbm-latex-add-to-symlinks
+** key: f, description: Fonts
+*** key: b, description: bold, function: nbm-latex-font-bold
+*** key: e, description: emph, function: nbm-latex-font-emph
+*** key: r, description: roman, function: nbm-latex-font-roman
+*** key: B, description: mathbb, function: nbm-latex-font-mathbb
+*** key: t, description: truetype, function: nbm-latex-font-truetype
+*** key: s, description: sc, function: nbm-latex-font-sc
+*** key: c, description: mathcal, function: nbm-latex-font-mathcal
+*** key: f, description: frak, function: nbm-latex-font-mathfrak
+*** key: d, description: delete, function: nbm-latex-font-delete
 ** key: ., function: LaTeX-mark-environment
 ** key: *, function: LaTeX-mark-section
 ** key: i, description: Insert
 *** key: e, description: insert-environment, function: nbm-latex-environment
-*** key: E, description: update-environment, function: nbm-latex-environment-update
 *** key: i, description: insert-item, function: LaTeX-insert-item
 *** key: F, description: insert-figure, function: nbm-latex-insert-figure
 *** key: l, description: insert-label, function: nbm-latex-insert-label
@@ -126,6 +136,7 @@
 *** key: r, description: reftex-reference, function: reftex-reference
 *** key: s, description: sec-ref, function: nbm-latex-sec-ref
 *** key: C, description: Cref, function: nbm-latex-Cref
+** key: s, description: make symlink, function: nbm-latex-add-to-symlinks
 ** key: T, description: Toggle
 *** key: b, description: toggle-bbl-file, function: nbm-latex-toggle-bbl-file
 *** key: e, description: toggle-equation, function: nbm-latex-toggle-equation
@@ -133,8 +144,6 @@
 *** key: p, description: toggle-pgml, function: nbm-latex-toggle-pgml
 *** key: h, description: convert-to-hwp, function: nbm-latex-convert-to-hwp
 *** key: v, description: change-variable, function: nbm-latex-change-variable
-** key: x, description: Delete
-*** key: l, description: Delete labels, function: nbm-latex-delete-label
 * description: org-mode
 ** key: a, description: agenda, function: org-agenda-list
 ** key: RET, description: Korean/English, function: toggle-input-method
