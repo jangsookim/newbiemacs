@@ -64,8 +64,10 @@
 ** key: o, function: org-roam-node-find
 ** key: p, description: Find pdf, function: nbm-find-pdf
 ** key: r, description: Registers
-*** key: n, description: number to register, function: nbm-number-to-register
-*** key: s, description: Show registers (and insert), function: helm-register
+*** key: r, description: Show registers, function: helm-register
+*** key: s, description: Set counter, function: nbm-set-counter
+*** key: a, description: Add counter, function: nbm-add-counter
+*** key: i, description: Insert counter, function: nbm-insert-counter
 ** key: s, function: nbm-find-sage
 ** key: t, function: nbm-find-tex
 ** key: u, function: universal-argument

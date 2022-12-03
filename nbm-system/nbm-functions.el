@@ -94,3 +94,22 @@
     (setq reg (char-to-string (read-char "Enter the register: ")))
     (number-to-register num reg)
     (message (format "%s is stored at register %s." num reg))))
+
+(defun nbm-set-counter ()
+  "Save a number to a register."
+  (interactive)
+  (let (num)
+    (setq num (string-to-number (read-string "Enter a number for counter (default 0): ")))
+    (kmacro-set-counter num)))
+
+(defun nbm-add-counter ()
+  "Save a number to a register."
+  (interactive)
+  (let (num)
+    (setq num (string-to-number (read-string "Enter a number to add to counter (default 1): \n" nil nil "1")))
+    (kmacro-add-counter num)))
+
+(defun nbm-insert-counter ()
+  "Save a number to a register."
+  (interactive)
+    (kmacro-insert-counter 1))

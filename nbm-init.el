@@ -4,6 +4,9 @@
 
 ;; packages here
 
+
+(unless (package-installed-p 'posframe) (package-install 'posframe))
+(unless (package-installed-p 'evil-owl) (package-install 'evil-owl))
 (unless (package-installed-p 'diminish) (package-install 'diminish))
 (unless (package-installed-p 'undo-tree) (package-install 'undo-tree))
 (unless (package-installed-p 'company) (package-install 'company))
