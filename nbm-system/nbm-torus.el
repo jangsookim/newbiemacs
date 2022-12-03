@@ -1,4 +1,9 @@
-;; my_torus.el -- play the torus game in Emacs!
+;; torus-game.el -- play the torus game in Emacs!
+;;
+;; @@@  /@\  @@\ @ @  /@@
+;;  @   @ @  @ / @ @   \
+;;  @   \@/  @ \ \@/  @@/
+
 
 (defconst *torus-game-path* (nbm-f "nbm-user-settings/"))
 
@@ -25,74 +30,24 @@
 
 (defun torus-init ()
   "Start a new game of torus."
-  (torus-set-difficulty)
-  (setq *torus-box-height* 20)
+  (setq *torus-num-cols* 3)
   (setq *torus-pole-height* *torus-num-cols*)
-  (setq *torus-box* (make-vector (* *torus-box-height*
-                                    *torus-num-cols*) nil))
-  (setq *torus-pole* (make-vector (* *torus-pole-height*
-                                      *torus-num-cols*) nil))
+  (setq *torus-box* (make-vector (* *torus-box-height* *torus-num-cols*) nil))
+  (setq *torus-pole* (make-vector (* *torus-pole-height* *torus-num-cols*) nil))
+  (setq *torus-flying-tori* (make-vector 100 nil))
+  (setq *torus-flying-tori-height* (make-vector 100 nil))
+  (setq *torus-flying-tori-waiting* (make-vector 100 0))
   (setq *torus-num-tori* (make-vector 100 0))
+  (setq *torus-level-up-time* 5)
+  (setq *torus-num-colors* 5)
   (setq *torus-num-tori-in-pole* 0)
   (setq *torus-score* 0)
+  (setq *torus-level* 0)
+  (setq *torus-level-gauge* 0)
   (setq *torus-time* 0)
   (torus-init-pole 0)
-  (torus-run-game)
+  (torus-print-main)
   )
-
-(defun torus-get-str-difficulty ()
-  "Return the difficulty in string format."
-  (let (d)
-    (when (equal 1 *torus-difficulty*) (setq d "Easy       "))
-    (when (equal 2 *torus-difficulty*) (setq d "Normal     "))
-    (when (equal 3 *torus-difficulty*) (setq d "Hard       "))
-    (when (equal 4 *torus-difficulty*) (setq d "Impossible "))
-    d))
-
-(defun torus-set-difficulty ()
-  (interactive)
-  (let (choice)
-    (setq choice
-          (read-char "Choose difficulty:\n (1) Easy\n (2) Normal\n (3) Hard\n (4) Impossible"))
-    (when t
-      (setq *torus-difficulty* 1)
-      (setq *torus-level* 0)
-      (setq *torus-num-cols* 3)
-      (setq *torus-num-colors* 3)
-      (setq *torus-level-gauge* 0)
-      (setq *torus-level-up-time* 5)
-      (setq *torus-speed* 5)
-      )
-    (when (equal choice ?2)
-      (setq *torus-difficulty* 2)
-      (setq *torus-level* 0)
-      (setq *torus-num-cols* 3)
-      (setq *torus-num-colors* 3)
-      (setq *torus-level-gauge* 0)
-      (setq *torus-level-up-time* 5)
-      (setq *torus-speed* 3)
-      )
-    (when (equal choice ?3)
-      (setq *torus-difficulty* 3)
-      (setq *torus-level* 0)
-      (setq *torus-num-cols* 3)
-      (setq *torus-num-colors* 4)
-      (setq *torus-level-gauge* 0)
-      (setq *torus-level-up-time* 5)
-      (setq *torus-speed* 2)
-      )
-    (when (equal choice ?4)
-      (setq *torus-difficulty* 4)
-      (setq *torus-num-cols* 3)
-      (setq *torus-num-colors* 5)
-      (setq *torus-level* 0)
-      (setq *torus-level-gauge* 0)
-      (setq *torus-level-up-time* 5)
-      (setq *torus-speed* 2)
-      )
-    )
-  )
-
 
 (defvar *torus-box* nil
   "The torus box which is a list.")
@@ -103,23 +58,34 @@
 (defvar *torus-pole* nil
   "The torus pole which is a list.")
 
-(defvar *torus-speed* 3)                  ; the lower the faster
+(defvar *torus-flying-tori* nil
+  "The flying tori which is a list.")
 
-(defconst *torus-timer* nil)
-(defconst *torus-box-height* 9)
-(defconst *torus-num-cols* 5)
+(defvar *torus-flying-tori-height* nil
+  "The heights of flying tori which is a list.")
 
-(defvar *torus-difficulty* 2)
-(defvar *torus-pole-height* 3)
-(defvar *torus-pole-pos* 0)
-(defvar *torus-num-colors* 3)
-(defvar *torus-num-tori-in-pole* 0)
-(defvar *torus-score* 0)
-(defvar *torus-level* 0)
-(defvar *torus-time* 0)
-(defvar *torus-level-up-time* 0)
-(defvar *torus-level-gauge* 0)
+(defvar *torus-flying-tori-waiting* nil
+  "The waiting time of flying tori which is a list.")
+
+(defconst *torus-game-speed* 0.1)             ; the lower the faster
+(defconst *torus-gauge-time* 20)
+(defconst *torus-flying-torus-speed-factor* 1)
+(defconst *torus-box-height* 20)
+(defconst *torus-score-per-torus* 300)
+(defconst *torus-waiting-time* 10)
 (defvar *torus-game-on* 1)
+(defvar *torus-num-cols*)
+(defvar *torus-timer* nil)
+(defvar *torus-pole-height*)
+(defvar *torus-pole-pos*)
+(defvar *torus-num-colors*)
+(defvar *torus-num-tori-in-pole*)
+(defvar *torus-score*)
+(defvar *torus-level*)
+(defvar *torus-time*)
+(defvar *torus-level-up-time*)
+(defvar *torus-level-gauge*)
+(defvar *torus-last-user* nil)
 
 ;; printing
 
@@ -130,119 +96,120 @@
     (torus-print-pole)
     (torus-print-level-gauge)
     (torus-print-score)
-    (torus-print-time)
-    (torus-print-level)
-    (torus-print-difficulty)
-    ;; (torus-print-num-tori)
-    ;; (torus-print-num-tori-in-pole)
+    (torus-print-level)))
+
+(defun torus-print-main ()
+  (let ((inhibit-read-only t))
+    (erase-buffer)
+    (insert "@@@  /@\\  @@\\ @ @  /@@\n")
+    (insert " @   @ @  @ / @ @   \\\n")
+    (insert " @   \\@/  @ \\ \\@/  @@/\n")
+    (insert "\nPress \"n\" to start a new game.")
     ))
 
-(defun torus-print-num-tori ()
-  (let ((inhibit-read-only t))
-    (dotimes (col *torus-num-cols*)
-      (insert (number-to-string (torus-get-num-tori col))))
-    (insert "\n")))
 
-(defun torus-print-num-tori-in-pole ()
-  (let ((inhibit-read-only t))
-    (dotimes (col *torus-num-cols*)
-      (insert (number-to-string *torus-num-tori-in-pole*)))
-      (insert "\n")))
+
 
 (defun torus-print-box ()
   (let ((inhibit-read-only t))
-    (insert " |")
+    (torus-print-string " |" -1)
     (dotimes (col *torus-num-cols*)
-          (torus-print-entry -2))
-    (insert "|\n")
+      (torus-print-entry -2))
+    (torus-print-string "|\n" -1)
     (dotimes (row *torus-box-height*)
-      (insert " |")
+      (torus-print-string " |" -1)
       (dotimes (col *torus-num-cols*)
-        (torus-print-entry (torus-box-get-entry row col)))
-      (insert "|\n"))))
+        (if (and (elt *torus-flying-tori* col)  ; if there is a flying torus
+                 (or (equal row (- *torus-box-height* (elt *torus-flying-tori-height* col)))
+                     (equal row (1+ (- *torus-box-height* (elt *torus-flying-tori-height* col))))
+                     (equal row (1- (- *torus-box-height* (elt *torus-flying-tori-height* col))))))
+            (torus-print-flying-torus row col)
+          (torus-print-entry (torus-box-get-entry row col))))
+      (torus-print-string "|\n" -1))))
+
+(defun torus-print-flying-torus (row col)
+  (let ((inhibit-read-only t))
+    (if (equal (% (elt *torus-flying-tori-height* col) 2) 0) ; the flying torus is rotating
+        (progn
+          (if (equal row (- *torus-box-height* (elt *torus-flying-tori-height* col)))
+              (torus-print-string " @ @ " (elt *torus-flying-tori* col)))
+          (if (equal row (1- (- *torus-box-height* (elt *torus-flying-tori-height* col))))
+              (torus-print-string " /@\\ " (elt *torus-flying-tori* col)))
+          (if (equal row (1+ (- *torus-box-height* (elt *torus-flying-tori-height* col))))
+              (torus-print-string " \\@/ " (elt *torus-flying-tori* col))))
+      (progn
+        (if (equal row (- *torus-box-height* (elt *torus-flying-tori-height* col)))
+            (torus-print-string " @@@ " (elt *torus-flying-tori* col)))
+        (if (equal row (1- (- *torus-box-height* (elt *torus-flying-tori-height* col))))
+            (torus-print-string "     " (elt *torus-flying-tori* col)))
+        (if (equal row (1+ (- *torus-box-height* (elt *torus-flying-tori-height* col))))
+            (torus-print-string "     " (elt *torus-flying-tori* col)))))))
 
 (defun torus-print-pole ()
   (let ((inhibit-read-only t))
     (dotimes (row *torus-pole-height*)
-      (insert " |")
+      (torus-print-string " |" -1)
       (dotimes (col *torus-num-cols*)
         (torus-print-entry (torus-pole-get-entry row col)))
-      (insert "|\n")))
-  (insert " |")
+      (torus-print-string "|\n" -1))
+  (torus-print-string " |" -1)
   (dotimes (col *torus-num-cols*)
     (if (= col *torus-pole-pos*)
         (torus-print-entry -2)
         (torus-print-entry nil)))
-  (insert "|\n"))
+  (torus-print-string "|\n" -1)))
+
+(defun torus-print-string (string color)
+  "Print string with color foreground and  black background."
+  (if (equal color -1)
+      (insert (propertize string 'font-lock-face '(:foreground "white" :background "black"))))
+  (if (equal color 0)
+      (insert (propertize string 'font-lock-face '(:foreground "red" :background "black"))))
+  (if (equal color 1)
+      (insert (propertize string 'font-lock-face '(:foreground "gray" :background "black"))))
+  (if (equal color 2)
+      (insert (propertize string 'font-lock-face '(:foreground "yellow" :background "black"))))
+  (if (equal color 3)
+      (insert (propertize string 'font-lock-face '(:foreground "orange" :background "black"))))
+  (if (equal color 4)
+      (insert (propertize string 'font-lock-face '(:foreground "dark cyan" :background "black"))))
+  )
 
 (defun torus-print-entry (n)
   (if (eq n nil)
-      (insert "     "))
+      (torus-print-string "     " -1))
   (if (equal n "*")
-      (insert "*"))
+      (torus-print-string "*" -1))
   (if (eq n -1)
-      (insert "  |  "))
+      (torus-print-string "  |  " -1))
   (if (eq n -2)
-      (insert " --- "))
-  (if (and (equal *torus-difficulty* 4)
-    (equal (% *torus-time* 2) 0))
-      (progn
-        (if (eq n 0)
-            (insert " @@@ "))
-        (if (eq n 1)
-            (insert " @@@ "))
-        (if (eq n 2)
-            (insert " @@@ "))
-        (if (eq n 3)
-            (insert " @@@ "))
-        (if (eq n 4)
-            (insert " @@@ "))
-        )
-    (progn
-      (if (eq n 0)
-          (insert (propertize " @@@ " 'font-lock-face '(:foreground "red"))))
-      (if (eq n 1)
-          (insert (propertize " @@@ " 'font-lock-face '(:foreground "Palegreen3"))))
-      (if (eq n 2)
-          (insert (propertize " @@@ " 'font-lock-face '(:foreground "yellow"))))
-      (if (eq n 3)
-          (insert (propertize " @@@ " 'font-lock-face '(:foreground "orange"))))
-      (if (eq n 4)
-          (insert (propertize " @@@ " 'font-lock-face '(:foreground "purple"))))
-      )))
+      (torus-print-string " --- " -1))
+  (if (or (equal n 0) (equal n 1) (equal n 2) (equal n 3) (equal n 4))
+      (torus-print-string " @@@ " n))
+  )
+
 
 (defun torus-print-score ()
-  (insert "\n\n Score: ")
-  (insert (number-to-string *torus-score*))
+  (torus-print-string "\n\n Score: " -1)
+  (torus-print-string (number-to-string *torus-score*) -1)
   )
 
-(defun torus-print-time ()
-  (insert "\n\n Time: ")
-  (insert (number-to-string *torus-time*))
-  )
+;; (defun torus-print-time ()
+;;   (torus-print-string "\n\n Time: " -1)
+;;   (torus-print-string (number-to-string *torus-time*) -1)
+;;   )
 
 (defun torus-print-level ()
-  (insert "\n\n Level: ")
-  (insert (number-to-string *torus-level*))
-  )
-
-(defun torus-print-difficulty ()
-  (insert "\n\n Difficulty: ")
-  (when (equal *torus-difficulty* 1)
-    (insert "Easy"))
-  (when (equal *torus-difficulty* 2)
-    (insert "Normal"))
-  (when (equal *torus-difficulty* 3)
-    (insert "Hard"))
-  (when (equal *torus-difficulty* 4)
-    (insert "Impossible"))
+  (torus-print-string "\n\n Level: " -1)
+  (torus-print-string (number-to-string *torus-level*) -1)
+  (torus-print-string "\n" -1)
   )
 
 (defun torus-print-level-gauge ()
-  (insert "\n  ")
+  (torus-print-string "\n  " -1)
   (dotimes (x *torus-level-gauge*)
     (torus-print-entry "*"))
-  (insert "\n")
+  (torus-print-string "\n" -1)
   )
 
 
@@ -320,6 +287,8 @@
           (torus-pole-set-entry row old-pos nil))
         (setq *torus-pole-pos* new-pos))))
 
+;; insert and delete a torus in the pole
+
 (defun torus-pole-insert ()
   "Insert into the pole the bottom torus in the column where the pole is at."
   (torus-pole-set-entry (- *torus-pole-height* *torus-num-tori-in-pole* 1)
@@ -333,6 +302,44 @@
   (torus-pole-set-entry (- *torus-pole-height* *torus-num-tori-in-pole*)
                         *torus-pole-pos* -1)
   (torus-decrease-num-tori-in-pole))
+
+
+
+;; flying torus
+
+(defun torus-update-flying-tori ()
+  "Update the flying torus in each column."
+  (dotimes (col *torus-num-cols*)
+    (torus-update-flying-torus col))
+  )
+
+(defun torus-update-flying-torus (col)
+  "Update the flying torus in column col."
+  (if (elt *torus-flying-tori* col)     ; if there is a flying torus in column col
+      (if (equal (% *torus-time*        ; if the time is correct for that torus
+                    *torus-flying-torus-speed-factor*) 0)
+          (progn
+            (if (> (elt *torus-flying-tori-height* col) (+ 2 (torus-get-num-tori col)))
+                (aset *torus-flying-tori-height* col (1- (elt *torus-flying-tori-height* col)))
+              (progn
+                (torus-insert-flying-torus col (elt *torus-flying-tori* col))
+                (aset *torus-flying-tori* col nil)
+                ))))
+    (if (equal (elt *torus-flying-tori-waiting* col) *torus-waiting-time*) ; if it's time for a new torus
+        (progn
+          (aset *torus-flying-tori* col (torus-random-torus))
+          (aset *torus-flying-tori-height* col *torus-box-height*)
+          (aset *torus-flying-tori-waiting* col 0))
+      (aset *torus-flying-tori-waiting* col (1+ (elt *torus-flying-tori-waiting* col)))
+      )))
+
+(defun torus-insert-flying-torus (col torus)
+  "Insert torus in column col."
+  (torus-box-set-entry (- *torus-box-height* (torus-get-num-tori col) 1)
+                       col torus)
+  (torus-increase-num-tori col))
+
+;; insert and delete a torus in the box
 
 (defun torus-box-insert-new (col)
   "Insert a random torus in column col."
@@ -399,7 +406,7 @@
   (random *torus-num-colors*))
 
 
-;; check rows
+;; check and delete rows
 
 (defun torus-check-row (row)
   "Check whether the row has the same tori."
@@ -425,13 +432,16 @@
       (torus-delete-row row)
       )))
 
+;; update game score, time, and level
+
 (defun torus-increase-score ()
   "Increase the score."
-  (setq *torus-score* (+ *torus-score* (* 100 *torus-num-cols* *torus-difficulty*))))
+  (setq *torus-score* (+ *torus-score* (* *torus-score-per-torus* *torus-num-cols*))))
 
 (defun torus-increase-time ()
   "Increase the time."
-  (setq *torus-level-gauge* (1+ *torus-level-gauge*))
+  (if (equal (% *torus-time* *torus-gauge-time*) 0)
+      (setq *torus-level-gauge* (1+ *torus-level-gauge*)))
   (setq *torus-time* (1+ *torus-time*)))
 
 (defun torus-increase-level ()
@@ -469,6 +479,8 @@
                       (* row (1+ *torus-num-cols*)))
               (torus-pole-get-entry row col))))
     (setq *torus-pole* temp)))
+
+;; update pole height
 
 (defun torus-decrease-pole-height ()
   "Decrease the pole height."
@@ -529,12 +541,13 @@
   (setq *torus-game-on* nil)
   (when *torus-timer* (cancel-timer *torus-timer*))
   (let (user-name)
-    (setq user-name (read-string "Game Over!\nEnter your name: " nil nil nil nil))
+    (setq user-name (read-string "Game Over!\nEnter your name: " *torus-last-user* nil nil nil))
+    (setq *torus-last-user* user-name)
     (setq user-name (concat "\"" user-name "\""))
     (torus-update-user-score user-name)
     (when (string-equal major-mode "torus-mode")
       (erase-buffer)
-      (insert-file-contents (concat *torus-game-path* "torus-data/scores") nil 0 10000)
+      (insert-file-contents (concat *torus-game-path* "/torus-data/scores") nil 0 10000)
       )
     )
   (message "Press \"n\" to start a new game.")
@@ -542,37 +555,44 @@
 
 
 (defun torus-update-user-score (user-name)
-  "Update the score of user-name in the score file if new record is set."
+  "Update the score of user-name in the score file."
   (let (update score d)
-    (unless (file-exists-p (concat *torus-game-path* "torus-data/"))
-      (make-directory (concat *torus-game-path* "torus-data/")))
-    (find-file (format "%storus-data/scores" *torus-game-path*))
+    (unless (file-exists-p (concat *tofus-game-path* "torus-data/"))
+      (make-directory (concat *tofus-game-path* "torus-data/")))
+    (find-file (format "%s/torus-data/scores" *torus-game-path*))
     (goto-char (point-min))
     (setq update nil)
-    (if (search-forward user-name nil t nil)
+    (while (not update)
+      (if (equal (point) (point-max))
+          (progn
+            (torus-insert-score)
+            (setq update t))
         (progn
-          (when (< (torus-read-score) *torus-score*) ; update if new record
-            (beginning-of-line) (kill-line) (kill-line)
-            (setq update t)
-            )
+          (if (<= *torus-score* (torus-read-score))
+              (progn
+                (next-line)
+                (beginning-of-line))
+            (progn
+              (beginning-of-line)
+              (torus-insert-score)
+              (setq update t))))
           )
-      (setq update t))                  ; update if new user
-    (when update
-      (goto-char (point-min))
-      (insert (format "%20s: Score %10d, Difficulty: %s, Time: %5d, Level: %3d, Date: %s"
-                      user-name *torus-score* (torus-get-str-difficulty) *torus-time* *torus-level*
-                      (format-time-string "%Y/%m/%d/%T\n")))
       )
     (save-buffer) (kill-buffer)
     ))
 
+(defun torus-insert-score ()
+  (insert (format "%20s: Score %10d, Level: %3d, Date: %s"
+                  user-name *torus-score* *torus-level*
+                  (format-time-string "%Y/%m/%d/%T\n")))
+  )
 
 (defun torus-read-score ()
   "Return the number appearing after the current position in the current buffer."
   (let (start end)
     (save-excursion
-      (setq start (+ 8 (point)))
       (search-forward "," nil t nil)
+      (setq start (- (point) 11))
       (setq end (1- (point)))
       (message (buffer-substring start end))
       (string-to-number (buffer-substring start end))
@@ -584,10 +604,10 @@
 (defun torus-run-game ()
   (setq *torus-game-on* 1)
   (when *torus-timer* (cancel-timer *torus-timer*))
-  (setq *torus-timer* (run-at-time nil *torus-speed* 'torus-update)))
+  (setq *torus-timer* (run-at-time nil *torus-game-speed* 'torus-update)))
 
 (defun torus-update ()
-  "Update the game after give time period."
+  "Update the game after given time period."
   (dotimes (col *torus-num-cols*)
     (if (= (torus-get-num-tori col) *torus-box-height*)
         (torus-game-over)))
@@ -595,18 +615,21 @@
     (torus-pause-game))
 
   (when *torus-game-on*
-    (torus-box-insert-row)
+    (torus-update-flying-tori)
     (torus-delete-same-rows)
     (torus-increase-time)
     (when (eq *torus-level-gauge* (* *torus-level-up-time* *torus-num-cols*))
       (torus-increase-level)
       (setq *torus-level-gauge* 0))
-    (torus-print-all)))
+    (if (or                             ; if it's time to update flying tori
+         (equal (% *torus-time* (+ *torus-flying-torus-speed-factor* 0)) 0)
+         (equal (% *torus-time* (+ *torus-flying-torus-speed-factor* 1)) 0)
+         (equal (% *torus-time* (+ *torus-flying-torus-speed-factor* 2)) 0)
+         (equal (% *torus-time* (+ *torus-flying-torus-speed-factor* 3)) 0)
+         (equal (% *torus-time* (+ *torus-flying-torus-speed-factor* 4)) 0))
+        (torus-print-all))))
 
 ;; movements
-
-
-
 
 (defun torus-move-left ()
   (interactive)
@@ -654,6 +677,7 @@
   (interactive)
   (torus-pause-game)
   (torus-init)
+  (torus-run-game)
   (message "Game started."))
 
 (defun torus-resume-game ()
@@ -665,12 +689,12 @@
 (defun torus-pause-game ()
   (interactive)
   (setq *torus-game-on* nil)
-  (cancel-timer *torus-timer*)
+  (if *torus-timer*
+      (cancel-timer *torus-timer*)
+      )
   (message "Game paused."))
 
 (defun torus-end-game ()
   (interactive)
   (when *torus-timer* (cancel-timer *torus-timer*))
   (kill-buffer))
-
-

@@ -23,7 +23,10 @@
 *** key: a, description: agenda, function: org-agenda-list
 *** key: A, description: agenda-commands, function: org-agenda
 *** key: m, function: nbm-magnet
-*** key: g, description: game, function: torus
+*** key: g, description: games
+**** key: f, description: tofus, function: tofus
+**** key: r, description: torus, function: torus
+**** key: t, description: tetris, function: tetris
 *** key: c, function: quick-calc
 ** key: b, description: Buffers
 *** key: b, function: helm-buffers-list
