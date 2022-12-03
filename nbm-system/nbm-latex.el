@@ -721,6 +721,10 @@ Delete or insert a label accordingly."
   (interactive)
   (TeX-font nil 20))
 
+(defun nbm-latex-font-sf ()
+  (interactive)
+  (TeX-font nil 6))
+
 (defun nbm-latex-font-sc ()
   (interactive)
   (TeX-font nil 3))

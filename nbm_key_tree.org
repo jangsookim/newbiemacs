@@ -112,8 +112,9 @@
 *** key: e, description: emph, function: nbm-latex-font-emph
 *** key: r, description: roman, function: nbm-latex-font-roman
 *** key: B, description: mathbb, function: nbm-latex-font-mathbb
-*** key: t, description: truetype, function: nbm-latex-font-truetype
-*** key: s, description: sc, function: nbm-latex-font-sc
+*** key: t, description: true-type, function: nbm-latex-font-truetype
+*** key: s, description: small-caps, function: nbm-latex-font-sc
+*** key: S, description: sans-serif, function: nbm-latex-font-sf
 *** key: c, description: mathcal, function: nbm-latex-font-mathcal
 *** key: f, description: frak, function: nbm-latex-font-mathfrak
 *** key: d, description: delete, function: nbm-latex-font-delete
