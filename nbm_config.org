@@ -10,6 +10,13 @@
   (dolist (file (directory-files (concat (getenv "HOME") "/nbm-root/nbm-system") t "[.]el$"))
     (load-file file))
   (setq bookmark-default-file (concat *nbm-home* "nbm-user-settings/references/bookmark.el"))
+
+  (nbm-key-tree-load)
+  (nbm-key-seqs-load)
+ (nbm-key-tree-appear-in-which-key)
+(load-file (nbm-root-f "nbm_key_tree.el"))
+
+
 #+end_src
 * evil mode
 #+begin_src emacs-lisp :tangle yes
@@ -33,12 +40,10 @@
 
   (setq evil-undo-system 'undo-redo)
 
-  (evil-define-key '(normal visual motion) 'global (kbd "<f5>") 'nbm-key-tree-global)
   (evil-define-key '(normal visual motion) 'global (kbd "SPC") 'nbm-key-tree-global)
   (evil-define-key '(normal visual motion) 'global (kbd ",") 'nbm-key-tree-mode)
   (evil-define-key '(normal visual motion insert) 'global (kbd "M-RET") 'nbm-key-tree-mode)
   (evil-define-key 'motion help-mode-map (kbd "TAB") 'forward-button)
-  (nbm-key-tree-load)
 
 #+end_src
 ** evil-surround
@@ -82,6 +87,9 @@
   (recentf-mode 1)
   (setq recentf-max-menu-items 55)
   (setq recentf-max-saved-items 55)
+
+  (setq which-key-prefix-prefix nil)
+
 #+end_src
 ** theme
 #+begin_src emacs-lisp :tangle yes

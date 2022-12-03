@@ -111,7 +111,6 @@ A key-tree structure is (level key description function)."
     (if keyB (setq result t))
     result))
 
-
 (defun nbm-key-seqs-from-nodes (nodes)
   "Create key-seqs from NODES."
   (let (key key-seq key-seqs level node d)
@@ -129,19 +128,44 @@ A key-tree structure is (level key description function)."
 	))))
 
 (defun nbm-key-seqs-load ()
-  (interactive)
   (let (nbm-nodes user-nodes tree)
     (setq nbm-nodes (nbm-key-tree-nodes-from-org-file
 		 (nbm-root-f "nbm_key_tree.org")))
-    ;; (setq user-nodes (nbm-key-tree-nodes-from-org-file
-    ;; 		 (nbm-f "nbm-user-settings/user_key_tree.org")))
     (setq key-seqs (append (nbm-key-seqs-from-nodes user-nodes)
 			   (nbm-key-seqs-from-nodes nbm-nodes)))
     (setq *nbm-key-seqs* key-seqs)))
 
-(defun nbm-append (last list)
-  "Append LAST at the end of LIST."
-  (reverse (cons last (reverse list))))
+
+(defun nbm-key-tree-appear-in-which-key ()
+  "Make the key-tree appear in which-key."
+  (interactive)
+  (let (key-seq mode keys desc func buf key-str key)
+    (find-file (nbm-root-f "nbm_key_tree.el"))
+    (erase-buffer)
+    (setq buf (current-buffer))
+    (dolist (key-seq *nbm-key-seqs*)
+      (setq mode (car (car key-seq))
+	    keys (cdr (car key-seq))
+	    desc (nth 1 key-seq)
+	    func (nth 2 key-seq))
+      (if (equal desc "") (setq desc func))
+      (setq key-str "")
+      (dolist (key keys)
+	(cond ((equal key "SPC") (setq key "<SPC>"))
+	      ((equal key "RET") (setq key "<RET>"))
+	      ((equal key "TAB") (setq key "?\\t")))
+	(setq key-str (concat key-str key)))
+      (insert (format "(evil-define-key '(normal visual motion insert) 'global (kbd \"%s%s\") '(\"%s\" . %s))\n"
+		      (cond
+		       ((equal mode "global") "<f5>")
+		       ((equal mode "latex-mode") "<f6>")
+		       ((equal mode "org-mode") "<f7>")
+		       ((equal mode "emacs-lisp-mode") "<f8>"))
+		      key-str desc
+		      (if (equal func "") "(keymap)" func)))
+      )
+    (save-buffer) (kill-buffer buf)))
+
 
 (defun nbm-key-tree-prompt (tree)
   "Run key-tree from TREE."
@@ -257,3 +281,5 @@ A key-tree structure is (level key description function)."
 (defun nbm-string-internal-node (string)
   "Return STRING with font for keys."
   (propertize string 'face '(:foreground "Deepskyblue1")))
+
+

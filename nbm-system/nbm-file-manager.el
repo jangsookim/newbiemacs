@@ -6,6 +6,10 @@
   "Return FILENAME with prefix ~/nbm-root/"
   (concat (getenv "HOME") "/nbm-root/" filename))
 
+(defun nbm-append (last list)
+  "Append LAST at the end of LIST."
+  (reverse (cons last (reverse list))))
+
 (defun nbm-find-file-with-extension (ext)
   "Find a file with extension EXT in the EXT folder.
 EXT should be tex, pdf, el, or sage."

@@ -77,6 +77,8 @@
 *** key: d, description: Delete
 **** key: w, function: delete-trailing-whitespace
 **** key: l, function: nbm-delete-double-empty-lines
+** key: y, description: Yank
+*** key: k, description: yank from kill-ring, function: helm-show-kill-ring
 ** key: F, description: Frames
 *** key: d, function: delete-frame
 *** key: m, function: make-frame
@@ -186,4 +188,4 @@
 ** key: e, description: eval
 *** key: b, function: eval-buffer
 ** key: f, description: Find
-*** key: f, function: nbm-find-function
+*** key: f, function: nbm-nil-function
