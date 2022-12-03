@@ -1,0 +1,17 @@
+1) This is my most favorite sentence.
+2) This is my second most favorite sentence.
+a) You can write any key like this.
+*) Even like this!
+)) This is also possible.
+e) My email is newbiemacs@XXX.com.
+c) My cell phone number is 010-1234-5678.
+C) The key is case-sensitive.
+y) Your favorite string can have more than one line.
+So, this line will also be copied when you type "y".
+
+There could be empty lines as well.
+
+As long as the line does not start with something like "a)".
+
+All the characters will be copied in the clipboard.
+z) https://us02web.zoom.us/123456

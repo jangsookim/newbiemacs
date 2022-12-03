@@ -109,7 +109,7 @@
 
 (defun newbie-print-version ()
   "Start newbie."
-    (nbm-insert 1 (format "%83s" "Newbiemacs 0.82")))
+    (nbm-insert 1 (format "%83s" "Newbiemacs 0.83")))
 
 (defun newbie-print-logo ()
   "Start newbie."
@@ -271,6 +271,7 @@
 3) Change the variable *nbm-screenshots*
 4) Update template tex files (The default file is \"template.tex\". You can add any number of tex files here.)
 5) Update the main bib file \"ref.bib\"
+6) Update my favorite strings in \"favorites.txt\".
 q) quit"))
       (if (equal choice ?q) (kill-buffer)
 	(progn
@@ -289,7 +290,11 @@ q) quit"))
 				   "nbm-user-settings/templates/")))
 	   ((equal choice ?5)
 	    (shell-command (format "open \"%s%s\"" *nbm-home*
-				   "nbm-user-settings/references"))))
+				   "nbm-user-settings/references")))
+	   ((equal choice ?6)
+	    (shell-command (format "open \"%s%s/favorites.txt\"" *nbm-home*
+				   "nbm-user-settings/references")))
+	   )
 	  (setq choice (read-char "What do you want to do?\nr) Reload Newbiemacs\nq) quit"))
 	  (if (equal choice ?r) (nbm-reload) (kill-buffer)))))))
 

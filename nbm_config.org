@@ -14,7 +14,7 @@
   (nbm-key-tree-load)
   (nbm-key-seqs-load)
   (nbm-key-tree-appear-in-which-key)
-  ;; (load-file (nbm-root-f "nbm_key_tree.el"))
+  (load-file (nbm-root-f "nbm_key_tree.el"))
 
 
 #+end_src
@@ -97,6 +97,7 @@
 
   (setq find-file-visit-truename t)
   (save-place-mode)
+  (setq max-mini-window-height nil)
 
   (recentf-mode 1)
   (setq recentf-max-menu-items 55)

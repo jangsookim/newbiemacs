@@ -83,6 +83,7 @@
 **** key: l, function: nbm-delete-double-empty-lines
 ** key: y, description: Yank
 *** key: k, description: yank from kill-ring, function: helm-show-kill-ring
+*** key: f, description: Favorite string, function: nbm-yank-favorite-string
 ** key: F, description: Frames
 *** key: d, function: delete-frame
 *** key: m, function: make-frame

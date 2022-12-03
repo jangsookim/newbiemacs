@@ -43,3 +43,30 @@
   (set-frame-position (selected-frame) x y)
   (set-frame-size  (selected-frame) width height t)) ; t means pixelwise dimension
 
+
+(defun nbm-yank-favorite-string ()
+  "Copy a frequently used string to the kill-ring."
+  (interactive)
+  (let (choice string-list prompt key str beg end temp buf)
+    (save-excursion
+      (find-file (nbm-f "nbm-user-settings/references/favorites.txt"))
+      (setq buf (current-buffer))
+      (beginning-of-buffer)
+      (setq prompt "Choose the string to yank: (Only the first line of each string is shown.)\n")
+      (while (re-search-forward "^\\(.\\)) " nil t)
+	(setq key (string-to-char (match-string 0)))
+	(setq beg (point))
+	(if (re-search-forward "^.) " nil t)
+	    (setq end (- (point) 4))
+	  (setq end (point-max)))
+	(setq str (buffer-substring beg end))
+	(setq string-list (cons (list key str) string-list))
+	(setq prompt (format "%s\n%c) %s" prompt key
+			     (car (split-string str "\n"))))
+	(goto-char end))
+      (kill-buffer buf)
+      (setq choice (read-char prompt))
+      (dolist (temp string-list)
+	(when (equal choice (nth 0 temp))
+	  (kill-new (nth 1 temp))
+	  (message (format "Copied in clipboard: %s" (nth 1 temp))))))))
