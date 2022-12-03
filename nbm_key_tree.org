@@ -16,6 +16,7 @@
 *** key: 0, function: nbm-test
 *** key: 9, function: nbm-toggle-nbm-home
 *** key: v, function: nbm-update-version
+*** key: i, function: nbm-insert-function
 ** key: ', function: eshell
 ** key: ., function: nbm-org-roam-today
 ** key: a, description: Applications
@@ -64,7 +65,6 @@
 ** key: o, function: org-roam-node-find
 ** key: p, description: Find pdf, function: nbm-find-pdf
 ** key: r, description: Registers
-*** key: r, description: Show registers, function: helm-register
 *** key: s, description: Set counter, function: nbm-set-counter
 *** key: a, description: Add counter, function: nbm-add-counter
 *** key: i, description: Insert counter, function: nbm-insert-counter

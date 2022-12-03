@@ -67,16 +67,16 @@
 #+begin_src emacs-lisp :tangle yes
   (evil-owl-mode)
   (setq evil-owl-display-method 'posframe
-        evil-owl-extra-posframe-args '(:width 50 :height 20)
+        evil-owl-extra-posframe-args '(:width 50 :height 30
+                                              :internal-border-width 1
+                                              :internal-border-color "Darkolivegreen1")
         evil-owl-max-string-length 50)
   (setq evil-owl-local-mark-format " %m: %s")
   (setq evil-owl-global-mark-format " %m: %s")
   ;; (setq evil-owl-local-mark-format " %m: [l: %-5l, c: %-5c]\n    %s")
   ;; (setq evil-owl-global-mark-format " %m: [l: %-5l, c: %-5c] %b\n    %s")
   (setq evil-owl-idle-delay 0.1)
-
 #+end_src
-
 
 * custom
 #+begin_src emacs-lisp :tangle yes
@@ -450,6 +450,7 @@
 ** diminish
 #+begin_src emacs-lisp :tangle yes
   (require 'diminish)
+  (with-eval-after-load 'evil-owl (diminish 'evil-owl-mode))
   (with-eval-after-load 'valign (diminish 'valign-mode))
   (with-eval-after-load 'org-indent (diminish 'org-indent-mode))
   (with-eval-after-load 'projectile (diminish 'projectile-mode))
