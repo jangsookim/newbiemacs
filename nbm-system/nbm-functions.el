@@ -85,3 +85,12 @@
 (defun nbm-toggle-valign ()
   "Toggle valign mode."
   (if valign-mode (valign-mode -1) (valign-mode)))
+
+(defun nbm-number-to-register ()
+  "Save a number to a register."
+  (interactive)
+  (let (num reg)
+    (setq num (string-to-number (read-string "Enter the number to register (default 0): ")))
+    (setq reg (char-to-string (read-char "Enter the register: ")))
+    (number-to-register num reg)
+    (message (format "%s is stored at register %s." num reg))))

@@ -375,10 +375,10 @@ and END are the starting and ending points of the environment."
   "Delete the labels in the current environment."
   (interactive)
   (save-excursion
-    (let (beg end)
-      (setq beg (car (LaTeX-env-beginning-pos-col)))
+    (let (bound beg end)
+      (setq bound (car (LaTeX-env-beginning-pos-col)))
       (LaTeX-find-matching-end)
-      (while (search-backward "\\label" beg t)
+      (while (search-backward "\\label" bound t)
 	(when (eq ?y (read-char "Are you sure to delete this label? (Type y for yes): "))
 	  (setq beg (point)) (forward-char 6) (forward-sexp)
 	  (delete-region beg (point)) (delete-blank-lines))))))

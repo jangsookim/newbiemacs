@@ -61,9 +61,11 @@
 *** key: t, function: nbm-open-key-tree
 ** key: m, function: nbm-find-misc
 ** key: n, function: nbm-latex-new-file
-** key: o, function: nbm-key-tree-org-mode
+** key: o, function: org-roam-node-find
 ** key: p, description: Find pdf, function: nbm-find-pdf
-** key: r, function: org-roam-node-find
+** key: r, description: Registers
+*** key: n, description: number to register, function: nbm-number-to-register
+*** key: s, description: Show registers (and insert), function: helm-register
 ** key: s, function: nbm-find-sage
 ** key: t, function: nbm-find-tex
 ** key: u, function: universal-argument
