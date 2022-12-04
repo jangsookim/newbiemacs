@@ -667,7 +667,7 @@ q: Quit game"))
             (torus-insert-score)
             (setq update t))
         (progn
-          (if (< *torus-score* (torus-read-score))
+          (if (and (torus-read-score) (< *torus-score* (torus-read-score)))
               (progn
                 (next-line)
                 (beginning-of-line))
@@ -690,10 +690,9 @@ q: Quit game"))
   "Return the number appearing after the current position in the current buffer."
   (let (start end)
     (save-excursion
-      (search-forward "," nil t nil)
-      (setq start (- (point) 11))
-      (setq end (1- (point)))
-      (string-to-number (buffer-substring start end))
+      (when (re-search-forward "\\([0-9]+\\)," nil t nil)
+	(string-to-number (match-string 1))
+	)
       )))
 
 

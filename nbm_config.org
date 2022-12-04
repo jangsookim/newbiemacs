@@ -90,6 +90,7 @@
 
   (setq default-input-method "korean-hangul")
   (global-visual-line-mode)
+  (global-hl-line-mode)
 
   (setq help-window-select t)
   (defalias 'yes-or-no-p 'y-or-n-p)
