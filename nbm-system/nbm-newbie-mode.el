@@ -35,7 +35,7 @@
   ;; (evil-local-set-key 'normal (kbd "d") ')
   ;; (evil-local-set-key 'normal (kbd "e") 'nbm-find-el)
   (evil-local-set-key 'normal (kbd "f") 'newbie-latex-insert-figure)
-  (evil-local-set-key 'normal (kbd "g") 'torus)
+  (evil-local-set-key 'normal (kbd "g") 'newbie-games)
   (evil-local-set-key 'normal (kbd "h") 'newbie-latex-convert-to-hwp)
   (evil-local-set-key 'normal (kbd "i") 'newbie-org-roam-node-insert)
   ;; (evil-local-set-key 'normal (kbd "j") ')
@@ -323,3 +323,16 @@ u) user-init.el"))
 
 (defun newbie-reload ()
   (load-file (concat (getenv "HOME") "/nbm-root/nbm-init.el")))
+
+(defun newbie-games ()
+  (interactive)
+  (let (choice)
+    (setq choice (read-char "Which game do you want to play?
+1) torus
+2) tofus
+3) tetris"))
+    (cond ((equal choice ?1) (torus))
+	  ((equal choice ?2) (tofus))
+	  ((equal choice ?3) (tetris))
+	)
+    ))

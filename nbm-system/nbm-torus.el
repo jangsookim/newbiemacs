@@ -629,23 +629,6 @@ In this case you are recommended to play \"torus\" instead.
 
 ;; system commands
 
-
-;; (defun torus-game-over ()
-;;   (setq *torus-game-on* nil)
-;;   (when *torus-timer* (cancel-timer *torus-timer*))
-;;   (let (user-name)
-;;     (setq user-name (read-string "Game Over!\nEnter your name: " *torus-last-user* nil nil nil))
-;;     (setq *torus-last-user* user-name)
-;;     (setq user-name (concat "\"" user-name "\""))
-;;     (torus-update-user-score user-name)
-;;     (when (string-equal major-mode "torus-mode")
-;;       (erase-buffer)
-;;       (insert-file-contents (concat *torus-game-path* "/torus-data/scores") nil 0 10000)
-;;       )
-;;     )
-;;   (message "Press \"n\" to start a new game.")
-;;   )
-
 (defun torus-game-over ()
   (setq *torus-game-on* nil)
   (when *torus-timer* (cancel-timer *torus-timer*))
@@ -657,8 +640,12 @@ In this case you are recommended to play \"torus\" instead.
       (torus-show-score-board)
       )
     )
-  (message "Press \"n\" to start a new game.")
-  )
+  (message "n: New game
+r: Restart game
+p: Pause game
+s: Score board
+c: Change color theme
+q: Quit game"))
 
 (defun torus-show-score-board ()
   (interactive)

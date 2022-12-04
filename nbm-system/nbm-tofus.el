@@ -606,8 +606,12 @@ down : k or down arrow key
       (tofus-show-score-board)
       )
     )
-  (message "Press \"n\" to start a new game.")
-  )
+  (message "n: New game
+r: Restart game
+p: Pause game
+s: Score board
+c: Change color theme
+q: Quit game"))
 
 (defun tofus-show-score-board ()
   (interactive)
