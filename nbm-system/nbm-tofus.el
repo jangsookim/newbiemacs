@@ -606,23 +606,23 @@ down : k or down arrow key
       (tofus-show-score-board)
       )
     )
-  (message "n: New game
-r: Restart game
-p: Pause game
-s: Score board
-c: Change color theme
-q: Quit game"))
+  )
 
 (defun tofus-show-score-board ()
   (interactive)
   (when (string-equal major-mode "tofus-mode")
     (erase-buffer)
-    (insert-file-contents (concat *tofus-game-path* "tofus-data/scores") nil 0 10000)))
-
+    (insert-file-contents (concat *tofus-game-path* "tofus-data/scores") nil 0 10000)
+    (message "n: New game
+r: Restart game
+p: Pause game
+s: Score board
+c: Change color theme
+q: Quit game")))
 
 (defun tofus-update-user-score (user-name)
   "Update the score of user-name in the score file."
-  (let (update score d)
+  (let (update score buf)
     (unless (file-exists-p (concat *tofus-game-path* "tofus-data/"))
       (make-directory (concat *tofus-game-path* "tofus-data/")))
     (find-file (format "%s/tofus-data/scores" *tofus-game-path*))
@@ -646,7 +646,7 @@ q: Quit game"))
               (setq update t))))
           )
       )
-    (save-buffer) (kill-buffer)
+    (save-buffer) (kill-buffer buf)
     ))
 
 

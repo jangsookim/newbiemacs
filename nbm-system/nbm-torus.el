@@ -640,25 +640,27 @@ In this case you are recommended to play \"torus\" instead.
       (torus-show-score-board)
       )
     )
-  (message "n: New game
-r: Restart game
-p: Pause game
-s: Score board
-c: Change color theme
-q: Quit game"))
+  )
 
 (defun torus-show-score-board ()
   (interactive)
   (when (string-equal major-mode "torus-mode")
     (erase-buffer)
-    (insert-file-contents (concat *torus-game-path* "torus-data/scores") nil 0 10000)))
+    (insert-file-contents (concat *torus-game-path* "torus-data/scores") nil 0 10000)
+    (message "n: New game
+r: Restart game
+p: Pause game
+s: Score board
+c: Change color theme
+q: Quit game")))
 
 (defun torus-update-user-score (user-name)
   "Update the score of user-name in the score file."
-  (let (update score d)
+  (let (update score buf)
     (unless (file-exists-p (concat *torus-game-path* "torus-data/"))
       (make-directory (concat *torus-game-path* "torus-data/")))
     (find-file (format "%s/torus-data/scores" *torus-game-path*))
+    (setq buf (current-buffer))
     (goto-char (point-min))
     (setq update nil)
     (while (not update)
@@ -677,7 +679,7 @@ q: Quit game"))
               (setq update t))))
           )
       )
-    (save-buffer) (kill-buffer)
+    (save-buffer) (kill-buffer buf)
     ))
 
 (defun torus-insert-score ()
