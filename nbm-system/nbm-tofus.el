@@ -637,8 +637,9 @@ q: Quit game"))
           (if (and (tofus-read-score)
 		   (< *tofus-score* (tofus-read-score)))
               (progn
-                (next-line)
-                (beginning-of-line))
+                (next-logical-line)
+                (beginning-of-line)
+		)
             (progn
               (beginning-of-line)
               (tofus-insert-score)
@@ -674,8 +675,9 @@ q: Quit game"))
 (defun tofus-update ()
   "Update the game after give time period."
   (dotimes (col *tofus-num-cols*)
-    (if (= (tofus-get-num-tori col) *tofus-box-height*)
-        (tofus-game-over)))
+    (if (and *tofus-game-on*
+	     (= (tofus-get-num-tori col) *tofus-box-height*))
+	(tofus-game-over)))
   (unless (string-equal major-mode "tofus-mode")
     (tofus-pause-game))
 

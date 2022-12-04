@@ -669,7 +669,7 @@ q: Quit game"))
         (progn
           (if (and (torus-read-score) (< *torus-score* (torus-read-score)))
               (progn
-                (next-line)
+                (next-logical-line)
                 (beginning-of-line))
             (progn
               (beginning-of-line)
@@ -706,8 +706,9 @@ q: Quit game"))
 (defun torus-update ()
   "Update the game after given time period."
   (dotimes (col *torus-num-cols*)
-    (if (= (torus-get-num-tori col) *torus-box-height*)
-        (torus-game-over)))
+    (if (and *torus-game-on*
+	     (= (torus-get-num-tori col) *torus-box-height*))
+	(torus-game-over)))
   (unless (string-equal major-mode "torus-mode")
     (torus-pause-game))
 
@@ -719,12 +720,12 @@ q: Quit game"))
       (torus-increase-level)
       (setq *torus-level-gauge* 0))
     (if (or                             ; if it's time to update flying tori
-         (equal (% *torus-time* (+ *torus-flying-torus-speed-factor* 0)) 0)
-         (equal (% *torus-time* (+ *torus-flying-torus-speed-factor* 1)) 0)
-         (equal (% *torus-time* (+ *torus-flying-torus-speed-factor* 2)) 0)
-         (equal (% *torus-time* (+ *torus-flying-torus-speed-factor* 3)) 0)
-         (equal (% *torus-time* (+ *torus-flying-torus-speed-factor* 4)) 0))
-        (torus-print-all))))
+	 (equal (% *torus-time* (+ *torus-flying-torus-speed-factor* 0)) 0)
+	 (equal (% *torus-time* (+ *torus-flying-torus-speed-factor* 1)) 0)
+	 (equal (% *torus-time* (+ *torus-flying-torus-speed-factor* 2)) 0)
+	 (equal (% *torus-time* (+ *torus-flying-torus-speed-factor* 3)) 0)
+	 (equal (% *torus-time* (+ *torus-flying-torus-speed-factor* 4)) 0))
+	(torus-print-all))))
 
 ;; movements
 
