@@ -170,6 +170,7 @@
 ** key: u, function: org-roam-ui-mode
 ** key: p, function: nbm-make-permanant-note
 ** key: t, description: Tables
+*** key: -, description: Draw horizontal line, function: org-ctrl-c-minus
 *** key: c, description: Columns
 **** key: d, description: delete-column, function: org-table-delete-column
 **** key: i, description: insert-column, function: org-table-insert-column
