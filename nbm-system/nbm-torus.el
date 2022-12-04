@@ -7,18 +7,108 @@
 
 (defconst *torus-game-path* (nbm-f "nbm-user-settings/"))
 
+(defun torus-load-theme (theme)
+  (cond ((equal theme 1)
+	 (defun torus-color-x (string)
+	   (propertize string 'face '(:foreground "Navajowhite1" :weight bold)))
+	 (defun torus-color-a (string)
+	   (propertize string 'face '(:foreground "Indianred2" :weight bold)))
+	 (defun torus-color-b (string)
+	   (propertize string 'face '(:foreground "Lightblue1" :weight bold)))
+	 (defun torus-color-c (string)
+	   (propertize string 'face '(:foreground "Systemyellowcolor" :weight bold)))
+	 (defun torus-color-d (string)
+	   (propertize string 'face '(:foreground "Deepskyblue3" :weight bold)))
+	 (defun torus-color-e (string)
+	   (propertize string 'face '(:foreground "MediumSlateBlue" :weight bold)))
+	 )
+	((equal theme 2)
+	 (defun torus-color-x (string)
+	   (propertize string 'face '(:foreground "white" :weight bold)))
+	 (defun torus-color-a (string)
+	   (propertize string 'face '(:foreground "Red1" :weight bold)))
+	 (defun torus-color-b (string)
+	   (propertize string 'face '(:foreground "DeepSkyBlue" :weight bold)))
+	 (defun torus-color-c (string)
+	   (propertize string 'face '(:foreground "FloralWhite" :weight bold)))
+	 (defun torus-color-d (string)
+	   (propertize string 'face '(:foreground "orange" :weight bold)))
+	 (defun torus-color-e (string)
+	   (propertize string 'face '(:foreground "Systempurplecolor" :weight bold)))
+	 )
+	(t
+	 (defun torus-color-x (string)
+	   (propertize string 'face '(:foreground "Navajowhite1" :weight bold)))
+	 (defun torus-color-a (string)
+	   (propertize string 'face '(:foreground "Palevioletred1" :weight bold)))
+	 (defun torus-color-b (string)
+	   (propertize string 'face '(:foreground "Systembluecolor" :weight bold)))
+	 (defun torus-color-c (string)
+	   (propertize string 'face '(:foreground "Systemyellowcolor" :weight bold)))
+	 (defun torus-color-d (string)
+	   (propertize string 'face '(:foreground "Systembrowncolor" :weight bold)))
+	 (defun torus-color-e (string)
+	   (propertize string 'face '(:foreground "Systemgreencolor" :weight bold)))
+	 )
+	)
+  )
+
+(defun torus-change-theme ()
+  (interactive)
+  (let (choice prompt)
+    (setq prompt (format "Choose the color theme:"))
+    (torus-load-theme 1)
+    (setq prompt (format "%s\n\n1) %s%s%s%s%s"
+			 prompt
+			 (torus-color-a " @@@ ")
+			 (torus-color-b " @@@ ")
+			 (torus-color-c " @@@ ")
+			 (torus-color-d " @@@ ")
+			 (torus-color-e " @@@ ")
+			 ))
+    (torus-load-theme 2)
+    (setq prompt (format "%s\n\n2) %s%s%s%s%s"
+			 prompt
+			 (torus-color-a " @@@ ")
+			 (torus-color-b " @@@ ")
+			 (torus-color-c " @@@ ")
+			 (torus-color-d " @@@ ")
+			 (torus-color-e " @@@ ")
+			 ))
+    (torus-load-theme 3)
+    (setq prompt (format "%s\n\n3) %s%s%s%s%s"
+			 prompt
+			 (torus-color-a " @@@ ")
+			 (torus-color-b " @@@ ")
+			 (torus-color-c " @@@ ")
+			 (torus-color-d " @@@ ")
+			 (torus-color-e " @@@ ")
+			 ))
+    (setq choice (read-char prompt))
+    (torus-load-theme (string-to-number (char-to-string choice)))
+    )
+  )
+
+
 (defun torus ()
   (interactive)
   (switch-to-buffer "torus")
   (torus-mode)
+  (torus-load-theme 1)
   (torus-init)
   (evil-local-set-key 'normal [left] 'torus-move-left)
   (evil-local-set-key 'normal [right] 'torus-move-right)
   (evil-local-set-key 'normal [up] 'torus-move-up)
   (evil-local-set-key 'normal [down] 'torus-move-down)
+  (evil-local-set-key 'normal (kbd "j") 'torus-move-left)
+  (evil-local-set-key 'normal (kbd "l") 'torus-move-right)
+  (evil-local-set-key 'normal (kbd "i") 'torus-move-up)
+  (evil-local-set-key 'normal (kbd "k") 'torus-move-down)
   (evil-local-set-key 'normal (kbd "n") 'torus-start-game)
   (evil-local-set-key 'normal (kbd "r") 'torus-resume-game)
   (evil-local-set-key 'normal (kbd "q") 'torus-end-game)
+  (evil-local-set-key 'normal (kbd "c") 'torus-change-theme)
+  (evil-local-set-key 'normal (kbd "s") 'torus-show-score-board)
   (evil-local-set-key 'normal (kbd "p") 'torus-pause-game)
   )
 
@@ -26,7 +116,7 @@
   (setq major-mode 'torus-mode)
   (setq mode-name "Torus")
   (font-lock-mode)
-  (use-local-map torus-mode-map))
+  )
 
 (defun torus-init ()
   "Start a new game of torus."
@@ -104,11 +194,26 @@
     (insert "@@@  /@\\  @@\\ @ @  /@@\n")
     (insert " @   @ @  @ / @ @   \\\n")
     (insert " @   \\@/  @ \\ \\@/  @@/\n")
-    (insert "\nPress \"n\" to start a new game.")
+    (insert "
+n: New game
+r: Restart game
+p: Pause game
+s: Score board
+c: Change color theme
+q: Quit game
+
+Movement keys
+left : j or left arrow key
+right: l or right arrow key
+up   : i or up arrow key
+down : k or down arrow key
+
+* Warning *
+Due to the heavy use of start-of-art animation,
+your computer may be slowed down while playing torus.
+In this case you are recommended to play \"torus\" instead.
+")
     ))
-
-
-
 
 (defun torus-print-box ()
   (let ((inhibit-read-only t))
@@ -162,17 +267,17 @@
 (defun torus-print-string (string color)
   "Print string with color foreground and  black background."
   (if (equal color -1)
-      (insert (propertize string 'font-lock-face '(:foreground "white" :background "black"))))
+      (insert (torus-color-x string)))
   (if (equal color 0)
-      (insert (propertize string 'font-lock-face '(:foreground "red" :background "black"))))
+      (insert (torus-color-a string)))
   (if (equal color 1)
-      (insert (propertize string 'font-lock-face '(:foreground "gray" :background "black"))))
+      (insert (torus-color-b string)))
   (if (equal color 2)
-      (insert (propertize string 'font-lock-face '(:foreground "yellow" :background "black"))))
+      (insert (torus-color-c string)))
   (if (equal color 3)
-      (insert (propertize string 'font-lock-face '(:foreground "orange" :background "black"))))
+      (insert (torus-color-d string)))
   (if (equal color 4)
-      (insert (propertize string 'font-lock-face '(:foreground "dark cyan" :background "black"))))
+      (insert (torus-color-e string)))
   )
 
 (defun torus-print-entry (n)
@@ -522,43 +627,50 @@
   (setq *torus-num-cols* (1+ *torus-num-cols*))
   )
 
-;; key bindings
-
-(defvar torus-mode-map (make-sparse-keymap))
-(define-key torus-mode-map (kbd "n") 'torus-start-game)
-(define-key torus-mode-map (kbd "r") 'torus-resume-game)
-(define-key torus-mode-map (kbd "q") 'torus-end-game)
-(define-key torus-mode-map (kbd "p") 'torus-pause-game)
-(define-key torus-mode-map [left] 'torus-move-left)
-(define-key torus-mode-map [right] 'torus-move-right)
-(define-key torus-mode-map [up] 'torus-move-up)
-(define-key torus-mode-map [down] 'torus-move-down)
-
 ;; system commands
 
+
+;; (defun torus-game-over ()
+;;   (setq *torus-game-on* nil)
+;;   (when *torus-timer* (cancel-timer *torus-timer*))
+;;   (let (user-name)
+;;     (setq user-name (read-string "Game Over!\nEnter your name: " *torus-last-user* nil nil nil))
+;;     (setq *torus-last-user* user-name)
+;;     (setq user-name (concat "\"" user-name "\""))
+;;     (torus-update-user-score user-name)
+;;     (when (string-equal major-mode "torus-mode")
+;;       (erase-buffer)
+;;       (insert-file-contents (concat *torus-game-path* "/torus-data/scores") nil 0 10000)
+;;       )
+;;     )
+;;   (message "Press \"n\" to start a new game.")
+;;   )
 
 (defun torus-game-over ()
   (setq *torus-game-on* nil)
   (when *torus-timer* (cancel-timer *torus-timer*))
   (let (user-name)
-    (setq user-name (read-string "Game Over!\nEnter your name: " *torus-last-user* nil nil nil))
-    (setq *torus-last-user* user-name)
-    (setq user-name (concat "\"" user-name "\""))
-    (torus-update-user-score user-name)
-    (when (string-equal major-mode "torus-mode")
-      (erase-buffer)
-      (insert-file-contents (concat *torus-game-path* "/torus-data/scores") nil 0 10000)
+    (setq user-name (read-string "Game Over!\nEnter your name: " nil nil nil nil))
+    (unless (equal user-name "")
+      (setq user-name (concat "\"" user-name "\""))
+      (torus-update-user-score user-name)
+      (torus-show-score-board)
       )
     )
   (message "Press \"n\" to start a new game.")
   )
 
+(defun torus-show-score-board ()
+  (interactive)
+  (when (string-equal major-mode "torus-mode")
+    (erase-buffer)
+    (insert-file-contents (concat *torus-game-path* "torus-data/scores") nil 0 10000)))
 
 (defun torus-update-user-score (user-name)
   "Update the score of user-name in the score file."
   (let (update score d)
-    (unless (file-exists-p (concat *tofus-game-path* "torus-data/"))
-      (make-directory (concat *tofus-game-path* "torus-data/")))
+    (unless (file-exists-p (concat *torus-game-path* "torus-data/"))
+      (make-directory (concat *torus-game-path* "torus-data/")))
     (find-file (format "%s/torus-data/scores" *torus-game-path*))
     (goto-char (point-min))
     (setq update nil)

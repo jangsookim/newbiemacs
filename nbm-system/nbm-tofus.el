@@ -2,30 +2,117 @@
 
 (defconst *tofus-game-path* (nbm-f "nbm-user-settings/"))
 
+(defun tofus-load-theme (theme)
+  (cond ((equal theme 1)
+	 (defun tofus-color-x (string)
+	   (propertize string 'face '(:foreground "Navajowhite1" :weight bold)))
+	 (defun tofus-color-a (string)
+	   (propertize string 'face '(:foreground "Indianred2" :weight bold)))
+	 (defun tofus-color-b (string)
+	   (propertize string 'face '(:foreground "Lightblue1" :weight bold)))
+	 (defun tofus-color-c (string)
+	   (propertize string 'face '(:foreground "Systemyellowcolor" :weight bold)))
+	 (defun tofus-color-d (string)
+	   (propertize string 'face '(:foreground "Deepskyblue3" :weight bold)))
+	 (defun tofus-color-e (string)
+	   (propertize string 'face '(:foreground "MediumSlateBlue" :weight bold)))
+	 )
+	((equal theme 2)
+	 (defun tofus-color-x (string)
+	   (propertize string 'face '(:foreground "white" :weight bold)))
+	 (defun tofus-color-a (string)
+	   (propertize string 'face '(:foreground "Red1" :weight bold)))
+	 (defun tofus-color-b (string)
+	   (propertize string 'face '(:foreground "DeepSkyBlue" :weight bold)))
+	 (defun tofus-color-c (string)
+	   (propertize string 'face '(:foreground "FloralWhite" :weight bold)))
+	 (defun tofus-color-d (string)
+	   (propertize string 'face '(:foreground "orange" :weight bold)))
+	 (defun tofus-color-e (string)
+	   (propertize string 'face '(:foreground "Systempurplecolor" :weight bold)))
+	 )
+	(t
+	 (defun tofus-color-x (string)
+	   (propertize string 'face '(:foreground "Navajowhite1" :weight bold)))
+	 (defun tofus-color-a (string)
+	   (propertize string 'face '(:foreground "Palevioletred1" :weight bold)))
+	 (defun tofus-color-b (string)
+	   (propertize string 'face '(:foreground "Systembluecolor" :weight bold)))
+	 (defun tofus-color-c (string)
+	   (propertize string 'face '(:foreground "Systemyellowcolor" :weight bold)))
+	 (defun tofus-color-d (string)
+	   (propertize string 'face '(:foreground "Systembrowncolor" :weight bold)))
+	 (defun tofus-color-e (string)
+	   (propertize string 'face '(:foreground "Systemgreencolor" :weight bold)))
+	 )
+	)
+  )
+
+(defun tofus-change-theme ()
+  (interactive)
+  (let (choice prompt)
+    (setq prompt (format "Choose the color theme:"))
+    (tofus-load-theme 1)
+    (setq prompt (format "%s\n\n1) %s%s%s%s%s"
+			 prompt
+			 (tofus-color-a " @@@ ")
+			 (tofus-color-b " @@@ ")
+			 (tofus-color-c " @@@ ")
+			 (tofus-color-d " @@@ ")
+			 (tofus-color-e " @@@ ")
+			 ))
+    (tofus-load-theme 2)
+    (setq prompt (format "%s\n\n2) %s%s%s%s%s"
+			 prompt
+			 (tofus-color-a " @@@ ")
+			 (tofus-color-b " @@@ ")
+			 (tofus-color-c " @@@ ")
+			 (tofus-color-d " @@@ ")
+			 (tofus-color-e " @@@ ")
+			 ))
+    (tofus-load-theme 3)
+    (setq prompt (format "%s\n\n3) %s%s%s%s%s"
+			 prompt
+			 (tofus-color-a " @@@ ")
+			 (tofus-color-b " @@@ ")
+			 (tofus-color-c " @@@ ")
+			 (tofus-color-d " @@@ ")
+			 (tofus-color-e " @@@ ")
+			 ))
+    (setq choice (read-char prompt))
+    (tofus-load-theme (string-to-number (char-to-string choice)))
+    )
+  )
+
 (defun tofus ()
   (interactive)
   (switch-to-buffer "tofus")
+  (tofus-load-theme 1)
   (tofus-mode)
   (tofus-init)
   (evil-local-set-key 'normal [left] 'tofus-move-left)
   (evil-local-set-key 'normal [right] 'tofus-move-right)
   (evil-local-set-key 'normal [up] 'tofus-move-up)
   (evil-local-set-key 'normal [down] 'tofus-move-down)
+  (evil-local-set-key 'normal (kbd "j") 'tofus-move-left)
+  (evil-local-set-key 'normal (kbd "l") 'tofus-move-right)
+  (evil-local-set-key 'normal (kbd "i") 'tofus-move-up)
+  (evil-local-set-key 'normal (kbd "k") 'tofus-move-down)
   (evil-local-set-key 'normal (kbd "n") 'tofus-start-game)
   (evil-local-set-key 'normal (kbd "r") 'tofus-resume-game)
   (evil-local-set-key 'normal (kbd "q") 'tofus-end-game)
   (evil-local-set-key 'normal (kbd "p") 'tofus-pause-game)
+  (evil-local-set-key 'normal (kbd "c") 'tofus-change-theme)
+  (evil-local-set-key 'normal (kbd "s") 'tofus-show-score-board)
   )
 
 (defun tofus-mode ()
   (setq major-mode 'tofus-mode)
   (setq mode-name "Tofus")
-  (font-lock-mode)
-  (use-local-map tofus-mode-map))
+  (font-lock-mode))
 
 (defun tofus-init ()
   "Start a new game of tofus."
-  (tofus-set-difficulty)
   (setq *tofus-box-height* 20)
   (setq *tofus-pole-height* *tofus-num-cols*)
   (setq *tofus-box* (make-vector (* *tofus-box-height*
@@ -37,7 +124,7 @@
   (setq *tofus-score* 0)
   (setq *tofus-time* 0)
   (tofus-init-pole 0)
-  (tofus-run-game)
+  (tofus-print-main)
   )
 
 (defun tofus-get-str-difficulty ()
@@ -53,7 +140,7 @@
 	(setq *tofus-difficulty* 1)
 	(setq *tofus-level* 0)
 	(setq *tofus-num-cols* 3)
-	(setq *tofus-num-colors* 4)
+	(setq *tofus-num-colors* 5)
 	(setq *tofus-level-gauge* 0)
 	(setq *tofus-level-up-time* 5)
 	(setq *tofus-speed* 2)
@@ -110,6 +197,29 @@
     ;; (tofus-print-num-tori)
     ;; (tofus-print-num-tori-in-pole)
     ))
+
+
+(defun tofus-print-main ()
+  (let ((inhibit-read-only t))
+    (erase-buffer)
+    (insert "
+Welcome to the game of tofus!
+
+n: New game
+r: Restart game
+p: Pause game
+s: Score board
+c: Change color theme
+q: Quit game
+
+Movement keys
+left : j or left arrow key
+right: l or right arrow key
+up   : i or up arrow key
+down : k or down arrow key
+")
+    ))
+
 
 (defun tofus-print-num-tori ()
   (let ((inhibit-read-only t))
@@ -174,15 +284,15 @@
         )
     (progn
       (if (eq n 0)
-          (insert (propertize " @@@ " 'font-lock-face '(:foreground "red" :weight "bold"))))
+          (insert (tofus-color-a " @@@ ")))
       (if (eq n 1)
-          (insert (propertize " @@@ " 'font-lock-face '(:foreground "Palegreen3"))))
+          (insert (tofus-color-b " @@@ ")))
       (if (eq n 2)
-          (insert (propertize " @@@ " 'font-lock-face '(:foreground "yellow"))))
+          (insert (tofus-color-c " @@@ ")))
       (if (eq n 3)
-          (insert (propertize " @@@ " 'font-lock-face '(:foreground "orange"))))
+          (insert (tofus-color-d " @@@ ")))
       (if (eq n 4)
-          (insert (propertize " @@@ " 'font-lock-face '(:foreground "purple"))))
+          (insert (tofus-color-e " @@@ ")))
       )))
 
 (defun tofus-print-score ()
@@ -483,34 +593,24 @@
   (setq *tofus-num-cols* (1+ *tofus-num-cols*))
   )
 
-;; key bindings
-
-(defvar tofus-mode-map (make-sparse-keymap))
-(define-key tofus-mode-map (kbd "n") 'tofus-start-game)
-(define-key tofus-mode-map (kbd "r") 'tofus-resume-game)
-(define-key tofus-mode-map (kbd "q") 'tofus-end-game)
-(define-key tofus-mode-map (kbd "p") 'tofus-pause-game)
-(define-key tofus-mode-map [left] 'tofus-move-left)
-(define-key tofus-mode-map [right] 'tofus-move-right)
-(define-key tofus-mode-map [up] 'tofus-move-up)
-(define-key tofus-mode-map [down] 'tofus-move-down)
-
 ;; system commands
-
 
 (defun tofus-game-over ()
   (setq *tofus-game-on* nil)
   (when *tofus-timer* (cancel-timer *tofus-timer*))
   (let (user-name)
     (setq user-name (read-string "Game Over!\nEnter your name: " nil nil nil nil))
-    (setq user-name (concat "\"" user-name "\""))
-    (tofus-update-user-score user-name)
-    (tofus-show-score-board)
+    (unless (equal user-name "")
+      (setq user-name (concat "\"" user-name "\""))
+      (tofus-update-user-score user-name)
+      (tofus-show-score-board)
+      )
     )
   (message "Press \"n\" to start a new game.")
   )
 
 (defun tofus-show-score-board ()
+  (interactive)
   (when (string-equal major-mode "tofus-mode")
     (erase-buffer)
     (insert-file-contents (concat *tofus-game-path* "tofus-data/scores") nil 0 10000)))
@@ -631,8 +731,10 @@
 
 (defun tofus-start-game ()
   (interactive)
-  (tofus-pause-game)
+  ;; (tofus-pause-game)
+  (tofus-set-difficulty)
   (tofus-init)
+  (tofus-run-game)
   (message "Game started."))
 
 (defun tofus-resume-game ()
