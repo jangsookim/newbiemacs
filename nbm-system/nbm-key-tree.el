@@ -1,3 +1,8 @@
+(defvar *nbm-key-tree*)
+(defvar *nbm-key-nodes*)
+(defvar *nbm-key-seqs*)
+(defvar *nbm-key-seqs-repeated*)
+
 (defun nbm-key-tree-level (tree)
   (nth 0 tree))
 
@@ -53,10 +58,10 @@ A key-tree structure is (level key description function)."
                              (nbm-parse-property line "description")
                              (nbm-parse-property line "function")))
         (setq nodes (nbm-append new-node nodes)))
-      (kill-buffer "nbm_key_tree.org")
+      (kill-buffer)
       nodes)))
 
-(defun nbm-key-tree-key-tree-from-nodes (nodes)
+(defun nbm-key-tree-from-nodes (nodes)
   "Create a key-tree from NODES."
   (save-excursion
     (let (tree level node first-node subnodes second-part)
@@ -72,20 +77,40 @@ A key-tree structure is (level key description function)."
                   nodes (cdr nodes))
           (setq second-part t)))
       (if subnodes
-          (setq first-node (nbm-append (nbm-key-tree-key-tree-from-nodes subnodes)
+          (setq first-node (nbm-append (nbm-key-tree-from-nodes subnodes)
                                        first-node))
         (setq first-node (nbm-append nil first-node)))
       (if nodes
-          (setq tree (cons first-node (nbm-key-tree-key-tree-from-nodes nodes)))
+          (setq tree (cons first-node (nbm-key-tree-from-nodes nodes)))
         (setq tree (list first-node)))
       tree)))
 
+;; This should be loaded at the beginning.
 (defun nbm-key-tree-load ()
-  (let (nodes tree)
-    (setq nodes (nbm-key-tree-nodes-from-org-file
+  (let (nbm-nodes user-nodes all-nodes tree)
+    ;; (nbm-key-seqs-load)
+    (setq user-nodes (nbm-key-tree-nodes-from-org-file
+		 (nbm-f "nbm-user-settings/user_key_tree.org")))
+    (setq nbm-nodes (nbm-key-tree-nodes-from-org-file
 		 (nbm-root-f "nbm_key_tree.org")))
-    (setq tree (nbm-key-tree-key-tree-from-nodes nodes))
+    (setq key-seqs (append (nbm-key-seqs-from-nodes user-nodes)
+			   (nbm-key-seqs-from-nodes nbm-nodes)))
+    (setq all-nodes (nbm-key-nodes-from-key-seqs key-seqs))
+    (setq tree (nbm-key-tree-from-nodes all-nodes))
     (setq *nbm-key-tree* tree)))
+
+
+ (defun nbm-key-seqs-load ()
+   (let (nbm-nodes user-nodes tree)
+     (setq user-nodes (nbm-key-tree-nodes-from-org-file
+ 		 (nbm-f "nbm-user-settings/user_key_tree.org")))
+     (setq nbm-nodes (nbm-key-tree-nodes-from-org-file
+ 		 (nbm-root-f "nbm_key_tree.org")))
+     (setq key-seqs (append (nbm-key-seqs-from-nodes user-nodes)
+ 			   (nbm-key-seqs-from-nodes nbm-nodes)))
+     (setq *nbm-key-seqs* key-seqs)))
+
+
 
 ;; *nbm-key-nodes* is a list of nodes.
 ;; Each node is of the following form.
@@ -99,6 +124,7 @@ A key-tree structure is (level key description function)."
 ;; (keys description function)
 ;; KEYS is a list of the form e.g. ("global" "a" "e")
 
+
 (defun nbm-key-seq< (A B)
   "Return t if A occurs earlier than B."
   (let (a b keyA keyB done result)
@@ -107,13 +133,14 @@ A key-tree structure is (level key description function)."
       (setq a (pop keyA) b (pop keyB))
       (if (string< a b) (setq result t done t))
       (if (string> a b) (setq result nil done t)))
-    (if keyA (setq result nil))
-    (if keyB (setq result t))
+    (unless done
+      (if keyA (setq result nil))
+      (if keyB (setq result t)))
     result))
 
 (defun nbm-key-seqs-from-nodes (nodes)
   "Create key-seqs from NODES."
-  (let (key key-seq key-seqs level node d)
+  (let (key key-seq key-seqs level node)
     (dolist (node nodes key-seqs)
       (setq level (car node))
       (when (equal level 1)   	              ;; if level=1 then set key-seq
@@ -123,17 +150,74 @@ A key-tree structure is (level key description function)."
 	    (setq key (butlast key
 			       (- (length key) (- (car node) 1)))))
 	(setq key (nbm-append (nth 1 node) key))
-	(setq key-seq (cons key (nthcdr 2 node)))
-	(setq key-seqs (nbm-append key-seq key-seqs))
-	))))
+	)
+      (setq key-seq (cons key (nthcdr 2 node)))
+      (setq key-seqs (nbm-append key-seq key-seqs))
+      )))
 
-(defun nbm-key-seqs-load ()
-  (let (nbm-nodes user-nodes tree)
-    (setq nbm-nodes (nbm-key-tree-nodes-from-org-file
-		 (nbm-root-f "nbm_key_tree.org")))
-    (setq key-seqs (append (nbm-key-seqs-from-nodes user-nodes)
-			   (nbm-key-seqs-from-nodes nbm-nodes)))
-    (setq *nbm-key-seqs* key-seqs)))
+;; (defun nbm-key-seqs-load ()
+;;   (let (nbm-nodes user-nodes tree)
+;;     (setq user-nodes (nbm-key-tree-nodes-from-org-file
+;; 		 (nbm-f "nbm-user-settings/user_key_tree.org")))
+;;     (setq nbm-nodes (nbm-key-tree-nodes-from-org-file
+;; 		 (nbm-root-f "nbm_key_tree.org")))
+;;     (setq key-seqs (append (nbm-key-seqs-from-nodes user-nodes)
+;; 			   (nbm-key-seqs-from-nodes nbm-nodes)))
+;;     (setq *nbm-key-seqs* key-seqs)))
+
+;; (defun nbm-key-nodes-load ()
+;;   (setq *nbm-key-nodes* (nbm-key-tree-nodes-from-org-file
+;; 		 (nbm-root-f "nbm_key_tree.org"))))
+
+(defun nbm-show-key-seqs ()
+  (interactive)
+  (with-output-to-temp-buffer "nbm-show-key-seqs"
+    (switch-to-buffer "nbm-show-key-seqs")
+    (dolist (k *nbm-key-seqs*)
+      (insert (format "%s\n" k))
+      )
+    )
+  )
+
+(defun nbm-key-nodes-from-key-seqs (key-seqs)
+  "Convert KEY-SEQS to nodes after sorting and removing repeated key sequences."
+  (save-excursion
+    (let (nodes level key desc func sorted no-repeat key-seq)
+      (setq sorted (sort key-seqs 'nbm-key-seq<))
+      (dolist (key-seq sorted)
+	(unless (equal (car (car no-repeat)) (car key-seq))
+	  (setq no-repeat (cons key-seq no-repeat))))
+      (dolist (key-seq no-repeat nodes)
+	(setq level (length (car key-seq))
+	      key (car (last (car key-seq)))
+	      desc (nth 1 key-seq)
+	      func (nth 2 key-seq))
+	(when (equal level 1)
+	  (setq key ""
+		desc (car (car key-seq))))
+	(setq node (list level key desc func))
+	(setq nodes (cons node nodes))
+	nodes)
+      )
+    )
+  )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 (defun nbm-key-tree-appear-in-which-key ()
