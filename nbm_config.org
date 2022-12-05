@@ -12,7 +12,6 @@
   (setq bookmark-default-file (concat *nbm-home* "nbm-user-settings/references/bookmark.el"))
 
   (nbm-key-tree-load)
-  (nbm-key-seqs-load)
   (nbm-key-tree-appear-in-which-key)
   (load-file (nbm-root-f "nbm_key_tree.el"))
 

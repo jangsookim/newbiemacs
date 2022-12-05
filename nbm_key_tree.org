@@ -63,6 +63,7 @@
 ** key: j, description: jump to word, function: evil-avy-goto-word-or-subword-1
 ** key: k, description: key bindings
 *** key: t, function: nbm-open-key-tree
+*** key: c, description: Check key-bindings, function: nbm-key-tree-show-repeated-keys
 ** key: m, function: nbm-find-misc
 ** key: n, function: nbm-latex-new-file
 ** key: o, function: org-roam-node-find

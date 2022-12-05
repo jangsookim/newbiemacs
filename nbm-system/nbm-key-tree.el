@@ -1,5 +1,4 @@
 (defvar *nbm-key-tree*)
-(defvar *nbm-key-nodes*)
 (defvar *nbm-key-seqs*)
 (defvar *nbm-key-seqs-repeated*)
 
@@ -95,22 +94,11 @@ A key-tree structure is (level key description function)."
 		 (nbm-root-f "nbm_key_tree.org")))
     (setq key-seqs (append (nbm-key-seqs-from-nodes user-nodes)
 			   (nbm-key-seqs-from-nodes nbm-nodes)))
+
+    (setq *nbm-key-seqs* key-seqs)
     (setq all-nodes (nbm-key-nodes-from-key-seqs key-seqs))
     (setq tree (nbm-key-tree-from-nodes all-nodes))
     (setq *nbm-key-tree* tree)))
-
-
- (defun nbm-key-seqs-load ()
-   (let (nbm-nodes user-nodes tree)
-     (setq user-nodes (nbm-key-tree-nodes-from-org-file
- 		 (nbm-f "nbm-user-settings/user_key_tree.org")))
-     (setq nbm-nodes (nbm-key-tree-nodes-from-org-file
- 		 (nbm-root-f "nbm_key_tree.org")))
-     (setq key-seqs (append (nbm-key-seqs-from-nodes user-nodes)
- 			   (nbm-key-seqs-from-nodes nbm-nodes)))
-     (setq *nbm-key-seqs* key-seqs)))
-
-
 
 ;; *nbm-key-nodes* is a list of nodes.
 ;; Each node is of the following form.
@@ -123,7 +111,6 @@ A key-tree structure is (level key description function)."
 ;; A key-seq is a list of the following form.
 ;; (keys description function)
 ;; KEYS is a list of the form e.g. ("global" "a" "e")
-
 
 (defun nbm-key-seq< (A B)
   "Return t if A occurs earlier than B."
@@ -155,38 +142,24 @@ A key-tree structure is (level key description function)."
       (setq key-seqs (nbm-append key-seq key-seqs))
       )))
 
-;; (defun nbm-key-seqs-load ()
-;;   (let (nbm-nodes user-nodes tree)
-;;     (setq user-nodes (nbm-key-tree-nodes-from-org-file
-;; 		 (nbm-f "nbm-user-settings/user_key_tree.org")))
-;;     (setq nbm-nodes (nbm-key-tree-nodes-from-org-file
-;; 		 (nbm-root-f "nbm_key_tree.org")))
-;;     (setq key-seqs (append (nbm-key-seqs-from-nodes user-nodes)
-;; 			   (nbm-key-seqs-from-nodes nbm-nodes)))
-;;     (setq *nbm-key-seqs* key-seqs)))
-
-;; (defun nbm-key-nodes-load ()
-;;   (setq *nbm-key-nodes* (nbm-key-tree-nodes-from-org-file
-;; 		 (nbm-root-f "nbm_key_tree.org"))))
-
-(defun nbm-show-key-seqs ()
-  (interactive)
-  (with-output-to-temp-buffer "nbm-show-key-seqs"
-    (switch-to-buffer "nbm-show-key-seqs")
-    (dolist (k *nbm-key-seqs*)
-      (insert (format "%s\n" k))
-      )
-    )
-  )
 
 (defun nbm-key-nodes-from-key-seqs (key-seqs)
-  "Convert KEY-SEQS to nodes after sorting and removing repeated key sequences."
+  "Convert KEY-SEQS to nodes after sorting and removing repeated key sequences.
+Repeated keys are saved in *nbm-key-seqs-repeated*."
   (save-excursion
-    (let (nodes level key desc func sorted no-repeat key-seq)
+    (let (nodes node level key desc func sorted no-repeat
+		key-seq last-key-seq new-key-seq)
+      (setq *nbm-key-seqs-repeated* nil)
       (setq sorted (sort key-seqs 'nbm-key-seq<))
-      (dolist (key-seq sorted)
-	(unless (equal (car (car no-repeat)) (car key-seq))
-	  (setq no-repeat (cons key-seq no-repeat))))
+      (setq no-repeat nil)
+      (dolist (new-key-seq sorted)
+	(setq last-key-seq (car no-repeat))
+	(if (and (> (length (car new-key-seq)) 1)
+		 (equal (car new-key-seq) (car last-key-seq)))
+	    (setq *nbm-key-seqs-repeated* (cons (list last-key-seq new-key-seq)
+						*nbm-key-seqs-repeated*))
+	  (setq no-repeat (cons new-key-seq no-repeat))
+	  ))
       (dolist (key-seq no-repeat nodes)
 	(setq level (length (car key-seq))
 	      key (car (last (car key-seq)))
@@ -197,28 +170,23 @@ A key-tree structure is (level key description function)."
 		desc (car (car key-seq))))
 	(setq node (list level key desc func))
 	(setq nodes (cons node nodes))
-	nodes)
+	))))
+
+(defun nbm-key-tree-show-repeated-keys ()
+  "Message if there are repeated keys."
+  (interactive)
+  (let (repeated prompt)
+    (if *nbm-key-seqs-repeated*
+	(progn
+	  (setq prompt "The following key sequences are repeated.")
+	  (dolist (repeated *nbm-key-seqs-repeated*)
+	    (setq prompt (format "%s\n%s and %s"
+				 prompt (nth 0 repeated) (nth 1 repeated)))
+	    )
+	  )
+      (setq prompt "There are no repeated key sequences.")
       )
-    )
-  )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    (message (format "%s" prompt))))
 
 (defun nbm-key-tree-appear-in-which-key ()
   "Make the key-tree appear in which-key."
