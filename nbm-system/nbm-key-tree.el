@@ -105,16 +105,21 @@ A key-tree structure is (level key description function)."
       tree)))
 
 ;; This should be loaded at the beginning.
+;; The loading process is as follows.
+;; 1. Create key-nodes from user-key-tree.org and nbm-sys-key-tree.org.
+;; 2. Convert the key-nodes to key-seqs.
+;; 3. Sort key sequences
+
 (defun nbm-key-tree-load ()
   (let (nbm-nodes user-nodes all-nodes tree)
     (setq user-nodes (nbm-key-tree-nodes-from-org-file
-		 (nbm-f "nbm-user-settings/user-key-tree.org")))
+		      (nbm-f "nbm-user-settings/user-key-tree.org")))
     (setq nbm-nodes (nbm-key-tree-nodes-from-org-file
-		 (nbm-root-f "nbm-sys-key-tree.org")))
+		     (nbm-root-f "nbm-sys-key-tree.org")))
     (setq key-seqs (append (nbm-key-seqs-from-nodes user-nodes)
 			   (nbm-key-seqs-from-nodes nbm-nodes)))
-    (setq *nbm-key-seqs* key-seqs)
-    (setq all-nodes (nbm-key-nodes-from-key-seqs key-seqs))
+    (setq *nbm-key-seqs* (nbm-sort-and-remove-repeated-key-seqs key-seqs))
+    (setq all-nodes (nbm-key-nodes-from-key-seqs *nbm-key-seqs*))
     (setq tree (nbm-key-tree-from-nodes all-nodes))
     (setq *nbm-key-tree* tree)))
 
@@ -152,34 +157,38 @@ A key-tree structure is (level key description function)."
       (setq key-seqs (nbm-append key-seq key-seqs))
       )))
 
+(defun nbm-sort-and-remove-repeated-key-seqs (key-seqs)
+  "Sort and remove repeated key sequences.
+Repeated key-seqs are saved in *nbm-key-seqs-repeated*"
+  (let (sorted no-repeat last-key-seq new-key-seq)
+    (setq *nbm-key-seqs-repeated* nil)
+    (setq sorted (sort key-seqs 'nbm-key-seq<))
+    (setq no-repeat nil)
+    (dolist (new-key-seq sorted)
+      (setq last-key-seq (car no-repeat))
+      (if (and (> (length (car new-key-seq)) 1)
+	       (equal (car new-key-seq) (car last-key-seq)))
+	  (setq *nbm-key-seqs-repeated* (cons (list last-key-seq new-key-seq)
+					      *nbm-key-seqs-repeated*))
+	(setq no-repeat (cons new-key-seq no-repeat))
+	))
+    no-repeat
+    ))
+
 (defun nbm-key-nodes-from-key-seqs (key-seqs)
-  "Convert KEY-SEQS to nodes after sorting and removing repeated key sequences.
-Repeated keys are saved in *nbm-key-seqs-repeated*."
-  (save-excursion
-    (let (nodes node level key desc func sorted no-repeat
-		key-seq last-key-seq new-key-seq)
-      (setq *nbm-key-seqs-repeated* nil)
-      (setq sorted (sort key-seqs 'nbm-key-seq<))
-      (setq no-repeat nil)
-      (dolist (new-key-seq sorted)
-	(setq last-key-seq (car no-repeat))
-	(if (and (> (length (car new-key-seq)) 1)
-		 (equal (car new-key-seq) (car last-key-seq)))
-	    (setq *nbm-key-seqs-repeated* (cons (list last-key-seq new-key-seq)
-						*nbm-key-seqs-repeated*))
-	  (setq no-repeat (cons new-key-seq no-repeat))
-	  ))
-      (dolist (key-seq no-repeat nodes)
-	(setq level (length (car key-seq))
-	      key (car (last (car key-seq)))
-	      desc (nth 1 key-seq)
-	      func (nth 2 key-seq))
-	(when (equal level 1)
-	  (setq key ""
-		desc (car (car key-seq))))
-	(setq node (list level key desc func))
-	(setq nodes (cons node nodes))
-	))))
+  "Convert KEY-SEQS to key-nodes. KEY-SEQS must be sorted before."
+  (let (nodes node level key desc func key-seq last-key-seq new-key-seq)
+    (dolist (key-seq key-seqs nodes)
+      (setq level (length (car key-seq))
+	    key (car (last (car key-seq)))
+	    desc (nth 1 key-seq)
+	    func (nth 2 key-seq))
+      (when (equal level 1)
+	(setq key ""
+	      desc (car (car key-seq))))
+      (setq node (list level key desc func))
+      (setq nodes (cons node nodes))
+      )))
 
 (defun nbm-key-tree-show-repeated-keys ()
   "Message if there are repeated keys."
@@ -199,31 +208,32 @@ Repeated keys are saved in *nbm-key-seqs-repeated*."
 
 (defun nbm-key-tree-appear-in-which-key ()
   "Make the key-tree appear in which-key."
-  (interactive)
   (let (key-seq mode keys desc func buf key-str key)
     (find-file (nbm-f "nbm-user-settings/nbm-which-key.el"))
     (erase-buffer)
     (setq buf (current-buffer))
     (dolist (key-seq *nbm-key-seqs*)
-      (setq mode (car (car key-seq))
-	    keys (cdr (car key-seq))
-	    desc (nth 1 key-seq)
-	    func (nth 2 key-seq))
-      (if (equal desc "") (setq desc func))
-      (setq key-str "")
-      (dolist (key keys)
-	(cond ((equal key "SPC") (setq key "<SPC>"))
-	      ((equal key "RET") (setq key "<RET>"))
-	      ((equal key "TAB") (setq key "?\\t")))
-	(setq key-str (concat key-str key)))
-      (insert (format "(evil-define-key '(normal visual motion insert) 'global (kbd \"%s%s\") '(\"%s\" . %s))\n"
-		      (cond
-		       ((equal mode "global") "<f5>")
-		       ((equal mode "latex-mode") "<f6>")
-		       ((equal mode "org-mode") "<f7>")
-		       ((equal mode "emacs-lisp-mode") "<f8>"))
-		      key-str desc
-		      (if (equal func "") "(keymap)" func)))
+      (when (> (length (car key-seq)) 1)
+	(setq mode (car (car key-seq))
+	      keys (cdr (car key-seq))
+	      desc (nth 1 key-seq)
+	      func (nth 2 key-seq))
+	(if (equal desc "") (setq desc func))
+	(setq key-str "")
+	(dolist (key keys)
+	  (cond ((equal key "SPC") (setq key "<SPC>"))
+		((equal key "RET") (setq key "<RET>"))
+		((equal key "TAB") (setq key "?\\t")))
+	  (setq key-str (concat key-str key)))
+	(insert (format "(evil-define-key '(normal visual motion insert) 'global (kbd \"%s%s\") '(\"%s\" . %s))\n"
+			(cond
+			 ((equal mode "global") "<f5>")
+			 ((equal mode "latex-mode") "<f6>")
+			 ((equal mode "org-mode") "<f7>")
+			 ((equal mode "emacs-lisp-mode") "<f8>"))
+			key-str desc
+			(if (equal func "") "(keymap)" func)))
+	)
       )
     (save-buffer) (kill-buffer buf)))
 
