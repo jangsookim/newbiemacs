@@ -168,9 +168,9 @@ Repeated key-seqs are saved in *nbm-key-seqs-repeated*"
       (setq last-key-seq (car no-repeat))
       (if (and (> (length (car new-key-seq)) 1)
 	       (equal (car new-key-seq) (car last-key-seq)))
-	  (setq *nbm-key-seqs-repeated* (cons (list last-key-seq new-key-seq)
+	  (setq *nbm-key-seqs-repeated* (nbm-append (list last-key-seq new-key-seq)
 					      *nbm-key-seqs-repeated*))
-	(setq no-repeat (cons new-key-seq no-repeat))
+	(setq no-repeat (nbm-append new-key-seq no-repeat))
 	))
     no-repeat
     ))
@@ -187,7 +187,7 @@ Repeated key-seqs are saved in *nbm-key-seqs-repeated*"
 	(setq key ""
 	      desc (car (car key-seq))))
       (setq node (list level key desc func))
-      (setq nodes (cons node nodes))
+      (setq nodes (nbm-append node nodes))
       )))
 
 (defun nbm-key-tree-show-repeated-keys ()
