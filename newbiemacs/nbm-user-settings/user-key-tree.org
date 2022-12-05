@@ -1,2 +1,8 @@
+# This will create a user key-tree.
+# To prevent repeated key-bindings, it is recommended
+# to use key-bindings under "z".
+
 * description: global
-** key: z, description: torus!, function: torus
+** key: z, description: user
+*** key: r, description: Torus!, function: torus
+*** key: f, description: Tofus!, function: tofus

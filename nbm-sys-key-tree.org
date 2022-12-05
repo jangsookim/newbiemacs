@@ -60,7 +60,8 @@
 ** key: h, description: Help
 ** key: j, description: jump to word, function: evil-avy-goto-word-or-subword-1
 ** key: k, description: key bindings
-*** key: t, function: nbm-open-key-tree
+*** key: s, description: sys-key-tree, function: nbm-find-sys-key-tree
+*** key: u, description: user-key-tree, function: nbm-find-user-key-tree
 *** key: c, description: Check key-bindings, function: nbm-key-tree-show-repeated-keys
 ** key: m, function: nbm-find-misc
 ** key: n, function: nbm-latex-new-file

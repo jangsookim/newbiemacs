@@ -70,9 +70,13 @@
   (interactive)
   (evilnc-comment-or-uncomment-lines 1))
 
-(defun nbm-open-key-tree ()
+(defun nbm-find-sys-key-tree ()
   (interactive)
   (find-file (nbm-root-f "nbm-sys-key-tree.org")))
+
+(defun nbm-find-user-key-tree ()
+  (interactive)
+  (find-file (nbm-f "nbm-user-settings/user-key-tree.org")))
 
 (defun nbm-org-deadline ()
   (interactive)

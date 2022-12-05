@@ -165,7 +165,7 @@ Repeated key-seqs are saved in *nbm-key-seqs-repeated*"
     (setq sorted (sort key-seqs 'nbm-key-seq<))
     (setq no-repeat nil)
     (dolist (new-key-seq sorted)
-      (setq last-key-seq (car no-repeat))
+      (setq last-key-seq (car (last no-repeat)))
       (if (and (> (length (car new-key-seq)) 1)
 	       (equal (car new-key-seq) (car last-key-seq)))
 	  (setq *nbm-key-seqs-repeated* (nbm-append (list last-key-seq new-key-seq)
