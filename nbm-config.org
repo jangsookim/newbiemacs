@@ -13,7 +13,7 @@
 
   (nbm-key-tree-load)
   (nbm-key-tree-appear-in-which-key)
-  (load-file (nbm-root-f "nbm_key_tree.el"))
+  (load-file (nbm-f "nbm-user-settings/nbm-which-key.el"))
 
 
 #+end_src

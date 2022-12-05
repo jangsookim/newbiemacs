@@ -6,7 +6,7 @@
 
 (nbm-key-tree-load)
 (nbm-key-tree-appear-in-which-key)
-(load-file (nbm-root-f "nbm_key_tree.el"))
+(load-file (nbm-f "nbm-user-settings/nbm-which-key.el"))
 
 (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
 (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)

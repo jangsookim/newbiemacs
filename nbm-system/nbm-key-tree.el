@@ -1,3 +1,23 @@
+;; The following three are the important concepts in this file.
+
+;; A key-tree is a tree that stores key-bindings.
+;; Technically *nbm-key-tree* is a "key-forest".
+;; In other words, *nbm-key-tree* is a list of key-trees.
+;; A key-tree is a list of the following form.
+;; (level key description function subtrees)
+;; SUBTREES is a list of key-trees.
+
+;; A key-node is of the following form.
+;; (level key description function)
+;; LEVEL is a nonnegative integer.
+;; If LEVEL=0 or 1 then, KEY and FUNCTION are both the empty string "".
+;; If LEVEL=0, then DESCRIPTION is either "system" or "user".
+;; If LEVEL=1, then DESCRIPTION is a mode name such as "global" or "latex-mode".
+
+;; A key-seq is a list of the following form.
+;; (keys description function)
+;; KEYS is a list of the form e.g. ("global" "a" "e")
+
 (defvar *nbm-key-tree*)
 (defvar *nbm-key-seqs*)
 (defvar *nbm-key-seqs-repeated*)
@@ -84,34 +104,19 @@ A key-tree structure is (level key description function)."
         (setq tree (list first-node)))
       tree)))
 
-
 ;; This should be loaded at the beginning.
 (defun nbm-key-tree-load ()
   (let (nbm-nodes user-nodes all-nodes tree)
-    ;; (nbm-key-seqs-load)
     (setq user-nodes (nbm-key-tree-nodes-from-org-file
 		 (nbm-f "nbm-user-settings/user-key-tree.org")))
     (setq nbm-nodes (nbm-key-tree-nodes-from-org-file
 		 (nbm-root-f "nbm-sys-key-tree.org")))
     (setq key-seqs (append (nbm-key-seqs-from-nodes user-nodes)
 			   (nbm-key-seqs-from-nodes nbm-nodes)))
-
     (setq *nbm-key-seqs* key-seqs)
     (setq all-nodes (nbm-key-nodes-from-key-seqs key-seqs))
     (setq tree (nbm-key-tree-from-nodes all-nodes))
     (setq *nbm-key-tree* tree)))
-
-;; *nbm-key-nodes* is a list of nodes.
-;; Each node is of the following form.
-;; (level key description function) 
-;; LEVEL is a nonnegative integer.
-;; If LEVEL=0 or 1 then, KEY and FUNCTION are both the empty string "".
-;; If LEVEL=0, then DESCRIPTION is either "system" or "user".
-;; If LEVEL=1, then DESCRIPTION is a mode name such as "global" or "latex-mode".
-
-;; A key-seq is a list of the following form.
-;; (keys description function)
-;; KEYS is a list of the form e.g. ("global" "a" "e")
 
 (defun nbm-key-seq< (A B)
   "Return t if A occurs earlier than B."
@@ -119,8 +124,12 @@ A key-tree structure is (level key description function)."
     (setq keyA (car A) keyB (car B))
     (while (and (not done) keyA keyB)
       (setq a (pop keyA) b (pop keyB))
-      (if (string< a b) (setq result t done t))
-      (if (string> a b) (setq result nil done t)))
+      (cond ((> (length a) (length b)) (setq result t done t))
+	    ((< (length a) (length b)) (setq result nil done t))
+	    ((string< a b) (setq result t done t))
+	    ((string> a b) (setq result nil done t))
+	    )
+      )
     (unless done
       (if keyA (setq result nil))
       (if keyB (setq result t)))
@@ -142,7 +151,6 @@ A key-tree structure is (level key description function)."
       (setq key-seq (cons key (nthcdr 2 node)))
       (setq key-seqs (nbm-append key-seq key-seqs))
       )))
-
 
 (defun nbm-key-nodes-from-key-seqs (key-seqs)
   "Convert KEY-SEQS to nodes after sorting and removing repeated key sequences.
@@ -193,7 +201,7 @@ Repeated keys are saved in *nbm-key-seqs-repeated*."
   "Make the key-tree appear in which-key."
   (interactive)
   (let (key-seq mode keys desc func buf key-str key)
-    (find-file (nbm-root-f "nbm_key_tree.el"))
+    (find-file (nbm-f "nbm-user-settings/nbm-which-key.el"))
     (erase-buffer)
     (setq buf (current-buffer))
     (dolist (key-seq *nbm-key-seqs*)
@@ -219,6 +227,7 @@ Repeated keys are saved in *nbm-key-seqs-repeated*."
       )
     (save-buffer) (kill-buffer buf)))
 
+;; key-tree interface
 
 (defun nbm-key-tree-prompt (tree)
   "Run key-tree from TREE."
@@ -334,5 +343,3 @@ Repeated keys are saved in *nbm-key-seqs-repeated*."
 (defun nbm-string-internal-node (string)
   "Return STRING with font for keys."
   (propertize string 'face '(:foreground "Deepskyblue1")))
-
-
