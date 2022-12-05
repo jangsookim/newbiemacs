@@ -307,16 +307,16 @@ q) quit"))
 e) .emacs
 i) nbm-init.el
 c) nbm-config.org
-k) nbm_key_tree.org
+k) nbm-sys-key-tree.org
 u) user-init.el"))
     (if (equal choice ?e)
 	(find-file (concat (getenv "HOME") "/.emacs")))
     (if (equal choice ?i)
 	(find-file (nbm-root-f "nbm-init.el")))
     (if (equal choice ?k)
-	(find-file (nbm-root-f "nbm_key_tree.org")))
+	(find-file (nbm-root-f "nbm-sys-key-tree.org")))
     (if (equal choice ?c)
-	(find-file (nbm-root-f "nbm_config.org")))
+	(find-file (nbm-root-f "nbm-config.org")))
     (if (equal choice ?u)
 	(find-file (nbm-f "nbm-user-settings/user-init.el")))
     ))

@@ -1,5 +1,3 @@
-#+title: nbm-key-tree
-
 # Key-tree starts here.
 # The title of a top bullet point must be a mode name.
 # Every line except the top bullet point must be of the following form.

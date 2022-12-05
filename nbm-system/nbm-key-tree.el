@@ -84,14 +84,15 @@ A key-tree structure is (level key description function)."
         (setq tree (list first-node)))
       tree)))
 
+
 ;; This should be loaded at the beginning.
 (defun nbm-key-tree-load ()
   (let (nbm-nodes user-nodes all-nodes tree)
     ;; (nbm-key-seqs-load)
     (setq user-nodes (nbm-key-tree-nodes-from-org-file
-		 (nbm-f "nbm-user-settings/user_key_tree.org")))
+		 (nbm-f "nbm-user-settings/user-key-tree.org")))
     (setq nbm-nodes (nbm-key-tree-nodes-from-org-file
-		 (nbm-root-f "nbm_key_tree.org")))
+		 (nbm-root-f "nbm-sys-key-tree.org")))
     (setq key-seqs (append (nbm-key-seqs-from-nodes user-nodes)
 			   (nbm-key-seqs-from-nodes nbm-nodes)))
 

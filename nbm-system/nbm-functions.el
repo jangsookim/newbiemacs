@@ -72,7 +72,7 @@
 
 (defun nbm-open-key-tree ()
   (interactive)
-  (find-file (nbm-root-f "nbm_key_tree.org")))
+  (find-file (nbm-root-f "nbm-sys-key-tree.org")))
 
 (defun nbm-org-deadline ()
   (interactive)
