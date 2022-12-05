@@ -3,6 +3,6 @@
 # to use key-bindings under "z".
 
 * description: global
-** key: z, description: user
+** key: z, description: user key-bindings
 *** key: r, description: Torus!, function: torus
 *** key: f, description: Tofus!, function: tofus
