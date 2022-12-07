@@ -26,7 +26,8 @@
 (define-key evil-insert-state-map (kbd "C-n") 'next-line)
 (define-key evil-motion-state-map (kbd "RET") nil)
 
-(setq evil-undo-system 'undo-redo)
+;; (setq evil-undo-system 'undo-redo)
+(setq evil-undo-system 'undo-tree)
 
 (evil-define-key '(normal visual motion) 'global (kbd "SPC") 'nbm-key-tree-global)
 (evil-define-key '(normal visual motion) 'global (kbd ",") 'nbm-key-tree-mode)
@@ -342,8 +343,8 @@
 
 (global-company-mode)
 
-;; (evil-set-undo-system 'undo-tree)
-;; (global-undo-tree-mode 1)
+(evil-set-undo-system 'undo-tree)
+(global-undo-tree-mode 1)
 
 (add-hook 'org-mode-hook #'valign-mode)
 
