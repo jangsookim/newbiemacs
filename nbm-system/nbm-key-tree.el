@@ -286,6 +286,7 @@ Repeated key-seqs are saved in *nbm-key-seqs-repeated*"
         (nbm-key-tree-prompt tree)))))
 
 (defun nbm-key-tree-add-keybinding ()
+  (interactive)
   "Insert the string \"** key: KEY, description: DESCRIPTION, function: FUNCTION\" in the next line."
   (let (key description function line)
     (setq key (read-string "Enter key: "))

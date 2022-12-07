@@ -4,10 +4,6 @@
   (interactive)
   (nbm-key-tree-mode "org-mode"))
 
-(defun nbm-find-function ()
-  (interactive)
-  (find-function (read-command "Find function: ")))
-
 (defun nbm-magit-init ()
   (interactive)
   (magit-init (file-name-directory (nbm-get-file-name))))

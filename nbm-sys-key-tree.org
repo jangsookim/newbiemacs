@@ -77,6 +77,8 @@
 *** key: A, description: agenda-commands, function: org-agenda
 *** key: c, description: capture, function: nbm-org-capture
 *** key: r, function: org-roam-node-find
+*** key: s, description: Store link, function: org-store-link
+*** key: i, description: Insert link, function: org-insert-link
 ** key: p, description: Find pdf, function: nbm-find-pdf
 ** key: r, description: Registers
 *** key: s, description: Set counter, function: nbm-set-counter
