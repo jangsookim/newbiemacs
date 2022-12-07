@@ -118,3 +118,11 @@
   (with-output-to-temp-buffer
       (shell-command (read-string "Shell command: "))))
 
+(defun nbm-update-newbiemacs ()
+  "Update Newbiemacs."
+  (interactive)
+  (let (buf)
+    (find-file (nbm-root-f ""))
+    (shell-command "git pull")
+    (setq buf (current-buffer))
+    (kill-buffer buf)))

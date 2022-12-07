@@ -112,6 +112,7 @@
 *** key: c, function: newbie-config
 *** key: r, function: newbie-reload
 *** key: s, description: Settings, function: newbie-setting
+*** key: u, description: Update Newbiemacs, function: nbm-update-newbiemacs
 ** key: Y, description: yasnippet
 *** key: i, function: yas-insert-snippet
 *** key: n, function: yas-new-snippet
