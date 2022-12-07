@@ -108,3 +108,7 @@
   "Save a number to a register."
   (interactive)
     (kmacro-insert-counter 1))
+
+(defun nbm-org-capture ()
+  (interactive)
+  (org-capture nil "t"))

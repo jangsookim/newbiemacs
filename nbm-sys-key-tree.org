@@ -71,7 +71,11 @@
 *** key: c, description: Check key-bindings, function: nbm-key-tree-show-repeated-keys
 ** key: m, function: nbm-find-misc
 ** key: n, function: nbm-latex-new-file
-** key: o, function: org-roam-node-find
+** key: o, description: Org-mode
+*** key: a, description: agenda, function: org-agenda-list
+*** key: A, description: agenda-commands, function: org-agenda
+*** key: c, description: capture, function: nbm-org-capture
+*** key: r, function: org-roam-node-find
 ** key: p, description: Find pdf, function: nbm-find-pdf
 ** key: r, description: Registers
 *** key: s, description: Set counter, function: nbm-set-counter
