@@ -58,6 +58,12 @@
 *** key: i, function: nbm-magit-init
 *** key: s, function: magit-status
 ** key: h, description: Help
+** key: i, description: Insert
+*** key: p, description: Passwords
+**** key: s, description: simple, function: password-generator-simple
+**** key: S, description: strong, function: password-generator-strong
+**** key: n, description: numeric, function: password-generator-numeric
+**** key: p, description: paranoid, function: password-generator-paranoid
 ** key: j, description: jump to word, function: evil-avy-goto-word-or-subword-1
 ** key: k, description: key bindings
 *** key: s, description: sys-key-tree, function: nbm-find-sys-key-tree
