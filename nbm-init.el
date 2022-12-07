@@ -4,7 +4,7 @@
 
 ;; packages here
 
-
+(unless (package-installed-p 'password-generator) (package-install 'password-generator))
 (unless (package-installed-p 'posframe) (package-install 'posframe))
 (unless (package-installed-p 'evil-owl) (package-install 'evil-owl))
 (unless (package-installed-p 'diminish) (package-install 'diminish))

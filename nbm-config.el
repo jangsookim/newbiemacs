@@ -56,7 +56,7 @@
 (setq evil-owl-global-mark-format " %m: %s")
 ;; (setq evil-owl-local-mark-format " %m: [l: %-5l, c: %-5c]\n    %s")
 ;; (setq evil-owl-global-mark-format " %m: [l: %-5l, c: %-5c] %b\n    %s")
-(setq evil-owl-idle-delay 0.1)
+(setq evil-owl-idle-delay 0.5)
 
 (setq mac-command-modifier 'meta)
 (setq mac-option-modifier 'apple)
@@ -126,7 +126,6 @@
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 (add-hook 'LaTeX-mode-hook (lambda () (setq TeX-command-default "LatexMk")))
-;; (add-hook 'LaTeX-mode-hook #'evil-tex-mode)  ;evil-tex is not found in MELPA
 
 (setq LaTeX-math-list
       '((?, "dots" nil nil )
