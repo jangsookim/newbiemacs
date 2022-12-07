@@ -112,3 +112,9 @@
 (defun nbm-org-capture ()
   (interactive)
   (org-capture nil "t"))
+
+(defun nbm-shell-commend ()
+  (interactive)
+  (with-output-to-temp-buffer
+      (shell-command (read-string "Shell command: "))))
+

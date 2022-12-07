@@ -26,7 +26,6 @@
 (define-key evil-insert-state-map (kbd "C-n") 'next-line)
 (define-key evil-motion-state-map (kbd "RET") nil)
 
-;; (setq evil-undo-system 'undo-redo)
 (setq evil-undo-system 'undo-tree)
 
 (evil-define-key '(normal visual motion) 'global (kbd "SPC") 'nbm-key-tree-global)
