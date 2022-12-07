@@ -147,7 +147,8 @@ e) el"))
   "Move the files in Downloads to various folders."
   (interactive)
   (let (file file-list choice)
-    (setq file-list (directory-files *nbm-downloads* t "\\`[^.$#]"))
+    (setq file-list (sort (directory-files *nbm-downloads* t "\\`[^.$#]")
+			  'nbm-time>))
     (while (and file-list (not (equal choice ?q)))
       (setq file (car file-list))
       (setq file-list (cdr file-list))
@@ -249,6 +250,10 @@ e) el"))
       (if (> a b) (setq done t)))
     answer))
 
+(defun nbm-time> (file-A file-B)
+  "Return t if file-A is newer than file-B and nil otherwise."
+  (nbm-time< file-B file-A))
+
 (defun nbm-newest-file (files)
   "Return the newest file in the list FILES of filenames."
   (let (newest file)
@@ -258,3 +263,9 @@ e) el"))
       (if (nbm-time< newest file)
 	  (setq newest file)))
     newest))
+
+(defun nbm-sort-files-by-modified-time (files)
+  "Return the sorted list of files by modified time."
+  (interactive)
+  (sort files 'nbm-time<)
+  )
