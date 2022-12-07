@@ -77,7 +77,7 @@
 (defvar *nbm-screenshots*)
 (defvar *newbie-current-file*)
 
-(setq *nbm-home* (with-temp-buffer (insert-file-contents "~/nbm-root/nbm-home.txt")
+(setq *nbm-home* (with-temp-buffer (insert-file-contents (concat (getenv "HOME") "/nbm-root/nbm-home.txt"))
 					 (beginning-of-buffer) (end-of-line)
 					 (buffer-substring (point-min) (point))))
 

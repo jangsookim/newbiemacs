@@ -36,7 +36,7 @@
 (global-evil-surround-mode 1)
 (define-key evil-visual-state-map (kbd "s") 'evil-surround-region)
 
-(add-to-list 'load-path "~/.emacs.d/plugins/evil-org-mode")
+(add-to-list 'load-path (concat (getenv "HOME") "/.emacs.d/plugins/evil-org-mode"))
 (require 'evil-org)
 (add-hook 'org-mode-hook 'evil-org-mode)
 (evil-org-set-key-theme '(navigation insert textobjects additional calendar))
@@ -172,8 +172,8 @@
 (auctex-latexmk-setup)
 (setq auctex-latexmk-inherit-TeX-PDF-mode t)
 ;; To make latexmk use pdflatex we need ~/.latexmkrc file.
-(unless (file-exists-p "~/.latexmkrc")
-  (find-file "~/.latexmkrc")
+(unless (file-exists-p (concat (getenv "HOME") "/.latexmkrc"))
+  (find-file (concat (getenv "HOME") "/.latexmkrc"))
   (insert "$pdf_mode = 1;")
   (save-buffer) (kill-buffer))
 
