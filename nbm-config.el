@@ -74,6 +74,8 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq large-file-warning-threshold nil)
 
+(setq max-mini-window-height 0.8)
+
 (setq find-file-visit-truename t)
 (save-place-mode)
 (setq max-mini-window-height nil)
