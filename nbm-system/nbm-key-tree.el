@@ -243,7 +243,7 @@ Repeated key-seqs are saved in *nbm-key-seqs-repeated*"
   "Run key-tree from TREE."
   (let (prompt subtrees T key func match)
     (setq func (nbm-key-tree-function tree))
-    (if (not (string= func "")) (funcall (intern func)))
+    (if (not (string= func "")) (command-execute (intern func)))
     (when (nbm-key-tree-subtrees tree)
       (setq subtrees (nbm-key-tree-subtrees tree))
       (setq key (char-to-string (read-char (nbm-key-tree-prompt-string subtrees))))

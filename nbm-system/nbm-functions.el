@@ -12,29 +12,9 @@
   (interactive)
   (magit-init (file-name-directory (nbm-get-file-name))))
 
-(defun nbm-latex-environment ()
-  (interactive)
-  (LaTeX-environment nil))
-
 (defun nbm-latex-environment-update ()
   (interactive)
   (LaTeX-environment t))
-
-(defun nbm-tex-build ()
-  (interactive)
-  (TeX-command-run-all nil))
-
-(defun nbm-M-x ()
-  (interactive)
-  (helm-M-x nil))
-
-(defun nbm-find-files ()
-  (interactive)
-  (helm-find-files nil))
-
-(defun nbm-org-time-stamp ()
-  (interactive)
-  (org-time-stamp nil))
 
 (defun nbm-org-roam-today ()
   "Open org-roam-today file and move the point at the end."
@@ -77,14 +57,6 @@
 (defun nbm-find-user-key-tree ()
   (interactive)
   (find-file (nbm-f "nbm-user-settings/user-key-tree.org")))
-
-(defun nbm-org-deadline ()
-  (interactive)
-  (org-deadline nil))
-
-(defun nbm-org-schedule ()
-  (interactive)
-  (org-schedule nil))
 
 (defun nbm-toggle-valign ()
   "Toggle valign mode."

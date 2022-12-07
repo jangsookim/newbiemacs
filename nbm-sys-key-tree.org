@@ -6,7 +6,7 @@
 # A description or a function may be missing.
 
 * description: global
-** key: SPC, description: M-x, function: nbm-M-x
+** key: SPC, description: M-x, function: helm-M-x
 ** key: RET, description: bookmark, function: helm-filtered-bookmarks
 ** key: TAB, description: Last buffer, function: evil-switch-to-windows-last-buffer
 ** key: ;, description: Toggle Korean/English, function: toggle-input-method
@@ -37,7 +37,7 @@
 ** key: e, description: Find el, function: nbm-find-el
 ** key: f, description: Files, function:
 *** key: b, function: bookmark-set
-*** key: f, function: nbm-find-files
+*** key: f, function: helm-find-files
 *** key: r, function: helm-recentf
 *** key: j, function: dired-jump
 *** key: m, function: nbm-move-files-from-downloads
@@ -120,7 +120,7 @@
 *** key: t, function: yas-describe-tables
 * description: latex-mode
 ** key: RET, description: Korean/English, function: toggle-input-method
-** key: b, description: TeX-build, function: nbm-tex-build
+** key: b, description: TeX-build, function: TeX-command-run-all
 ** key: v, function: TeX-view
 ** key: c, description: copy math, function: nbm-latex-copy-math
 ** key: C, description: copy math with \( \), function: nbm-latex-copy-math-with-paren
@@ -143,7 +143,7 @@
 ** key: ., function: LaTeX-mark-environment
 ** key: *, function: LaTeX-mark-section
 ** key: i, description: Insert
-*** key: e, description: insert-environment, function: nbm-latex-environment
+*** key: e, description: insert-environment, function: LaTeX-environment
 *** key: i, description: insert-item, function: LaTeX-insert-item
 *** key: F, description: insert-figure, function: nbm-latex-insert-figure
 *** key: l, description: insert-label, function: nbm-latex-insert-label
@@ -173,9 +173,9 @@
 ** key: c, function: org-ctrl-c-ctrl-c
 ** key: e, function: org-export-dispatch
 ** key: d, description: Dates
-*** key: d, function: nbm-org-deadline
-*** key: s, function: nbm-org-schedule
-*** key: t, function: nbm-org-time-stamp
+*** key: d, function: org-deadline
+*** key: s, function: org-schedule
+*** key: t, function: org-time-stamp
 *** key: T, function: org-time-stamp-inactive
 ** key: i, function: org-roam-node-insert
 ** key: k, description: add keybinding, function: nbm-key-tree-add-keybinding

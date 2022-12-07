@@ -325,6 +325,7 @@ u) user-init.el"))
     ))
 
 (defun newbie-reload ()
+  (interactive)
   (load-file (concat (getenv "HOME") "/nbm-root/nbm-init.el")))
 
 (defun newbie-games ()

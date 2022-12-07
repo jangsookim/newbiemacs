@@ -25,13 +25,3 @@
   (if (equal ?y (read-char "Is this okay? (y or n): "))
       (save-buffer) (revert-buffer nil t))
   (kill-buffer))
-
-(defun nbm-insert-function ()
-  (interactive)
-  (let (func)
-    (setq func (read-command "Choose a function to insert: "))
-    (insert (format "\n(defun nbm-%s ()
-  (interactive)
-  (%s nil))" func func))))
-
-
