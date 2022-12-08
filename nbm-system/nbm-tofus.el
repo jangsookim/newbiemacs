@@ -11,7 +11,7 @@
 	 (defun tofus-color-b (string)
 	   (propertize string 'face '(:foreground "Lightblue1" :weight bold)))
 	 (defun tofus-color-c (string)
-	   (propertize string 'face '(:foreground "Systemyellowcolor" :weight bold)))
+	   (propertize string 'face '(:foreground "#Ffd60a" :weight bold))) ; Systemyellowcolor
 	 (defun tofus-color-d (string)
 	   (propertize string 'face '(:foreground "Deepskyblue3" :weight bold)))
 	 (defun tofus-color-e (string)
@@ -29,7 +29,7 @@
 	 (defun tofus-color-d (string)
 	   (propertize string 'face '(:foreground "orange" :weight bold)))
 	 (defun tofus-color-e (string)
-	   (propertize string 'face '(:foreground "Systempurplecolor" :weight bold)))
+	   (propertize string 'face '(:foreground "#Bf5af2" :weight bold))) ; Systempurplecolor
 	 )
 	(t
 	 (defun tofus-color-x (string)
@@ -37,13 +37,13 @@
 	 (defun tofus-color-a (string)
 	   (propertize string 'face '(:foreground "Palevioletred1" :weight bold)))
 	 (defun tofus-color-b (string)
-	   (propertize string 'face '(:foreground "Systembluecolor" :weight bold)))
+	   (propertize string 'face '(:foreground "#0a84ff" :weight bold))) ; Systembluecolor
 	 (defun tofus-color-c (string)
-	   (propertize string 'face '(:foreground "Systemyellowcolor" :weight bold)))
+	   (propertize string 'face '(:foreground "#Ffd60a" :weight bold))) ; Systemyellowcolor
 	 (defun tofus-color-d (string)
-	   (propertize string 'face '(:foreground "Systembrowncolor" :weight bold)))
+	   (propertize string 'face '(:foreground "#Ac8e68" :weight bold))) ; Systembrowncolor
 	 (defun tofus-color-e (string)
-	   (propertize string 'face '(:foreground "Systemgreencolor" :weight bold)))
+	   (propertize string 'face '(:foreground "#32d74b" :weight bold))) ; Systemgreencolor
 	 )
 	)
   )
