@@ -637,6 +637,8 @@ Two lines from arxiv or a bibtex code from mathscinet must be copied first."
   (let (file choice temp file-name mathscinet)
     (setq pdf (nbm-newest-file (directory-files *nbm-downloads* t
 						"\\`[^.$#].*\\([.]pdf\\|[.]djvu\\)$")))
+    (if (not pdf)
+	(message (format "There is no pdf file in %s." *nbm-downloads*)))
     (when pdf
       (setq choice (read-char (format "Move %s into the following folder?\n%s\n\ny: yes\nq: quit
 
