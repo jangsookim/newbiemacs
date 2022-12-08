@@ -134,14 +134,22 @@ e) el"))
 (defun nbm-show-in-finder ()
   "Open Finder on the current folder."
   (interactive)
-  (shell-command (format "%s -R \"%s\"" *nbm-open* (nbm-get-file-name))))
+  (if (equal system-type "windows-nt")
+      (shell-command (format "start %s" (nbm-get-file-name)))
+    (shell-command (format "open -R \"%s\"" (nbm-get-file-name)))
+    )
+  )
 
 (defun nbm-show-trash-bin ()
   "Open Finder on the trash bin."
   (interactive)
   (unless (file-exists-p trash-directory)
     (make-directory trash-directory))
-  (shell-command (format "%s -R \"%s\"" *nbm-open* trash-directory)))
+  (if (equal system-type "windows-nt")
+      (shell-command (format "start %s" trash-directory))
+    (shell-command (format "open -R \"%s\"" trash-directory))
+    )
+  )
 
 (defun nbm-move-files-from-downloads ()
   "Move the files in Downloads to various folders."

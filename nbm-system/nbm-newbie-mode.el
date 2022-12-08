@@ -202,7 +202,11 @@
 (defun newbie-finder ()
   "Open the current file in Finder."
   (interactive)
-  (shell-command (format "%s -R \"%s\"" *nbm-open* *newbie-current-file*)))
+  (if (equal system-type "windows-nt")
+      (shell-command (format "start %s" (file-name-directory *newbie-current-file*)))
+    (shell-command (format "open -R \"%s\"" *newbie-current-file*))
+    )
+  )
 
 (defun newbie-latex-add-to-symlinks ()
   (interactive) (kill-buffer)
@@ -222,7 +226,11 @@
 
 (defun newbie-open-file ()
   (interactive) (kill-buffer)
-  (shell-command (format "%s \"%s\"" *nbm-open* (buffer-file-name))))
+  (if (equal system-type "windows-nt")
+      (shell-command (format "start %s" *newbie-current-file*))
+    (shell-command (format "open \"%s\"" *newbie-current-file*))
+    )
+  )
 
 (defun newbie-yank-file-name ()
   (interactive)
@@ -237,7 +245,7 @@
 (defun newbie-setting ()
   (interactive)
   (with-output-to-temp-buffer "newbie-setting"
-    (let ((inhibit-read-only t) choice)
+    (let ((inhibit-read-only t) choice editor)
       (switch-to-buffer "newbie-setting")
       (insert "\n  Current variables are shown below.\n\n")
       (newbie-print-variables)
@@ -275,24 +283,28 @@
 q) quit"))
       (if (equal choice ?q) (kill-buffer)
 	(progn
+	  (if (equal (system-type 'windows-nt))
+	      (setq editor "notepad")
+	    (setq editor "open")
+	    )
 	  (cond
 	   ((equal choice ?1)
-	    (shell-command (format "%s \"%s%s\"" *nbm-open* *nbm-home*
+	    (shell-command (format "%s \"%s%s\"" editor *nbm-home*
 				   "nbm-user-settings/nbm-variables/nbm-desktop.txt")))
 	   ((equal choice ?2)
-	    (shell-command (format "%s \"%s%s\"" *nbm-open* *nbm-home*
+	    (shell-command (format "%s \"%s%s\"" editor *nbm-home*
 				   "nbm-user-settings/nbm-variables/nbm-downloads.txt")))
 	   ((equal choice ?3)
-	    (shell-command (format "%s \"%s%s\"" *nbm-open* *nbm-home*
+	    (shell-command (format "%s \"%s%s\"" editor *nbm-home*
 				   "nbm-user-settings/nbm-variables/nbm-screenshots.txt")))
 	   ((equal choice ?4)
-	    (shell-command (format "%s \"%s%s\"" *nbm-open* *nbm-home*
+	    (shell-command (format "%s \"%s%s\"" editor *nbm-home*
 				   "nbm-user-settings/templates/")))
 	   ((equal choice ?5)
-	    (shell-command (format "%s \"%s%s\"" *nbm-open* *nbm-home*
+	    (shell-command (format "%s \"%s%s\"" editor *nbm-home*
 				   "nbm-user-settings/references")))
 	   ((equal choice ?6)
-	    (shell-command (format "%s \"%s%s/favorites.txt\"" *nbm-open* *nbm-home*
+	    (shell-command (format "%s \"%s%s/favorites.txt\"" editor *nbm-home*
 				   "nbm-user-settings/references")))
 	   )
 	  (setq choice (read-char "What do you want to do?\nr) Reload Newbiemacs\nq) quit"))
