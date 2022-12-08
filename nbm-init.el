@@ -32,13 +32,16 @@
 (unless (package-installed-p 'org-projectile) (package-install 'org-projectile))
 (unless (package-installed-p 'auctex) (package-install 'auctex))
 (unless (package-installed-p 'openwith) (package-install 'openwith))
-(unless (package-installed-p 'org-roam-ui) (package-install 'org-roam-ui))
-(unless (package-installed-p 'org-roam) (package-install 'org-roam))
 (unless (package-installed-p 'evil) (package-install 'evil))
 (unless (package-installed-p 'helm) (package-install 'helm))
 (unless (package-installed-p 'helm-projectile) (package-install 'helm-projectile))
 (unless (package-installed-p 'spacemacs-theme) (package-install 'spacemacs-theme))
 
+; Execute the following unless the system is Windows
+(unless (equal system-type 'windows-nt)
+  (unless (package-installed-p 'org-roam-ui) (package-install 'org-roam-ui))
+  (unless (package-installed-p 'org-roam) (package-install 'org-roam))
+  )
 
 ;; If ~/nbm-root/nbm-home.txt does not exist,
 ;; create a new newbiemacs folder under the home folder.
