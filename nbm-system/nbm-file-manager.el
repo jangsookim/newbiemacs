@@ -135,7 +135,7 @@ e) el"))
   "Open Finder on the current folder."
   (interactive)
   (if (equal system-type 'windows-nt)
-      (shell-command (format "start %s" (nbm-get-file-name)))
+      (shell-command (format "start %s" (file-name-directory (nbm-get-file-name))))
     (shell-command (format "open -R \"%s\"" (nbm-get-file-name)))
     )
   )
