@@ -40,8 +40,13 @@
       (setq height (/ height 2)))
   (setq width (- width 40))
   (setq height (- height 40))
+
   (set-frame-position (selected-frame) x y)
-  (set-frame-size  (selected-frame) width height t)) ; t means pixelwise dimension
+  (if (equal system-type 'windows-nt)
+      (set-frame-size  (selected-frame) width (- height 150) t) ; t means pixelwise dimension
+    (set-frame-size  (selected-frame) width height t)
+    )
+  )
 
 
 (defun nbm-yank-favorite-string ()
