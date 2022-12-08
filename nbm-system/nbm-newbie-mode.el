@@ -283,7 +283,7 @@
 q) quit"))
       (if (equal choice ?q) (kill-buffer)
 	(progn
-	  (if (equal (system-type 'windows-nt))
+	  (if (equal system-type 'windows-nt)
 	      (setq editor "notepad")
 	    (setq editor "open")
 	    )
