@@ -495,7 +495,7 @@
   ;; To install pdf-tools do the following.
   ;; M-x package-refresh-contents RET
   ;; M-x package-install RET pdf-tools RET
-  (when (and (equal system-type 'windows-nt) (package-installed 'pdf-tools))
+  (when (and (equal system-type 'windows-nt) (package-installed-p 'pdf-tools))
     (pdf-tools-install)
     (setq auto-revert-interval 0.1)
     (global-auto-revert-mode)
