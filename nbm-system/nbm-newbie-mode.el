@@ -309,7 +309,7 @@ q) quit"))
 				   "nbm-user-settings/references")))
 	   )
 	  (setq choice (read-char "What do you want to do?\nr) Reload Newbiemacs\nq) quit"))
-	  (if (equal choice ?r) (nbm-reload) (kill-buffer)))))))
+	  (if (equal choice ?r) (newbie-reload) (kill-buffer)))))))
 
 
 (defun newbie-config ()

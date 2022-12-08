@@ -79,7 +79,7 @@
 
 * custom
 #+begin_src emacs-lisp :tangle yes
-  (set-language-environment "UTF-8")
+  ;; (set-language-environment "UTF-8")
   
   (setq mac-command-modifier 'meta)
   (setq mac-option-modifier 'apple)
