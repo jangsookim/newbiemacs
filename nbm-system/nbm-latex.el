@@ -121,7 +121,7 @@ of the first occurence of \"\\necommand\" or \"\\begin{document}\"."
       (setq macro-name (read-string "Enter the macro name: "))
       (setq macro-body (read-string "Enter the macro body: "
 				    (format "\\operatorname{%s}" macro-name)))
-      (insert (concat "\\newcommand\\" macro-name "{" macro-body "}"))
+      (insert (concat "\n\\newcommand\\" macro-name "{" macro-body "}"))
       (if no-flag
 	  (message "The following line has been added in the tex file.
 \n%s\n\nDo NOT delete or modify this line." flag))
