@@ -637,22 +637,25 @@ Two lines from arxiv or a bibtex code from mathscinet must be copied first."
   (let (file choice temp file-name mathscinet)
     (setq pdf (nbm-newest-file (directory-files *nbm-downloads* t
 						"\\`[^.$#].*\\([.]pdf\\|[.]djvu\\)$")))
-    (setq choice (read-char (format "Move %s into the following folder?\n%s\n\ny: yes\nq: quit
+    (when pdf
+      (setq choice (read-char (format "Move %s into the following folder?\n%s\n\ny: yes\nq: quit
 
 (Note: Two lines from arxiv or three lines from mathscinet must be copied first.)" pdf *nbm-pdf*)))
-    (when (equal choice ?y)
-      (setq temp (current-kill 0))
-      (if (equal (substring temp 0 1) "@") (setq mathscinet t))
-      (setq temp (split-string temp "\n"))
-      (setq file-name (read-string "Enter a suitable file name: "
-				   (if mathscinet (nbm-mathscinet-make-filename)
-				     (nbm-arxiv-make-filename))))
-      (setq choice (read-char (format "Move \"%s\"\ninto \"%s\"\nunder the following name?\n%s\n\n(Type y for yes)."
-				      pdf *nbm-pdf* file-name)))
       (when (equal choice ?y)
-	(rename-file pdf (concat *nbm-pdf* file-name) 1)
-	(message "File moved!"))
-      (if (equal choice ?q) (message "Aborted.")))))
+	(setq temp (current-kill 0))
+	(if (equal (substring temp 0 1) "@") (setq mathscinet t))
+	(setq temp (split-string temp "\n"))
+	(setq file-name (read-string "Enter a suitable file name: "
+				     (if mathscinet (nbm-mathscinet-make-filename)
+				       (nbm-arxiv-make-filename))))
+	(setq choice (read-char (format "Move \"%s\"\ninto \"%s\"\nunder the following name?\n%s\n\n(Type y for yes)."
+					pdf *nbm-pdf* file-name)))
+	(when (equal choice ?y)
+	  (rename-file pdf (concat *nbm-pdf* file-name) 1)
+	  (message "File moved!"))
+	(if (equal choice ?q) (message "Aborted.")))
+      )
+    ))
 
 (defun nbm-latex-Cref ()
   "Reftex with Cref."
