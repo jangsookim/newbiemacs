@@ -1,0 +1,6 @@
+(setenv "HOME"
+	(string-replace "/AppData/Roaming" ""
+			(string-replace "\\" "/"
+					(getenv "HOME"))))
+
+(load-file (concat (getenv "HOME") "/nbm-root/nbm-init.el"))
