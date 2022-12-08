@@ -248,7 +248,7 @@
 #+end_src
 ** Org-Roam
 #+begin_src emacs-lisp :tangle yes
-; Execute the following unless the system is Windows
+  ;; Execute the following unless the system is Windows
   (unless (equal system-type 'windows-nt)
     (setq org-roam-directory (concat *nbm-home* "org/"))
     (setq org-roam-graph-viewer "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
@@ -257,8 +257,7 @@
                                         :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
                                                            "#+title: ${title}\n "
                                                            ;; "#+title: ${title}\n#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup\n "
-                                                           )
-    )
+                                                           )))))
 #+end_src
 ** org-projectile
 #+begin_src emacs-lisp :tangle yes

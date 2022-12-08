@@ -37,7 +37,7 @@
 (unless (package-installed-p 'helm-projectile) (package-install 'helm-projectile))
 (unless (package-installed-p 'spacemacs-theme) (package-install 'spacemacs-theme))
 
-; Execute the following unless the system is Windows
+;; execute the following unless the system is windows
 (unless (equal system-type 'windows-nt)
   (unless (package-installed-p 'org-roam-ui) (package-install 'org-roam-ui))
   (unless (package-installed-p 'org-roam) (package-install 'org-roam))

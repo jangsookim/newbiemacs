@@ -206,15 +206,16 @@
 (setq org-ref-default-bibliography(concat *nbm-home* "nbm-user-settings/references/ref.bib")
       bibtex-completion-bibliography (concat *nbm-home* "nbm-user-settings/references/ref.bib"))
 
-(setq org-roam-directory (concat *nbm-home* "org/"))
-(setq org-roam-graph-viewer "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
-(org-roam-db-autosync-mode)
-(setq org-roam-capture-templates '(("d" "default" plain "%?"
-                                    :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-                                                       "#+title: ${title}\n "
-                                                       ;; "#+title: ${title}\n#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup\n "
-                                                       )
-                                    :unnarrowed t)))
+;; Execute the following unless the system is Windows
+(unless (equal system-type 'windows-nt)
+  (setq org-roam-directory (concat *nbm-home* "org/"))
+  (setq org-roam-graph-viewer "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
+  (org-roam-db-autosync-mode)
+  (setq org-roam-capture-templates '(("d" "default" plain "%?"
+                                      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                                                         "#+title: ${title}\n "
+                                                         ;; "#+title: ${title}\n#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup\n "
+                                                         )))))
 
 (with-eval-after-load 'org-agenda
   (require 'org-projectile)
