@@ -70,6 +70,19 @@
     (with-temp-buffer (shell-command "git init" t))
     (find-file (concat (getenv "HOME") "/newbiemacs/misc"))
     (with-temp-buffer (shell-command "git init" t))
+
+    (find-file (concat (getenv "HOME") "/newbiemacs/nbm-user-settings/nbm-variables/nbm-desktop.txt"))
+    (insert (concat (getenv "HOME") "/Desktop"))
+    (save-buffer) (kill-buffer)
+
+    (find-file (concat (getenv "HOME") "/newbiemacs/nbm-user-settings/nbm-variables/nbm-downloads.txt"))
+    (insert (concat (getenv "HOME") "/Downloads"))
+    (save-buffer) (kill-buffer)
+
+    (find-file (concat (getenv "HOME") "/newbiemacs/nbm-user-settings/nbm-variables/nbm-screenshots.txt"))
+    (insert (concat (getenv "HOME") "/Desktop\n" ))
+    (insert (concat (getenv "HOME") "/Donwloads" ))
+    (save-buffer) (kill-buffer)
     )
   )
 
