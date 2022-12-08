@@ -202,7 +202,7 @@
 (defun newbie-finder ()
   "Open the current file in Finder."
   (interactive)
-  (if (equal system-type "windows-nt")
+  (if (equal system-type 'windows-nt)
       (shell-command (format "start %s" (file-name-directory *newbie-current-file*)))
     (shell-command (format "open -R \"%s\"" *newbie-current-file*))
     )
@@ -226,7 +226,7 @@
 
 (defun newbie-open-file ()
   (interactive) (kill-buffer)
-  (if (equal system-type "windows-nt")
+  (if (equal system-type 'windows-nt)
       (shell-command (format "start %s" *newbie-current-file*))
     (shell-command (format "open \"%s\"" *newbie-current-file*))
     )
