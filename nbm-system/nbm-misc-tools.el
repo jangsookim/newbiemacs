@@ -43,7 +43,7 @@
 
   (set-frame-position (selected-frame) x y)
   (if (equal system-type 'windows-nt)
-      (set-frame-size  (selected-frame) width (- height 150) t) ; t means pixelwise dimension
+      (set-frame-size  (selected-frame) width (- height 70) t) ; t means pixelwise dimension
     (set-frame-size  (selected-frame) width height t)
     )
   )

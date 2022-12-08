@@ -465,7 +465,7 @@
 ** diminish
 #+begin_src emacs-lisp :tangle yes
   (require 'diminish)
-  (with-eval-after-load 'undo-tree (diminish 'undo-tree))
+  (with-eval-after-load 'undo-tree (diminish 'undo-tree-mode))
   (with-eval-after-load 'evil-owl (diminish 'evil-owl-mode))
   (with-eval-after-load 'valign (diminish 'valign-mode))
   (with-eval-after-load 'org-indent (diminish 'org-indent-mode))
@@ -495,16 +495,15 @@
   ;; To install pdf-tools do the following.
   ;; M-x package-refresh-contents RET
   ;; M-x package-install RET pdf-tools RET
-  (when (equal system-type 'windows-nt)
+  (when (and (equal system-type 'windows-nt) (package-installed 'pdf-tools))
     (pdf-tools-install)
     (setq auto-revert-interval 0.1)
-    (auto-revert-set-timer)
     (global-auto-revert-mode)
 
     (setq openwith-associations '(
                                   ("\\.hwp\\'" "open" (file))
                                   ("\\.xlsx\\'" "open" (file))
-                                  ("\\.djvu\\'" "/Applications/DjView.app/Contents/bin/djview" (file))))
+                                  ))
     (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
           TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
           TeX-source-correlate-start-server t)
