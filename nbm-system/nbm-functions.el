@@ -1,5 +1,10 @@
 ;; This file contains simple functions for newbiemacs.
 
+(defvar *nbm-open*)
+(if (equal system-type 'windows-nt)
+    (setq *nbm-open* "start")
+  (setq *nbm-open* "open"))
+
 (defun nbm-key-tree-org-mode ()
   (interactive)
   (nbm-key-tree-mode "org-mode"))

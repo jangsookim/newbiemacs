@@ -202,7 +202,7 @@
 (defun newbie-finder ()
   "Open the current file in Finder."
   (interactive)
-  (shell-command (format "open -R \"%s\"" *newbie-current-file*)))
+  (shell-command (format "%s -R \"%s\"" *nbm-open* *newbie-current-file*)))
 
 (defun newbie-latex-add-to-symlinks ()
   (interactive) (kill-buffer)
@@ -222,7 +222,7 @@
 
 (defun newbie-open-file ()
   (interactive) (kill-buffer)
-  (shell-command (format "open \"%s\"" (buffer-file-name))))
+  (shell-command (format "%s \"%s\"" *nbm-open* (buffer-file-name))))
 
 (defun newbie-yank-file-name ()
   (interactive)
@@ -277,22 +277,22 @@ q) quit"))
 	(progn
 	  (cond
 	   ((equal choice ?1)
-	    (shell-command (format "open \"%s%s\"" *nbm-home*
+	    (shell-command (format "%s \"%s%s\"" *nbm-open* *nbm-home*
 				   "nbm-user-settings/nbm-variables/nbm-desktop.txt")))
 	   ((equal choice ?2)
-	    (shell-command (format "open \"%s%s\"" *nbm-home*
+	    (shell-command (format "%s \"%s%s\"" *nbm-open* *nbm-home*
 				   "nbm-user-settings/nbm-variables/nbm-downloads.txt")))
 	   ((equal choice ?3)
-	    (shell-command (format "open \"%s%s\"" *nbm-home*
+	    (shell-command (format "%s \"%s%s\"" *nbm-open* *nbm-home*
 				   "nbm-user-settings/nbm-variables/nbm-screenshots.txt")))
 	   ((equal choice ?4)
-	    (shell-command (format "open \"%s%s\"" *nbm-home*
+	    (shell-command (format "%s \"%s%s\"" *nbm-open* *nbm-home*
 				   "nbm-user-settings/templates/")))
 	   ((equal choice ?5)
-	    (shell-command (format "open \"%s%s\"" *nbm-home*
+	    (shell-command (format "%s \"%s%s\"" *nbm-open* *nbm-home*
 				   "nbm-user-settings/references")))
 	   ((equal choice ?6)
-	    (shell-command (format "open \"%s%s/favorites.txt\"" *nbm-home*
+	    (shell-command (format "%s \"%s%s/favorites.txt\"" *nbm-open* *nbm-home*
 				   "nbm-user-settings/references")))
 	   )
 	  (setq choice (read-char "What do you want to do?\nr) Reload Newbiemacs\nq) quit"))
