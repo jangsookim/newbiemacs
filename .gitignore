@@ -1,6 +1,5 @@
 .DS_Store
 nbm-home.txt
-/nbm-system/nbm_config.el
 *~
-/nbm_config.el
-/nbm_key_tree.el
+nbm_key_tree.el
+nbm-config.el

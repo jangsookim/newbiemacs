@@ -79,6 +79,8 @@
 
 * custom
 #+begin_src emacs-lisp :tangle yes
+  (set-language-environment "UTF-8")
+  
   (setq mac-command-modifier 'meta)
   (setq mac-option-modifier 'apple)
   (setq x-select-enable-clipboard t)
@@ -106,6 +108,7 @@
   (setq recentf-max-saved-items 55)
 
   (setq which-key-prefix-prefix nil)
+
 
 #+end_src
 ** theme
