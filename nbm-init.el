@@ -41,7 +41,6 @@
 (unless (equal system-type 'windows-nt)
   (unless (package-installed-p 'org-roam-ui) (package-install 'org-roam-ui))
   (unless (package-installed-p 'org-roam) (package-install 'org-roam))
-  (unless (package-installed-p 'magit) (package-install 'magit))
   )
 
 ;; If ~/nbm-root/nbm-home.txt does not exist,

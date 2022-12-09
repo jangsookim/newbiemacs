@@ -508,3 +508,11 @@
   (nbm-magnet-move-frame ?l)
   (newbie)
 #+end_src
+
+* Windows
+#+begin_src emacs-lisp :tangle yes
+  (when (equal system-type 'windows-nt)
+    (set-language-environment "UTF-8")
+    )
+#+end_src
+
