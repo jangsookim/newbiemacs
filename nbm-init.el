@@ -40,10 +40,6 @@
 (unless (package-installed-p 'org-roam) (package-install 'org-roam))
 (unless (package-installed-p 'magit) (package-install 'magit))
 
-(when (equal system-type 'windows-nt)
-  (unless (package-installed-p 'pdf-tools) (package-install 'pdf-tools))
-  )
-
 ;; If ~/nbm-root/nbm-home.txt does not exist,
 ;; create a new newbiemacs folder under the home folder.
 ;; The newbiemacs folder may be moved to a different place later.

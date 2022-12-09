@@ -36,7 +36,7 @@
 	(setq openwith-associations '(("\\.pdf\\'" "open" (file))
 				      ("\\.hwp\\'" "open" (file))
 				      ("\\.xlsx\\'" "open" (file))
-				      ("\\.djvu\\'" "/Applications/DjView.app/Contents/bin/djview" (file))))
+				      ("\\.djvu\\'" "open" (file))))
 	)
     (progn
       (pdf-tools-install)
@@ -48,6 +48,7 @@
       (setq openwith-associations '(
 				    ("\\.hwp\\'" "open" (file))
 				    ("\\.xlsx\\'" "open" (file))
+				    ("\\.djvu\\'" "open" (file))
 				    ))
       )
     )

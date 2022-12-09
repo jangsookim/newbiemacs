@@ -377,15 +377,13 @@
 ** openwith
 #+begin_src emacs-lisp :tangle yes
   (openwith-mode t)
-  (if (equal system-type 'darwin)		; This is for mac.
-      (setq openwith-associations '(("\\.pdf\\'" "open" (file))
-                                    ("\\.hwp\\'" "open" (file))
-                                    ("\\.xlsx\\'" "open" (file))
-                                    ("\\.djvu\\'" "/Applications/DjView.app/Contents/bin/djview" (file))))
-    (setq openwith-associations '(
-                                  ("\\.hwp\\'" "open" (file))
-                                  ("\\.xlsx\\'" "open" (file))
-                                  ))
+  (setq openwith-associations '(
+                                ("\\.hwp\\'" "open" (file))
+                                ("\\.xlsx\\'" "open" (file))
+                                ("\\.djvu\\'" "open" (file))))
+
+  (unless (equal (nth 1 (car TeX-view-program-selection)) "PDF Tools")
+    (setq openwith-associations (cons '("\\.pdf\\'" "open" (file)) openwith-associations))
     )
 #+end_src
 ** Yasnippet
