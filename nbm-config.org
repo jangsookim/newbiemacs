@@ -14,8 +14,6 @@
   (nbm-key-tree-load)
   (nbm-key-tree-appear-in-which-key)
   (load-file (nbm-f "nbm-user-settings/nbm-which-key.el"))
-
-
 #+end_src
 * evil mode
 #+begin_src emacs-lisp :tangle yes
@@ -110,8 +108,6 @@
 
   ;; (set-language-environment "UTF-8")
   ;; (set-language-environment "Korean")
-
-
 #+end_src
 ** theme
 #+begin_src emacs-lisp :tangle yes
@@ -129,7 +125,6 @@
   (set-cursor-color "LightGreen")
 
   (setq inhibit-startup-screen t)
-
 #+end_src
 ** mode line
 #+begin_src emacs-lisp :tangle yes
@@ -178,9 +173,22 @@
           (? "" nil nil )
           ))
 
-  (setq TeX-view-program-list
-        '(("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o")))
-  (setq TeX-view-program-selection '((output-pdf "Skim")))
+  ;; On Mac, skim will be used as a pdf-viewer.
+  (if (equal system-type 'darwin)
+      (setq TeX-view-program-list
+            '(("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o"))
+            TeX-view-program-selection '((output-pdf "Skim")))
+    ;; On Windows or Linux, pdf-tools will be used as a pdf-viewer.
+    (when (package-installed-p 'pdf-tools)
+      (pdf-tools-install)
+      (setq auto-revert-interval 0.1)
+      (global-auto-revert-mode)
+      (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+            TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
+            TeX-source-correlate-start-server t)
+      )
+    )
+
   ;; The following is helpful for recognizing ^ and _ in latex code.
   (custom-set-faces
    '(font-latex-script-char-face ((t (:foreground "Systemorangecolor"))))
@@ -369,10 +377,16 @@
 ** openwith
 #+begin_src emacs-lisp :tangle yes
   (openwith-mode t)
-  (setq openwith-associations '(("\\.pdf\\'" "open" (file))
-                                ("\\.hwp\\'" "open" (file))
-                                ("\\.xlsx\\'" "open" (file))
-                                ("\\.djvu\\'" "/Applications/DjView.app/Contents/bin/djview" (file))))
+  (if (equal system-type 'darwin)		; This is for mac.
+      (setq openwith-associations '(("\\.pdf\\'" "open" (file))
+                                    ("\\.hwp\\'" "open" (file))
+                                    ("\\.xlsx\\'" "open" (file))
+                                    ("\\.djvu\\'" "/Applications/DjView.app/Contents/bin/djview" (file))))
+    (setq openwith-associations '(
+                                  ("\\.hwp\\'" "open" (file))
+                                  ("\\.xlsx\\'" "open" (file))
+                                  ))
+    )
 #+end_src
 ** Yasnippet
 #+begin_src emacs-lisp :tangle yes
@@ -386,7 +400,6 @@
 #+begin_src emacs-lisp :tangle yes
   (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'LaTeX-mode-hook #'rainbow-delimiters-mode)
-
 #+end_src
 
 ** anzu
@@ -495,25 +508,3 @@
   (nbm-magnet-move-frame ?l)
   (newbie)
 #+end_src
-
-* Windows only
-#+begin_src emacs-lisp :tangle yes
-  ;; To install pdf-tools do the following.
-  ;; M-x package-refresh-contents RET
-  ;; M-x package-install RET pdf-tools RET
-  (when (and (equal system-type 'windows-nt) (package-installed-p 'pdf-tools))
-    (pdf-tools-install)
-    (setq auto-revert-interval 0.1)
-    (global-auto-revert-mode)
-
-    (setq openwith-associations '(
-                                  ("\\.hwp\\'" "open" (file))
-                                  ("\\.xlsx\\'" "open" (file))
-                                  ))
-    (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-          TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
-          TeX-source-correlate-start-server t)
-    )
-
-#+end_src
-
