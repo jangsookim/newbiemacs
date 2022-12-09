@@ -7,19 +7,19 @@ Newbiemacs is designed for mathematicians who are new to Emacs.
 
 # Table of Contents
 
-1.  [Install Newbiemacs on Mac](#orgd0ea7ca)
-    1.  [Additional steps for latex on Mac (optional)](#org6859bec)
-2.  [Install Newbiemacs on Windows](#orgcc4f2ae)
-    1.  [Additional steps for org-roam on Windows (optional)](#orgf5688f4)
-    2.  [Additional steps for latex on Windows (optional)](#orgd8b8f47)
+1.  [Install Newbiemacs on Mac](#org93ad088)
+    1.  [Additional steps for latex on Mac (optional)](#org5661a9f)
+2.  [Install Newbiemacs on Windows](#org65fc0af)
+    1.  [Additional steps for org-roam on Windows (optional)](#org7831de0)
+    2.  [Additional steps for latex on Windows (optional)](#org0402df4)
 
 
-<a id="orgd0ea7ca"></a>
+<a id="org93ad088"></a>
 
 # Install Newbiemacs on Mac
 
-1.  Download Emacs and install it. <https://emacsformacosx.com/emacs-builds/Emacs-28.2-universal.dmg>
-2.  Install git if it's not already installed. <https://git-scm.com/book/en/v2/Getting-Started-Installing-Git>
+1.  Download Emacs and install it. [Click here to download.](https://emacsformacosx.com/emacs-builds/Emacs-28.2-universal.dmg)
+2.  Install git if it's not already installed. [Click here to download.](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 3.  Open a terminal and enter the following four lines. (You can open a
     terminal by pressing Command+Space and typing "terminal".)
     
@@ -32,26 +32,26 @@ Newbiemacs is designed for mathematicians who are new to Emacs.
 5.  Close Emacs and run it again. The above Newbiemacs main screeen will be shown.
 
 
-<a id="org6859bec"></a>
+<a id="org5661a9f"></a>
 
 ## Additional steps for latex on Mac (optional)
 
 If you want to edit tex files in Newbiemacs, you need to do the following (only once).
 
-1.  Download skim <https://skim-app.sourceforge.io/>
+1.  Download skim. [Clike here](https://skim-app.sourceforge.io/)
 2.  Open skim.
 3.  Press CMD+, (Preference set-up)
 4.  Check the two check boxes.
 5.  Select Emacs in Preset drop-down box.
 
 
-<a id="orgcc4f2ae"></a>
+<a id="org65fc0af"></a>
 
 # Install Newbiemacs on Windows
 
-1.  Download Emacs and install it. <http://ftp.gnu.org/gnu/emacs/windows/emacs-28/emacs-28.2-installer.exe>
+1.  Download Emacs and install it. [Clink here](http://ftp.gnu.org/gnu/emacs/windows/emacs-28/emacs-28.2-installer.exe)
 2.  Go to the directory "C:\Program Files\Emacs\emacs-28.2\bin" and create a shortcut for the file "runemacs.exe".
-3.  Install git. <https://git-scm.com/download/win>
+3.  Install git. [Clink here](https://git-scm.com/download/win)
 4.  Open "Command Prompt" (not "terminal") and enter the following
     lines.
     
@@ -64,13 +64,13 @@ If you want to edit tex files in Newbiemacs, you need to do the following (only 
 6.  Close Emacs and run it again. The above Newbiemacs main screeen will be shown.
 
 
-<a id="orgf5688f4"></a>
+<a id="org7831de0"></a>
 
 ## Additional steps for org-roam on Windows (optional)
 
 If you want to use org-roam, you need to do the following (only once). 
 
-1.  Install perl. <https://strawberryperl.com/>
+1.  Install perl. [Click here](https://strawberryperl.com/)
 2.  Run Emacs and type the following. (SPC means the space key and RET means the return key (or the enter key).)
     
         SPC SPC package-refresh-contents RET
@@ -79,14 +79,14 @@ If you want to use org-roam, you need to do the following (only once).
 3.  Restart Emacs. (It will take some time to compile EmacSQL SQLite binary.)
 
 
-<a id="orgd8b8f47"></a>
+<a id="org0402df4"></a>
 
 ## Additional steps for latex on Windows (optional)
 
 If you want to use latex, you need to do the following (only once). 
 
-1.  Install perl. (This can be omitted if you did this already) <https://strawberryperl.com/>
-2.  Install msys2. (You have to remember the path to the directory of msys2. The default path is `C:\msys64`.) <https://www.msys2.org/>
+1.  Install perl. (This can be omitted if you did this already) [Click here](https://strawberryperl.com/)
+2.  Install msys2. (You have to remember the path to the directory of msys2. The default path is `C:\msys64`.) [Click here](https://www.msys2.org/)
 3.  Run Emacs and type the following. (SPC means the space key and RET means the return key (or the enter key).)
     
         SPC SPC package-refresh-contents RET
