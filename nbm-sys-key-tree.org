@@ -16,6 +16,7 @@
 *** key: 9, function: nbm-toggle-nbm-home
 *** key: v, function: nbm-update-version
 *** key: i, function: nbm-insert-function
+*** key: p, function: nbm-toggle-pdf-viewer
 ** key: ', function: eshell
 ** key: ., function: nbm-org-roam-today
 ** key: a, description: Applications
