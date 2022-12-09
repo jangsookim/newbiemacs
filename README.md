@@ -7,14 +7,14 @@ Newbiemacs is designed for mathematicians who are new to Emacs.
 
 # Table of Contents
 
-1.  [Install Newbiemacs on Mac](#org93ad088)
-    1.  [Additional steps for latex on Mac (optional)](#org5661a9f)
-2.  [Install Newbiemacs on Windows](#org65fc0af)
-    1.  [Additional steps for org-roam on Windows (optional)](#org7831de0)
-    2.  [Additional steps for latex on Windows (optional)](#org0402df4)
+1.  [Install Newbiemacs on Mac](#orgd216df7)
+    1.  [Additional steps for latex on Mac (optional)](#org7fddf1f)
+2.  [Install Newbiemacs on Windows](#org60bb9e3)
+    1.  [Additional steps for org-roam on Windows (optional)](#org5dd5877)
+    2.  [Additional steps for latex on Windows (optional)](#org42de561)
 
 
-<a id="org93ad088"></a>
+<a id="orgd216df7"></a>
 
 # Install Newbiemacs on Mac
 
@@ -32,26 +32,26 @@ Newbiemacs is designed for mathematicians who are new to Emacs.
 5.  Close Emacs and run it again. The above Newbiemacs main screeen will be shown.
 
 
-<a id="org5661a9f"></a>
+<a id="org7fddf1f"></a>
 
 ## Additional steps for latex on Mac (optional)
 
 If you want to edit tex files in Newbiemacs, you need to do the following (only once).
 
-1.  Download skim. [Clike here](https://skim-app.sourceforge.io/)
+1.  Download skim. [Click here](https://skim-app.sourceforge.io/)
 2.  Open skim.
 3.  Press CMD+, (Preference set-up)
 4.  Check the two check boxes.
 5.  Select Emacs in Preset drop-down box.
 
 
-<a id="org65fc0af"></a>
+<a id="org60bb9e3"></a>
 
 # Install Newbiemacs on Windows
 
-1.  Download Emacs and install it. [Clink here](http://ftp.gnu.org/gnu/emacs/windows/emacs-28/emacs-28.2-installer.exe)
+1.  Download Emacs and install it. [Click here](http://ftp.gnu.org/gnu/emacs/windows/emacs-28/emacs-28.2-installer.exe)
 2.  Go to the directory "C:\Program Files\Emacs\emacs-28.2\bin" and create a shortcut for the file "runemacs.exe".
-3.  Install git. [Clink here](https://git-scm.com/download/win)
+3.  Install git. [Click here](https://git-scm.com/download/win)
 4.  Open "Command Prompt" (not "terminal") and enter the following
     lines.
     
@@ -64,7 +64,7 @@ If you want to edit tex files in Newbiemacs, you need to do the following (only 
 6.  Close Emacs and run it again. The above Newbiemacs main screeen will be shown.
 
 
-<a id="org7831de0"></a>
+<a id="org5dd5877"></a>
 
 ## Additional steps for org-roam on Windows (optional)
 
@@ -79,7 +79,7 @@ If you want to use org-roam, you need to do the following (only once).
 3.  Restart Emacs. (It will take some time to compile EmacSQL SQLite binary.)
 
 
-<a id="org0402df4"></a>
+<a id="org42de561"></a>
 
 ## Additional steps for latex on Windows (optional)
 
@@ -99,4 +99,5 @@ If you want to use latex, you need to do the following (only once).
 7.  Enter the path that msys2 is installed. (The default one is `C:\msys64`.)
 8.  On the prompt it will ask two questions. Type Enter and then Y. (This takes several minutes.)
 9.  Restart Emacs.
+
 
