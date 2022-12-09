@@ -173,20 +173,15 @@
           (? "" nil nil )
           ))
 
-  ;; On Mac, skim will be used as a pdf-viewer.
-  (if (equal system-type 'darwin)
-      (setq TeX-view-program-list
-            '(("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o"))
-            TeX-view-program-selection '((output-pdf "Skim")))
-    ;; On Windows or Linux, pdf-tools will be used as a pdf-viewer.
-    (when (package-installed-p 'pdf-tools)
-      (pdf-tools-install)
-      (setq auto-revert-interval 0.1)
-      (global-auto-revert-mode)
-      (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-            TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
-            TeX-source-correlate-start-server t)
-      )
+  ;; On Mac, Skim will be used as a pdf-viewer.
+  (when (equal system-type 'darwin)
+    (setq TeX-view-program-list
+          '(("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o"))
+          TeX-view-program-selection '((output-pdf "Skim")))
+    )
+  ;; On Windows, SumatraPDF will be used as a pdf-viewer.
+  (when (equal system-type 'windows-nt)
+    (load-file (concat (getenv "HOME") "/nbm-root/nbm-windows-config.el"))
     )
 
   ;; The following is helpful for recognizing ^ and _ in latex code.

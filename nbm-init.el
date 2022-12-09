@@ -86,6 +86,17 @@
     )
   )
 
+;; On Windows create a file for latex with sumatraPDF
+(when (equal system-type 'windows-nt)
+  (unless (file-exists-p (concat (getenv "HOME") "/nbm-root/nbm-windows-config.el"))
+    (find-file (concat (getenv "HOME") "/nbm-root/nbm-windows-config.el"))
+    (insert "(setq TeX-view-program-list '((\"Sumatra PDF\" (\"\\\"")
+    (insert (getenv "HOME"))
+    (insert "/AppData/Local/SumatraPDF/SumatraPDF.exe\\\" -reuse-instance\" ")
+    (insert "(mode-io-correlate \" -forward-search %b %n \") \" %o\"))))\n")
+    (insert "(setq TeX-view-program-selection '((output-pdf \"Sumatra PDF\")))")
+    (save-buffer) (kill-buffer)))
+
 (defvar *nbm-home*)	; defvar only assigns the inital value and will not be updated
 (defvar *nbm-pdf*)
 (defvar *nbm-desktop*)
