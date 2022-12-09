@@ -93,6 +93,8 @@
 *** key: m, function: delete-other-windows
 *** key: d, function: delete-window
 *** key: o, function: nbm-other-window
+*** key: r, description: rotate-downwards, function: evil-window-rotate-downwards
+*** key: R, description: rotate-upwards, function: evil-window-rotate-upwards
 ** key: x, description: Text
 *** key: d, description: Delete
 **** key: w, function: delete-trailing-whitespace
