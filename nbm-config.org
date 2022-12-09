@@ -463,6 +463,7 @@
 ** projectile
 #+begin_src emacs-lisp :tangle yes
   (projectile-mode)
+  (setq projectile-enable-caching nil)
 #+end_src
 ** diminish
 #+begin_src emacs-lisp :tangle yes
