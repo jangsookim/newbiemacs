@@ -36,9 +36,13 @@
 (unless (package-installed-p 'helm) (package-install 'helm))
 (unless (package-installed-p 'helm-projectile) (package-install 'helm-projectile))
 (unless (package-installed-p 'spacemacs-theme) (package-install 'spacemacs-theme))
-(unless (package-installed-p 'org-roam-ui) (package-install 'org-roam-ui))
-(unless (package-installed-p 'org-roam) (package-install 'org-roam))
-(unless (package-installed-p 'magit) (package-install 'magit))
+
+;; On Windows these packages are optional.
+(unless (equal system-type 'windows-nt)
+  (unless (package-installed-p 'org-roam-ui) (package-install 'org-roam-ui))
+  (unless (package-installed-p 'org-roam) (package-install 'org-roam))
+  (unless (package-installed-p 'magit) (package-install 'magit))
+  )
 
 ;; If ~/nbm-root/nbm-home.txt does not exist,
 ;; create a new newbiemacs folder under the home folder.
