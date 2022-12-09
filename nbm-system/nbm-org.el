@@ -25,7 +25,7 @@ If there is no checkbox, create one."
   (save-excursion
     (let (end)
       (end-of-line) (setq end (point))
-      (beginning-of-line) (re-search-forward "\\(^[*]+ \\|^[-+] \\|^[0-9]+[.)] \\)" end t)
+      (beginning-of-line) (re-search-forward "\\(^[*]+ \\|^ *[-+] \\|^ *[0-9]+[.)] \\)" end t)
       (when (match-string 1)
 	(if (string= (char-to-string (char-after)) "[")
 	    (org-toggle-checkbox)
