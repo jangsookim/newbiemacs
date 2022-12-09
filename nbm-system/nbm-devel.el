@@ -37,6 +37,7 @@
 				      ("\\.hwp\\'" "open" (file))
 				      ("\\.xlsx\\'" "open" (file))
 				      ("\\.djvu\\'" "open" (file))))
+	(message "PDF viewer is now Skim.")
 	)
     (progn
       (pdf-tools-install)
@@ -50,6 +51,7 @@
 				    ("\\.xlsx\\'" "open" (file))
 				    ("\\.djvu\\'" "open" (file))
 				    ))
+      (message "PDF viewer is now pdf-tools.")
       )
     )
   )
