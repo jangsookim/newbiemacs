@@ -26,11 +26,12 @@ Newbiemacs is designed for mathematicians who are new to Emacs.
 3. Press CMD+, (Preference set-up)
 4. Check the two check boxes.
 5. Select Emacs in Preset drop-down box.
+
 ## Install Newbiemacs on Windows
 1. Download Emacs and install it. http://ftp.gnu.org/gnu/emacs/windows/emacs-28/emacs-28.2-installer.exe
 2. Go to the directory "C:\Program Files\Emacs\emacs-28.2\bin" and create a shortcut for the file "runemacs.exe".
 3. Install git. https://git-scm.com/download/win
-4. Open a terminal and enter the following lines.
+4. Open "Command Propmpt" and enter the following lines.
    ```
    cd %userprofile%
    git clone https://github.com/jangsookim/newbiemacs.git
