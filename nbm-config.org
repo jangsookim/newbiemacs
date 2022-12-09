@@ -109,7 +109,7 @@
   (setq which-key-prefix-prefix nil)
 
   ;; (set-language-environment "UTF-8")
-  (set-language-environment "Korean")
+  ;; (set-language-environment "Korean")
 
 
 #+end_src
