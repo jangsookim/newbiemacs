@@ -281,6 +281,7 @@
 4) Update template tex files (The default file is \"template.tex\". You can add any number of tex files here.)
 5) Update the main bib file \"ref.bib\"
 6) Update my favorite strings in \"favorites.txt\".
+u) Update Newbiemacs.
 q) quit"))
       (if (equal choice ?q) (kill-buffer)
 	(progn
@@ -307,6 +308,8 @@ q) quit"))
 	   ((equal choice ?6)
 	    (shell-command (format "%s \"%s%s/favorites.txt\"" editor *nbm-home*
 				   "nbm-user-settings/references")))
+	   ((equal choice ?u)
+	    (nbm-update-newbiemacs))
 	   )
 	  (setq choice (read-char "What do you want to do?\nr) Reload Newbiemacs\nq) quit"))
 	  (if (equal choice ?r) (newbie-reload) (kill-buffer)))))))
