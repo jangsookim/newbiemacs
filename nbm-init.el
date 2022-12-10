@@ -40,7 +40,6 @@
 (unless (package-installed-p 'beacon) (package-install 'beacon))
 (unless (package-installed-p 'avy) (package-install 'avy))
 (unless (package-installed-p 'magit) (package-install 'magit))
-(unless (package-installed-p 'all-the-icons-dired) (package-install 'all-the-icons-dired))
 
 ;; On Windows these packages are optional.
 (unless (equal system-type 'windows-nt)

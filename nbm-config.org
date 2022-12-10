@@ -435,12 +435,6 @@
   (with-eval-after-load 'eldoc (diminish 'eldoc-mode))
   (diminish 'visual-line-mode)
 #+end_src
-** all-the-icons
-#+begin_src emacs-lisp :tangle yes
-  (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
-  (setq all-the-icons-dired-monochrome nil)
-#+end_src
-
 * welcome page
 #+begin_src emacs-lisp :tangle yes
   (nbm-magnet-move-frame ?l)
