@@ -297,26 +297,8 @@
 
 * Dired
 #+begin_src emacs-lisp :tangle yes
-  ;; (add-hook 'dired-mode-hook 'evil-evilified-state)
-  (with-eval-after-load 'dired
-    (require 'dired-x)
-    ;; Set dired-x global variables here.  For example:
-    ;; (setq dired-guess-shell-gnutar "gtar")
-    )
-  (setq dired-omit-files "\\`[.]")
-  (setq dired-omit-files (concat dired-omit-files "\\|[.]db\\'"))
-  (setq dired-omit-files (concat dired-omit-files "\\|[.]ini\\'"))
-  (setq dired-omit-files (concat dired-omit-files "\\|[.]dbx-passwords\\'"))
-  (setq dired-omit-files (concat dired-omit-files "\\|\\`Icon"))
   (define-key dired-mode-map (kbd "SPC") 'nbm-key-tree-global)
   (define-key dired-mode-map (kbd ",") 'nbm-key-tree-mode)
-  (add-hook 'dired-mode-hook
-            (lambda ()
-              ;; Set dired-x buffer-local variables here.  For example:
-              ;; (dired-omit-mode 1) ; this causes the annoying "omitting..." in minibuffer.
-              ;; (dired-hide-details-mode)
-              (setq dired-omit-verbose nil) ; this prevents showing "omitting..."
-              ))
   (setq dired-dwim-target t)
 #+end_src
 * Minor packages
@@ -332,19 +314,14 @@
 #+end_src
 ** Magit
 #+begin_src emacs-lisp :tangle yes
-  ;; To install magit do the following.
-  ;; M-x package-refresh-contents RET
-  ;; M-x package-install RET magit RET
-  (when (package-installed-p 'magit)
-    (setq transient-values
-          '((magit-log:magit-log-mode "-n256" "--graph" "--color" "--decorate")))
-    (add-hook 'magit-mode-hook
-              (lambda ()
-                (local-set-key (kbd "j") #'next-line)
-                (local-set-key (kbd "k") #'previous-line)
-                (local-set-key (kbd "x") #'magit-discard)
-                ))
-    )
+  (setq transient-values
+        '((magit-log:magit-log-mode "-n256" "--graph" "--color" "--decorate")))
+  (add-hook 'magit-mode-hook
+            (lambda ()
+              (local-set-key (kbd "j") #'next-line)
+              (local-set-key (kbd "k") #'previous-line)
+              (local-set-key (kbd "x") #'magit-discard)
+              ))
 #+end_src
 ** openwith
 #+begin_src emacs-lisp :tangle yes
@@ -371,7 +348,6 @@
   (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode) ; coloring nested parentheses
   (add-hook 'LaTeX-mode-hook #'rainbow-delimiters-mode)
 #+end_src
-
 ** anzu
 #+begin_src emacs-lisp :tangle yes
   (require 'anzu)
@@ -380,7 +356,6 @@
   (custom-set-faces
    `(lazy-highlight ((t (:foreground "Systemyellowcolor" :background "Violetred1")))))
 #+end_src
-
 ** winum
 #+begin_src emacs-lisp :tangle yes
   (add-to-list 'load-path "/path/to/install/folder/emacs-winum/")
@@ -459,6 +434,11 @@
   (with-eval-after-load 'smartparens (diminish 'smartparens-mode))
   (with-eval-after-load 'eldoc (diminish 'eldoc-mode))
   (diminish 'visual-line-mode)
+#+end_src
+** all-the-icons
+#+begin_src emacs-lisp :tangle yes
+  (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+  (setq all-the-icons-dired-monochrome nil)
 #+end_src
 
 * welcome page
