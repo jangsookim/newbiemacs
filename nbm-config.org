@@ -413,6 +413,9 @@
 #+begin_src emacs-lisp :tangle yes
   (projectile-mode)
   (setq projectile-enable-caching nil)
+  (setq projectile-sort-order 'recentf)
+  (setq projectile-indexing-method 'native)
+
 #+end_src
 ** diminish
 #+begin_src emacs-lisp :tangle yes
