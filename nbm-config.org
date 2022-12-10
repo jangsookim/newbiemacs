@@ -509,6 +509,7 @@
 #+begin_src emacs-lisp :tangle yes
   (when (equal system-type 'windows-nt)
     (set-language-environment "UTF-8")
+    (setq default-input-method "korean-hangul")
     )
 #+end_src
 
