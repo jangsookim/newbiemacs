@@ -41,7 +41,6 @@
   (evil-define-key '(normal visual motion) 'global (kbd ",") 'nbm-key-tree-mode)
   (evil-define-key '(normal visual motion insert) 'global (kbd "M-RET") 'nbm-key-tree-mode)
   (evil-define-key 'motion help-mode-map (kbd "TAB") 'forward-button)
-
 #+end_src
 ** evil-surround
 #+begin_src emacs-lisp :tangle yes
@@ -70,14 +69,11 @@
         evil-owl-max-string-length 50)
   (setq evil-owl-local-mark-format " %m: %s")
   (setq evil-owl-global-mark-format " %m: %s")
-  ;; (setq evil-owl-local-mark-format " %m: [l: %-5l, c: %-5c]\n    %s")
-  ;; (setq evil-owl-global-mark-format " %m: [l: %-5l, c: %-5c] %b\n    %s")
   (setq evil-owl-idle-delay 0.5)
 #+end_src
 
 * custom
 #+begin_src emacs-lisp :tangle yes
-
   (setq mac-command-modifier 'meta)
   (setq mac-option-modifier 'apple)
   (setq x-select-enable-clipboard t)
@@ -103,11 +99,6 @@
   (recentf-mode 1)
   (setq recentf-max-menu-items 55)
   (setq recentf-max-saved-items 55)
-
-  (setq which-key-prefix-prefix nil)
-
-  ;; (set-language-environment "UTF-8")
-  ;; (set-language-environment "Korean")
 #+end_src
 ** theme
 #+begin_src emacs-lisp :tangle yes
@@ -128,7 +119,6 @@
 #+end_src
 ** mode line
 #+begin_src emacs-lisp :tangle yes
-  ;; (require 'spaceline-config)
   (spaceline-spacemacs-theme)
   (spaceline-helm-mode)
   (spaceline-info-mode)
@@ -140,7 +130,6 @@
   (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
   (spaceline-toggle-input-method-on)
   (spaceline-toggle-version-control-off)
-  ;; (spaceline-toggle-window-number-off)
   (spaceline-toggle-buffer-encoding-abbrev-off)
   (setq spaceline-org-clock-p t)
 #+end_src
@@ -257,7 +246,6 @@
 #+end_src
 ** Org-Roam
 #+begin_src emacs-lisp :tangle yes
-  ;; Execute the following unless the system is Windows
   (when (package-installed-p 'org-roam)
     (setq org-roam-directory (concat *nbm-home* "org/"))
     (cond ((equal system-type 'windows-nt)
@@ -269,7 +257,6 @@
     (setq org-roam-capture-templates '(("d" "default" plain "%?"
                                         :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
                                                            "#+title: ${title}\n "
-                                                           ;; "#+title: ${title}\n#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup\n "
                                                            ))))
     )
 #+end_src
@@ -281,7 +268,6 @@
                (when (file-exists-p file)
                  (push file org-agenda-files)))
             (org-projectile-todo-files)))
-
 #+end_src
 ** org-bullets
 #+begin_src emacs-lisp :tangle yes
@@ -292,12 +278,10 @@
 * helm
 #+begin_src emacs-lisp :tangle yes
   (global-set-key (kbd "M-x") 'helm-M-x)
-                                          ;(setq helm-echo-input-in-header-line t)
   (setq helm-autoresize-mode t)
   (setq helm-display-header-line nil)
   (helm-mode 1)
   (add-hook 'helm-minibuffer-set-up-hook 'helm-exchange-minibuffer-and-header-line)
-
 #+end_src
 ** helm-bibtex
 #+begin_src emacs-lisp :tangle yes
@@ -334,7 +318,6 @@
               (setq dired-omit-verbose nil) ; this prevents showing "omitting..."
               ))
   (setq dired-dwim-target t)
-
 #+end_src
 * Minor packages
 ** rgrep
@@ -346,15 +329,6 @@
 #+begin_src emacs-lisp :tangle yes
   (setq ispell-program-name "/usr/local/bin/ispell")
   (setq ispell-personal-dictionary (concat *nbm-home* "nbm-user-settings/references/my-dictionary"))
-#+end_src
-** pdf-tools
-#+begin_src emacs-lisp :tangle yes
-  ;; To install pdf-tools do the following.
-  ;; M-x package-refresh-contents RET
-  ;; M-x package-install RET pdf-tools RET
-  ;; (when (package-installed-p 'pdf-tools)
-  ;;   (pdf-tools-install)
-  ;;   )
 #+end_src
 ** Magit
 #+begin_src emacs-lisp :tangle yes
@@ -394,7 +368,7 @@
 #+end_src
 ** rainbow-delimiters
 #+begin_src emacs-lisp :tangle yes
-  (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
+  (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode) ; coloring nested parentheses
   (add-hook 'LaTeX-mode-hook #'rainbow-delimiters-mode)
 #+end_src
 
@@ -436,28 +410,16 @@
 ** which-key
 #+begin_src emacs-lisp :tangle yes
   (which-key-mode)
+  (setq which-key-prefix-prefix nil)
 #+end_src
-
 ** beacon
 #+begin_src emacs-lisp :tangle yes
   (beacon-mode 1)
 #+end_src
-
 ** smartparens
 #+begin_src emacs-lisp :tangle yes
   (require 'smartparens-config)
   (smartparens-global-mode)
-
-#+end_src
-** Sage
-#+begin_src emacs-lisp :tangle yes
-  ;; To use sage in emacs, set up these lines correctly.
-  ;; (add-to-list 'auto-mode-alist '("\\.sage\\'" . python-mode))
-  ;; (setq sage-shell:use-prompt-toolkit nil)
-  ;; (setq sage-shell:sage-root "/Users/your-user-name/sage")
-  ;; (setq sage-shell:ask-command-options nil)
-  ;; (setenv "PATH" (concat "/Users/your-user-name/sage:" (getenv "PATH")))
-
 #+end_src
 ** company
 #+begin_src emacs-lisp :tangle yes
@@ -505,7 +467,7 @@
   (newbie)
 #+end_src
 
-* Windows
+* Windows only
 #+begin_src emacs-lisp :tangle yes
   (when (equal system-type 'windows-nt)
     (set-language-environment "UTF-8")
