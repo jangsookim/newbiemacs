@@ -4,38 +4,41 @@
 
 ;; packages here
 
+;; essential
+(unless (package-installed-p 'evil) (package-install 'evil))
+(unless (package-installed-p 'helm) (package-install 'helm))
+(unless (package-installed-p 'helm-org) (package-install 'helm-org))
+(unless (package-installed-p 'helm-bibtex) (package-install 'helm-bibtex))
+(unless (package-installed-p 'helm-org-rifle) (package-install 'helm-org-rifle))
+(unless (package-installed-p 'helm-projectile) (package-install 'helm-projectile))
+(unless (package-installed-p 'org-projectile) (package-install 'org-projectile))
+(unless (package-installed-p 'org-projectile-helm) (package-install 'org-projectile-helm))
+(unless (package-installed-p 'auctex) (package-install 'auctex))
+(unless (package-installed-p 'auctex-latexmk) (package-install 'auctex-latexmk))
+(unless (package-installed-p 'which-key) (package-install 'which-key))
+(unless (package-installed-p 'openwith) (package-install 'openwith))
+(unless (package-installed-p 'spacemacs-theme) (package-install 'spacemacs-theme))
+(unless (package-installed-p 'spaceline) (package-install 'spaceline))
+
+;; optional
 (unless (package-installed-p 'password-generator) (package-install 'password-generator))
 (unless (package-installed-p 'posframe) (package-install 'posframe))
 (unless (package-installed-p 'evil-owl) (package-install 'evil-owl))
+(unless (package-installed-p 'evil-org) (package-install 'evil-org))
+(unless (package-installed-p 'evil-surround) (package-install 'evil-surround))
+(unless (package-installed-p 'evil-nerd-commenter) (package-install 'evil-nerd-commenter))
 (unless (package-installed-p 'diminish) (package-install 'diminish))
 (unless (package-installed-p 'undo-tree) (package-install 'undo-tree))
 (unless (package-installed-p 'company) (package-install 'company))
-(unless (package-installed-p 'spaceline) (package-install 'spaceline))
 (unless (package-installed-p 'org-bullets) (package-install 'org-bullets))
-(unless (package-installed-p 'auctex-latexmk) (package-install 'auctex-latexmk))
-(unless (package-installed-p 'evil-surround) (package-install 'evil-surround))
 (unless (package-installed-p 'winum) (package-install 'winum))
-(unless (package-installed-p 'evil-nerd-commenter) (package-install 'evil-nerd-commenter))
 (unless (package-installed-p 'anzu) (package-install 'anzu))
-(unless (package-installed-p 'helm-bibtex) (package-install 'helm-bibtex))
 (unless (package-installed-p 'rainbow-delimiters) (package-install 'rainbow-delimiters))
 (unless (package-installed-p 'smartparens) (package-install 'smartparens))
-(unless (package-installed-p 'evil-org) (package-install 'evil-org))
 (unless (package-installed-p 'yasnippet) (package-install 'yasnippet))
 (unless (package-installed-p 'valign) (package-install 'valign))
 (unless (package-installed-p 'beacon) (package-install 'beacon))
-(unless (package-installed-p 'which-key) (package-install 'which-key))
 (unless (package-installed-p 'avy) (package-install 'avy))
-(unless (package-installed-p 'org-projectile-helm) (package-install 'org-projectile-helm))
-(unless (package-installed-p 'helm-org-rifle) (package-install 'helm-org-rifle))
-(unless (package-installed-p 'helm-org) (package-install 'helm-org))
-(unless (package-installed-p 'org-projectile) (package-install 'org-projectile))
-(unless (package-installed-p 'auctex) (package-install 'auctex))
-(unless (package-installed-p 'openwith) (package-install 'openwith))
-(unless (package-installed-p 'evil) (package-install 'evil))
-(unless (package-installed-p 'helm) (package-install 'helm))
-(unless (package-installed-p 'helm-projectile) (package-install 'helm-projectile))
-(unless (package-installed-p 'spacemacs-theme) (package-install 'spacemacs-theme))
 
 ;; On Windows these packages are optional.
 (unless (equal system-type 'windows-nt)
@@ -86,7 +89,7 @@
     )
   )
 
-;; On Windows create a file for latex with sumatraPDF
+;; On Windows create a file for latex with Sumatra PDF
 (when (equal system-type 'windows-nt)
   (unless (file-exists-p (concat (getenv "HOME") "/nbm-root/nbm-windows-config.el"))
     (find-file (concat (getenv "HOME") "/nbm-root/nbm-windows-config.el"))
