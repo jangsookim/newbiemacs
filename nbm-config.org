@@ -253,6 +253,7 @@
   (setq org-ref-default-bibliography(concat *nbm-home* "nbm-user-settings/references/ref.bib")
         bibtex-completion-bibliography (concat *nbm-home* "nbm-user-settings/references/ref.bib"))
 
+  (eval-after-load "org" '(require 'ox-md nil t))
 #+end_src
 ** Org-Roam
 #+begin_src emacs-lisp :tangle yes
