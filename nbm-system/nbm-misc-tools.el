@@ -47,7 +47,7 @@
 
   (set-frame-position (selected-frame) x y)
   (if (equal system-type 'windows-nt)
-      (set-frame-size  (selected-frame) width (+ height -60 + *nbm-magnet-height-adjust*) t) ; t means pixelwise dimension
+      (set-frame-size  (selected-frame) width (+ height -60 *nbm-magnet-height-adjust*) t) ; t means pixelwise dimension
     (set-frame-size  (selected-frame) width (+ height *nbm-magnet-height-adjust*) t)
     )
   )
