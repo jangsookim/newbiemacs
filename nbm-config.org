@@ -297,8 +297,14 @@
 
 * Dired
 #+begin_src emacs-lisp :tangle yes
-  (define-key dired-mode-map (kbd "SPC") 'nbm-key-tree-global)
-  (define-key dired-mode-map (kbd ",") 'nbm-key-tree-mode)
+  (evil-define-key 'normal dired-mode-map (kbd "SPC") 'nbm-key-tree-global)
+  (evil-define-key 'normal dired-mode-map (kbd ",") 'nbm-key-tree-mode)
+  (evil-define-key 'normal dired-mode-map (kbd "h") 'dired-up-directory)
+  (evil-define-key 'normal dired-mode-map (kbd "j") 'dired-next-line)
+  (evil-define-key 'normal dired-mode-map (kbd "k") 'dired-previous-line)
+  (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-find-file)
+  (evil-define-key 'normal dired-mode-map (kbd "W") 'wdired-change-to-wdired-mode)
+  (evil-define-key 'normal dired-mode-map (kbd "b") 'browse-url-of-dired-file)
   (setq dired-dwim-target t)
 #+end_src
 * Minor packages

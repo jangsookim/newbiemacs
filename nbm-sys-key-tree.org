@@ -34,7 +34,6 @@
 ** key: c, description: Comment/Color
 *** key: l, function: nbm-comment-or-uncomment-line
 *** key: c, function: helm-colors
-** key: e, description: Find el, function: nbm-find-el
 ** key: f, description: Files, function:
 *** key: b, function: bookmark-set
 *** key: f, function: helm-find-files
@@ -58,7 +57,7 @@
 ** key: g, description: git
 *** key: i, function: nbm-magit-init
 *** key: s, function: magit-status
-** key: h, description: Help
+** key: h, description: Help, function: newbie-help
 ** key: i, description: Insert
 *** key: p, description: Passwords
 **** key: s, description: simple, function: password-generator-simple
@@ -79,12 +78,16 @@
 *** key: r, function: org-roam-node-find
 *** key: s, description: Store link, function: org-store-link
 *** key: i, description: Insert link, function: org-insert-link
+*** key: S, function: org-roam-db-sync
 ** key: p, description: Find pdf, function: nbm-find-pdf
 ** key: r, description: Registers
 *** key: s, description: Set counter, function: nbm-set-counter
 *** key: a, description: Add counter, function: nbm-add-counter
 *** key: i, description: Insert counter, function: nbm-insert-counter
-** key: s, function: nbm-find-sage
+** key: s, description: Search
+*** key: e, description: Find el, function: nbm-find-el
+*** key: s, description: Find sage, function: nbm-find-sage
+*** key: g, function: helm-projectile-rg
 ** key: t, function: nbm-find-tex
 ** key: u, function: universal-argument
 ** key: w, description: Windows
@@ -165,7 +168,7 @@
 *** key: s, description: sec-ref, function: nbm-latex-sec-ref
 *** key: C, description: Cref, function: nbm-latex-Cref
 ** key: s, description: make symlink, function: nbm-latex-add-to-symlinks
-** key: T, description: Toggle
+** key: t, description: toggle
 *** key: b, description: toggle-bbl-file, function: nbm-latex-toggle-bbl-file
 *** key: e, description: toggle-equation, function: nbm-latex-toggle-equation
 *** key: *, description: toggle environ *, function: nbm-latex-toggle-star
