@@ -413,7 +413,9 @@
 
 * Welcome page
 #+begin_src emacs-lisp :tangle yes
-  (nbm-magnet-move-frame ?l)
+  (if *nbm-startup-frame*
+      (nbm-set-startup-frame)
+    (nbm-magnet-move-frame ?l))
   (newbie)
 #+end_src
 

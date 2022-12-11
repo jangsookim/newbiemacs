@@ -70,7 +70,6 @@
 (defvar *nbm-downloads*)
 (defvar *nbm-screenshots*)
 (defvar *newbie-current-file*)
-(defvar *nbm-magnet-height-adjust* 0)
 
 (setq *nbm-home* (with-temp-buffer (insert-file-contents (concat (getenv "HOME") "/nbm-root/nbm-home.txt"))
 					 (beginning-of-buffer) (end-of-line)
@@ -101,12 +100,23 @@
 
 (setq *newbie-current-file* *nbm-home*)
 
+(defvar *nbm-magnet-height-adjust* 0)
 (when (file-exists-p (concat *nbm-home* "nbm-user-settings/nbm-variables/nbm-magnet.txt"))
   (setq *nbm-magnet-height-adjust*
 	(with-temp-buffer
 	  (insert-file-contents (concat *nbm-home* "nbm-user-settings/nbm-variables/nbm-magnet.txt"))
 	  (beginning-of-buffer) (end-of-line)
 	  (string-to-number (buffer-substring (point-min) (point))))))
+
+(defvar *nbm-startup-frame* nil)
+(when (file-exists-p (concat *nbm-home* "nbm-user-settings/nbm-variables/nbm-startup-frame.txt"))
+  (setq *nbm-startup-frame*
+	(with-temp-buffer
+	  (insert-file-contents (concat *nbm-home* "nbm-user-settings/nbm-variables/nbm-startup-frame.txt"))
+	  (beginning-of-buffer) (end-of-line)
+	  (mapcar #'string-to-number
+		  (split-string (buffer-substring (point-min) (point)))))))
+
 
 ;; Read the system config file.
 (org-babel-load-file (concat (getenv "HOME") "/nbm-root/nbm-config.org"))

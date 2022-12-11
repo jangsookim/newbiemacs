@@ -5,9 +5,9 @@
     (setq choice (read-char (format
 			     "Select the position: (Like Vim, h means left and l means right.)\n
 %36s%18s\n
-%18s%18s%18s%18s\n\n
-%18s%18s    %s
-"
+%18s%18s%18s%18s\n
+%36s%18s\n
+%20s%26s"
 			     (concat (nbm-string-key "u") ": upper-left ")
 			     (concat (nbm-string-key "i") ": upper-right")
 			     (concat (nbm-string-key "h") ": left       ")
@@ -17,11 +17,11 @@
 			     (concat (nbm-string-key "c") ": center     ")
 			     (concat (nbm-string-key "m") ": max        ")
 			     (concat (nbm-string-key "a") ": adjust height")
+			     (concat (nbm-string-key "s") ": save as startup frame")
 			     )))
-    (if (equal ?a choice)
-	(nbm-magnet-adjust-height)
-      (nbm-magnet-move-frame choice))
-    ))
+    (cond ((equal ?a choice) (nbm-magnet-adjust-height))
+	  ((equal ?s choice) (nbm-save-frame-as-startup))
+	  (t (nbm-magnet-move-frame choice)))))
 
 (defun nbm-magnet-move-frame (pos)
   "Move the current frame as Magnet does."
@@ -48,9 +48,7 @@
   (set-frame-position (selected-frame) x y)
   (if (equal system-type 'windows-nt)
       (set-frame-size  (selected-frame) width (+ height -60 *nbm-magnet-height-adjust*) t) ; t means pixelwise dimension
-    (set-frame-size  (selected-frame) width (+ height *nbm-magnet-height-adjust*) t)
-    )
-  )
+    (set-frame-size  (selected-frame) width (+ height *nbm-magnet-height-adjust*) t)))
 
 (defun nbm-magnet-adjust-height ()
   "Adjust the off-set of max frame height."
@@ -68,6 +66,27 @@ Enter here: ")))
 	(find-file (concat *nbm-home* "nbm-user-settings/nbm-variables/nbm-magnet.txt"))
 	(erase-buffer) (insert (number-to-string *nbm-magnet-height-adjust*))
 	(save-buffer) (kill-buffer)))))
+
+(defun nbm-save-frame-as-startup ()
+  "Make the current frame size as the startup frame."
+  (interactive)
+  (find-file (concat *nbm-home* "nbm-user-settings/nbm-variables/nbm-startup-frame.txt"))
+  (erase-buffer)
+  (insert (format "%s %s %s %s"
+		  (car (frame-position)) (cdr (frame-position))
+		  (frame-width) (frame-height)))
+  (save-buffer) (kill-buffer)
+  (message "The current frame position and size will be used for the start-up frame."))
+
+(defun nbm-set-startup-frame ()
+  "Set up the startup frame."
+  (interactive)
+  (set-frame-position (selected-frame)
+		      (nth 0 *nbm-startup-frame*)
+		      (nth 1 *nbm-startup-frame*))
+  (set-frame-size (selected-frame)
+		  (nth 2 *nbm-startup-frame*)
+		  (nth 3 *nbm-startup-frame*)))
 
 (defun nbm-yank-favorite-string ()
   "Copy a frequently used string to the kill-ring."
