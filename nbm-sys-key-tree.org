@@ -33,7 +33,7 @@
 *** key: d, function: kill-this-buffer
 *** key: R, function: revert-buffer
 ** key: c, description: Comment/Color
-*** key: l, function: comment-line
+*** key: l, function: nbm-comment-or-uncomment-line
 *** key: c, function: helm-colors
 ** key: f, description: Files, function:
 *** key: b, function: bookmark-set

@@ -1,47 +1,14 @@
 (require 'package)
+(add-to-list 'package-archives '("gnu"   . "https://elpa.gnu.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
 
-;; packages here
-
-;; essential
-(unless (package-installed-p 'evil) (package-install 'evil))
-(unless (package-installed-p 'helm) (package-install 'helm))
-(unless (package-installed-p 'helm-org) (package-install 'helm-org))
-(unless (package-installed-p 'helm-bibtex) (package-install 'helm-bibtex))
-(unless (package-installed-p 'helm-org-rifle) (package-install 'helm-org-rifle))
-(unless (package-installed-p 'helm-projectile) (package-install 'helm-projectile))
-(unless (package-installed-p 'org-projectile) (package-install 'org-projectile))
-(unless (package-installed-p 'org-projectile-helm) (package-install 'org-projectile-helm))
-(unless (package-installed-p 'auctex) (package-install 'auctex))
-(unless (package-installed-p 'auctex-latexmk) (package-install 'auctex-latexmk))
-(unless (package-installed-p 'which-key) (package-install 'which-key))
-(unless (package-installed-p 'openwith) (package-install 'openwith))
-(unless (package-installed-p 'spacemacs-theme) (package-install 'spacemacs-theme))
-(unless (package-installed-p 'spaceline) (package-install 'spaceline))
-
-;; optional
-(unless (package-installed-p 'password-generator) (package-install 'password-generator))
-(unless (package-installed-p 'posframe) (package-install 'posframe))
-(unless (package-installed-p 'evil-owl) (package-install 'evil-owl))
-(unless (package-installed-p 'evil-org) (package-install 'evil-org))
-(unless (package-installed-p 'evil-surround) (package-install 'evil-surround))
-(unless (package-installed-p 'diminish) (package-install 'diminish))
-(unless (package-installed-p 'undo-tree) (package-install 'undo-tree))
-(unless (package-installed-p 'company) (package-install 'company))
-(unless (package-installed-p 'org-bullets) (package-install 'org-bullets))
-(unless (package-installed-p 'winum) (package-install 'winum))
-(unless (package-installed-p 'anzu) (package-install 'anzu))
-(unless (package-installed-p 'rainbow-delimiters) (package-install 'rainbow-delimiters))
-(unless (package-installed-p 'smartparens) (package-install 'smartparens))
-(unless (package-installed-p 'yasnippet) (package-install 'yasnippet))
-(unless (package-installed-p 'valign) (package-install 'valign))
-(unless (package-installed-p 'beacon) (package-install 'beacon))
-(unless (package-installed-p 'avy) (package-install 'avy))
-(unless (package-installed-p 'magit) (package-install 'magit))
-(unless (package-installed-p 'helm-rg) (package-install 'helm-rg))
-(unless (package-installed-p 'org-roam-ui) (package-install 'org-roam-ui))
-(unless (package-installed-p 'org-roam) (package-install 'org-roam))
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(eval-and-compile
+  (setq use-package-always-ensure t
+        use-package-expand-minimally t))
 
 ;; If ~/nbm-root/nbm-home.txt does not exist,
 ;; create a new newbiemacs folder under the home folder.
@@ -133,6 +100,7 @@
 
 (setq *newbie-current-file* *nbm-home*)
 
+;; Read the system config file.
 (org-babel-load-file (concat (getenv "HOME") "/nbm-root/nbm-config.org"))
 
 ;; Read the user init file.

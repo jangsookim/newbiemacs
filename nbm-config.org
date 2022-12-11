@@ -3,18 +3,191 @@
 :END:
 #+title: nbm-config
 
+* Diminish
+#+begin_src emacs-lisp :tangle yes
+  (use-package diminish)
+  (with-eval-after-load 'org-indent (diminish 'org-indent-mode))
+  (with-eval-after-load 'reftex (diminish 'reftex-mode))
+  (with-eval-after-load 'autorevert (diminish 'auto-revert-mode))
+  (with-eval-after-load 'eldoc (diminish 'eldoc-mode))
+  (diminish 'visual-line-mode)
+#+end_src
+
+* Packages
+#+begin_src emacs-lisp :tangle yes
+  (use-package evil :config (evil-mode))
+  (use-package evil-surround
+    :bind (:map evil-visual-state-map
+                ("s" . evil-surround-region))
+    :init (global-evil-surround-mode 1))
+
+  (use-package posframe)
+  (use-package evil-owl :diminish evil-owl-mode
+    :init
+    (evil-owl-mode)
+    (setq evil-owl-display-method 'posframe
+          evil-owl-extra-posframe-args '(:width 50 :height 30
+                                                :internal-border-width 1
+                                                :internal-border-color "Darkolivegreen1")
+          evil-owl-max-string-length 50)
+    (setq evil-owl-local-mark-format " %m: %s")
+    (setq evil-owl-global-mark-format " %m: %s")
+    (setq evil-owl-idle-delay 0.5))
+
+  (use-package evil-org :diminish evil-org-mode
+    :init
+    (with-eval-after-load 'evil-org
+      (add-to-list 'load-path (concat (getenv "HOME") "/.emacs.d/plugins/evil-org-mode"))
+      (add-hook 'org-mode-hook 'evil-org-mode)
+      (evil-org-set-key-theme '(navigation insert textobjects additional calendar))
+      (evil-define-key 'insert 'evil-org-mode (kbd "C-d") 'delete-char)
+      (evil-define-key 'insert 'evil-org-mode (kbd "RET") 'org-return-and-maybe-indent)
+      (require 'evil-org-agenda)
+      (evil-org-agenda-set-keys)))
+
+  (use-package evil-nerd-commenter)
+
+  (use-package projectile :diminish projectile-mode
+    :init
+    (projectile-mode)
+    (setq projectile-enable-caching nil)
+    (setq projectile-sort-order 'recentf)
+    (setq projectile-indexing-method 'native))
+
+  (use-package helm :diminish helm-mode
+    :init
+    (global-set-key (kbd "M-x") 'helm-M-x)
+    (setq helm-autoresize-mode t)
+    (setq helm-display-header-line nil)
+    (helm-mode 1)
+    (add-hook 'helm-minibuffer-set-up-hook 'helm-exchange-minibuffer-and-header-line))
+
+  (use-package helm-bibtex
+    :init
+    (with-eval-after-load 'helm-bibtex
+      (require 'bibtex-completion)
+      ;; changing the default action of helm-bibtex
+      (helm-add-action-to-source "Insert BibTeX key" 'helm-bibtex-insert-citation helm-source-bibtex 0)
+      (setq bibtex-completion-cite-prompt-for-optional-arguments nil)
+      (setq bibtex-completion-display-formats (quote ((t . "${year:4} ${author:26} ${title:**} "))))
+      ))
+
+  (use-package helm-projectile)
+  (use-package helm-rg)
+
+  (use-package org-roam-ui)
+  (use-package org-roam)
+
+  (use-package tex :ensure auctex)
+  (use-package auctex-latexmk)
+
+  (use-package which-key :diminish which-key-mode
+    :init
+    (which-key-mode)
+    (setq which-key-prefix-prefix nil))
+
+  (use-package openwith :init (openwith-mode t)
+    (setq openwith-associations '(("\\.hwp\\'" "open" (file))
+                                  ("\\.xlsx\\'" "open" (file))
+                                  ("\\.djvu\\'" "open" (file)))))
+
+  (use-package spacemacs-theme :defer t
+    :init (load-theme 'spacemacs-dark t))
+
+  (use-package spaceline)
+  
+  (use-package password-generator)
+
+  (use-package undo-tree :diminish undo-tree-mode
+    :init 
+    (evil-set-undo-system 'undo-tree)
+    (global-undo-tree-mode 1))
+
+  (use-package company :diminish company-mode
+    :init (global-company-mode))
+
+  (use-package org-bullets
+    :init 
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+
+  (use-package winum
+    :init
+    (setq winum-keymap
+          (let ((map (make-sparse-keymap)))
+            (define-key map (kbd "C-`") 'winum-select-window-by-number)
+            (define-key map (kbd "C-²") 'winum-select-window-by-number)
+            (define-key map (kbd "M-0") 'winum-select-window-0-or-10)
+            (define-key map (kbd "M-1") 'winum-select-window-1)
+            (define-key map (kbd "M-2") 'winum-select-window-2)
+            (define-key map (kbd "M-3") 'winum-select-window-3)
+            (define-key map (kbd "M-4") 'winum-select-window-4)
+            (define-key map (kbd "M-5") 'winum-select-window-5)
+            (define-key map (kbd "M-6") 'winum-select-window-6)
+            (define-key map (kbd "M-7") 'winum-select-window-7)
+            (define-key map (kbd "M-8") 'winum-select-window-8)
+            map))
+    (winum-mode))
+
+  (use-package anzu :diminish anzu-mode
+    :init
+    (global-anzu-mode +1)
+    (setq anzu-cons-mode-line-p nil)
+    (custom-set-faces
+     `(lazy-highlight ((t (:foreground "Systemyellowcolor" :background "Violetred1"))))))
+
+  (use-package rainbow-delimiters :diminish rainbow-delimiters-mode
+    :init
+    (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode) ; coloring nested parentheses
+    (add-hook 'LaTeX-mode-hook #'rainbow-delimiters-mode))
+
+  (use-package smartparens :diminish smartparens-mode
+    :init 
+    (require 'smartparens-config)
+    (smartparens-global-mode))
+
+  (use-package yasnippet :diminish yas-minor-mode
+    :init
+    (setq yas-snippet-dirs (list (concat *nbm-home* "nbm-user-settings/snippets/")))
+    (setq yas-triggers-in-field t); Enable nested triggering of snippets
+    (yas-global-mode 1) (yas-reload-all))
+
+  (use-package valign :diminish valign-mode
+    :init (add-hook 'org-mode-hook #'valign-mode))
+
+  (use-package beacon :diminish beacon-mode
+    :init (beacon-mode 1))
+
+  (use-package avy
+    :init
+    (setq avy-background t)
+    (setq avy-keys (number-sequence ?a ?z))
+    (setq avy-all-windows nil))
+
+  (use-package magit
+    :init
+    (setq transient-values
+          '((magit-log:magit-log-mode "-n256" "--graph" "--color" "--decorate")))
+    (add-hook 'magit-mode-hook
+              (lambda ()
+                (local-set-key (kbd "j") #'next-line)
+                (local-set-key (kbd "k") #'previous-line)
+                (local-set-key (kbd "x") #'magit-discard))))
+#+end_src
+
 * load files
 #+begin_src emacs-lisp :tangle yes
-  (require 'evil)
-  (evil-mode 1)
   (dolist (file (directory-files (concat (getenv "HOME") "/nbm-root/nbm-system") t "[.]el$"))
     (load-file file))
   (setq bookmark-default-file (concat *nbm-home* "nbm-user-settings/references/bookmark.el"))
+  
+  (setq ispell-program-name "/usr/local/bin/ispell")
+  (setq ispell-personal-dictionary (concat *nbm-home* "nbm-user-settings/references/my-dictionary"))
 
   (nbm-key-tree-load)
   (nbm-key-tree-appear-in-which-key)
   (load-file (nbm-f "nbm-user-settings/nbm-which-key.el"))
 #+end_src
+
 * evil mode
 #+begin_src emacs-lisp :tangle yes
   (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
@@ -41,35 +214,6 @@
   (evil-define-key '(normal visual motion) 'global (kbd ",") 'nbm-key-tree-mode)
   (evil-define-key '(normal visual motion insert) 'global (kbd "M-RET") 'nbm-key-tree-mode)
   (evil-define-key 'motion help-mode-map (kbd "TAB") 'forward-button)
-#+end_src
-** evil-surround
-#+begin_src emacs-lisp :tangle yes
-  (global-evil-surround-mode 1)
-  (define-key evil-visual-state-map (kbd "s") 'evil-surround-region)
-#+end_src
-** evil-org
-#+begin_src emacs-lisp :tangle yes
-  (add-to-list 'load-path (concat (getenv "HOME") "/.emacs.d/plugins/evil-org-mode"))
-  (require 'evil-org)
-  (add-hook 'org-mode-hook 'evil-org-mode)
-  (evil-org-set-key-theme '(navigation insert textobjects additional calendar))
-  (evil-define-key 'insert 'evil-org-mode (kbd "C-d") 'delete-char)
-  (evil-define-key 'insert 'evil-org-mode (kbd "RET") 'org-return-and-maybe-indent)
-
-  (require 'evil-org-agenda)
-  (evil-org-agenda-set-keys)
-#+end_src
-** evil-owl
-#+begin_src emacs-lisp :tangle yes
-  (evil-owl-mode)
-  (setq evil-owl-display-method 'posframe
-        evil-owl-extra-posframe-args '(:width 50 :height 30
-                                              :internal-border-width 1
-                                              :internal-border-color "Darkolivegreen1")
-        evil-owl-max-string-length 50)
-  (setq evil-owl-local-mark-format " %m: %s")
-  (setq evil-owl-global-mark-format " %m: %s")
-  (setq evil-owl-idle-delay 0.5)
 #+end_src
 
 * custom
@@ -99,10 +243,6 @@
   (recentf-mode 1)
   (setq recentf-max-menu-items 55)
   (setq recentf-max-saved-items 55)
-#+end_src
-** theme
-#+begin_src emacs-lisp :tangle yes
-  (load-theme 'spacemacs-dark t)
 #+end_src
 ** appearance
 #+begin_src emacs-lisp :tangle yes
@@ -201,7 +341,6 @@
 
 ** auctex-latexmk
 #+begin_src emacs-lisp :tangle yes
-  (require 'auctex-latexmk)
   (auctex-latexmk-setup)
   (setq auctex-latexmk-inherit-TeX-PDF-mode t)
   ;; To make latexmk use pdflatex we need ~/.latexmkrc file.
@@ -257,44 +396,8 @@
     (setq org-roam-capture-templates '(("d" "default" plain "%?"
                                         :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
                                                            "#+title: ${title}\n "
-                                                           ))))
-    )
+                                                           )))))
 #+end_src
-** org-projectile
-#+begin_src emacs-lisp :tangle yes
-  (with-eval-after-load 'org-agenda
-    (require 'org-projectile)
-    (mapcar #'(lambda (file)
-               (when (file-exists-p file)
-                 (push file org-agenda-files)))
-            (org-projectile-todo-files)))
-#+end_src
-** org-bullets
-#+begin_src emacs-lisp :tangle yes
-  (require 'org-bullets)
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-#+end_src
-
-* helm
-#+begin_src emacs-lisp :tangle yes
-  (global-set-key (kbd "M-x") 'helm-M-x)
-  (setq helm-autoresize-mode t)
-  (setq helm-display-header-line nil)
-  (helm-mode 1)
-  (add-hook 'helm-minibuffer-set-up-hook 'helm-exchange-minibuffer-and-header-line)
-#+end_src
-** helm-bibtex
-#+begin_src emacs-lisp :tangle yes
-  (with-eval-after-load 'helm-bibtex
-    (require 'bibtex-completion)
-    (message "helm-bibtex executed")
-
-    ;; changing the default action of helm-bibtex
-    (helm-add-action-to-source "Insert BibTeX key" 'helm-bibtex-insert-citation helm-source-bibtex 0)
-    (setq bibtex-completion-cite-prompt-for-optional-arguments nil)
-    (setq bibtex-completion-display-formats (quote ((t . "${year:4} ${author:26} ${title:**} ")))))
-#+end_src
-
 * Dired
 #+begin_src emacs-lisp :tangle yes
   (evil-define-key 'normal dired-mode-map (kbd "SPC") 'nbm-key-tree-global)
@@ -307,144 +410,8 @@
   (evil-define-key 'normal dired-mode-map (kbd "b") 'browse-url-of-dired-file)
   (setq dired-dwim-target t)
 #+end_src
-* Minor packages
-** rgrep
-#+begin_src emacs-lisp :tangle yes
-  (eval-after-load "grep" '(grep-compute-defaults))
-#+end_src
-# this is needed if an error occurs when grep is used the first time in the session.
-** ispell
-#+begin_src emacs-lisp :tangle yes
-  (setq ispell-program-name "/usr/local/bin/ispell")
-  (setq ispell-personal-dictionary (concat *nbm-home* "nbm-user-settings/references/my-dictionary"))
-#+end_src
-** Magit
-#+begin_src emacs-lisp :tangle yes
-  (setq transient-values
-        '((magit-log:magit-log-mode "-n256" "--graph" "--color" "--decorate")))
-  (add-hook 'magit-mode-hook
-            (lambda ()
-              (local-set-key (kbd "j") #'next-line)
-              (local-set-key (kbd "k") #'previous-line)
-              (local-set-key (kbd "x") #'magit-discard)
-              ))
-#+end_src
-** openwith
-#+begin_src emacs-lisp :tangle yes
-  (openwith-mode t)
-  (setq openwith-associations '(
-                                ("\\.hwp\\'" "open" (file))
-                                ("\\.xlsx\\'" "open" (file))
-                                ("\\.djvu\\'" "open" (file))))
 
-  (unless (equal (nth 1 (car TeX-view-program-selection)) "PDF Tools")
-    (setq openwith-associations (cons '("\\.pdf\\'" "open" (file)) openwith-associations))
-    )
-#+end_src
-** Yasnippet
-#+begin_src emacs-lisp :tangle yes
-  (require 'yasnippet)
-  (setq yas/root-directory (list (concat *nbm-home* "nbm-user-settings/snippets/")))
-  (yas-global-mode 1)
-  (yas-reload-all)
-  (setq yas/triggers-in-field t); Enable nested triggering of snippets
-#+end_src
-** rainbow-delimiters
-#+begin_src emacs-lisp :tangle yes
-  (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode) ; coloring nested parentheses
-  (add-hook 'LaTeX-mode-hook #'rainbow-delimiters-mode)
-#+end_src
-** anzu
-#+begin_src emacs-lisp :tangle yes
-  (require 'anzu)
-  (global-anzu-mode +1)
-  (setq anzu-cons-mode-line-p nil)
-  (custom-set-faces
-   `(lazy-highlight ((t (:foreground "Systemyellowcolor" :background "Violetred1")))))
-#+end_src
-** winum
-#+begin_src emacs-lisp :tangle yes
-  (add-to-list 'load-path "/path/to/install/folder/emacs-winum/")
-  (setq winum-keymap
-        (let ((map (make-sparse-keymap)))
-          (define-key map (kbd "C-`") 'winum-select-window-by-number)
-          (define-key map (kbd "C-²") 'winum-select-window-by-number)
-          (define-key map (kbd "M-0") 'winum-select-window-0-or-10)
-          (define-key map (kbd "M-1") 'winum-select-window-1)
-          (define-key map (kbd "M-2") 'winum-select-window-2)
-          (define-key map (kbd "M-3") 'winum-select-window-3)
-          (define-key map (kbd "M-4") 'winum-select-window-4)
-          (define-key map (kbd "M-5") 'winum-select-window-5)
-          (define-key map (kbd "M-6") 'winum-select-window-6)
-          (define-key map (kbd "M-7") 'winum-select-window-7)
-          (define-key map (kbd "M-8") 'winum-select-window-8)
-          map))
-  (require 'winum)
-  (winum-mode)
-#+end_src
-** avy
-#+begin_src emacs-lisp :tangle yes
-  (setq avy-background t)
-  (setq avy-keys (number-sequence ?a ?z))
-  (setq avy-all-windows nil)
-#+end_src
-** which-key
-#+begin_src emacs-lisp :tangle yes
-  (which-key-mode)
-  (setq which-key-prefix-prefix nil)
-#+end_src
-** beacon
-#+begin_src emacs-lisp :tangle yes
-  (beacon-mode 1)
-#+end_src
-** smartparens
-#+begin_src emacs-lisp :tangle yes
-  (require 'smartparens-config)
-  (smartparens-global-mode)
-#+end_src
-** company
-#+begin_src emacs-lisp :tangle yes
-  (global-company-mode)
-#+end_src
-** undo-tree
-#+begin_src emacs-lisp :tangle yes
-  (evil-set-undo-system 'undo-tree)
-  (global-undo-tree-mode 1)
-#+end_src
-** valign
-#+begin_src emacs-lisp :tangle yes
-  (add-hook 'org-mode-hook #'valign-mode)
-#+end_src
-** projectile
-#+begin_src emacs-lisp :tangle yes
-  (projectile-mode)
-  (setq projectile-enable-caching nil)
-  (setq projectile-sort-order 'recentf)
-  (setq projectile-indexing-method 'native)
-
-#+end_src
-** diminish
-#+begin_src emacs-lisp :tangle yes
-  (require 'diminish)
-  (with-eval-after-load 'undo-tree (diminish 'undo-tree-mode))
-  (with-eval-after-load 'evil-owl (diminish 'evil-owl-mode))
-  (with-eval-after-load 'valign (diminish 'valign-mode))
-  (with-eval-after-load 'org-indent (diminish 'org-indent-mode))
-  (with-eval-after-load 'projectile (diminish 'projectile-mode))
-  (with-eval-after-load 'company (diminish 'company-mode))
-  (with-eval-after-load 'beacon (diminish 'beacon-mode))
-  (with-eval-after-load 'which-key (diminish 'which-key-mode))
-  (with-eval-after-load 'anzu (diminish 'anzu-mode))
-  (with-eval-after-load 'yasnippet (diminish 'yas-minor-mode))
-  (with-eval-after-load 'helm (diminish 'helm-mode))
-  (with-eval-after-load 'reftex (diminish 'reftex-mode))
-  (with-eval-after-load 'evil-org (diminish 'evil-org-mode))
-  (with-eval-after-load 'autorevert (diminish 'auto-revert-mode))
-  (with-eval-after-load 'smartparens (diminish 'smartparens-mode))
-  (with-eval-after-load 'eldoc (diminish 'eldoc-mode))
-  (diminish 'visual-line-mode)
-#+end_src
-* welcome page
+* Welcome page
 #+begin_src emacs-lisp :tangle yes
   (nbm-magnet-move-frame ?l)
   (newbie)
@@ -454,7 +421,5 @@
 #+begin_src emacs-lisp :tangle yes
   (when (equal system-type 'windows-nt)
     (set-language-environment "UTF-8")
-    (setq default-input-method "korean-hangul")
-    )
+    (setq default-input-method "korean-hangul"))
 #+end_src
-
