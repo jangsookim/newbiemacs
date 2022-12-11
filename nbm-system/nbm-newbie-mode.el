@@ -29,6 +29,7 @@
   (newbie-mode)
   (read-only-mode)
   (newbie-init)
+  (evil-local-set-key 'normal (kbd "?") 'newbie-help)
   ;; (evil-local-set-key 'normal (kbd "a") ')
   ;; (evil-local-set-key 'normal (kbd "b") ')
   ;; (evil-local-set-key 'normal (kbd "c") ')
@@ -43,7 +44,7 @@
   ;; (evil-local-set-key 'normal (kbd "l") ')
   (evil-local-set-key 'normal (kbd "m") 'nbm-move-pdf-from-downloads)
   (evil-local-set-key 'normal (kbd "n") 'nbm-new-file)
-  (evil-local-set-key 'normal (kbd "o") 'newbie-open-file)
+  ;; (evil-local-set-key 'normal (kbd "o") 'newbie-open-file)
   (evil-local-set-key 'normal (kbd "p") 'nbm-find-pdf)
   (evil-local-set-key 'normal (kbd "q") 'newbie-quit)
   (evil-local-set-key 'normal (kbd "r") 'org-roam-node-find)
@@ -130,16 +131,16 @@
   "Start newbie."
   (nbm-insert 9 "                           <BACKSPACE>: Newbiemacs screen                         \n\n")
   (nbm-insert 3 (format "%2s%-15s->  " "" "Find files"))
-  (nbm-insert 3 (format "%2s%-19s" "" "t: tex find"))
   (nbm-insert 3 (format "%2s%-19s" "" "p: pdf find"))
+  (nbm-insert 3 (format "%2s%-19s" "" "t: tex find"))
   (nbm-insert 3 (format "%2s%-19s\n" "" "s: misc find"))
   (nbm-insert 6 (format "%2s%-15s->  " "" "Manage files"))
   (nbm-insert 6 (format "%2s%-19s" "" "m: move pdf"))
-  (nbm-insert 6 (format "%2s%-19s" "" "n: new file"))
+  (nbm-insert 6 (format "%2s%-19s" "" "n: new tex file"))
   (nbm-insert 6 (format "%2s%-19s\n" "" "S: symlink create"))
-  (nbm-insert 8 (format "%2s%-15s->  " "" "External"))
+  (nbm-insert 8 (format "%2s%-15s->  " "" "Links"))
+  (nbm-insert 8 (format "%2s%-19s" "" "?: Help"))
   (nbm-insert 8 (format "%2s%-19s" "" "F: Finder"))
-  (nbm-insert 8 (format "%2s%-19s" "" "o: open file"))
   (nbm-insert 8 (format "%2s%-19s\n" "" "y: yank filename"))
   (nbm-insert 5 (format "%2s%-15s->  " "" "Latex mode"))
   (nbm-insert 5 (format "%2s%-19s" "" "f: figure add"))
@@ -150,8 +151,8 @@
   (nbm-insert 2 (format "%2s%-19s" "" "u: org-roam-ui"))
   (nbm-insert 2 (format "%2s%-19s\n" "" "i: insert node"))
   (nbm-insert 4 (format "%2s%-15s->  " "" "Extra"))
-  (nbm-insert 4 (format "%2s%-19s" "" "g: game"))
-  (nbm-insert 4 (format "%2s%-19s" "" "x: setting"))
+  (nbm-insert 4 (format "%2s%-19s" "" "g: games"))
+  (nbm-insert 4 (format "%2s%-19s" "" "x: settings"))
   (nbm-insert 4 (format "%2s%-19s\n" "" "q: quit"))
 
   ;; (insert "\n")
@@ -275,13 +276,13 @@
       (nbm-insert 2 "\n\n  See the minibuffer at the bottom of this screen.
   You need to reload Newbiemacs if you change a variable.")
       (setq choice (read-char "What do you want to do?
+u) Update Newbiemacs
 1) Change the variable *nbm-desktop*
 2) Change the variable *nbm-downloads*
 3) Change the variable *nbm-screenshots*
-4) Update template tex files (The default file is \"template.tex\". You can add any number of tex files here.)
-5) Update the main bib file \"ref.bib\"
-6) Update my favorite strings in \"favorites.txt\".
-u) Update Newbiemacs.
+4) Modify template tex files (The default file is \"template.tex\". You can add any number of tex files here.)
+5) Modify the main bib file \"ref.bib\"
+6) Modify my favorite strings in \"favorites.txt\"
 q) quit"))
       (if (equal choice ?q) (kill-buffer)
 	(progn
@@ -339,6 +340,11 @@ u) user-init.el"))
     (if (equal choice ?u)
 	(find-file (nbm-f "nbm-user-settings/user-init.el")))
     ))
+
+(defun newbie-help ()
+  (interactive)
+  (browse-url "https://github.com/jangsookim/newbiemacs")
+  )
 
 (defun newbie-reload ()
   (interactive)
