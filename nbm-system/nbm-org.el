@@ -1,8 +1,8 @@
 (defun nbm-org-roam-search ()
   "Grep my org roam folder."
   (interactive)
-  (setq keyword (read-string "Enter the search keyword (regexp) for org-roam: " nil nil nil nil))
-  (rgrep keyword "*.org" (nbm-f "org/") nil))
+  (let ((helm-rg--current-dir (nbm-f "org/")))
+    (helm-rg "")))
 
 (defun nbm-org-toggle-strike-through ()
   "Toggle strike though the current item."

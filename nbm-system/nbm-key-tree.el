@@ -307,7 +307,7 @@ Repeated key-seqs are saved in *nbm-key-seqs-repeated*"
 (defun nbm-key-tree-prompt-string (subtrees)
   "Return a string for the key-tree-prompt from SUBTREES."
   (setq col-width 30)
-  (let (prompt temp T key func terminals internals col pos desc)
+  (let (prompt temp T key terminals internals col pos desc)
     (setq col (/ (frame-width) col-width)
 	  pos 0
 	  prompt ""

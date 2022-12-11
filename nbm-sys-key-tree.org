@@ -11,6 +11,7 @@
 ** key: TAB, description: Last buffer, function: evil-switch-to-windows-last-buffer
 ** key: ;, description: Toggle Korean/English, function: toggle-input-method
 ** key: !, description: shell command, function: nbm-shell-commend
+** key: ?, description: Help, function: newbie-help
 ** key: 0, description: Developer only
 *** key: 0, function: nbm-test
 *** key: 9, function: nbm-toggle-nbm-home
@@ -57,7 +58,6 @@
 ** key: g, description: git
 *** key: i, function: nbm-magit-init
 *** key: s, function: magit-status
-** key: h, description: Help, function: newbie-help
 ** key: i, description: Insert
 *** key: p, description: Passwords
 **** key: s, description: simple, function: password-generator-simple
@@ -108,7 +108,7 @@
 ** key: F, description: Frames
 *** key: d, function: delete-frame
 *** key: m, function: make-frame
-** key: G, function: nbm-rgrep
+** key: G, function: helm-rg
 ** key: R, function: nbm-org-roam-search
 ** key: S, description: Spell-check
 *** key: b, function: flyspell-buffer

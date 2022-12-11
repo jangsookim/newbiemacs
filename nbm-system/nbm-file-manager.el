@@ -77,13 +77,6 @@ e) el"))
               )
       (message "Wrong choice of extension!"))))
 
-(defun nbm-rgrep ()
-  "Do rgrep on the current folder on the files *.el *.tex *.org."
-  (interactive)
-  (let (search-key)
-    (setq search-key (read-string "Enter search key words: "))
-    (rgrep search-key "*.el *.tex *.org " ".")))
-
 (defun nbm-find-extensions-with-same-file-name ()
   "Find a list of extensions with the same file name as the current file in the current folder."
   (let (ext-list)
