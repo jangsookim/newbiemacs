@@ -93,7 +93,7 @@
     (insert "(setq TeX-view-program-list '((\"Sumatra PDF\" (\"\\\"")
     (insert (getenv "HOME"))
     (insert "/AppData/Local/SumatraPDF/SumatraPDF.exe\\\" -reuse-instance\" ")
-    (insert "(mode-io-correlate \" -forward-search %b %n \") \" %o\"))))\n")
+    (insert "(mode-io-correlate \" -forward-search \\\"%b\\\" %n \") \" %o\"))))\n")
     (insert "(setq TeX-view-program-selection '((output-pdf \"Sumatra PDF\")))")
     (save-buffer) (kill-buffer)))
 
