@@ -44,7 +44,7 @@
 
 (defun nbm-comment-or-uncomment-line ()
   (interactive)
-  (evilnc-comment-or-uncomment-lines 1))
+  (comment-line))
 
 (defun nbm-find-sys-key-tree ()
   (interactive)

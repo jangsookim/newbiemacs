@@ -26,7 +26,6 @@
 (unless (package-installed-p 'evil-owl) (package-install 'evil-owl))
 (unless (package-installed-p 'evil-org) (package-install 'evil-org))
 (unless (package-installed-p 'evil-surround) (package-install 'evil-surround))
-(unless (package-installed-p 'evil-nerd-commenter) (package-install 'evil-nerd-commenter))
 (unless (package-installed-p 'diminish) (package-install 'diminish))
 (unless (package-installed-p 'undo-tree) (package-install 'undo-tree))
 (unless (package-installed-p 'company) (package-install 'company))
