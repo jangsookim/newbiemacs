@@ -40,6 +40,7 @@
 (unless (package-installed-p 'beacon) (package-install 'beacon))
 (unless (package-installed-p 'avy) (package-install 'avy))
 (unless (package-installed-p 'magit) (package-install 'magit))
+(unless (package-installed-p 'helm-rg) (package-install 'helm-rg))
 
 ;; On Windows these packages are optional.
 (unless (equal system-type 'windows-nt)
