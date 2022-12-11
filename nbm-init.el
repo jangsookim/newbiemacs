@@ -70,6 +70,7 @@
 (defvar *nbm-downloads*)
 (defvar *nbm-screenshots*)
 (defvar *newbie-current-file*)
+(defvar *nbm-magnet-height-adjust* 0)
 
 (setq *nbm-home* (with-temp-buffer (insert-file-contents (concat (getenv "HOME") "/nbm-root/nbm-home.txt"))
 					 (beginning-of-buffer) (end-of-line)
@@ -99,6 +100,13 @@
       (if (> (length line) 0) (setq dirs (cons line dirs))))))
 
 (setq *newbie-current-file* *nbm-home*)
+
+(when (file-exists-p (concat *nbm-home* "nbm-user-settings/nbm-variables/nbm-magnet.txt"))
+  (setq *nbm-magnet-height-adjust*
+	(with-temp-buffer
+	  (insert-file-contents (concat *nbm-home* "nbm-user-settings/nbm-variables/nbm-magnet.txt"))
+	  (beginning-of-buffer) (end-of-line)
+	  (string-to-number (buffer-substring (point-min) (point))))))
 
 ;; Read the system config file.
 (org-babel-load-file (concat (getenv "HOME") "/nbm-root/nbm-config.org"))

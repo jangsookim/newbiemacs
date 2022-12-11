@@ -6,7 +6,7 @@
 			     "Select the position: (Like Vim, h means left and l means right.)\n
 %36s%18s\n
 %18s%18s%18s%18s\n\n
-%36s%18s
+%18s%18s    %s
 "
 			     (concat (nbm-string-key "u") ": upper-left ")
 			     (concat (nbm-string-key "i") ": upper-right")
@@ -16,8 +16,12 @@
 			     (concat (nbm-string-key "l") ": right      ")
 			     (concat (nbm-string-key "c") ": center     ")
 			     (concat (nbm-string-key "m") ": max        ")
+			     (concat (nbm-string-key "a") ": adjust height")
 			     )))
-    (nbm-magnet-move-frame choice)))
+    (if (equal ?a choice)
+	(nbm-magnet-adjust-height)
+      (nbm-magnet-move-frame choice))
+    ))
 
 (defun nbm-magnet-move-frame (pos)
   "Move the current frame as Magnet does."
@@ -43,11 +47,27 @@
 
   (set-frame-position (selected-frame) x y)
   (if (equal system-type 'windows-nt)
-      (set-frame-size  (selected-frame) width (- height 70) t) ; t means pixelwise dimension
-    (set-frame-size  (selected-frame) width height t)
+      (set-frame-size  (selected-frame) width (+ height -60 + *nbm-magnet-height-adjust*) t) ; t means pixelwise dimension
+    (set-frame-size  (selected-frame) width (+ height *nbm-magnet-height-adjust*) t)
     )
   )
 
+(defun nbm-magnet-adjust-height ()
+  "Adjust the off-set of max frame height."
+  (interactive)
+  (let (ht done)
+    (while (not done)
+      (setq *nbm-magnet-height-adjust*
+	    (string-to-number
+	     (read-string "Enter the number to increase the max frame height. (e.g. 30 or -20)
+Be careful not to enter a big number, which will make the frame go below the screen.
+Enter here: ")))
+      (nbm-magnet-move-frame ?m)
+      (when (equal ?y (read-char "Do you want to set this as the max frame height? (type y or n): "))
+	(setq done t)
+	(find-file (concat *nbm-home* "nbm-user-settings/nbm-variables/nbm-magnet.txt"))
+	(erase-buffer) (insert (number-to-string *nbm-magnet-height-adjust*))
+	(save-buffer) (kill-buffer)))))
 
 (defun nbm-yank-favorite-string ()
   "Copy a frequently used string to the kill-ring."
