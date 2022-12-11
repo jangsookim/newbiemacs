@@ -41,12 +41,8 @@
 (unless (package-installed-p 'avy) (package-install 'avy))
 (unless (package-installed-p 'magit) (package-install 'magit))
 (unless (package-installed-p 'helm-rg) (package-install 'helm-rg))
-
-;; On Windows these packages are optional.
-(unless (equal system-type 'windows-nt)
-  (unless (package-installed-p 'org-roam-ui) (package-install 'org-roam-ui))
-  (unless (package-installed-p 'org-roam) (package-install 'org-roam))
-  )
+(unless (package-installed-p 'org-roam-ui) (package-install 'org-roam-ui))
+(unless (package-installed-p 'org-roam) (package-install 'org-roam))
 
 ;; If ~/nbm-root/nbm-home.txt does not exist,
 ;; create a new newbiemacs folder under the home folder.
