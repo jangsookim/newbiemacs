@@ -65,7 +65,8 @@ Enter here: ")))
 	(setq done t)
 	(find-file (concat *nbm-home* "nbm-user-settings/nbm-variables/nbm-magnet.txt"))
 	(erase-buffer) (insert (number-to-string *nbm-magnet-height-adjust*))
-	(save-buffer) (kill-buffer)))))
+	(save-buffer) (kill-buffer))))
+  (message "The adjusted height will be used from now on."))
 
 (defun nbm-save-frame-as-startup ()
   "Make the current frame size as the startup frame."
