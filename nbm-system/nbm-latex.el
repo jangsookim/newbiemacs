@@ -600,7 +600,7 @@ will be returned."
 Return the string \"Author1, Author2. Year. Title.pdf\"."
   (let (title authors year temp filename str)
     (setq str (current-kill 0))
-    (setq title (nbm-modify-bibtex-title
+    (setq title (nbm-modify-paper-title
 		 (nbm-get-bibtex-entry "title" str)))
     (setq year (nbm-get-bibtex-entry "year" str))
     (setq authors (split-string (nbm-get-bibtex-entry "author" str) " and "))
@@ -609,13 +609,13 @@ Return the string \"Author1, Author2. Year. Title.pdf\"."
       (setq filename (concat (car (split-string (car authors) ",")) filename))
       (setq authors (cdr authors))
       (if (> (length authors) 0) (setq filename (concat ", " filename))))
-    filename))
+    (nbm-modify-paper-filename filename)))
 
-(defun nbm-modify-bibtex-title (title)
+(defun nbm-modify-paper-filename (title)
   "Modify the string TITLE so that it is suitable for a filename."
-  (setq title (replace-regexp-in-string "{\\|}\\|\\$" "" title))
+  (setq title (replace-regexp-in-string "{\\|}\\|\\$\\|\\\\\\|\n\\|`\\|'" "" title))
   (setq title (replace-regexp-in-string ":" "-" title))
-  title)
+  (xah-asciify-string title))
 
 (defun nbm-arxiv-make-filename ()
   "The two lines with title and authors from arxiv homepage must be copied. Return the string \"Author1, Author2. Title.pdf\"."
@@ -634,7 +634,7 @@ Return the string \"Author1, Author2. Year. Title.pdf\"."
       (setq filename (concat filename
                              (car (last (split-string (car authors) " ")))))
       (setq authors (cdr authors)))
-    (setq filename (concat filename ". " title ".pdf"))))
+    (setq filename (concat (nbm-modify-paper-filename filename) ". " title ".pdf"))))
 
 (defun nbm-move-pdf-from-downloads ()
   "Move the most recent PDF from the downloads folder to the pdf folder.
