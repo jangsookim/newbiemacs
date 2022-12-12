@@ -51,7 +51,7 @@
 
     (find-file (concat (getenv "HOME") "/newbiemacs/nbm-user-settings/nbm-variables/nbm-screenshots.txt"))
     (insert (concat (getenv "HOME") "/Desktop\n" ))
-    (insert (concat (getenv "HOME") "/Donwloads" ))
+    (insert (concat (getenv "HOME") "/Downloads" ))
     (save-buffer) (kill-buffer)))
 
 ;; On Windows create a file for latex with Sumatra PDF

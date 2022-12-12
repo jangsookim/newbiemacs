@@ -520,7 +520,7 @@ https://beta.mathscinet.ams.org/mathscinet/beta"
       (insert (concat " See Figure~\\ref{fig:" fig "}.\n"
 		      "\n\\begin{figure}\n"
 		      "  \\centering\n"
-		      "  \\includegraphics[scale=.2]{./figures/" fig ext "}\n"
+		      "  \\includegraphics[scale=.5]{./figures/" fig ext "}\n"
 		      "  \\caption{}\n"
 		      "  \\label{fig:" fig "}\n"
 		      "\\end{figure}\n\n"))
