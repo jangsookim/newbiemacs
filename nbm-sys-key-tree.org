@@ -46,7 +46,7 @@
 *** key: s, function: save-buffer
 *** key: D, function: nbm-copy-to-desktop
 *** key: F, function: nbm-show-in-finder
-*** key: S, function: nbm-add-to-misc-symlinks
+*** key: S, function: nbm-add-to-symlinks
 *** key: T, function: nbm-show-trash-bin
 *** key: U, description: Updates
 **** key: e, function: nbm-update-string-in-el
@@ -167,7 +167,6 @@
 *** key: r, description: reftex-reference, function: reftex-reference
 *** key: s, description: sec-ref, function: nbm-latex-sec-ref
 *** key: C, description: Cref, function: nbm-latex-Cref
-** key: s, description: make symlink, function: nbm-latex-add-to-symlinks
 ** key: t, description: toggle
 *** key: b, description: toggle-bbl-file, function: nbm-latex-toggle-bbl-file
 *** key: e, description: toggle-equation, function: nbm-latex-toggle-equation

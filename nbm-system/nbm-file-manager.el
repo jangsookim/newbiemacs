@@ -60,6 +60,13 @@ If search-flag is non-nil, it will list files ending with EXT."
 				      (file-name-nondirectory (nbm-get-file-name)))))
   (message (format "A symbolic link created in the following directory.\n%s" (nbm-f "misc/symlinks/"))))
 
+(defun nbm-add-to-symlinks ()
+  "Create a symbolic link of the current file in the tex or misc-symlinks folder."
+  (interactive)
+  (if (equal (file-name-extension (buffer-file-name)) "tex")
+      (nbm-latex-add-to-symlinks)
+    (nbm-add-to-misc-symlinks)))
+
 (defun nbm-new-file ()
   "Create a new file with a chosen EXTENSION in the folder newbiemacs/EXTENSION."
   (interactive)
