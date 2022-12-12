@@ -16,6 +16,7 @@
 * Packages
 #+begin_src emacs-lisp :tangle yes
   (use-package evil :config (evil-mode))
+
   (use-package evil-surround
     :bind (:map evil-visual-state-map
                 ("s" . evil-surround-region))

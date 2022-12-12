@@ -600,7 +600,8 @@ will be returned."
 Return the string \"Author1, Author2. Year. Title.pdf\"."
   (let (title authors year temp filename str)
     (setq str (current-kill 0))
-    (setq title (nbm-get-bibtex-entry "title" str))
+    (setq title (nbm-modify-bibtex-title
+		 (nbm-get-bibtex-entry "title" str)))
     (setq year (nbm-get-bibtex-entry "year" str))
     (setq authors (split-string (nbm-get-bibtex-entry "author" str) " and "))
     (setq filename (format ". %s. %s.pdf" year title))
@@ -610,6 +611,11 @@ Return the string \"Author1, Author2. Year. Title.pdf\"."
       (if (> (length authors) 0) (setq filename (concat ", " filename))))
     filename))
 
+(defun nbm-modify-bibtex-title (title)
+  "Modify the string TITLE so that it is suitable for a filename."
+  (setq title (replace-regexp-in-string "{\\|}\\|\\$" "" title))
+  (setq title (replace-regexp-in-string ":" "-" title))
+  title)
 
 (defun nbm-arxiv-make-filename ()
   "The two lines with title and authors from arxiv homepage must be copied. Return the string \"Author1, Author2. Title.pdf\"."
@@ -642,7 +648,7 @@ Two lines from arxiv or a bibtex code from mathscinet must be copied first."
     (when pdf
       (setq choice (read-char (format "Move %s into the following folder?\n%s\n\ny: yes\nq: quit
 
-(Note: Two lines from arxiv or three lines from mathscinet must be copied first.)" pdf *nbm-pdf*)))
+(Note: Two lines from arxiv or a bibtex item from mathscinet must be copied first.)" pdf *nbm-pdf*)))
       (when (equal choice ?y)
 	(setq temp (current-kill 0))
 	(if (equal (substring temp 0 1) "@") (setq mathscinet t))
