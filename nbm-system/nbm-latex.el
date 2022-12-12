@@ -40,7 +40,7 @@ If there is no title, return the filename."
       (setq temp (car (last (split-string (pop authors) " "))))
       (setq file-name (format "%s%s" temp file-name))
       (if authors (setq file-name (concat ", " file-name))))
-    file-name))
+    (nbm-modify-paper-filename file-name)))
 
 (defun nbm-latex-custom-filename ()
   "Make a custom filename using nbm-latex-make-filename."
@@ -600,10 +600,11 @@ will be returned."
 Return the string \"Author1, Author2. Year. Title.pdf\"."
   (let (title authors year temp filename str)
     (setq str (current-kill 0))
-    (setq title (nbm-modify-paper-title
+    (setq title (nbm-modify-paper-filename
 		 (nbm-get-bibtex-entry "title" str)))
     (setq year (nbm-get-bibtex-entry "year" str))
     (setq authors (split-string (nbm-get-bibtex-entry "author" str) " and "))
+    (setq authors (reverse authors))
     (setq filename (format ". %s. %s.pdf" year title))
     (while authors
       (setq filename (concat (car (split-string (car authors) ",")) filename))
@@ -613,7 +614,8 @@ Return the string \"Author1, Author2. Year. Title.pdf\"."
 
 (defun nbm-modify-paper-filename (title)
   "Modify the string TITLE so that it is suitable for a filename."
-  (setq title (replace-regexp-in-string "{\\|}\\|\\$\\|\\\\\\|\n\\|`\\|'" "" title))
+  (setq title (replace-regexp-in-string "\\\\'\\|{\\|}\\|\\$\\|\\\\\\|\n\\|`\\|''" "" title))
+  (setq title (replace-regexp-in-string "\"" "" title))
   (setq title (replace-regexp-in-string ":" "-" title))
   (xah-asciify-string title))
 
@@ -626,7 +628,8 @@ Return the string \"Author1, Author2. Year. Title.pdf\"."
       (unless (equal line "")     ; Sometimes the newline \n is copied in between.
 	(setq arxiv (nbm-append line arxiv))))
     (setq title (car arxiv))
-    (setq authors (split-string (nth 1 arxiv) ","))
+    (setq authors (replace-regexp-in-string " *([^)]*)" "" (nth 1 arxiv)))
+    (setq authors (split-string authors ","))
     (setq filename "")
     (while authors
       (if (> (length filename) 0)
@@ -634,7 +637,7 @@ Return the string \"Author1, Author2. Year. Title.pdf\"."
       (setq filename (concat filename
                              (car (last (split-string (car authors) " ")))))
       (setq authors (cdr authors)))
-    (setq filename (concat (nbm-modify-paper-filename filename) ". " title ".pdf"))))
+    (setq filename (nbm-modify-paper-filename (concat filename ". " title ".pdf")))))
 
 (defun nbm-move-pdf-from-downloads ()
   "Move the most recent PDF from the downloads folder to the pdf folder.
