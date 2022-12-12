@@ -3,50 +3,13 @@
 :END:
 #+title: nbm-config
 
-* Diminish
-#+begin_src emacs-lisp :tangle yes
-  (use-package diminish)
-  (with-eval-after-load 'org-indent (diminish 'org-indent-mode))
-  (with-eval-after-load 'reftex (diminish 'reftex-mode))
-  (with-eval-after-load 'autorevert (diminish 'auto-revert-mode))
-  (with-eval-after-load 'eldoc (diminish 'eldoc-mode))
-  (diminish 'visual-line-mode)
-#+end_src
-
 * Packages
+** Core Packages
 #+begin_src emacs-lisp :tangle yes
   (use-package evil :config (evil-mode))
 
-  (use-package evil-surround
-    :bind (:map evil-visual-state-map
-                ("s" . evil-surround-region))
-    :init (global-evil-surround-mode 1))
-
-  (use-package posframe)
-  (use-package evil-owl :diminish evil-owl-mode
-    :init
-    (evil-owl-mode)
-    (setq evil-owl-display-method 'posframe
-          evil-owl-extra-posframe-args '(:width 50 :height 30
-                                                :internal-border-width 1
-                                                :internal-border-color "Darkolivegreen1")
-          evil-owl-max-string-length 50)
-    (setq evil-owl-local-mark-format " %m: %s")
-    (setq evil-owl-global-mark-format " %m: %s")
-    (setq evil-owl-idle-delay 0.5))
-
-  (use-package evil-org :diminish evil-org-mode
-    :init
-    (with-eval-after-load 'evil-org
-      (add-to-list 'load-path (concat (getenv "HOME") "/.emacs.d/plugins/evil-org-mode"))
-      (add-hook 'org-mode-hook 'evil-org-mode)
-      (evil-org-set-key-theme '(navigation insert textobjects additional calendar))
-      (evil-define-key 'insert 'evil-org-mode (kbd "C-d") 'delete-char)
-      (evil-define-key 'insert 'evil-org-mode (kbd "RET") 'org-return-and-maybe-indent)
-      (require 'evil-org-agenda)
-      (evil-org-agenda-set-keys)))
-
-  (use-package evil-nerd-commenter)
+  (use-package tex :ensure auctex)
+  (use-package auctex-latexmk)
 
   (use-package projectile :diminish projectile-mode
     :init
@@ -63,6 +26,8 @@
     (helm-mode 1)
     (add-hook 'helm-minibuffer-set-up-hook 'helm-exchange-minibuffer-and-header-line))
 
+  (use-package helm-projectile)
+
   (use-package helm-bibtex
     :init
     (with-eval-after-load 'helm-bibtex
@@ -70,17 +35,10 @@
       ;; changing the default action of helm-bibtex
       (helm-add-action-to-source "Insert BibTeX key" 'helm-bibtex-insert-citation helm-source-bibtex 0)
       (setq bibtex-completion-cite-prompt-for-optional-arguments nil)
-      (setq bibtex-completion-display-formats (quote ((t . "${year:4} ${author:26} ${title:**} "))))
-      ))
+      (setq bibtex-completion-display-formats (quote ((t . "${year:4} ${author:26} ${title:**} "))))))
 
-  (use-package helm-projectile)
-  (use-package helm-rg)
-
-  (use-package org-roam-ui)
   (use-package org-roam)
-
-  (use-package tex :ensure auctex)
-  (use-package auctex-latexmk)
+  (use-package org-roam-ui)
 
   (use-package which-key :diminish which-key-mode
     :init
@@ -92,11 +50,61 @@
                                   ("\\.xlsx\\'" "open" (file))
                                   ("\\.djvu\\'" "open" (file)))))
 
+  (use-package yasnippet :diminish yas-minor-mode
+    :init
+    (setq yas-snippet-dirs (list (concat *nbm-home* "nbm-user-settings/snippets/")))
+    (setq yas-triggers-in-field t); Enable nested triggering of snippets
+    (yas-global-mode 1) (yas-reload-all))
+
   (use-package spacemacs-theme :defer t
     :init (load-theme 'spacemacs-dark t))
 
   (use-package spaceline)
-  
+#+end_src
+
+** Additional Package
+#+begin_src emacs-lisp :tangle yes
+  (use-package magit
+    :init
+    (setq transient-values
+          '((magit-log:magit-log-mode "-n256" "--graph" "--color" "--decorate")))
+    (add-hook 'magit-mode-hook
+              (lambda ()
+                (local-set-key (kbd "j") #'next-line)
+                (local-set-key (kbd "k") #'previous-line)
+                (local-set-key (kbd "x") #'magit-discard))))
+
+  (use-package evil-surround
+    :bind (:map evil-visual-state-map
+                ("s" . evil-surround-region))
+    :init (global-evil-surround-mode 1))
+
+  (use-package evil-org :diminish evil-org-mode
+    :init
+    (with-eval-after-load 'evil-org
+      (add-to-list 'load-path (concat (getenv "HOME") "/.emacs.d/plugins/evil-org-mode"))
+      (add-hook 'org-mode-hook 'evil-org-mode)
+      (evil-org-set-key-theme '(navigation insert textobjects additional calendar))
+      (evil-define-key 'insert 'evil-org-mode (kbd "C-d") 'delete-char)
+      (evil-define-key 'insert 'evil-org-mode (kbd "RET") 'org-return-and-maybe-indent)
+      (require 'evil-org-agenda)
+      (evil-org-agenda-set-keys)))
+
+  (use-package evil-nerd-commenter)
+
+  (use-package posframe)
+  (use-package evil-owl :diminish evil-owl-mode
+    :init
+    (evil-owl-mode)
+    (setq evil-owl-display-method 'posframe
+          evil-owl-extra-posframe-args '(:width 50 :height 30
+                                                :internal-border-width 1
+                                                :internal-border-color "Darkolivegreen1")
+          evil-owl-max-string-length 50)
+    (setq evil-owl-local-mark-format " %m: %s")
+    (setq evil-owl-global-mark-format " %m: %s")
+    (setq evil-owl-idle-delay 0.5))
+
   (use-package password-generator)
 
   (use-package undo-tree :diminish undo-tree-mode
@@ -146,12 +154,6 @@
     (require 'smartparens-config)
     (smartparens-global-mode))
 
-  (use-package yasnippet :diminish yas-minor-mode
-    :init
-    (setq yas-snippet-dirs (list (concat *nbm-home* "nbm-user-settings/snippets/")))
-    (setq yas-triggers-in-field t); Enable nested triggering of snippets
-    (yas-global-mode 1) (yas-reload-all))
-
   (use-package valign :diminish valign-mode
     :init (add-hook 'org-mode-hook #'valign-mode))
 
@@ -163,30 +165,88 @@
     (setq avy-background t)
     (setq avy-keys (number-sequence ?a ?z))
     (setq avy-all-windows nil))
-
-  (use-package magit
-    :init
-    (setq transient-values
-          '((magit-log:magit-log-mode "-n256" "--graph" "--color" "--decorate")))
-    (add-hook 'magit-mode-hook
-              (lambda ()
-                (local-set-key (kbd "j") #'next-line)
-                (local-set-key (kbd "k") #'previous-line)
-                (local-set-key (kbd "x") #'magit-discard))))
 #+end_src
+** Diminish
+#+begin_src emacs-lisp :tangle yes
+  (use-package diminish)
+  (with-eval-after-load 'org-indent (diminish 'org-indent-mode))
+  (with-eval-after-load 'reftex (diminish 'reftex-mode))
+  (with-eval-after-load 'autorevert (diminish 'auto-revert-mode))
+  (with-eval-after-load 'eldoc (diminish 'eldoc-mode))
+  (diminish 'visual-line-mode)
+#+end_src
+
 
 * load files
 #+begin_src emacs-lisp :tangle yes
   (dolist (file (directory-files (concat (getenv "HOME") "/nbm-root/nbm-system") t "[.]el$"))
     (load-file file))
   (setq bookmark-default-file (concat *nbm-home* "nbm-user-settings/references/bookmark.el"))
-  
+
   (setq ispell-program-name "/usr/local/bin/ispell")
   (setq ispell-personal-dictionary (concat *nbm-home* "nbm-user-settings/references/my-dictionary"))
 
   (nbm-key-tree-load)
   (nbm-key-tree-appear-in-which-key)
   (load-file (nbm-f "nbm-user-settings/nbm-which-key.el"))
+#+end_src
+
+* customization
+** system
+#+begin_src emacs-lisp :tangle yes
+  (setq mac-command-modifier 'meta)
+  (setq mac-option-modifier 'apple)
+  (setq x-select-enable-clipboard t)
+  (setq delete-by-moving-to-trash t)
+  (setq trash-directory (nbm-f "trash-bin/"))
+  (unless (file-exists-p trash-directory) (make-directory trash-directory))
+
+  (setq default-input-method "korean-hangul")
+
+  (setq help-window-select t)
+  (defalias 'yes-or-no-p 'y-or-n-p)
+  (setq large-file-warning-threshold nil)
+
+  (save-place-mode)
+  (setq find-file-visit-truename t)
+
+  (recentf-mode 1)
+  (setq recentf-max-menu-items 55)
+  (setq recentf-max-saved-items 55)
+#+end_src
+** appearance
+#+begin_src emacs-lisp :tangle yes
+  (global-visual-line-mode)
+  (global-hl-line-mode)
+
+  (setq max-mini-window-height 0.8)
+
+  (tool-bar-mode -1)
+  (setq scroll-step 1) ;; keyboard scroll one line at a time
+
+  (set-face-attribute 'default nil :height 150)
+  (setq ring-bell-function 'ignore)
+  (setq resize-mini-windows t)
+  (setq show-trailing-whitespace t)
+  (set-cursor-color "LightGreen")
+
+  (setq inhibit-startup-screen t)
+#+end_src
+** mode line
+#+begin_src emacs-lisp :tangle yes
+  (spaceline-spacemacs-theme)
+  (spaceline-helm-mode)
+  (spaceline-info-mode)
+  (setq winum-auto-setup-mode-line nil)
+
+  (setq mode-line-position (list "(%l,%c)"))
+  (setq display-time-mode t)
+  (setq size-indication-mode t)
+  (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
+  (spaceline-toggle-input-method-on)
+  (spaceline-toggle-version-control-off)
+  (spaceline-toggle-buffer-encoding-abbrev-off)
+  (setq spaceline-org-clock-p t)
 #+end_src
 
 * evil mode
@@ -217,64 +277,6 @@
   (evil-define-key 'motion help-mode-map (kbd "TAB") 'forward-button)
 #+end_src
 
-* custom
-#+begin_src emacs-lisp :tangle yes
-  (setq mac-command-modifier 'meta)
-  (setq mac-option-modifier 'apple)
-  (setq x-select-enable-clipboard t)
-  (setq delete-by-moving-to-trash t)
-  (setq trash-directory (nbm-f "trash-bin/"))
-  (unless (file-exists-p trash-directory)
-    (make-directory trash-directory))
-
-  (setq default-input-method "korean-hangul")
-  (global-visual-line-mode)
-  (global-hl-line-mode)
-
-  (setq help-window-select t)
-  (defalias 'yes-or-no-p 'y-or-n-p)
-  (setq large-file-warning-threshold nil)
-
-  (setq max-mini-window-height 0.8)
-
-  (setq find-file-visit-truename t)
-  (save-place-mode)
-  (setq max-mini-window-height nil)
-
-  (recentf-mode 1)
-  (setq recentf-max-menu-items 55)
-  (setq recentf-max-saved-items 55)
-#+end_src
-** appearance
-#+begin_src emacs-lisp :tangle yes
-  (tool-bar-mode -1)
-  (setq scroll-step 1) ;; keyboard scroll one line at a time
-
-  (set-face-attribute 'default nil :height 150)
-  (setq ring-bell-function 'ignore)
-  (setq resize-mini-windows t)
-  (setq show-trailing-whitespace t)
-  (set-cursor-color "LightGreen")
-
-  (setq inhibit-startup-screen t)
-#+end_src
-** mode line
-#+begin_src emacs-lisp :tangle yes
-  (spaceline-spacemacs-theme)
-  (spaceline-helm-mode)
-  (spaceline-info-mode)
-  (setq winum-auto-setup-mode-line nil)
-
-  (setq mode-line-position (list "(%l,%c)"))
-  (setq display-time-mode t)
-  (setq size-indication-mode t)
-  (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
-  (spaceline-toggle-input-method-on)
-  (spaceline-toggle-version-control-off)
-  (spaceline-toggle-buffer-encoding-abbrev-off)
-  (setq spaceline-org-clock-p t)
-#+end_src
-
 * latex
 #+begin_src emacs-lisp :tangle yes
   (server-start)                        ; This is needed for Skim to inverse search
@@ -284,9 +286,7 @@
   (setq TeX-save-query nil)
   (setq TeX-auto-save t)
   (setq TeX-electric-math (cons "\\( " " \\)"))
-  ;; (setq TeX-insert-braces nil)
   (setq reftex-plug-into-AUCTeX t)
-  ;; (add-hook 'LaTeX-mode-hook 'visual-line-mode)
   (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
   (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
   (add-hook 'LaTeX-mode-hook (lambda () (setq TeX-command-default "LatexMk")))
@@ -300,29 +300,25 @@
           (?- "overline" nil nil )
           (?3 "comment" nil nil )
           (?= "equiv" nil nil )
-          (? "" nil nil )
-          ))
+          (? "" nil nil )))
 
   ;; On Mac, Skim will be used as a pdf-viewer.
   (when (equal system-type 'darwin)
     (setq TeX-view-program-list
           '(("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o"))
-          TeX-view-program-selection '((output-pdf "Skim")))
-    )
+          TeX-view-program-selection '((output-pdf "Skim"))))
+
   ;; On Windows, SumatraPDF will be used as a pdf-viewer.
   (when (equal system-type 'windows-nt)
-    (load-file (concat (getenv "HOME") "/nbm-root/nbm-windows-config.el"))
-    )
+    (load-file (concat (getenv "HOME") "/nbm-root/nbm-windows-config.el")))
 
   ;; The following is helpful for recognizing ^ and _ in latex code.
   (custom-set-faces
    '(font-latex-script-char-face ((t (:foreground "Systemorangecolor"))))
-   '(font-latex-sectioning-2-face ((t (:foreground "Systemyellowcolor"))))
-   )
+   '(font-latex-sectioning-2-face ((t (:foreground "Systemyellowcolor")))))
 
   (setq font-latex-user-keyword-classes
-        '(
-          ("mathcomment" ("comment") custom-changed noarg)
+        '(("mathcomment" ("comment") custom-changed noarg)
           ("mathnoarg1" ("frac" "binom") success noarg)
           ("mathnoarg2" ("left" "right" ) custom-variable-tag noarg)
           ("mathnoarg3" ("le" "ge") epa-mark noarg)
@@ -335,9 +331,7 @@
           ("mathnoarg6" ("sum" "prod") message-header-subject noarg)
           ("mathnoarg7" ("delta") message-mml noarg)
           ("mathnoarg8" ("epsilon") message-header-other noarg)
-          ("mathnoarg9" ("kappa") org-level-4 noarg)
-          ))
-
+          ("mathnoarg9" ("kappa") org-level-4 noarg)))
 #+end_src
 
 ** auctex-latexmk
@@ -391,13 +385,11 @@
     (cond ((equal system-type 'windows-nt)
            (setq org-roam-graph-viewer "c:/Program Files/Google/Chrome/Application/chrome.exe"))
           ((equal system-type 'darwin)
-           (setq org-roam-graph-viewer "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"))
-          )
+           (setq org-roam-graph-viewer "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")))
     (org-roam-db-autosync-mode)
     (setq org-roam-capture-templates '(("d" "default" plain "%?"
                                         :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-                                                           "#+title: ${title}\n "
-                                                           )))))
+                                                           "#+title: ${title}\n ")))))
 #+end_src
 * Dired
 #+begin_src emacs-lisp :tangle yes

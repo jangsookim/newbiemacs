@@ -3,6 +3,9 @@
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
 
+(unless package-archive-contents
+  (package-refresh-contents))
+
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
@@ -49,9 +52,7 @@
     (find-file (concat (getenv "HOME") "/newbiemacs/nbm-user-settings/nbm-variables/nbm-screenshots.txt"))
     (insert (concat (getenv "HOME") "/Desktop\n" ))
     (insert (concat (getenv "HOME") "/Donwloads" ))
-    (save-buffer) (kill-buffer)
-    )
-  )
+    (save-buffer) (kill-buffer)))
 
 ;; On Windows create a file for latex with Sumatra PDF
 (when (equal system-type 'windows-nt)
@@ -116,7 +117,6 @@
 	  (beginning-of-buffer) (end-of-line)
 	  (mapcar #'string-to-number
 		  (split-string (buffer-substring (point-min) (point)))))))
-
 
 ;; Read the system config file.
 (org-babel-load-file (concat (getenv "HOME") "/nbm-root/nbm-config.org"))
