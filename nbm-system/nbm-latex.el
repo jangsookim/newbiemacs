@@ -614,11 +614,10 @@ Return the string \"Author1, Author2. Year. Title.pdf\"."
 
 (defun nbm-modify-paper-filename (title)
   "Modify the string TITLE so that it is suitable for a filename."
-  (let (esc-str)
-    )
-  (setq title (replace-regexp-in-string "\\\\`\\|\\\\'\\\\\\^\\|\\\\\"\\|\\\\|v" "" title))
-  (setq title (replace-regexp-in-string "{\\|}\\|\\$\\|\\\\\\|\n\\|`\\|''" "" title))
-  (setq title (replace-regexp-in-string "\"" "" title)Jure\v{c}kov\'{a}, Kalina. 2012. Nonparametric multivariate rank tests and their unbiasedness.pdf)
+  (setq title (replace-regexp-in-string "\\\\`\\|\\\\'\\|\\\\^\\|\\\\\"\\|\\\\H\\|\\\\~\\|\\\\c\\|\\\\k\\|\\\\=\\|\\\\b\\|\\\\[.]\\|\\\\d\\|\\\\r\\|\\\\u\\|\\\\v" "" title))
+  (setq title (replace-regexp-in-string "{\\|}\\|\\$\\|\n\\|`\\|''" "" title))
+  (setq title (replace-regexp-in-string "\\\\" "" title))
+  (setq title (replace-regexp-in-string "\"" "" title))
   (setq title (replace-regexp-in-string ":" "-" title))
   (xah-asciify-string title))
 
