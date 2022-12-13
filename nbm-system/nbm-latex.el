@@ -58,26 +58,24 @@ If there is no title, return the filename."
 (defun nbm-latex-add-to-symlinks ()
   "Create a symbolic link of the current tex file in the symlinks folder"
   (interactive)
-  (let (choice)
-    (setq choice (read-char "Choose the file-name scheme (default d):  t) title of paper  d) directory name"))
-  (if (equal choice ?t)
-      (nbm-latex-add-to-symlinks-using-title)
-    (nbm-latex-add-to-symlinks-using-dir-name))))
-
-(defun nbm-latex-add-to-symlinks-using-title ()
-  "Create a symbolic link of the current tex file in the symlinks folder"
-  (let (file-name)
-    (setq file-name (read-string "Enter the symlink file name: " (nbm-latex-make-filename)))
-    (shell-command (format "ln -s \"%s\" \"%stex/symlinks/%s.tex\""
-                           (buffer-file-name) *nbm-home* file-name))
-    (message (format "A symbolic link created: %s.tex" file-name))))
-
-(defun nbm-latex-add-to-symlinks-using-dir-name ()
-  "Create a symbolic link of the current tex file in the symlinks folder using the lowest directory name."
-  (shell-command (format "ln -s \"%s\" \"%stex/symlinks/%s.tex\""
-                         (buffer-file-name) *nbm-home*
-                           (read-string "Enter the symlink file name: " (nbm-get-lowest-dir-name))))
-  (message (format "A symbolic link created: %s.tex" (nbm-get-lowest-dir-name))))
+  (let (choice file-name)
+    (setq choice (read-char "Choose the symlink file name (default f):\nf) current file name\nt) title of paper\nd) directory name"))
+    (cond ((equal choice ?t)
+	   (setq file-name (read-string "Enter the symlink file name: " (nbm-latex-make-filename))))
+	  ((equal choice ?d)
+	   (setq file-name (read-string "Enter the symlink file name: " (nbm-get-lowest-dir-name))))
+	  (t
+	   (setq file-name (read-string "Enter the symlink file name: "
+					(file-name-sans-extension (file-name-nondirectory (nbm-get-file-name)))))))
+    (if (equal system-type 'windows-nt)
+	(progn
+	  (kill-new (format "mklink \"%stex/symlinks/%s\" \"%s\""
+			    *nbm-home* file-name (nbm-get-file-name)))
+	  (message (format "Command copied in the clipboard. Past it in the command prompt run as administrator.")))
+      (progn
+	(shell-command (format "ln -s \"%s\" \"%stex/symlinks/%s.tex\""
+			       (nbm-get-file-name) *nbm-home* file-name))   
+	(message (format "A symbolic link created: %s.tex" file-name))))))
 
 (defun nbm-latex-new-file ()
   "Create a new latex file from a template."

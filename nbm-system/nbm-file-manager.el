@@ -51,19 +51,36 @@ If search-flag is non-nil, it will list files ending with EXT."
     (setq buf (current-buffer))
     (helm-projectile)))
 
+;; (defun nbm-add-to-misc-symlinks ()
+;;   "Create a symbolic link of the current file in the misc-symlinks folder."
+;;   (interactive)
+;;   (shell-command (format "ln -s \"%s\" \"%smisc/symlinks/%s\""
+;;                          (nbm-get-file-name) *nbm-home*
+;;                          (read-string "Enter the symlink file name: "
+;; 				      (file-name-nondirectory (nbm-get-file-name)))))
+;;   (message (format "A symbolic link created in the following directory.\n%s" (nbm-f "misc/symlinks/"))))
+
 (defun nbm-add-to-misc-symlinks ()
   "Create a symbolic link of the current file in the misc-symlinks folder."
   (interactive)
-  (shell-command (format "ln -s \"%s\" \"%smisc/symlinks/%s\""
-                         (nbm-get-file-name) *nbm-home*
-                         (read-string "Enter the symlink file name: "
-				      (file-name-nondirectory (nbm-get-file-name)))))
-  (message (format "A symbolic link created in the following directory.\n%s" (nbm-f "misc/symlinks/"))))
+  (if (equal system-type 'windows-nt)
+      (progn
+	(kill-new (format "mklink \"%smisc/symlinks/%s\" \"%s\""
+			  *nbm-home* (read-string "Enter the symlink file name: "
+						  (file-name-nondirectory (nbm-get-file-name)))
+			  (nbm-get-file-name)))
+	(message (format "Command copied in the clipboard. Past it in the command prompt run as administrator.")))
+    (progn
+      (shell-command (format "ln -s \"%s\" \"%smisc/symlinks/%s\""
+			     (nbm-get-file-name) *nbm-home*
+			     (read-string "Enter the symlink file name: "
+					  (file-name-nondirectory (nbm-get-file-name)))))
+      (message (format "A symbolic link created in the following directory.\n%s" (nbm-f "misc/symlinks/"))))))
 
 (defun nbm-add-to-symlinks ()
   "Create a symbolic link of the current file in the tex or misc-symlinks folder."
   (interactive)
-  (if (equal (file-name-extension (buffer-file-name)) "tex")
+  (if (equal (file-name-extension (nbm-get-file-name)) "tex")
       (nbm-latex-add-to-symlinks)
     (nbm-add-to-misc-symlinks)))
 
