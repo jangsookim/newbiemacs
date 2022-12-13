@@ -51,15 +51,6 @@ If search-flag is non-nil, it will list files ending with EXT."
     (setq buf (current-buffer))
     (helm-projectile)))
 
-;; (defun nbm-add-to-misc-symlinks ()
-;;   "Create a symbolic link of the current file in the misc-symlinks folder."
-;;   (interactive)
-;;   (shell-command (format "ln -s \"%s\" \"%smisc/symlinks/%s\""
-;;                          (nbm-get-file-name) *nbm-home*
-;;                          (read-string "Enter the symlink file name: "
-;; 				      (file-name-nondirectory (nbm-get-file-name)))))
-;;   (message (format "A symbolic link created in the following directory.\n%s" (nbm-f "misc/symlinks/"))))
-
 (defun nbm-add-to-misc-symlinks ()
   "Create a symbolic link of the current file in the misc-symlinks folder."
   (interactive)
@@ -83,6 +74,13 @@ If search-flag is non-nil, it will list files ending with EXT."
   (if (equal (file-name-extension (nbm-get-file-name)) "tex")
       (nbm-latex-add-to-symlinks)
     (nbm-add-to-misc-symlinks)))
+
+(defun nbm-rgrep ()
+  "Do rgrep on the current folder on the files *.el *.tex *.org."
+  (interactive)
+  (let (search-key)
+    (setq search-key (read-string "Enter search key words: "))
+    (rgrep search-key "*.el *.tex *.org" ".")))
 
 (defun nbm-new-file ()
   "Create a new file with a chosen EXTENSION in the folder newbiemacs/EXTENSION."

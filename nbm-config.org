@@ -186,7 +186,7 @@
 
   (if (equal system-type 'windows-nt)
       (progn
-        (setq ispell-program-name "c:/msys64/mingw64/bin/hunspell.exe")
+        (setq ispell-program-name "hunspell")
         (setq ispell-dictionary "en_US")
         (setq ispell-hunspell-dictionary-alist '(("en_US" "c:/msys64/mingw64/share/hunspell/en_US.aff")))
         (setq ispell-local-dictionary-alist '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8))))
@@ -423,6 +423,7 @@
 * Windows only
 #+begin_src emacs-lisp :tangle yes
   (when (equal system-type 'windows-nt)
+    (setq exec-path (append exec-path '("c:/msys64/mingw64/bin")))
     (set-language-environment "UTF-8")
     (setq default-input-method "korean-hangul"))
 #+end_src

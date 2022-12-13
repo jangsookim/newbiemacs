@@ -108,7 +108,7 @@
 ** key: F, description: Frames
 *** key: d, function: delete-frame
 *** key: m, function: make-frame
-** key: G, function: helm-rg
+** key: G, function: nbm-rgrep
 ** key: R, function: nbm-org-roam-search
 ** key: S, description: Spell-check
 *** key: b, function: flyspell-buffer
