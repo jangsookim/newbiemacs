@@ -69,7 +69,7 @@ If there is no title, return the filename."
 					(file-name-sans-extension (file-name-nondirectory (nbm-get-file-name)))))))
     (if (equal system-type 'windows-nt)
 	(progn
-	  (kill-new (format "mklink \"%stex/symlinks/%s\" \"%s\""
+	  (kill-new (format "mklink \"%stex/symlinks/%s.tex\" \"%s\""
 			    *nbm-home* file-name (nbm-get-file-name)))
 	  (message (format "Command copied in the clipboard. Past it in the command prompt run as administrator.")))
       (progn

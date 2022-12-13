@@ -46,7 +46,8 @@
     (setq which-key-prefix-prefix nil))
 
   (use-package openwith :init (openwith-mode t)
-    (setq openwith-associations '(("\\.hwp\\'" "open" (file))
+    (setq openwith-associations '(("\\.pdf\\'" "open" (file))
+                                  ("\\.hwp\\'" "open" (file))
                                   ("\\.xlsx\\'" "open" (file))
                                   ("\\.djvu\\'" "open" (file)))))
 
