@@ -59,7 +59,10 @@ If there is no title, return the filename."
   "Create a symbolic link of the current tex file in the symlinks folder"
   (interactive)
   (let (choice file-name)
-    (setq choice (read-char "Choose the symlink file name (default f):\nf) current file name\nt) title of paper\nd) directory name"))
+    (if (equal major-mode 'dired-mode)
+	(setq choice ?f)
+      (setq choice
+	    (read-char "Choose the symlink file name (default f):\nf) current file name\nt) title of paper\nd) directory name")))
     (cond ((equal choice ?t)
 	   (setq file-name (read-string "Enter the symlink file name: " (nbm-latex-make-filename))))
 	  ((equal choice ?d)
