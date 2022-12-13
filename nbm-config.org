@@ -189,7 +189,7 @@
         (setq ispell-program-name "c:/msys64/mingw64/bin/hunspell.exe")
         (setq ispell-dictionary "en_US")
         (setq ispell-hunspell-dictionary-alist '(("en_US" "c:/msys64/mingw64/share/hunspell/en_US.aff")))
-        (setq ispell-dictionary-alist '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8))))
+        (setq ispell-local-dictionary-alist '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8))))
     (setq ispell-program-name "/usr/local/bin/ispell"))
 
   (setq ispell-personal-dictionary (concat *nbm-home* "nbm-user-settings/references/my-dictionary"))
