@@ -175,6 +175,7 @@
 ** key: c, function: org-ctrl-c-ctrl-c
 ** key: e, function: org-export-dispatch
 ** key: d, description: Dates
+*** key: c, description: consecutive dates, function: nbm-org-consecutive-dates
 *** key: d, function: org-deadline
 *** key: s, function: org-schedule
 *** key: t, function: org-time-stamp
