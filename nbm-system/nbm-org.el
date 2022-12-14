@@ -1,9 +1,3 @@
-(defun nbm-org-roam-search ()
-  "Grep my org roam folder."
-  (interactive)
-  (let ((helm-rg--current-dir (nbm-f "org/")))
-    (helm-rg "")))
-
 (defun nbm-org-toggle-strike-through ()
   "Toggle strike though the current item."
   (interactive)

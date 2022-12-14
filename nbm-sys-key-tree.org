@@ -87,7 +87,6 @@
 ** key: s, description: Search
 *** key: e, description: Find el, function: nbm-find-el
 *** key: s, description: Find sage, function: nbm-find-sage
-*** key: g, function: helm-projectile-rg
 ** key: t, function: nbm-find-tex
 ** key: u, function: universal-argument
 ** key: w, description: Windows
@@ -108,8 +107,6 @@
 ** key: F, description: Frames
 *** key: d, function: delete-frame
 *** key: m, function: make-frame
-** key: G, function: nbm-rgrep
-** key: R, function: nbm-org-roam-search
 ** key: S, description: Spell-check
 *** key: b, function: flyspell-buffer
 *** key: i, description: ispell, function: ispell

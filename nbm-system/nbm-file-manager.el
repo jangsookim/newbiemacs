@@ -75,13 +75,6 @@ If search-flag is non-nil, it will list files ending with EXT."
       (nbm-latex-add-to-symlinks)
     (nbm-add-to-misc-symlinks)))
 
-(defun nbm-rgrep ()
-  "Do rgrep on the current folder on the files *.el *.tex *.org."
-  (interactive)
-  (let (search-key)
-    (setq search-key (read-string "Enter search key words: "))
-    (rgrep search-key "*.el *.tex *.org" ".")))
-
 (defun nbm-new-file ()
   "Create a new file with a chosen EXTENSION in the folder newbiemacs/EXTENSION."
   (interactive)
