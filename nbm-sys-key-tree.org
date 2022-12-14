@@ -33,24 +33,21 @@
 *** key: d, function: kill-this-buffer
 *** key: R, function: revert-buffer
 ** key: c, description: Comment/Color
-*** key: l, function: nbm-comment-or-uncomment-line
+*** key: l, description: (un-)comment line, function: nbm-comment-or-uncomment-line
 *** key: c, function: helm-colors
 ** key: f, description: Files, function:
 *** key: b, function: bookmark-set
 *** key: f, function: helm-find-files
 *** key: r, function: helm-recentf
 *** key: j, function: dired-jump
-*** key: m, function: nbm-move-files-from-downloads
+*** key: m, description: move-files-from-downloads, function: nbm-move-files-from-downloads
 *** key: n, function: nbm-new-file
-*** key: p, function: nbm-move-pdf-from-downloads
+*** key: p, description: move-pdf-from-downloads, function: nbm-move-pdf-from-downloads
 *** key: s, function: save-buffer
 *** key: D, function: nbm-copy-to-desktop
 *** key: F, function: nbm-show-in-finder
 *** key: S, function: nbm-add-to-symlinks
 *** key: T, function: nbm-show-trash-bin
-*** key: U, description: Updates
-**** key: e, function: nbm-update-string-in-el
-**** key: n, function: nbm-update-string-in-newbiemacs
 *** key: y, description: Yank/Copy
 **** key: d, function: nbm-copy-directory-path
 **** key: n, function: nbm-copy-file-name
@@ -99,8 +96,8 @@
 *** key: R, description: rotate-upwards, function: evil-window-rotate-upwards
 ** key: x, description: Text
 *** key: d, description: Delete
-**** key: w, function: delete-trailing-whitespace
-**** key: l, function: nbm-delete-double-empty-lines
+**** key: w, description: trailing whitespace, function: delete-trailing-whitespace
+**** key: l, description: double-empty-lines, function: nbm-delete-double-empty-lines
 ** key: y, description: Yank
 *** key: k, description: yank from kill-ring, function: helm-show-kill-ring
 *** key: f, description: Favorite string, function: nbm-yank-favorite-string
