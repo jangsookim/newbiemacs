@@ -193,6 +193,11 @@
     (if (file-exists-p "/opt/homebrew/bin/ispell")
         (setq ispell-program-name "/opt/homebrew/bin/ispell")
       (setq ispell-program-name "/usr/local/bin/ispell")))
+
+  (unless (file-exists-p (concat *nbm-home* "nbm-user-settings/references/my-dictionary"))
+    (copy-file (concat (getenv "HOME") "/nbm-root/newbiemacs/nbm-user-settings/references/my-dictionary")
+               (concat *nbm-home* "nbm-user-settings/references/my-dictionary")))
+
   (setq ispell-personal-dictionary (concat *nbm-home* "nbm-user-settings/references/my-dictionary"))
 
   (nbm-key-tree-load)
