@@ -23,6 +23,7 @@
     (global-set-key (kbd "M-x") 'helm-M-x)
     (setq helm-autoresize-mode t)
     (setq helm-display-header-line nil)
+    (setq helm-buffer-max-length 30)
     (helm-mode 1)
     (add-hook 'helm-minibuffer-set-up-hook 'helm-exchange-minibuffer-and-header-line))
 
@@ -109,7 +110,7 @@
   (use-package password-generator)
 
   (use-package undo-tree :diminish undo-tree-mode
-    :init 
+    :init
     (evil-set-undo-system 'undo-tree)
     (global-undo-tree-mode 1))
 
@@ -117,7 +118,7 @@
     :init (global-company-mode))
 
   (use-package org-bullets
-    :init 
+    :init
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
   (use-package winum
@@ -151,7 +152,7 @@
     (add-hook 'LaTeX-mode-hook #'rainbow-delimiters-mode))
 
   (use-package smartparens :diminish smartparens-mode
-    :init 
+    :init
     (require 'smartparens-config)
     (smartparens-global-mode))
 
@@ -177,7 +178,6 @@
   (diminish 'visual-line-mode)
 #+end_src
 
-
 * load files
 #+begin_src emacs-lisp :tangle yes
   (dolist (file (directory-files (concat (getenv "HOME") "/nbm-root/nbm-system") t "[.]el$"))
@@ -190,8 +190,9 @@
         (setq ispell-dictionary "en_US")
         (setq ispell-hunspell-dictionary-alist '(("en_US" "c:/msys64/mingw64/share/hunspell/en_US.aff")))
         (setq ispell-local-dictionary-alist '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8))))
-    (setq ispell-program-name "/usr/local/bin/ispell"))
-
+    (if (file-exists-p "/opt/homebrew/bin/ispell")
+        (setq ispell-program-name "/opt/homebrew/bin/ispell")
+      (setq ispell-program-name "/usr/local/bin/ispell")))
   (setq ispell-personal-dictionary (concat *nbm-home* "nbm-user-settings/references/my-dictionary"))
 
   (nbm-key-tree-load)

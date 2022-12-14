@@ -110,6 +110,7 @@
 ** key: S, description: Spell-check
 *** key: b, function: flyspell-buffer
 *** key: i, description: ispell, function: ispell
+*** key: w, function: ispell-word
 ** key: T, description: toggle
 *** key: F, function: toggle-frame-fullscreen
 *** key: p, description: Projectile caching, function: nbm-toggle-projectile-caching
