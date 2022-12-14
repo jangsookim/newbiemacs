@@ -133,9 +133,7 @@ of the first occurence of \"\\necommand\" or \"\\begin{document}\"."
 (defun nbm-latex-change-variable ()
   "Replace a variable in a math mode in current buffer."
   (interactive)
-  (let (x y TYPE START END temp choice case r-start r-end)
-    (setq case case-fold-search)
-    (setq case-fold-search nil)
+  (let ((case-fold-search t) x y TYPE START END temp choice case r-start r-end)
     (save-excursion
       (setq x (read-string "Variable to change from: " nil nil nil))
       (setq y (read-string "Variable to change to: " nil nil nil))
@@ -151,11 +149,8 @@ of the first occurence of \"\\necommand\" or \"\\begin{document}\"."
             (progn
               (nbm-latex-replace-x-y-region x y START END)
               (goto-char END)
-              (if (> END r-end)
-                  (setq TYPE nil))))
-        ))
-    (setq *nbm-latex-change-variable-confirm* t)
-    (setq case-fold-search case)))
+              (if (> END r-end) (setq TYPE nil))))))
+    (setq *nbm-latex-change-variable-confirm* t)))
 
 (defun nbm-latex-replace-x-y-region (x y START END)
   "Replace x by y from START to END in the current buffer if x is not macro."
