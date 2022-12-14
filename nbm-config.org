@@ -430,7 +430,7 @@
 #+begin_src emacs-lisp :tangle yes
   (when (equal system-type 'windows-nt)
     (setq exec-path (append exec-path '("c:/msys64/mingw64/bin")))
-    (set-language-environment "korean")
+    (set-language-environment 'utf-8)
     (setq default-input-method "korean-hangul")
     (set-default-coding-systems 'utf-8))
 #+end_src
