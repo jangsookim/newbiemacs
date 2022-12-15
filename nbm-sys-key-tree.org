@@ -121,7 +121,7 @@
 *** key: n, function: yas-new-snippet
 *** key: f, function: yas-visit-snippet-file
 *** key: t, function: yas-describe-tables
-* description: latex-mode
+* description: LaTeX-mode
 ** key: RET, description: Korean/English, function: toggle-input-method
 ** key: b, description: TeX-build, function: TeX-command-run-all
 ** key: v, function: TeX-view
