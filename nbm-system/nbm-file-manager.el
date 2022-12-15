@@ -20,8 +20,7 @@ If search-flag is non-nil, it will list files ending with EXT."
     (defun nbm-temp-insert ()
       (if search-flag (insert (concat ext "$ ")))
       (kill-buffer buf))
-    (minibuffer-with-setup-hook 'nbm-temp-insert (call-interactively 'helm-projectile))
-    ))
+    (minibuffer-with-setup-hook 'nbm-temp-insert (call-interactively 'helm-projectile))))
 
 (defun nbm-find-pdf ()
   "Find a pdf file in the pdf folder."
@@ -148,9 +147,7 @@ e) el"))
   (interactive)
   (if (equal system-type 'windows-nt)
       (shell-command (format "start %s" (file-name-directory (nbm-get-file-name))))
-    (shell-command (format "open -R \"%s\"" (nbm-get-file-name)))
-    )
-  )
+    (shell-command (format "open -R \"%s\"" (nbm-get-file-name)))))
 
 (defun nbm-show-trash-bin ()
   "Open Finder on the trash bin."
@@ -159,9 +156,7 @@ e) el"))
     (make-directory trash-directory))
   (if (equal system-type 'windows-nt)
       (shell-command (format "start %s" trash-directory))
-    (shell-command (format "open -R \"%s\"" trash-directory))
-    )
-  )
+    (shell-command (format "open -R \"%s\"" trash-directory))))
 
 (defun nbm-move-files-from-downloads ()
   "Move the files in Downloads to various folders."
@@ -172,20 +167,27 @@ e) el"))
     (while (and file-list (not (equal choice ?q)))
       (setq file (car file-list))
       (setq file-list (cdr file-list))
-      (setq choice (read-char (concat "Move " file " to:\ni) inbox d) desktop x) trash-bin q) quit")))
+      (setq choice (read-char (format "Move %s to:
+c) current folder: %s
+i) inbox
+d) desktop
+x) trash-bin
+q) quit" file (file-name-directory (nbm-get-file-name)))))
       (if (equal choice ?x)
 	  (if (file-directory-p file)
 	      (delete-directory file t t)
-	    (delete-file file t))
-	  )
+	    (delete-file file t)))
       (when (equal choice ?i)
 	(unless (file-exists-p (nbm-f "inbox/"))
 	  (make-directory (nbm-f "inbox/")))
-        (rename-file file (concat (nbm-f "inbox/") (file-name-nondirectory file)) 1))
+	(rename-file file (concat (nbm-f "inbox/") (file-name-nondirectory file)) 1))
+      (if (equal choice ?c)
+	  (rename-file file (concat (file-name-directory (nbm-get-file-name))
+				    (file-name-nondirectory file)) 1))
       (if (equal choice ?d)
-          (rename-file file (concat *nbm-desktop* (file-name-nondirectory file)) 1)))
+	  (rename-file file (concat *nbm-desktop* (file-name-nondirectory file)) 1)))
     (if (equal choice ?q)
-        (message "Aborted.")
+	(message "Aborted.")
       (message "All files in Downloads folder have been checked."))))
 
 (defun nbm-get-lowest-dir-name ()
@@ -287,5 +289,4 @@ e) el"))
 (defun nbm-sort-files-by-modified-time (files)
   "Return the sorted list of files by modified time."
   (interactive)
-  (sort files 'nbm-time<)
-  )
+  (sort files 'nbm-time<))
