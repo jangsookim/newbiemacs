@@ -132,9 +132,7 @@ A key-tree structure is (level key description function)."
       (cond ((> (length a) (length b)) (setq result t done t))
 	    ((< (length a) (length b)) (setq result nil done t))
 	    ((string< a b) (setq result t done t))
-	    ((string> a b) (setq result nil done t))
-	    )
-      )
+	    ((string> a b) (setq result nil done t))))
     (unless done
       (if keyA (setq result nil))
       (if keyB (setq result t)))
@@ -151,11 +149,9 @@ A key-tree structure is (level key description function)."
 	(if (<= level (length key))
 	    (setq key (butlast key
 			       (- (length key) (- (car node) 1)))))
-	(setq key (nbm-append (nth 1 node) key))
-	)
+	(setq key (nbm-append (nth 1 node) key)))
       (setq key-seq (cons key (nthcdr 2 node)))
-      (setq key-seqs (nbm-append key-seq key-seqs))
-      )))
+      (setq key-seqs (nbm-append key-seq key-seqs)))))
 
 (defun nbm-sort-and-remove-repeated-key-seqs (key-seqs)
   "Sort and remove repeated key sequences.
@@ -170,10 +166,8 @@ Repeated key-seqs are saved in *nbm-key-seqs-repeated*"
 	       (equal (car new-key-seq) (car last-key-seq)))
 	  (setq *nbm-key-seqs-repeated* (nbm-append (list last-key-seq new-key-seq)
 					      *nbm-key-seqs-repeated*))
-	(setq no-repeat (nbm-append new-key-seq no-repeat))
-	))
-    no-repeat
-    ))
+	(setq no-repeat (nbm-append new-key-seq no-repeat))))
+    no-repeat))
 
 (defun nbm-key-nodes-from-key-seqs (key-seqs)
   "Convert KEY-SEQS to key-nodes. KEY-SEQS must be sorted before."
@@ -187,8 +181,7 @@ Repeated key-seqs are saved in *nbm-key-seqs-repeated*"
 	(setq key ""
 	      desc (car (car key-seq))))
       (setq node (list level key desc func))
-      (setq nodes (nbm-append node nodes))
-      )))
+      (setq nodes (nbm-append node nodes)))))
 
 (defun nbm-key-tree-show-repeated-keys ()
   "Message if there are repeated keys."
@@ -199,11 +192,8 @@ Repeated key-seqs are saved in *nbm-key-seqs-repeated*"
 	  (setq prompt "The following key sequences are repeated.")
 	  (dolist (repeated *nbm-key-seqs-repeated*)
 	    (setq prompt (format "%s\n%s and %s"
-				 prompt (nth 0 repeated) (nth 1 repeated)))
-	    )
-	  )
-      (setq prompt "There are no repeated key sequences.")
-      )
+				 prompt (nth 0 repeated) (nth 1 repeated)))))
+      (setq prompt "There are no repeated key sequences."))
     (message (format "%s" prompt))))
 
 (defun nbm-key-tree-appear-in-which-key ()
@@ -226,15 +216,9 @@ Repeated key-seqs are saved in *nbm-key-seqs-repeated*"
 		((equal key "TAB") (setq key "?\\t")))
 	  (setq key-str (concat key-str key)))
 	(insert (format "(evil-define-key '(normal visual motion insert) 'global (kbd \"%s%s\") '(\"%s\" . %s))\n"
-			(cond
-			 ((equal mode "global") "<f5>")
-			 ((equal mode "latex-mode") "<f6>")
-			 ((equal mode "org-mode") "<f7>")
-			 ((equal mode "emacs-lisp-mode") "<f8>"))
+			(if (equal mode "global") "<leader>" "<localleader>")
 			key-str desc
-			(if (equal func "") "(keymap)" func)))
-	)
-      )
+			(if (equal func "") "(keymap)" func)))))
     (save-buffer) (kill-buffer buf)))
 
 ;; key-tree interface
@@ -330,15 +314,13 @@ Repeated key-seqs are saved in *nbm-key-seqs-repeated*"
 			       "...")))
 	(if (equal color 1)
 	    (setq desc (nbm-string-terminal-node desc))
-	  (setq desc (nbm-string-internal-node desc))
-	  )
+	  (setq desc (nbm-string-internal-node desc)))
 	(setq key (nbm-string-key (nbm-key-tree-key T)))
 	(setq prompt (format (concat "%s%3s: %-"
 				     (number-to-string (- col-width 5))
 				     "s")
 			     prompt key desc))
-	(setq pos (+ 1 pos))
-	))
+	(setq pos (+ 1 pos))))
     (nbm-temp-prompt terminals 1)
     (nbm-temp-prompt internals 2)
     prompt))

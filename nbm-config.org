@@ -289,6 +289,9 @@
   (evil-define-key '(normal visual motion) 'global (kbd ",") 'nbm-key-tree-mode)
   (evil-define-key '(normal visual motion insert) 'global (kbd "M-RET") 'nbm-key-tree-mode)
   (evil-define-key 'motion help-mode-map (kbd "TAB") 'forward-button)
+
+  (evil-set-leader 'normal (kbd "<f5>"))
+  (evil-set-leader 'normal (kbd "<f6>") t)
 #+end_src
 
 * latex

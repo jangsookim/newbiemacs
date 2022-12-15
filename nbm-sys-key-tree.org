@@ -170,8 +170,8 @@
 *** key: h, description: convert-to-hwp, function: nbm-latex-convert-to-hwp
 *** key: v, description: change-variable, function: nbm-latex-change-variable
 * description: org-mode
-** key: a, description: agenda, function: org-agenda-list
 ** key: RET, description: Korean/English, function: toggle-input-method
+** key: a, function: org-archive-subtree
 ** key: c, function: org-ctrl-c-ctrl-c
 ** key: e, function: org-export-dispatch
 ** key: d, description: Dates
@@ -184,6 +184,7 @@
 ** key: k, description: add keybinding, function: nbm-key-tree-add-keybinding
 ** key: u, function: org-roam-ui-mode
 ** key: p, function: nbm-make-permanant-note
+** key: r, function: org-refile
 ** key: t, description: Tables
 *** key: -, description: Draw horizontal line, function: org-ctrl-c-minus
 *** key: c, description: Columns
@@ -205,6 +206,7 @@
 *** key: c, description: checkbox, function: nbm-org-toggle-checkbox
 *** key: i, description: insert-item, function: org-insert-item
 *** key: s, description: strike-through, function: nbm-org-toggle-strike-through
+** key: R, function: org-roam-refile
 ** key: T, description: Toggle
 *** key: T, function: org-todo
 *** key: v, description: toggle valign, function: nbm-toggle-valign
