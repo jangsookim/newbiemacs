@@ -264,11 +264,10 @@ Repeated key-seqs are saved in *nbm-key-seqs-repeated*"
   "Run key-tree from the root key tree for the current mode."
   (let (tree)
     (dolist (tree *nbm-key-tree*)
-      (unless mode
-	(setq mode (buffer-local-value 'major-mode (current-buffer))))
-      (when (string= (nbm-key-tree-description tree) ;; description of level 1 tree has mode name
-                     mode)
-        (nbm-key-tree-prompt tree)))))
+      (unless mode (setq mode (format "%s" major-mode)))
+      (when (string= (downcase (nbm-key-tree-description tree)) ;; description of level 1 tree has mode name
+		     (downcase mode))
+	(nbm-key-tree-prompt tree)))))
 
 (defun nbm-key-tree-add-keybinding ()
   (interactive)

@@ -169,6 +169,8 @@
 *** key: p, description: toggle-pgml, function: nbm-latex-toggle-pgml
 *** key: h, description: convert-to-hwp, function: nbm-latex-convert-to-hwp
 *** key: v, description: change-variable, function: nbm-latex-change-variable
+** key: y, description: yank
+*** key: f, description: make-and-yank-filename, function: nbm-latex-make-and-yank-filename
 * description: org-mode
 ** key: RET, description: Korean/English, function: toggle-input-method
 ** key: a, description: org-archive

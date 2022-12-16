@@ -47,7 +47,7 @@ If there is no title, return the filename."
   (interactive)
   (read-string (concat "Enter the file name: ") (nbm-latex-make-filename)))
 
-(defun nbm-latex-make-and-copy-filename ()
+(defun nbm-latex-make-and-yank-filename ()
   "Copy the a string for a filename using title and authors."
   (interactive)
   (let (file-name)
@@ -587,8 +587,18 @@ will be returned."
       (insert str)
       (beginning-of-buffer)
       (search-forward property)
-      (search-forward "{") (setq beg (point)) (backward-char)
-      (forward-sexp) (backward-char) (setq end (point))
+      (setq beg (point)) (end-of-line) (setq end (point))
+      (goto-char beg)
+      (if (search-forward "{" end t)
+	  (progn
+	    (setq beg (point)) (backward-char)
+	    (forward-sexp) (backward-char) (setq end (point))
+	    )
+	(progn
+	  (goto-char beg)
+	  (re-search-forward "= *") (setq beg (point)) (backward-char)
+	  (if (search-forward "," end t) (setq end (- (point) 1)))
+	  ))
       (buffer-substring beg end))))
 
 (defun nbm-mathscinet-make-filename ()
