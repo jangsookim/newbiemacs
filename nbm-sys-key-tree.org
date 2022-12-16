@@ -171,7 +171,10 @@
 *** key: v, description: change-variable, function: nbm-latex-change-variable
 * description: org-mode
 ** key: RET, description: Korean/English, function: toggle-input-method
-** key: a, function: org-archive-subtree
+** key: a, description: org-archive
+*** key: t, function: org-archive-subtree
+*** key: j, function: nbm-org-jump-to-archive
+*** key: s, description: archive sibling, function: org-archive-to-archive-sibling
 ** key: c, function: org-ctrl-c-ctrl-c
 ** key: e, function: org-export-dispatch
 ** key: d, description: Dates
@@ -181,6 +184,7 @@
 *** key: t, function: org-time-stamp
 *** key: T, function: org-time-stamp-inactive
 ** key: i, function: org-roam-node-insert
+** key: j, function: nbm-org-jump-to-heading
 ** key: k, description: add keybinding, function: nbm-key-tree-add-keybinding
 ** key: u, function: org-roam-ui-mode
 ** key: p, function: nbm-make-permanant-note
