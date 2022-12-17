@@ -78,3 +78,14 @@ For example, 20221109090747-test.org will be changed to test.org."
   "Jump to the archive file of the current org file."
   (interactive)
   (find-file (concat (buffer-file-name) "_archive")))
+
+(defun nbm-org-jump-to-file ()
+  "Jump to a file in the current org file."
+  (interactive)
+  (let (file-list file)
+    (setq file-list (org-element-map (org-element-parse-buffer) 'link
+		      (lambda (link)
+			(when (string= (org-element-property :type link) "file")
+			  (org-element-property :path link)))))
+    (setq file (completing-read "Choose a file to open: " file-list nil t ""))
+    (find-file file)))
