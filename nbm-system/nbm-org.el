@@ -89,3 +89,16 @@ For example, 20221109090747-test.org will be changed to test.org."
 			  (org-element-property :path link)))))
     (setq file (completing-read "Choose a file to open: " file-list nil t ""))
     (find-file file)))
+
+(defun nbm-org-jump-to-url ()
+  "Jump to a url in the current org file."
+  (interactive)
+  (let (url url-list)
+    (setq url-list (org-element-map (org-element-parse-buffer) 'link
+		      (lambda (link)
+			(when (string-match-p "http" (org-element-property :type link))
+			  (concat (org-element-property :type link) ":"
+				  (org-element-property :path link))))))
+    (setq url (completing-read "Choose a url to open: " url-list nil t ""))
+    (org-link-open-from-string url)))
+

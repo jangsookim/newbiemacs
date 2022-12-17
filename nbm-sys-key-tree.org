@@ -175,7 +175,6 @@
 ** key: RET, description: Korean/English, function: toggle-input-method
 ** key: a, description: org-archive
 *** key: t, function: org-archive-subtree
-*** key: j, function: nbm-org-jump-to-archive
 *** key: s, description: archive sibling, function: org-archive-to-archive-sibling
 ** key: c, function: org-ctrl-c-ctrl-c
 ** key: e, function: org-export-dispatch
@@ -185,9 +184,12 @@
 *** key: s, function: org-schedule
 *** key: t, function: org-time-stamp
 *** key: T, function: org-time-stamp-inactive
-** key: f, function: nbm-org-jump-to-file
 ** key: i, function: org-roam-node-insert
-** key: j, function: nbm-org-jump-to-heading
+** key: j, description: Jump
+*** key: a, function: nbm-org-jump-to-archive
+*** key: f, function: nbm-org-jump-to-file
+*** key: h, function: nbm-org-jump-to-heading
+*** key: u, function: nbm-org-jump-to-url
 ** key: k, description: add keybinding, function: nbm-key-tree-add-keybinding
 ** key: u, function: org-roam-ui-mode
 ** key: p, function: nbm-make-permanant-note
