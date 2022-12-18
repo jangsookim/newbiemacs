@@ -13,6 +13,10 @@
   (setq use-package-always-ensure t
         use-package-expand-minimally t))
 
+(global-set-key "\C-x\C-y" (lambda () (interactive)
+			     (package-refresh-contents)
+			     (load-file "~/nbm-root/nbm-init.el")))
+
 ;; If ~/nbm-root/nbm-home.txt does not exist,
 ;; create a new newbiemacs folder under the home folder.
 ;; The newbiemacs folder may be moved to a different place later.
