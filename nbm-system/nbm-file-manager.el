@@ -171,21 +171,28 @@ e) el"))
 c) current folder: %s
 i) inbox
 d) desktop
+p) pdf
 x) trash-bin
 q) quit" file (file-name-directory (nbm-get-file-name)))))
       (if (equal choice ?x)
 	  (if (file-directory-p file)
 	      (delete-directory file t t)
 	    (delete-file file t)))
+      (when (member choice '(?c ?i ?d ?p))
+	(setq new-file (read-string "Enter the new filename: "
+				    (file-name-nondirectory file))))
       (when (equal choice ?i)
 	(unless (file-exists-p (nbm-f "inbox/"))
 	  (make-directory (nbm-f "inbox/")))
-	(rename-file file (concat (nbm-f "inbox/") (file-name-nondirectory file)) 1))
+	(rename-file file (concat (nbm-f "inbox/") new-file) 1))
+      (if (equal choice ?p)
+	  (rename-file file (concat (nbm-f "pdf/")
+				    new-file) 1))
       (if (equal choice ?c)
 	  (rename-file file (concat (file-name-directory (nbm-get-file-name))
-				    (file-name-nondirectory file)) 1))
+				    new-file) 1))
       (if (equal choice ?d)
-	  (rename-file file (concat *nbm-desktop* (file-name-nondirectory file)) 1)))
+	  (rename-file file (concat *nbm-desktop* new-file) 1)))
     (if (equal choice ?q)
 	(message "Aborted.")
       (message "All files in Downloads folder have been checked."))))
