@@ -31,6 +31,7 @@
 ** key: b, description: Buffers
 *** key: b, function: helm-buffers-list
 *** key: d, function: kill-this-buffer
+*** key: w, function: kill-buffer-and-window
 *** key: R, function: revert-buffer
 ** key: c, description: Comment/Color
 *** key: l, description: (un-)comment line, function: nbm-comment-or-uncomment-line
