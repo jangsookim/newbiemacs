@@ -599,7 +599,7 @@ will be returned."
 	  (re-search-forward "= *") (setq beg (point)) (backward-char)
 	  (if (search-forward "," end t) (setq end (- (point) 1)))
 	  ))
-      (buffer-substring beg end))))
+      (string-clean-whitespace (buffer-substring beg end)))))
 
 (defun nbm-mathscinet-make-filename ()
   "The bibtex file must be copied from mathscinet.
