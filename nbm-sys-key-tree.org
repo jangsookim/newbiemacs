@@ -219,6 +219,7 @@
 ** key: R, function: org-roam-refile
 ** key: T, description: Toggle
 *** key: T, function: org-todo
+*** key: b, function: org-roam-buffer-toggle
 *** key: v, description: toggle valign, function: nbm-toggle-valign
 * description: emacs-lisp-mode
 ** key: e, description: eval

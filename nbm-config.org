@@ -69,12 +69,7 @@
   (use-package magit
     :init
     (setq transient-values
-          '((magit-log:magit-log-mode "-n256" "--graph" "--color" "--decorate")))
-    (add-hook 'magit-mode-hook
-              (lambda ()
-                (local-set-key (kbd "j") #'next-line)
-                (local-set-key (kbd "k") #'previous-line)
-                (local-set-key (kbd "x") #'magit-discard))))
+          '((magit-log:magit-log-mode "-n256" "--graph" "--color" "--decorate"))))
 
   (use-package evil-surround
     :bind (:map evil-visual-state-map
@@ -271,24 +266,6 @@
 
 * evil mode
 #+begin_src emacs-lisp :tangle yes
-  (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
-  (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
-  (define-key evil-normal-state-map (kbd "<down>") 'evil-next-visual-line)
-  (define-key evil-normal-state-map (kbd "<up>") 'evil-previous-visual-line)
-
-  (define-key evil-insert-state-map (kbd "C-d") 'delete-char)
-  (define-key evil-insert-state-map (kbd "C-v") 'scroll-up-command)
-  (define-key evil-insert-state-map (kbd "M-v") 'scroll-down-command)
-  (define-key evil-insert-state-map (kbd "C-k") 'kill-line)
-  (define-key evil-insert-state-map (kbd "C-y") 'yank)
-  (define-key evil-insert-state-map (kbd "C-a") 'beginning-of-line)
-  (define-key evil-insert-state-map (kbd "C-e") 'end-of-line)
-  (define-key evil-insert-state-map (kbd "C-o") 'open-line)
-  (define-key evil-insert-state-map (kbd "C-p") 'previous-line)
-
-  (define-key evil-insert-state-map (kbd "C-n") 'next-line)
-  (define-key evil-motion-state-map (kbd "RET") nil)
-
   (setq evil-undo-system 'undo-tree)
 
   (evil-define-key '(normal visual motion) 'global (kbd "SPC") 'nbm-key-tree-global)
@@ -381,13 +358,6 @@
 
   (setq org-return-follows-link t)
   (evil-define-key 'normal org-mode-map (kbd "RET") 'org-open-at-point)
-  (evil-define-key 'insert org-mode-map (kbd "C-d") 'delete-char)
-
-  (evil-define-key 'motion org-agenda-mode-map
-    (kbd "h") 'org-agenda-earlier
-    (kbd "l") 'org-agenda-later
-    (kbd "v") 'org-agenda-view-mode-dispatch
-    (kbd "s") 'org-save-all-org-buffers)
 
   (setq org-directory (concat *nbm-home* "org/"))
   (setq org-default-notes-file (concat org-directory "/capture.org"))
@@ -418,12 +388,6 @@
 #+begin_src emacs-lisp :tangle yes
   (evil-define-key 'normal dired-mode-map (kbd "SPC") 'nbm-key-tree-global)
   (evil-define-key 'normal dired-mode-map (kbd ",") 'nbm-key-tree-mode)
-  (evil-define-key 'normal dired-mode-map (kbd "h") 'dired-up-directory)
-  (evil-define-key 'normal dired-mode-map (kbd "j") 'dired-next-line)
-  (evil-define-key 'normal dired-mode-map (kbd "k") 'dired-previous-line)
-  (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-find-file)
-  (evil-define-key 'normal dired-mode-map (kbd "W") 'wdired-change-to-wdired-mode)
-  (evil-define-key 'normal dired-mode-map (kbd "b") 'browse-url-of-dired-file)
   (setq dired-dwim-target t)
 #+end_src
 
