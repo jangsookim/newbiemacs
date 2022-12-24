@@ -228,6 +228,9 @@
   (recentf-mode 1)
   (setq recentf-max-menu-items 55)
   (setq recentf-max-saved-items 55)
+
+  (setq sentence-end-double-space nil)
+  (add-to-list 'auto-mode-alist '("\\.sage\\'" . python-mode))
 #+end_src
 ** appearance
 #+begin_src emacs-lisp :tangle yes
