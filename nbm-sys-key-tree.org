@@ -13,10 +13,7 @@
 ** key: !, description: shell command, function: nbm-shell-commend
 ** key: ?, description: Help, function: newbie-help
 ** key: 0, description: Developer only
-*** key: 0, function: nbm-test
-*** key: 9, function: nbm-toggle-nbm-home
-*** key: v, function: nbm-update-version
-*** key: p, function: nbm-toggle-pdf-viewer
+*** key: h, function: nbm-toggle-nbm-home
 ** key: ', function: eshell
 ** key: ., function: nbm-org-roam-today
 ** key: a, description: Applications
@@ -111,7 +108,6 @@
 *** key: w, function: ispell-word
 ** key: T, description: toggle
 *** key: F, function: toggle-frame-fullscreen
-*** key: p, description: Projectile caching, function: nbm-toggle-projectile-caching
 ** key: N, description: Newbiemacs
 *** key: c, function: newbie-config
 *** key: r, function: newbie-reload
@@ -226,3 +222,5 @@
 *** key: b, function: eval-buffer
 ** key: f, description: Find
 *** key: f, function: nbm-nil-function
+* description: python-mode
+** key: l, function: nbm-load-sage

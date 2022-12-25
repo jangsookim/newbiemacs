@@ -115,3 +115,9 @@ Enter here: ")))
 	(when (equal choice (nth 0 temp))
 	  (kill-new (nth 1 temp))
 	  (message (format "Copied in clipboard: %s" (nth 1 temp))))))))
+
+(defun nbm-load-sage ()
+  "Copy a command to load the current file in sage notebook."
+  (interactive)
+  (kill-new (format "load(\"%s\")" (buffer-file-name)))
+  (message (format "Copied to clipboard: %s" (current-kill 0))))
