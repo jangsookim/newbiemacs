@@ -74,6 +74,7 @@
 *** key: s, description: Store link, function: org-store-link
 *** key: i, description: Insert link, function: org-insert-link
 *** key: S, function: org-roam-db-sync
+*** key: u, function: org-roam-ui-mode
 ** key: p, description: Find pdf, function: nbm-find-pdf
 ** key: r, description: Registers
 *** key: s, description: Set counter, function: nbm-set-counter
