@@ -81,7 +81,7 @@
 					 (buffer-substring (point-min) (point))))
 
 (unless (equal (substring *nbm-home* -1 nil) "/")
-  (setq *nbm-pdf* (concat *nbm-home* "/")))
+  (setq *nbm-home* (concat *nbm-home* "/")))
 
 (setq *nbm-home* (replace-regexp-in-string "\\\\" "/" *nbm-home*))
 
