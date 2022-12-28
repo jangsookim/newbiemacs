@@ -83,6 +83,8 @@
 (unless (equal (substring *nbm-home* -1 nil) "/")
   (setq *nbm-pdf* (concat *nbm-home* "/")))
 
+(setq *nbm-home* (replace-regexp-in-string "\\\\" "/" *nbm-home*))
+
 (setq *nbm-pdf* (concat *nbm-home* "pdf/"))
 
 (setq *nbm-desktop*
