@@ -80,6 +80,9 @@
 					 (beginning-of-buffer) (end-of-line)
 					 (buffer-substring (point-min) (point))))
 
+(unless (equal (substring *nbm-home* -1 nil) "/")
+  (setq *nbm-pdf* (concat *nbm-home* "/")))
+
 (setq *nbm-pdf* (concat *nbm-home* "pdf/"))
 
 (setq *nbm-desktop*
