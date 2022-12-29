@@ -188,6 +188,8 @@
 *** key: f, function: nbm-org-jump-to-file
 *** key: h, function: nbm-org-jump-to-heading
 *** key: u, function: nbm-org-jump-to-url
+** key: h, description: Headings
+*** key: h, function: nbm-org-html-theme
 ** key: k, description: add keybinding, function: nbm-key-tree-add-keybinding
 ** key: u, function: org-roam-ui-mode
 ** key: p, function: nbm-make-permanant-note

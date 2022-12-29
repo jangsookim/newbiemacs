@@ -102,3 +102,42 @@ For example, 20221109090747-test.org will be changed to test.org."
     (setq url (completing-read "Choose a url to open: " url-list nil t ""))
     (org-link-open-from-string url)))
 
+(defun nbm-org-html-theme ()
+  "Insert org-html-theme in the header."
+  (interactive)
+  (let (themes choice str)
+    (unless (file-exists-p (nbm-f "nbm-user-settings/org-themes"))
+      (find-file (nbm-f "nbm-user-settings"))
+      (shell-command "git clone https://gitlab.com/OlMon/org-themes.git")
+      (kill-buffer))
+    (setq themes '(
+		   "bigblow_inline"
+		   "comfy_inline"
+		   ;; "darksun"
+		   "gray"
+		   "imagine_light"
+		   "latexcss"
+		   "plain"
+		   "readtheorg_inline"
+		   "rethink_inline"
+		   "retro_dark"
+		   "simple_gray"
+		   "simple_inline"
+		   "simple_white"
+		   "simple_whiteblue"
+		   "solarized_dark"
+		   "solarized_light"
+		   "stylish_white"
+		   "white_clean"
+		   ))
+    (setq choice (completing-read "Select the theme: " themes nil nil nil nil "readtheorg_inline"))
+    (setq str (format "#+SETUPFILE: %snbm-user-settings/org-themes/src/%s/%s.theme"
+		      *nbm-home* choice choice))
+    (save-excursion
+      (beginning-of-buffer)
+      (when (search-forward "#+SETUPFILE:")
+	  (beginning-of-line) (kill-line) (kill-line))
+      (beginning-of-buffer)
+      (search-forward "#+title:") (next-line) (beginning-of-line)
+      (insert (format "%s\n" str)))
+    (message (format "Inserted %s" str))))
