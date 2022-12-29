@@ -135,7 +135,7 @@ For example, 20221109090747-test.org will be changed to test.org."
 		      *nbm-home* choice choice))
     (save-excursion
       (beginning-of-buffer)
-      (when (search-forward "#+SETUPFILE:")
+      (when (search-forward "#+SETUPFILE:" nil t)
 	  (beginning-of-line) (kill-line) (kill-line))
       (beginning-of-buffer)
       (search-forward "#+title:") (next-line) (beginning-of-line)
