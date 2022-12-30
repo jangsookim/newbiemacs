@@ -6,7 +6,10 @@
 
 (if (fboundp 'nbm-f)
     (defconst *torus-game-path* (nbm-f "nbm-user-settings/"))
-    (defconst *torus-game-path* (concat (getenv "HOME") "/newbiemacs/nbm-user-settings/")))
+  (progn
+    (defconst *torus-game-path* (concat (getenv "HOME") "/newbiemacs/"))
+    (unless (file-exists-p *torus-game-path*)
+      (make-directory *torus-game-path*))))
 
 (defun torus-load-theme (theme)
   (cond ((equal theme 1)
