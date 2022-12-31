@@ -141,3 +141,26 @@ For example, 20221109090747-test.org will be changed to test.org."
       (search-forward "#+title:") (next-line) (beginning-of-line)
       (insert (format "%s\n" str)))
     (message (format "Inserted %s" str))))
+
+(defun nbm-org-sage-tangle ()
+  "Tangle the python blocks to a sage file.
+If there is a sage shell, then load the sage file in the sage shell.
+Otherwise, copy a string in the clipboard to load it."
+  (interactive)
+  (let (python sage str buf)
+    (setq python (concat (file-name-sans-extension (buffer-file-name)) ".python"))
+    (setq sage (concat (file-name-sans-extension (buffer-file-name)) ".sage"))
+    (org-babel-tangle)
+    (rename-file python sage t)
+    (setq str (format "load(\"%s\")" sage))
+    (if (gnus-buffer-exists-p "*Sage*")
+	(save-excursion
+	  (setq buf (current-buffer))
+	  (switch-to-buffer "*Sage*")
+	  (insert str) (sage-shell:send-input)
+	  (switch-to-buffer buf)
+	  (other-window 1))
+      (progn
+	(kill-new str)
+	(message (format "Copied to clipboard: %s" str))))))
+

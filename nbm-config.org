@@ -148,6 +148,7 @@
   (use-package rainbow-delimiters :diminish rainbow-delimiters-mode
     :init
     (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode) ; coloring nested parentheses
+    (add-hook 'python-mode-hook #'rainbow-delimiters-mode)
     (add-hook 'LaTeX-mode-hook #'rainbow-delimiters-mode))
 
   (use-package smartparens :diminish smartparens-mode
@@ -387,6 +388,14 @@
                                         :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
                                                            "#+title: ${title}\n ")))))
 #+end_src
+* Sage
+#+begin_src emacs-lisp :tangle yes
+  (font-lock-add-keywords 'python-mode
+                          '(("<\\|>\\|=" . 'anzu-replace-to)
+                            ("+\\|-\\|\\^\\|/\\|*" . 'compilation-info)
+                            ("\\b[0-9]+\\b" . 'org-document-info)))
+#+end_src
+
 * Dired
 #+begin_src emacs-lisp :tangle yes
   (setq dired-dwim-target t)
