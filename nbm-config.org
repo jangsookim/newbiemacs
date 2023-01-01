@@ -404,6 +404,11 @@
   (evil-define-key 'emacs dired-mode-map (kbd ",") 'nbm-key-tree-mode)
 #+end_src
 
+* image
+#+begin_src emacs-lisp :tangle yes
+  (evil-set-initial-state 'image-mode 'emacs)
+#+end_src
+
 * Welcome page
 #+begin_src emacs-lisp :tangle yes
   (if *nbm-startup-frame*
