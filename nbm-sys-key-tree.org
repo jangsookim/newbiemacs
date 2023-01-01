@@ -174,10 +174,13 @@
 ** key: a, description: org-archive
 *** key: t, function: org-archive-subtree
 *** key: s, description: archive sibling, function: org-archive-to-archive-sibling
+*** key: m, function: nbm-org-move-to-archived
 ** key: b, description: org-babel
 *** key: t, function: org-babel-tangle
 *** key: e, function: org-edit-special
 *** key: s, function: nbm-org-sage-tangle
+*** key: i, description: latex-in-line-math, function: nbm-org-latex-in-line-math
+*** key: d, description: latex-display-math, function: nbm-org-latex-display-math
 ** key: c, function: org-ctrl-c-ctrl-c
 ** key: e, function: org-export-dispatch
 ** key: d, description: Dates
@@ -222,7 +225,7 @@
 ** key: R, function: org-roam-refile
 ** key: T, description: Toggle
 *** key: T, function: org-todo
-*** key: b, function: org-roam-buffer-toggle
+*** key: r, function: org-roam-buffer-toggle
 *** key: v, description: toggle valign, function: nbm-toggle-valign
 * description: emacs-lisp-mode
 ** key: e, description: eval

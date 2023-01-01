@@ -159,8 +159,43 @@ Otherwise, copy a string in the clipboard to load it."
 	  (switch-to-buffer "*Sage*")
 	  (insert str) (sage-shell:send-input)
 	  (switch-to-buffer buf)
-	  (other-window 1))
+	  (other-window 1)
+	  (end-of-buffer))
       (progn
 	(kill-new str)
 	(message (format "Copied to clipboard: %s" str))))))
 
+(defun nbm-org-latex-in-line-math ()
+  "Insert \\( \\) and open an org edit special buffer."
+  (interactive)
+  (insert "\\(  \\)")
+  (org-edit-special) (backward-char 3) (evil-append 0))
+
+(defun nbm-org-latex-display-math ()
+  "Insert \\[ \\] and open an org edit special buffer."
+  (interactive)
+  (insert "\\[  \\]")
+  (org-edit-special) (backward-char 3) (evil-append 0))
+
+(defun nbm-org-move-to-archived ()
+  "Move the current file to the archived directory: newbiemacs/archived/org/
+and store the org link."
+  (interactive)
+  (let (archive html new-file)
+    (unless (file-exists-p (nbm-f "archived"))
+      (make-directory (nbm-f "archived"))
+      (make-directory (nbm-f "archived/org")))
+    (setq new-file (nbm-f (concat "archived/org/"
+			   (file-name-nondirectory (buffer-file-name)))))
+    (setq html (concat (file-name-sans-extension (buffer-file-name)) ".html"))
+    (setq archive (concat (buffer-file-name) "_archive"))
+    (if (file-exists-p html)
+	(rename-file html (concat (file-name-sans-extension new-file) ".html")))
+    (if (file-exists-p archive)
+	(rename-file archive (concat new-file "_archive")))
+    (rename-file (buffer-file-name) new-file)
+    (kill-buffer) (find-file new-file)
+    (push (list (concat "file:" new-file)
+		(file-name-nondirectory (file-name-sans-extension new-file)))
+	  org-stored-links)
+    (message (concat "Moved and org link stored: " new-file))))
