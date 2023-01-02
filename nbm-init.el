@@ -46,16 +46,16 @@
     (with-temp-buffer (shell-command "git init" t))
 
     (find-file (concat (getenv "HOME") "/newbiemacs/nbm-user-settings/nbm-variables/nbm-desktop.txt"))
-    (insert (concat (getenv "HOME") "/Desktop"))
+    (insert (concat (getenv "HOME") "/Desktop/"))
     (save-buffer) (kill-buffer)
 
     (find-file (concat (getenv "HOME") "/newbiemacs/nbm-user-settings/nbm-variables/nbm-downloads.txt"))
-    (insert (concat (getenv "HOME") "/Downloads"))
+    (insert (concat (getenv "HOME") "/Downloads/"))
     (save-buffer) (kill-buffer)
 
     (find-file (concat (getenv "HOME") "/newbiemacs/nbm-user-settings/nbm-variables/nbm-screenshots.txt"))
-    (insert (concat (getenv "HOME") "/Desktop\n" ))
-    (insert (concat (getenv "HOME") "/Downloads" ))
+    (insert (concat (getenv "HOME") "/Desktop/\n" ))
+    (insert (concat (getenv "HOME") "/Downloads/" ))
     (save-buffer) (kill-buffer)))
 
 ;; On Windows create a file for latex with Sumatra PDF
@@ -80,8 +80,7 @@
 					 (beginning-of-buffer) (end-of-line)
 					 (buffer-substring (point-min) (point))))
 
-(unless (equal (substring *nbm-home* -1 nil) "/")
-  (setq *nbm-home* (concat *nbm-home* "/")))
+(unless (equal (substring *nbm-home* -1 nil) "/") (setq *nbm-home* (concat *nbm-home* "/")))
 
 (setq *nbm-home* (replace-regexp-in-string "\\\\" "/" *nbm-home*))
 
@@ -92,12 +91,22 @@
     (insert-file-contents (concat *nbm-home* "nbm-user-settings/nbm-variables/nbm-desktop.txt"))
     (beginning-of-buffer) (end-of-line)
     (buffer-substring (point-min) (point))))
+; the following patch should be removed later
+(unless (equal (substring *nbm-desktop* -1 nil) "/")
+  (setq *nbm-desktop* (concat *nbm-desktop* "/"))
+  (find-file (concat *nbm-home* "nbm-user-settings/nbm-variables/nbm-desktop.txt"))
+  (end-of-line) (insert "/") (save-buffer) (kill-buffer))
 
 (setq *nbm-downloads*
   (with-temp-buffer
     (insert-file-contents (concat *nbm-home* "nbm-user-settings/nbm-variables/nbm-downloads.txt"))
     (beginning-of-buffer) (end-of-line)
     (buffer-substring (point-min) (point))))
+; the following patch should be removed later
+(unless (equal (substring *nbm-downloads* -1 nil) "/")
+  (setq *nbm-downloads* (concat *nbm-downloads* "/"))
+  (find-file (concat *nbm-home* "nbm-user-settings/nbm-variables/nbm-downloads.txt"))
+  (end-of-line) (insert "/") (save-buffer) (kill-buffer))
 
 (setq *nbm-screenshots*
   (let (temp line dirs)

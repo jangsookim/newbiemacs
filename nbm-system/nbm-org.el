@@ -102,6 +102,13 @@ For example, 20221109090747-test.org will be changed to test.org."
     (setq url (completing-read "Choose a url to open: " url-list nil t ""))
     (org-link-open-from-string url)))
 
+(defun nbm-org-html-export ()
+  "Export to html and open it."
+  (interactive)
+  (org-html-export-to-html)
+  (shell-command (format "open %s.html"
+		 (file-name-sans-extension (buffer-file-name)))))
+
 (defun nbm-org-html-theme ()
   "Insert org-html-theme in the header."
   (interactive)
