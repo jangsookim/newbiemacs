@@ -36,6 +36,20 @@
 	 (defun tofus-color-e (string)
 	   (propertize string 'face '(:foreground "#Bf5af2" :weight bold))) ; Systempurplecolor
 	 )
+	((equal theme 3)
+	 (defun torus-color-x (string)
+	   (propertize string 'face '(:foreground "#ffff80" :weight bold))) ; CUD ver4 cream
+	 (defun torus-color-a (string)
+	   (propertize string 'face '(:foreground "#FF4B00" :weight bold))) ; CUD ver4 red
+	 (defun torus-color-b (string)
+	   (propertize string 'face '(:foreground "#FFF100" :weight bold))) ; CUD ver4 yellow
+	 (defun torus-color-c (string)
+	   (propertize string 'face '(:foreground "#03af7a" :weight bold))) ; CUD ver green
+	 (defun torus-color-d (string)
+	   (propertize string 'face '(:foreground "#005AFF" :weight bold))) ; CUD ver blue
+	 (defun torus-color-e (string)
+	   (propertize string 'face '(:foreground "#4dc4ff" :weight bold))) ; CUD ver sky blue
+	 )
 	(t
 	 (defun tofus-color-x (string)
 	   (propertize string 'face '(:foreground "Navajowhite1" :weight bold)))
@@ -76,6 +90,15 @@
 			 (tofus-color-e " @@@ ")
 			 ))
     (tofus-load-theme 3)
+    (setq prompt (format "%s\n\n3) %s%s%s%s%s"
+			 prompt
+			 (tofus-color-a " @@@ ")
+			 (tofus-color-b " @@@ ")
+			 (tofus-color-c " @@@ ")
+			 (tofus-color-d " @@@ ")
+			 (tofus-color-e " @@@ ")
+			 ))
+    (tofus-load-theme 4)
     (setq prompt (format "%s\n\n3) %s%s%s%s%s"
 			 prompt
 			 (tofus-color-a " @@@ ")
