@@ -102,6 +102,13 @@ For example, 20221109090747-test.org will be changed to test.org."
     (setq url (completing-read "Choose a url to open: " url-list nil t ""))
     (org-link-open-from-string url)))
 
+(defun nbm-org-html-export ()
+  "Export to html and open it."
+  (interactive)
+  (org-html-export-to-html)
+  (shell-command (format "open %s.html"
+		 (file-name-sans-extension (buffer-file-name)))))
+
 (defun nbm-org-html-theme ()
   "Insert org-html-theme in the header."
   (interactive)
@@ -141,3 +148,61 @@ For example, 20221109090747-test.org will be changed to test.org."
       (search-forward "#+title:") (next-line) (beginning-of-line)
       (insert (format "%s\n" str)))
     (message (format "Inserted %s" str))))
+
+(defun nbm-org-sage-tangle ()
+  "Tangle the python blocks to a sage file.
+If there is a sage shell, then load the sage file in the sage shell.
+Otherwise, copy a string in the clipboard to load it."
+  (interactive)
+  (let (python sage str buf)
+    (setq python (concat (file-name-sans-extension (buffer-file-name)) ".python"))
+    (setq sage (concat (file-name-sans-extension (buffer-file-name)) ".sage"))
+    (org-babel-tangle)
+    (rename-file python sage t)
+    (setq str (format "load(\"%s\")" sage))
+    (if (gnus-buffer-exists-p "*Sage*")
+	(save-excursion
+	  (setq buf (current-buffer))
+	  (switch-to-buffer "*Sage*")
+	  (insert str) (sage-shell:send-input)
+	  (switch-to-buffer buf)
+	  (other-window 1)
+	  (end-of-buffer))
+      (progn
+	(kill-new str)
+	(message (format "Copied to clipboard: %s" str))))))
+
+(defun nbm-org-latex-in-line-math ()
+  "Insert \\( \\) and open an org edit special buffer."
+  (interactive)
+  (insert "\\(  \\)")
+  (org-edit-special) (backward-char 3) (evil-append 0))
+
+(defun nbm-org-latex-display-math ()
+  "Insert \\[ \\] and open an org edit special buffer."
+  (interactive)
+  (insert "\\[  \\]")
+  (org-edit-special) (backward-char 3) (evil-append 0))
+
+(defun nbm-org-move-to-archived ()
+  "Move the current file to the archived directory: newbiemacs/archived/org/
+and store the org link."
+  (interactive)
+  (let (archive html new-file)
+    (unless (file-exists-p (nbm-f "archived"))
+      (make-directory (nbm-f "archived"))
+      (make-directory (nbm-f "archived/org")))
+    (setq new-file (nbm-f (concat "archived/org/"
+			   (file-name-nondirectory (buffer-file-name)))))
+    (setq html (concat (file-name-sans-extension (buffer-file-name)) ".html"))
+    (setq archive (concat (buffer-file-name) "_archive"))
+    (if (file-exists-p html)
+	(rename-file html (concat (file-name-sans-extension new-file) ".html")))
+    (if (file-exists-p archive)
+	(rename-file archive (concat new-file "_archive")))
+    (rename-file (buffer-file-name) new-file)
+    (kill-buffer) (find-file new-file)
+    (push (list (concat "file:" new-file)
+		(file-name-nondirectory (file-name-sans-extension new-file)))
+	  org-stored-links)
+    (message (concat "Moved and org link stored: " new-file))))
