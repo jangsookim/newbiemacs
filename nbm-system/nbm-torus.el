@@ -103,7 +103,7 @@
 			 (torus-color-e " @@@ ")
 			 ))
     (torus-load-theme 4)
-    (setq prompt (format "%s\n\n3) %s%s%s%s%s"
+    (setq prompt (format "%s\n\n4) %s%s%s%s%s"
 			 prompt
 			 (torus-color-a " @@@ ")
 			 (torus-color-b " @@@ ")
