@@ -180,6 +180,23 @@
   (torus-print-main)
   )
 
+(defun torus-get-str-difficulty ()
+  "Return the difficulty in string format."
+  (if (equal 1 *torus-difficulty*)
+      "Normal"
+    " Crazy"))
+
+(defun torus-set-difficulty ()
+  (interactive)
+  (if (equal ?1 (read-char "Choose difficulty:\n (1) Normal\n (2) Crazy"))
+      (progn
+	(setq *torus-difficulty* 1)
+	)
+    (progn
+      (setq *torus-difficulty* 2)
+      (setq *torus-speed* 1)
+      )))
+
 (defvar *torus-box* nil
   "The torus box which is a list.")
 
@@ -217,6 +234,7 @@
 (defvar *torus-level-up-time*)
 (defvar *torus-level-gauge*)
 (defvar *torus-last-user* nil)
+(defvar *torus-difficulty* 1)
 
 ;; printing
 
@@ -815,6 +833,7 @@ q: Quit game")))
 (defun torus-start-game ()
   (interactive)
   (torus-pause-game)
+  (torus-set-difficulty)
   (torus-init)
   (torus-run-game)
   (message "Game started."))
