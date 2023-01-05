@@ -206,3 +206,14 @@ and store the org link."
 		(file-name-nondirectory (file-name-sans-extension new-file)))
 	  org-stored-links)
     (message (concat "Moved and org link stored: " new-file))))
+
+(defun nbm-org-yank-code ()
+  "Yank the current code line."
+  (interactive)
+  (save-excursion
+    (let (end)
+      (end-of-line) (setq end (point))
+      (beginning-of-line)
+      (when (search-forward ": " end t)
+	(kill-new (buffer-substring (point) end))
+	(message (concat "Copied to clipboard: " (current-kill 0)))))))

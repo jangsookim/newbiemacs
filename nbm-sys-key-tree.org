@@ -223,6 +223,7 @@
 *** key: c, description: checkbox, function: nbm-org-toggle-checkbox
 *** key: i, description: insert-item, function: org-insert-item
 *** key: s, description: strike-through, function: nbm-org-toggle-strike-through
+*** key: y, function: nbm-org-yank-code
 ** key: R, function: org-roam-refile
 ** key: T, description: Toggle
 *** key: T, function: org-todo
