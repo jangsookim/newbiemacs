@@ -67,7 +67,6 @@
 *** key: u, description: user-key-tree, function: nbm-find-user-key-tree
 *** key: c, description: Check key-bindings, function: nbm-key-tree-show-repeated-keys
 ** key: m, description: find misc file, function: nbm-find-misc
-** key: n, description: new tex file, function: nbm-latex-new-file
 ** key: o, description: Org-mode
 *** key: a, description: agenda, function: org-agenda-list
 *** key: A, description: agenda-commands, function: org-agenda
@@ -229,12 +228,12 @@
 ** key: R, function: org-roam-refile
 ** key: T, description: Toggle
 *** key: T, function: org-todo
-*** key: r, function: org-roam-buffer-toggle
-*** key: v, description: toggle valign, function: nbm-toggle-valign
+*** key: r, description: org-roam-buffer, function: org-roam-buffer-toggle
+*** key: v, description: valign, function: nbm-toggle-valign
 * description: emacs-lisp-mode
 ** key: e, description: eval
 *** key: b, function: eval-buffer
 ** key: f, description: Find
 *** key: f, function: nbm-nil-function
 * description: python-mode
-** key: l, function: nbm-load-sage
+** key: l, description: load-sage, function: nbm-load-sage
