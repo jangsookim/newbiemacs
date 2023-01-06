@@ -76,6 +76,11 @@ For example, 20221109090747-test.org will be changed to test.org."
       (setq org-refile-targets '((nil . (:level . 1)))))
     (org-refile (universal-argument))))
 
+(defun nbm-org-jump-to-tex ()
+  "Jump to the tex file for the current org file."
+  (interactive)
+  (find-file (concat (file-name-sans-extension (buffer-file-name)) ".tex")))
+
 (defun nbm-org-jump-to-archive ()
   "Jump to the archive file of the current org file."
   (interactive)
