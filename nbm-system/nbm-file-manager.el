@@ -297,3 +297,16 @@ q) quit" file (file-name-directory (nbm-get-file-name)))))
   "Return the sorted list of files by modified time."
   (interactive)
   (sort files 'nbm-time<))
+
+(defun nbm-rename-current-file ()
+  "Rename the current file."
+  (interactive)
+  (let (old new choice pos)
+    (setq old (file-name-nondirectory (buffer-file-name)))
+    (setq new (read-string "Enter the new name of the current file: " old))
+    (setq choice (read-char (format "Rename the file?: (Type y for yes.)\nOld name: %s\nNew name: %s" old new)))
+    (when (equal choice ?y)
+      (setq pos (point))
+      (rename-file old new) (find-file new) (kill-buffer old)
+      (goto-char pos)
+      (message "File name changed."))))

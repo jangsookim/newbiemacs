@@ -9,9 +9,9 @@
 	  )
       (progn
 	(find-file (nbm-root-f "nbm-home.txt"))
-	(insert (concat (getenv "HOME") "/Dropbox/newbiemacs/"))
+	(insert (concat (getenv "HOME") "/Library/CloudStorage/Dropbox/newbiemacs/"))
 	(save-buffer) (kill-buffer)
-	(message "nbm-home.txt created. (contents:~/Dropbox/newbiemacs)")
+	(message "nbm-home.txt created. (contents:~/Library/CloudStorage/Dropbox/newbiemacs)")
 	))))
 
 (defun nbm-update-version ()

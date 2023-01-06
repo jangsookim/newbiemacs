@@ -14,45 +14,46 @@
 ** key: ?, description: Help, function: newbie-help
 ** key: 0, description: Developer only
 *** key: h, function: nbm-toggle-nbm-home
-** key: ', function: eshell
-** key: ., function: nbm-org-roam-today
+** key: ', description: shell, function: eshell
+** key: ., description: org-roam-today, function: nbm-org-roam-today
 ** key: a, description: Applications
 *** key: a, description: agenda, function: org-agenda-list
 *** key: A, description: agenda-commands, function: org-agenda
-*** key: m, function: nbm-magnet
+*** key: m, description: magnet, function: nbm-magnet
 *** key: g, description: games
 **** key: f, description: tofus, function: tofus
 **** key: r, description: torus, function: torus
 **** key: t, description: tetris, function: tetris
 *** key: c, function: quick-calc
 ** key: b, description: Buffers
-*** key: b, function: helm-buffers-list
+*** key: b, description: buffers-list, function: helm-buffers-list
 *** key: d, function: kill-this-buffer
 *** key: w, function: kill-buffer-and-window
 *** key: R, function: revert-buffer
 ** key: c, description: Comment/Color
 *** key: l, description: (un-)comment line, function: nbm-comment-or-uncomment-line
-*** key: c, function: helm-colors
+*** key: c, description: colors, function: helm-colors
 ** key: f, description: Files, function:
 *** key: b, function: bookmark-set
-*** key: f, function: helm-find-files
-*** key: r, function: helm-recentf
+*** key: f, description: find-files, function: helm-find-files
+*** key: r, description: recent files, function: helm-recentf
 *** key: j, function: dired-jump
-*** key: m, description: move-files-from-downloads, function: nbm-move-files-from-downloads
-*** key: n, function: nbm-new-file
+*** key: m, description: move downloaded files, function: nbm-move-files-from-downloads
+*** key: n, description: new-file, function: nbm-new-file
 *** key: p, description: move-pdf-from-downloads, function: nbm-move-pdf-from-downloads
 *** key: s, function: save-buffer
-*** key: D, function: nbm-copy-to-desktop
-*** key: F, function: nbm-show-in-finder
-*** key: S, function: nbm-add-to-symlinks
-*** key: T, function: nbm-show-trash-bin
+*** key: D, description: copy-to-desktop, function: nbm-copy-to-desktop
+*** key: F, description: Finder, function: nbm-show-in-finder
+*** key: R, description: rename current file, function: nbm-rename-current-file
+*** key: S, description: add-to-symlinks, function: nbm-add-to-symlinks
+*** key: T, description: show-trash-bin, function: nbm-show-trash-bin
 *** key: y, description: Yank/Copy
-**** key: d, function: nbm-copy-directory-path
-**** key: n, function: nbm-copy-file-name
-**** key: y, function: nbm-copy-file-path
+**** key: d, description: copy-directory-path, function: nbm-copy-directory-path
+**** key: n, description: copy-file-name, function: nbm-copy-file-name
+**** key: y, description: copy-file-path, function: nbm-copy-file-path
 ** key: g, description: git
-*** key: i, function: nbm-magit-init
-*** key: s, function: magit-status
+*** key: i, description: init, function: nbm-magit-init
+*** key: s, description: status, function: magit-status
 ** key: i, description: Insert
 *** key: p, description: Passwords
 **** key: s, description: simple, function: password-generator-simple
@@ -64,17 +65,17 @@
 *** key: s, description: sys-key-tree, function: nbm-find-sys-key-tree
 *** key: u, description: user-key-tree, function: nbm-find-user-key-tree
 *** key: c, description: Check key-bindings, function: nbm-key-tree-show-repeated-keys
-** key: m, function: nbm-find-misc
-** key: n, function: nbm-latex-new-file
+** key: m, description: find misc file, function: nbm-find-misc
+** key: n, description: new tex file, function: nbm-latex-new-file
 ** key: o, description: Org-mode
 *** key: a, description: agenda, function: org-agenda-list
 *** key: A, description: agenda-commands, function: org-agenda
 *** key: c, description: capture, function: nbm-org-capture
-*** key: r, function: org-roam-node-find
+*** key: r, description: org-roam-node-find, function: org-roam-node-find
 *** key: s, description: Store link, function: org-store-link
 *** key: i, description: Insert link, function: org-insert-link
-*** key: S, function: org-roam-db-sync
-*** key: u, function: org-roam-ui-mode
+*** key: S, description: Sync database, function: org-roam-db-sync
+*** key: u, description: UI mode, function: org-roam-ui-mode
 ** key: p, description: Find pdf, function: nbm-find-pdf
 ** key: r, description: Registers
 *** key: s, description: Set counter, function: nbm-set-counter
@@ -83,14 +84,14 @@
 ** key: s, description: Search
 *** key: e, description: Find el, function: nbm-find-el
 *** key: s, description: Find sage, function: nbm-find-sage
-** key: t, function: nbm-find-tex
+** key: t, description: Find tex file, function: nbm-find-tex
 ** key: u, function: universal-argument
 ** key: w, description: Windows
 *** key: /, function: split-window-right
 *** key: -, function: split-window-below
 *** key: m, function: delete-other-windows
 *** key: d, function: delete-window
-*** key: o, function: nbm-other-window
+*** key: o, description: other-window, function: nbm-other-window
 *** key: r, description: rotate-downwards, function: evil-window-rotate-downwards
 *** key: R, description: rotate-upwards, function: evil-window-rotate-upwards
 ** key: x, description: Text
@@ -98,31 +99,31 @@
 **** key: w, description: trailing whitespace, function: delete-trailing-whitespace
 **** key: l, description: double-empty-lines, function: nbm-delete-double-empty-lines
 ** key: y, description: Yank
-*** key: k, description: yank from kill-ring, function: helm-show-kill-ring
+*** key: k, description: From kill-ring, function: helm-show-kill-ring
 *** key: f, description: Favorite string, function: nbm-yank-favorite-string
 ** key: F, description: Frames
 *** key: d, function: delete-frame
 *** key: m, function: make-frame
 ** key: S, description: Spell-check
-*** key: b, function: flyspell-buffer
-*** key: i, description: ispell, function: ispell
-*** key: w, function: ispell-word
+*** key: b, description: buffer, function: flyspell-buffer
+*** key: i, description: interactive, function: ispell
+*** key: w, description: word, function: ispell-word
 ** key: T, description: toggle
-*** key: F, function: toggle-frame-fullscreen
+*** key: F, description: Fullscreen, function: toggle-frame-fullscreen
 ** key: N, description: Newbiemacs
-*** key: c, function: newbie-config
-*** key: r, function: newbie-reload
-*** key: s, description: Settings, function: newbie-setting
-*** key: u, description: Update Newbiemacs, function: nbm-update-newbiemacs
+*** key: c, description: config, function: newbie-config
+*** key: r, description: reload, function: newbie-reload
+*** key: s, description: settings, function: newbie-setting
+*** key: u, description: update Newbiemacs, function: nbm-update-newbiemacs
 ** key: Y, description: yasnippet
-*** key: i, function: yas-insert-snippet
-*** key: n, function: yas-new-snippet
-*** key: f, function: yas-visit-snippet-file
-*** key: t, function: yas-describe-tables
+*** key: i, description: insert-snippet, function: yas-insert-snippet
+*** key: n, description: new-snippet, function: yas-new-snippet
+*** key: f, description: visit-snippet-file, function: yas-visit-snippet-file
+*** key: t, description: table of snippets, function: yas-describe-tables
 * description: LaTeX-mode
 ** key: RET, description: Korean/English, function: toggle-input-method
-** key: b, description: TeX-build, function: TeX-command-run-all
-** key: v, function: TeX-view
+** key: b, description: build tex, function: TeX-command-run-all
+** key: v, description: view pdf, function: TeX-view
 ** key: c, description: copy math, function: nbm-latex-copy-math
 ** key: C, description: copy math with \( \), function: nbm-latex-copy-math-with-paren
 ** key: d, description: delete math, function: nbm-latex-delete-math
@@ -141,17 +142,17 @@
 *** key: c, description: mathcal, function: nbm-latex-font-mathcal
 *** key: f, description: frak, function: nbm-latex-font-mathfrak
 *** key: d, description: delete, function: nbm-latex-font-delete
-** key: ., function: LaTeX-mark-environment
-** key: *, function: LaTeX-mark-section
+** key: ., description: mark-environment, function: LaTeX-mark-environment
+** key: *, description: mark-section, function: LaTeX-mark-section
 ** key: i, description: Insert
-*** key: e, description: insert-environment, function: LaTeX-environment
-*** key: i, description: insert-item, function: LaTeX-insert-item
-*** key: F, description: insert-figure, function: nbm-latex-insert-figure
-*** key: l, description: insert-label, function: nbm-latex-insert-label
+*** key: e, description: environment, function: LaTeX-environment
+*** key: i, description: item, function: LaTeX-insert-item
+*** key: F, description: figure, function: nbm-latex-insert-figure
+*** key: l, description: label, function: nbm-latex-insert-label
 ** key: n, description: new item/macro/section
-*** key: b, description: new-bib-item, function: nbm-latex-new-bib-item
-*** key: m, description: new-macro, function: nbm-latex-new-macro
-*** key: s, description: new-section, function: nbm-latex-section
+*** key: b, description: bib-item, function: nbm-latex-new-bib-item
+*** key: m, description: macro, function: nbm-latex-new-macro
+*** key: s, description: section, function: nbm-latex-section
 ** key: r, description: reference
 *** key: =, description: table of contents, function: reftex-toc
 *** key: c, description: citation, function: helm-bibtex
@@ -161,46 +162,46 @@
 *** key: s, description: sec-ref, function: nbm-latex-sec-ref
 *** key: C, description: Cref, function: nbm-latex-Cref
 ** key: t, description: toggle
-*** key: b, description: toggle-bbl-file, function: nbm-latex-toggle-bbl-file
-*** key: e, description: toggle-equation, function: nbm-latex-toggle-equation
-*** key: *, description: toggle environ *, function: nbm-latex-toggle-star
-*** key: p, description: toggle-pgml, function: nbm-latex-toggle-pgml
-*** key: h, description: convert-to-hwp, function: nbm-latex-convert-to-hwp
+*** key: b, description: bbl-file, function: nbm-latex-toggle-bbl-file
+*** key: e, description: equation, function: nbm-latex-toggle-equation
+*** key: *, description: environment with *, function: nbm-latex-toggle-star
+*** key: p, description: pgml to latex, function: nbm-latex-toggle-pgml
+*** key: h, description: hwp, function: nbm-latex-convert-to-hwp
 *** key: v, description: change-variable, function: nbm-latex-change-variable
 ** key: y, description: yank
 *** key: f, description: make-and-yank-filename, function: nbm-latex-make-and-yank-filename
 * description: org-mode
 ** key: RET, description: Korean/English, function: toggle-input-method
 ** key: a, description: org-archive
-*** key: t, function: org-archive-subtree
-*** key: s, description: archive sibling, function: org-archive-to-archive-sibling
-*** key: m, function: nbm-org-move-to-archived
+*** key: t, description: subtree, function: org-archive-subtree
+*** key: s, description: sibling, function: org-archive-to-archive-sibling
+*** key: m, description: move to archived dir, function: nbm-org-move-to-archived
 ** key: b, description: org-babel
-*** key: t, function: org-babel-tangle
-*** key: e, function: org-edit-special
-*** key: s, function: nbm-org-sage-tangle
-*** key: i, description: latex-in-line-math, function: nbm-org-latex-in-line-math
-*** key: d, description: latex-display-math, function: nbm-org-latex-display-math
+*** key: t, description: tangle, function: org-babel-tangle
+*** key: e, description: edit special mode, function: org-edit-special
+*** key: s, description: sage load, function: nbm-org-sage-tangle
+*** key: i, description: in-line-math, function: nbm-org-latex-in-line-math
+*** key: d, description: display-math, function: nbm-org-latex-display-math
 ** key: c, function: org-ctrl-c-ctrl-c
-** key: e, function: org-export-dispatch
+** key: e, description: export-dispatch, function: org-export-dispatch
 ** key: d, description: Dates
 *** key: c, description: consecutive dates, function: nbm-org-consecutive-dates
-*** key: d, function: org-deadline
-*** key: s, function: org-schedule
-*** key: t, function: org-time-stamp
-*** key: T, function: org-time-stamp-inactive
-** key: i, function: org-roam-node-insert
+*** key: d, description: deadline, function: org-deadline
+*** key: s, description: schedule, function: org-schedule
+*** key: t, description: time-stamp, function: org-time-stamp
+*** key: T, description: time-stamp-inactive, function: org-time-stamp-inactive
+** key: i, description: insert org-roam-node, function: org-roam-node-insert
 ** key: j, description: Jump
-*** key: a, function: nbm-org-jump-to-archive
-*** key: f, function: nbm-org-jump-to-file
-*** key: h, function: nbm-org-jump-to-heading
-*** key: u, function: nbm-org-jump-to-url
+*** key: a, description: jump-to-archive, function: nbm-org-jump-to-archive
+*** key: f, description: jump-to-file, function: nbm-org-jump-to-file
+*** key: h, description: jump-to-heading, function: nbm-org-jump-to-heading
+*** key: u, description: jump-to-url, function: nbm-org-jump-to-url
 ** key: h, description: HTML
-*** key: e, function: nbm-org-html-export
-*** key: t, function: nbm-org-html-theme
+*** key: e, description: html-export, function: nbm-org-html-export
+*** key: t, description: html-theme, function: nbm-org-html-theme
 ** key: k, description: add keybinding, function: nbm-key-tree-add-keybinding
-** key: u, function: org-roam-ui-mode
-** key: p, function: nbm-make-permanant-note
+** key: u, description: UI mode, function: org-roam-ui-mode
+** key: p, description: make-permanant-note, function: nbm-make-permanant-note
 ** key: r, function: org-refile
 ** key: t, description: Tables
 *** key: -, description: Draw horizontal line, function: org-ctrl-c-minus
@@ -223,7 +224,7 @@
 *** key: c, description: checkbox, function: nbm-org-toggle-checkbox
 *** key: i, description: insert-item, function: org-insert-item
 *** key: s, description: strike-through, function: nbm-org-toggle-strike-through
-*** key: y, function: nbm-org-yank-code
+*** key: y, description: yank code line, function: nbm-org-yank-code
 ** key: R, function: org-roam-refile
 ** key: T, description: Toggle
 *** key: T, function: org-todo
