@@ -111,6 +111,7 @@
 ** key: T, description: toggle
 *** key: F, description: Fullscreen, function: toggle-frame-fullscreen
 ** key: N, description: Newbiemacs
+*** key: ?, description: Newbimacs cheat sheet, function: nbm-cheat-sheet
 *** key: c, description: config, function: newbie-config
 *** key: r, description: reload, function: newbie-reload
 *** key: s, description: settings, function: newbie-setting

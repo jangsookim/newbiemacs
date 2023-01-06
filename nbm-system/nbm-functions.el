@@ -103,3 +103,8 @@
     (shell-command "git pull")
     (setq buf (current-buffer))
     (kill-buffer buf)))
+
+(defun nbm-cheat-sheet ()
+  "Open Newbiemacs cheat sheet."
+  (interactive)
+  (shell-command (concat "open " (nbm-root-f "newbiemacs_cheat_sheet.pdf"))))
