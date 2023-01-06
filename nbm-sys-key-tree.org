@@ -122,6 +122,7 @@
 *** key: t, description: table of snippets, function: yas-describe-tables
 * description: LaTeX-mode
 ** key: RET, description: Korean/English, function: toggle-input-method
+** key: ,, description: master command, function: TeX-command-master
 ** key: b, description: build tex, function: TeX-command-run-all
 ** key: v, description: view pdf, function: TeX-view
 ** key: c, description: copy math, function: nbm-latex-copy-math

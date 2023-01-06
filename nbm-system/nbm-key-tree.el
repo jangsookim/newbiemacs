@@ -44,7 +44,7 @@
 (defun nbm-parse-property (line property)
   "LINE is a string of the following form.
 
-key: z, description: calculator,function: quick-calc
+key: z, description: calculator, function: quick-calc
 
 In the above example, if  PROPERTY is \"mode\",
 then it returns \"global\".
@@ -53,8 +53,10 @@ If there is no property, it returns the empty string \"\"."
     (if (string-match (format "\\(%s:[ ]*\\)" property) line)
         (progn
           (setq beg (match-end 1))
-          (string-match "\\(,\\|$\\)" line beg)
-          (setq end (match-beginning 1))
+          (string-match "\\(,+\\|$\\)" line beg)
+          (setq end (match-end 1))
+	  (if (equal (substring line (- end 1) end) ",")
+	      (setq end (- end 1)))
           (substring line beg end))
       "")))
 
