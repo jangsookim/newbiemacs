@@ -44,7 +44,7 @@
 *** key: s, function: save-buffer
 *** key: A, description: save as, function: nbm-save-as
 *** key: D, description: copy-to-desktop, function: nbm-copy-to-desktop
-*** key: F, description: Finder, function: nbm-show-in-finder
+*** key: F, description: Finder (file manager), function: nbm-show-in-finder
 *** key: R, description: rename current file, function: nbm-rename-current-file
 *** key: S, description: add-to-symlinks, function: nbm-add-to-symlinks
 *** key: T, description: show-trash-bin, function: nbm-show-trash-bin
@@ -206,6 +206,7 @@
 ** key: r, function: org-refile
 ** key: t, description: Tables
 *** key: -, description: Draw horizontal line, function: org-ctrl-c-minus
+*** key: =, description: calculate tables, function: org-table-recalculate-buffer-tables
 *** key: c, description: Columns
 **** key: d, description: delete-column, function: org-table-delete-column
 **** key: i, description: insert-column, function: org-table-insert-column
