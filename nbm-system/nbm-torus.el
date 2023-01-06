@@ -180,15 +180,26 @@
   (torus-print-main)
   )
 
-(defun torus-get-str-difficulty ()
+(defun torus-difficulty-as-str (difficulty)
   "Return the difficulty in string format."
-  (if (equal 1 *torus-difficulty*)
+  (if (equal 1 difficulty)
       "Normal"
     " Testing"))
 
+(defun torus-get-str-difficulty ()
+  "Return the current difficulty in string format."
+  (torus-difficulty-as-str *torus-difficulty*)
+  )
+
 (defun torus-set-difficulty ()
   (interactive)
-  (if (equal ?1 (read-char "Choose difficulty:\n (1) Normal\n (2) Crazy"))
+  (if (equal ?1 (read-char
+		 (concat
+		  "Choose difficulty:\n"
+		  "  (1) " (torus-difficulty-as-str 1)
+		  "  (2) " (torus-difficulty-as-str 2))
+		 )
+	     )
       (progn
 	(setq *torus-difficulty* 1)
 	(defconst *torus-game-speed* 0.1)             ; the lower the faster
