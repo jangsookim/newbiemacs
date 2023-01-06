@@ -11,7 +11,7 @@
 ** key: TAB, description: Last buffer, function: evil-switch-to-windows-last-buffer
 ** key: ;, description: Toggle Korean/English, function: toggle-input-method
 ** key: !, description: shell command, function: nbm-shell-commend
-** key: ?, description: Help, function: newbie-help
+** key: ?, description: Help, function: nbm-cheat-sheet
 ** key: 0, description: Developer only
 *** key: h, function: nbm-toggle-nbm-home
 ** key: ', description: shell, function: eshell
@@ -67,7 +67,6 @@
 *** key: u, description: user-key-tree, function: nbm-find-user-key-tree
 *** key: c, description: Check key-bindings, function: nbm-key-tree-show-repeated-keys
 ** key: m, description: find misc file, function: nbm-find-misc
-** key: n, description: new tex file, function: nbm-latex-new-file
 ** key: o, description: Org-mode
 *** key: a, description: agenda, function: org-agenda-list
 *** key: A, description: agenda-commands, function: org-agenda
@@ -123,6 +122,7 @@
 *** key: t, description: table of snippets, function: yas-describe-tables
 * description: LaTeX-mode
 ** key: RET, description: Korean/English, function: toggle-input-method
+** key: ,, description: master command, function: TeX-command-master
 ** key: b, description: build tex, function: TeX-command-run-all
 ** key: v, description: view pdf, function: TeX-view
 ** key: c, description: copy math, function: nbm-latex-copy-math
@@ -196,6 +196,7 @@
 *** key: a, description: jump-to-archive, function: nbm-org-jump-to-archive
 *** key: f, description: jump-to-file, function: nbm-org-jump-to-file
 *** key: h, description: jump-to-heading, function: nbm-org-jump-to-heading
+*** key: t, description: jump-to-tex, function: nbm-org-jump-to-tex
 *** key: u, description: jump-to-url, function: nbm-org-jump-to-url
 ** key: h, description: HTML
 *** key: e, description: html-export, function: nbm-org-html-export
@@ -230,12 +231,12 @@
 ** key: R, function: org-roam-refile
 ** key: T, description: Toggle
 *** key: T, function: org-todo
-*** key: r, function: org-roam-buffer-toggle
-*** key: v, description: toggle valign, function: nbm-toggle-valign
+*** key: r, description: org-roam-buffer, function: org-roam-buffer-toggle
+*** key: v, description: valign, function: nbm-toggle-valign
 * description: emacs-lisp-mode
 ** key: e, description: eval
 *** key: b, function: eval-buffer
 ** key: f, description: Find
 *** key: f, function: nbm-nil-function
 * description: python-mode
-** key: l, function: nbm-load-sage
+** key: l, description: load-sage, function: nbm-load-sage
