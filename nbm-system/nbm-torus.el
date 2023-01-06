@@ -184,7 +184,7 @@
   "Return the difficulty in string format."
   (if (equal 1 difficulty)
       "Normal"
-    " Testing"))
+    "Half-glazed (Testing)"))
 
 (defun torus-get-str-difficulty ()
   "Return the current difficulty in string format."
@@ -303,23 +303,44 @@ In this case you are recommended to play \"torus\" instead.
           (torus-print-entry (torus-box-get-entry row col))))
       (torus-print-string "|\n" -1))))
 
+
+(defun torus-get-torus-color (c part)
+  "Return the difficulty in string format."
+  (if (equal 1 *torus-difficulty*) c (if (equal 1 part) c -1 )))
+
 (defun torus-print-flying-torus (row col)
   (let ((inhibit-read-only t))
-    (if (equal (% (elt *torus-flying-tori-height* col) 2) 0) ; the flying torus is rotating
+    (if (equal (% (elt *torus-flying-tori-height* col) 4) 0) ; the flying torus is rotating with cycle 4
         (progn
           (if (equal row (- *torus-box-height* (elt *torus-flying-tori-height* col)))
-              (torus-print-string " @ @ " (elt *torus-flying-tori* col)))
+              (torus-print-string " @d@ "  (torus-get-torus-color (elt *torus-flying-tori* col) 0)))
           (if (equal row (1- (- *torus-box-height* (elt *torus-flying-tori-height* col))))
-              (torus-print-string " /@\\ " (elt *torus-flying-tori* col)))
+              (torus-print-string " /@\\ " (torus-get-torus-color (elt *torus-flying-tori* col) 1)))
           (if (equal row (1+ (- *torus-box-height* (elt *torus-flying-tori-height* col))))
-              (torus-print-string " \\@/ " (elt *torus-flying-tori* col))))
-      (progn
-        (if (equal row (- *torus-box-height* (elt *torus-flying-tori-height* col)))
-            (torus-print-string " @@@ " (elt *torus-flying-tori* col)))
-        (if (equal row (1- (- *torus-box-height* (elt *torus-flying-tori-height* col))))
-            (torus-print-string "     " (elt *torus-flying-tori* col)))
-        (if (equal row (1+ (- *torus-box-height* (elt *torus-flying-tori-height* col))))
-            (torus-print-string "     " (elt *torus-flying-tori* col)))))))
+              (torus-print-string " \\@/ " (torus-get-torus-color (elt *torus-flying-tori* col) 2))))
+      (if (equal (% (elt *torus-flying-tori-height* col) 4) 1) ; the flying torus is rotating with cycle 4
+	  (progn
+            (if (equal row (- *torus-box-height* (elt *torus-flying-tori-height* col)))
+		(torus-print-string " @@@ " (torus-get-torus-color (elt *torus-flying-tori* col) 1)))
+            (if (equal row (1- (- *torus-box-height* (elt *torus-flying-tori-height* col))))
+		(torus-print-string "     " (elt *torus-flying-tori* col)))
+            (if (equal row (1+ (- *torus-box-height* (elt *torus-flying-tori-height* col))))
+		(torus-print-string "     " (elt *torus-flying-tori* col))))
+	(if (equal (% (elt *torus-flying-tori-height* col) 4) 2) ; the flying torus is rotating with cycle 4
+            (progn
+              (if (equal row (- *torus-box-height* (elt *torus-flying-tori-height* col)))
+		  (torus-print-string " @q@ " (torus-get-torus-color (elt *torus-flying-tori* col) 0)))
+              (if (equal row (1- (- *torus-box-height* (elt *torus-flying-tori-height* col))))
+		  (torus-print-string " /@\\ " (torus-get-torus-color (elt *torus-flying-tori* col) 2)))
+              (if (equal row (1+ (- *torus-box-height* (elt *torus-flying-tori-height* col))))
+		  (torus-print-string " \\@/ " (torus-get-torus-color (elt *torus-flying-tori* col) 1))))
+	  (progn
+            (if (equal row (- *torus-box-height* (elt *torus-flying-tori-height* col)))
+		(torus-print-string " @@@ " (torus-get-torus-color (elt *torus-flying-tori* col) 2)))
+            (if (equal row (1- (- *torus-box-height* (elt *torus-flying-tori-height* col))))
+		(torus-print-string "     " (elt *torus-flying-tori* col)))
+            (if (equal row (1+ (- *torus-box-height* (elt *torus-flying-tori-height* col))))
+		(torus-print-string "     " (elt *torus-flying-tori* col)))))))))
 
 (defun torus-print-pole ()
   (let ((inhibit-read-only t))
