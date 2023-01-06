@@ -184,17 +184,18 @@
   "Return the difficulty in string format."
   (if (equal 1 *torus-difficulty*)
       "Normal"
-    " Crazy"))
+    " Testing"))
 
 (defun torus-set-difficulty ()
   (interactive)
   (if (equal ?1 (read-char "Choose difficulty:\n (1) Normal\n (2) Crazy"))
       (progn
 	(setq *torus-difficulty* 1)
+	(defconst *torus-game-speed* 0.1)             ; the lower the faster
 	)
     (progn
       (setq *torus-difficulty* 2)
-      (setq *torus-speed* 1)
+      (defconst  *torus-game-speed* 1)
       )))
 
 (defvar *torus-box* nil
@@ -215,7 +216,7 @@
 (defvar *torus-flying-tori-waiting* nil
   "The waiting time of flying tori which is a list.")
 
-(defconst *torus-game-speed* 0.1)             ; the lower the faster
+;(defconst *torus-game-speed* 0.1)             ; the lower the faster
 (defconst *torus-gauge-time* 20)
 (defconst *torus-flying-torus-speed-factor* 1)
 (defconst *torus-box-height* 20)
