@@ -42,6 +42,7 @@
 *** key: n, description: new-file, function: nbm-new-file
 *** key: p, description: move-pdf-from-downloads, function: nbm-move-pdf-from-downloads
 *** key: s, function: save-buffer
+*** key: A, description: save as, function: nbm-save-as
 *** key: D, description: copy-to-desktop, function: nbm-copy-to-desktop
 *** key: F, description: Finder, function: nbm-show-in-finder
 *** key: R, description: rename current file, function: nbm-rename-current-file
