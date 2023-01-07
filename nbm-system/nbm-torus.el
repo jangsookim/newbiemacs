@@ -306,7 +306,7 @@ In this case you are recommended to play \"torus\" instead.
 
 (defun torus-get-torus-color (c part)
   "Return the difficulty in string format."
-  (if (equal 1 *torus-difficulty*) c (if (equal 1 part) c -1 )))
+  (if (equal 1 *torus-difficulty*) c (if (equal 1 part) c 100 )))
 
 (defun torus-print-flying-torus (row col)
   (let ((inhibit-read-only t))
@@ -424,9 +424,7 @@ In this case you are recommended to play \"torus\" instead.
 (defun torus-box-get-entry-to-print (row col)
   (if (torus-box-get-raw-entry row col)
       (if (sequencep (torus-box-get-raw-entry row col))
-	  (if (= 0 (elt (torus-box-get-raw-entry row col) 1))
-	      (elt (torus-box-get-raw-entry row col) 0)
-	    100 )
+	   (torus-get-torus-color (elt (torus-box-get-raw-entry row col) 0) (elt (torus-box-get-raw-entry row col) 1))
 	(torus-box-get-raw-entry row col))
     nil))
 
@@ -445,9 +443,7 @@ In this case you are recommended to play \"torus\" instead.
 (defun torus-pole-get-entry (row col)
   (if (torus-pole-get-raw-entry row col)
       (if (sequencep (torus-pole-get-raw-entry row col))
-	  (if (= 0 (elt (torus-pole-get-raw-entry row col) 1))
-	      (elt (torus-pole-get-raw-entry row col) 0)	  
-	    100 )
+	  (torus-get-torus-color (elt (torus-pole-get-raw-entry row col) 0) (elt (torus-pole-get-raw-entry row col) 1))
 	(torus-pole-get-raw-entry row col))
     nil))
 
@@ -559,7 +555,10 @@ In this case you are recommended to play \"torus\" instead.
 (defun torus-insert-flying-torus (col torus)
   "Insert torus in column col."
   (torus-box-set-entry (- *torus-box-height* (torus-get-num-tori col) 1)
-                       col (list torus 0) )
+                       col (list
+			    torus
+			    (if (< (% (+ 3 (elt *torus-flying-tori-height* col)) 4) 2) 2 1)
+			    ) )
   (torus-increase-num-tori col))
 
 ;; insert and delete a torus in the box
@@ -567,7 +566,7 @@ In this case you are recommended to play \"torus\" instead.
 (defun torus-box-insert-new (col)
   "Insert a random torus in column col."
   (torus-box-set-entry (- *torus-box-height* (torus-get-num-tori col) 1)
-                       col (torus-random-torus))
+                       col (list (torus-random-torus) 1))
   (torus-increase-num-tori col)
   )
 
