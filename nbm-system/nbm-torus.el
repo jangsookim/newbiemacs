@@ -215,7 +215,7 @@
 	)
     (progn
       (setq *torus-difficulty* 2)
-      (defconst  *torus-game-speed* 1)
+      (defconst  *torus-game-speed* 0.1)
       )))
 
 (defvar *torus-box* nil
@@ -517,11 +517,20 @@ In this case you are recommended to play \"torus\" instead.
 
 ;; insert and delete a torus in the pole
 
+(defun torus-fliped-torus (torus)
+  (if torus
+      (if (sequencep torus)
+	  (list
+	   (elt torus 0)
+	   (if (= 1 (elt torus 1)) 2 1))
+	torus)
+    nil))
+
 (defun torus-pole-insert ()
   "Insert into the pole the bottom torus in the column where the pole is at."
   (torus-pole-set-entry (- *torus-pole-height* *torus-num-tori-in-pole* 1)
                         *torus-pole-pos*
-                        (torus-box-get-raw-entry (1- *torus-box-height*) *torus-pole-pos*))
+                        (torus-fliped-torus (torus-box-get-raw-entry (1- *torus-box-height*) *torus-pole-pos*)))
   (torus-increase-num-tori-in-pole)
   )
 
