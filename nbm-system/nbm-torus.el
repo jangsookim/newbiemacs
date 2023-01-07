@@ -300,7 +300,7 @@ In this case you are recommended to play \"torus\" instead.
                      (equal row (1+ (- *torus-box-height* (elt *torus-flying-tori-height* col))))
                      (equal row (1- (- *torus-box-height* (elt *torus-flying-tori-height* col))))))
             (torus-print-flying-torus row col)
-          (torus-print-entry (torus-box-get-entry row col))))
+          (torus-print-entry (torus-box-get-entry-to-print row col))))
       (torus-print-string "|\n" -1))))
 
 
@@ -370,6 +370,8 @@ In this case you are recommended to play \"torus\" instead.
       (insert (torus-color-d string)))
   (if (equal color 4)
       (insert (torus-color-e string)))
+  (if (equal color 100)
+      (insert (torus-color-x string)))
   )
 
 (defun torus-print-entry (n)
@@ -381,7 +383,7 @@ In this case you are recommended to play \"torus\" instead.
       (torus-print-string "  |  " -1))
   (if (eq n -2)
       (torus-print-string " --- " -1))
-  (if (or (equal n 0) (equal n 1) (equal n 2) (equal n 3) (equal n 4))
+  (if (or (equal n 0) (equal n 1) (equal n 2) (equal n 3) (equal n 4) (equal n 100))
       (torus-print-string " @@@ " n))
   )
 
@@ -419,13 +421,37 @@ In this case you are recommended to play \"torus\" instead.
               *torus-num-cols*))
         value))
 
+(defun torus-box-get-entry-to-print (row col)
+  (if (torus-box-get-raw-entry row col)
+      (if (sequencep (torus-box-get-raw-entry row col))
+	  (if (= 0 (elt (torus-box-get-raw-entry row col) 1))
+	      (elt (torus-box-get-raw-entry row col) 0)
+	    100 )
+	(torus-box-get-raw-entry row col))
+    nil))
+
 (defun torus-box-get-entry (row col)
+  (if (sequencep (torus-box-get-raw-entry row col))
+      (elt (torus-box-get-raw-entry row col) 0)
+    (torus-box-get-raw-entry row col)))
+
+(defun torus-box-get-raw-entry (row col)
   (elt *torus-box*
      (+ col
         (* row
            *torus-num-cols*))))
 
+
 (defun torus-pole-get-entry (row col)
+  (if (torus-pole-get-raw-entry row col)
+      (if (sequencep (torus-pole-get-raw-entry row col))
+	  (if (= 0 (elt (torus-pole-get-raw-entry row col) 1))
+	      (elt (torus-pole-get-raw-entry row col) 0)	  
+	    100 )
+	(torus-pole-get-raw-entry row col))
+    nil))
+
+(defun torus-pole-get-raw-entry (row col)
   (elt *torus-pole*
        (+ col
           (* row
@@ -443,7 +469,7 @@ In this case you are recommended to play \"torus\" instead.
   (elt *torus-num-tori* col))
 
 (defun torus-pole-get-top-torus ()
-    (torus-pole-get-entry
+    (torus-pole-get-raw-entry
      (- *torus-pole-height* *torus-num-tori-in-pole*)
      *torus-pole-pos*))
 
@@ -468,7 +494,7 @@ In this case you are recommended to play \"torus\" instead.
         (setq new-pos (1- *torus-pole-pos*))
         (dotimes (row *torus-pole-height*)
           (torus-pole-set-entry row new-pos
-                                (torus-pole-get-entry row old-pos))
+                                (torus-pole-get-raw-entry row old-pos))
           (torus-pole-set-entry row old-pos nil))
         (setq *torus-pole-pos* new-pos))))
 
@@ -480,7 +506,7 @@ In this case you are recommended to play \"torus\" instead.
         (setq new-pos (1+ *torus-pole-pos*))
         (dotimes (row *torus-pole-height*)
           (torus-pole-set-entry row new-pos
-                                (torus-pole-get-entry row old-pos))
+                                (torus-pole-get-raw-entry row old-pos))
           (torus-pole-set-entry row old-pos nil))
         (setq *torus-pole-pos* new-pos))))
 
@@ -490,7 +516,7 @@ In this case you are recommended to play \"torus\" instead.
   "Insert into the pole the bottom torus in the column where the pole is at."
   (torus-pole-set-entry (- *torus-pole-height* *torus-num-tori-in-pole* 1)
                         *torus-pole-pos*
-                        (torus-box-get-entry (1- *torus-box-height*) *torus-pole-pos*))
+                        (torus-box-get-raw-entry (1- *torus-box-height*) *torus-pole-pos*))
   (torus-increase-num-tori-in-pole)
   )
 
@@ -533,7 +559,7 @@ In this case you are recommended to play \"torus\" instead.
 (defun torus-insert-flying-torus (col torus)
   "Insert torus in column col."
   (torus-box-set-entry (- *torus-box-height* (torus-get-num-tori col) 1)
-                       col torus)
+                       col (list torus 0) )
   (torus-increase-num-tori col))
 
 ;; insert and delete a torus in the box
@@ -559,7 +585,7 @@ In this case you are recommended to play \"torus\" instead.
     (dotimes (r k)
       (setq rr (+ (- *torus-box-height* k 1) r))
       (torus-box-set-entry rr col
-                           (torus-box-get-entry (1+ rr) col)))
+                           (torus-box-get-raw-entry (1+ rr) col)))
     (setq rr (1- *torus-box-height*))
     (torus-box-set-entry rr col (torus-pole-get-top-torus))
     (torus-increase-num-tori col))
@@ -572,7 +598,7 @@ In this case you are recommended to play \"torus\" instead.
     (dotimes (r (1- k))
       (setq rr (- row r))
       (torus-box-set-entry rr col
-                           (torus-box-get-entry (1- rr) col)))
+                           (torus-box-get-raw-entry (1- rr) col)))
     (setq rr (- row (1- k)))
     (torus-box-set-entry rr col nil)
     (torus-decrease-num-tori col)
@@ -662,7 +688,7 @@ In this case you are recommended to play \"torus\" instead.
       (dotimes (col *torus-num-cols*)
         (aset temp (+ col
                       (* row (1+ *torus-num-cols*)))
-              (torus-box-get-entry row col))))
+              (torus-box-get-raw-entry row col))))
     (setq *torus-box* temp)))
 
 (defun torus-increase-pole ()
@@ -674,7 +700,7 @@ In this case you are recommended to play \"torus\" instead.
       (dotimes (col *torus-num-cols*)
         (aset temp (+ col
                       (* row (1+ *torus-num-cols*)))
-              (torus-pole-get-entry row col))))
+              (torus-pole-get-raw-entry row col))))
     (setq *torus-pole* temp)))
 
 ;; update pole height
@@ -691,7 +717,7 @@ In this case you are recommended to play \"torus\" instead.
     (dotimes (row *torus-pole-height*)
       (dotimes (col *torus-num-cols*)
         (aset temp (+ col (* row *torus-num-cols*))
-              (torus-pole-get-entry (1+ row) col))))
+              (torus-pole-get-raw-entry (1+ row) col))))
     (setq *torus-pole* temp)))
 
 (defun torus-increase-pole-height ()
@@ -708,7 +734,7 @@ In this case you are recommended to play \"torus\" instead.
           (progn
             (setq rr (- row (- new-ht old-ht)))
             (aset temp (+ col (* row *torus-num-cols*))
-                  (torus-pole-get-entry rr col)))
+                  (torus-pole-get-raw-entry rr col)))
           )))
     (setq *torus-pole* temp)
     (setq *torus-pole-height* new-ht)))
