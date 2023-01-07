@@ -25,6 +25,8 @@
 	   (propertize string 'face '(:foreground "Deepskyblue3" :weight bold)))
 	 (defun torus-color-e (string)
 	   (propertize string 'face '(:foreground "MediumSlateBlue" :weight bold)))
+	 (defun torus-color-y (string)
+	   (propertize string 'face '(:foreground "Navajowhite1" :weight bold)))
 	 )
 	((equal theme 2)
 	 (defun torus-color-x (string)
@@ -39,11 +41,14 @@
 	   (propertize string 'face '(:foreground "orange" :weight bold)))
 	 (defun torus-color-e (string)
 	   (propertize string 'face '(:foreground "#Bf5af2" :weight bold))) ; Systempurplecolor
+	 (defun torus-color-y (string)
+	   (propertize string 'face '(:foreground "Navajowhite1" :weight bold)))
 	 )
 	((equal theme 3)
 	 (defun torus-color-x (string)
-	   (propertize string 'face '(:foreground "#ffff80" :weight bold))) ; CUD ver4 cream
-	 (defun torus-color-a (string)
+	   (propertize string 'face '(:foreground "#ffca80" :weight bold))) ; CUD ver4 baige
+	   ;(propertize string 'face '(:foreground "#ffff80" :weight bold))) ; CUD ver4 cream
+	(defun torus-color-a (string)
 	   (propertize string 'face '(:foreground "#FF4B00" :weight bold))) ; CUD ver4 red
 	 (defun torus-color-b (string)
 	   (propertize string 'face '(:foreground "#FFF100" :weight bold))) ; CUD ver4 yellow
@@ -53,6 +58,8 @@
 	   (propertize string 'face '(:foreground "#005AFF" :weight bold))) ; CUD ver blue
 	 (defun torus-color-e (string)
 	   (propertize string 'face '(:foreground "#4dc4ff" :weight bold))) ; CUD ver sky blue
+	 (defun torus-color-y (string)
+	   (propertize string 'face '(:foreground "#804000" :weight bold))) ; CUD ver4 brown
 	 )
 	(t
 	 (defun torus-color-x (string)
@@ -68,6 +75,8 @@
 	 (defun torus-color-e (string)
 	   (propertize string 'face '(:foreground "#32d74b" :weight bold))) ; Systemgreencolor
 	 )
+	 (defun torus-color-y (string)
+	   (propertize string 'face '(:foreground "Navajowhite1" :weight bold)))
 	)
   )
 
@@ -313,7 +322,7 @@ In this case you are recommended to play \"torus\" instead.
     (if (equal (% (elt *torus-flying-tori-height* col) 4) 0) ; the flying torus is rotating with cycle 4
         (progn
           (if (equal row (- *torus-box-height* (elt *torus-flying-tori-height* col)))
-              (torus-print-string " @d@ "  (torus-get-torus-color (elt *torus-flying-tori* col) 0)))
+              (torus-print-string " @ @ "  (torus-get-torus-color (elt *torus-flying-tori* col) 0)))
           (if (equal row (1- (- *torus-box-height* (elt *torus-flying-tori-height* col))))
               (torus-print-string " /@\\ " (torus-get-torus-color (elt *torus-flying-tori* col) 2)))
           (if (equal row (1+ (- *torus-box-height* (elt *torus-flying-tori-height* col))))
@@ -329,7 +338,7 @@ In this case you are recommended to play \"torus\" instead.
 	(if (equal (% (elt *torus-flying-tori-height* col) 4) 2) ; the flying torus is rotating with cycle 4
             (progn
               (if (equal row (- *torus-box-height* (elt *torus-flying-tori-height* col)))
-		  (torus-print-string " @q@ " (torus-get-torus-color (elt *torus-flying-tori* col) 0)))
+		  (torus-print-string " @ @ " (torus-get-torus-color (elt *torus-flying-tori* col) 0)))
               (if (equal row (1- (- *torus-box-height* (elt *torus-flying-tori-height* col))))
 		  (torus-print-string " /@\\ " (torus-get-torus-color (elt *torus-flying-tori* col) 1)))
               (if (equal row (1+ (- *torus-box-height* (elt *torus-flying-tori-height* col))))
@@ -371,7 +380,7 @@ In this case you are recommended to play \"torus\" instead.
   (if (equal color 4)
       (insert (torus-color-e string)))
   (if (equal color 100)
-      (insert (torus-color-x string)))
+      (insert (torus-color-y string)))
   )
 
 (defun torus-print-entry (n)
