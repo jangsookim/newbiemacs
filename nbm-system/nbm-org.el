@@ -97,6 +97,16 @@ For example, 20221109090747-test.org will be changed to test.org."
     (setq file (completing-read "Choose a file to open: " file-list nil t ""))
     (find-file file)))
 
+(defun nbm-org-jump-to-dir-at-point ()
+  "Jump to the directory of the current file link."
+  (interactive)
+  (let (file dir)
+    (when (string= (org-element-property :type (org-element-context)) "file")
+      (setq file (org-element-property :path (org-element-context)))
+      (setq dir (file-name-directory file))
+      (find-file dir) (goto-char (point-min))
+      (search-forward (file-name-nondirectory file)))))
+
 (defun nbm-org-jump-to-url ()
   "Jump to a url in the current org file."
   (interactive)
