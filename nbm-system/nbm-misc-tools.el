@@ -102,7 +102,7 @@ Enter here: ")))
 (defun nbm-clone-frame ()
   "Clone this frame and adjust it."
   (interactive)
-  (clone-frame)
+  (clone-frame nil t)
   (if (equal system-type 'gnu/linux) (other-frame 1))
   (nbm-magnet))
 
