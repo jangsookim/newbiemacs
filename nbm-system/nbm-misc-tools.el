@@ -89,6 +89,19 @@ Enter here: ")))
 		  (nth 2 *nbm-startup-frame*)
 		  (nth 3 *nbm-startup-frame*)))
 
+(defun nbm-make-frame-left ()
+  "Make a new frame and adjust it to the left."
+  (let (buf)
+    (setq buf (current-buffer))
+    (switch-to-prev-buffer)
+    (make-frame) (nbm-magnet-move-frame ?h)
+    (switch-to-buffer buf)))
+
+(defun nbm-clone-frame ()
+  "Clone this frame and adjust it."
+  (interactive)
+  (clone-frame) (nbm-magnet))
+
 (defun nbm-yank-favorite-string ()
   "Copy a frequently used string to the kill-ring."
   (interactive)

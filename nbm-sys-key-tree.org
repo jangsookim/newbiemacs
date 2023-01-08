@@ -103,7 +103,7 @@
 *** key: f, description: Favorite string, function: nbm-yank-favorite-string
 ** key: F, description: Frames
 *** key: d, function: delete-frame
-*** key: m, function: make-frame
+*** key: c, description: clone frame, function: nbm-clone-frame
 ** key: S, description: Spell-check
 *** key: b, description: buffer, function: flyspell-buffer
 *** key: i, description: interactive, function: ispell

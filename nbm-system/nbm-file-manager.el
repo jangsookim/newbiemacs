@@ -25,7 +25,9 @@ If search-flag is non-nil, it will list files ending with EXT."
 (defun nbm-find-pdf ()
   "Find a pdf file in the pdf folder."
   (interactive)
-  (nbm-find-file-with-extension "pdf" nil))
+  (nbm-find-file-with-extension "pdf" nil)
+  (if (equal major-mode 'pdf-view-mode)
+      (nbm-make-frame-left)))
 
 (defun nbm-find-tex ()
   "Find a tex file in the tex folder."
