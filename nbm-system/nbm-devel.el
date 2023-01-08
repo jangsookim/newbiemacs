@@ -5,14 +5,12 @@
     (if (file-exists-p (nbm-root-f "nbm-home.txt"))
 	(progn
 	  (delete-file (nbm-root-f "nbm-home.txt"))
-	  (message "nbm-home.txt deleted.")
-	  )
+	  (message "nbm-home.txt deleted."))
       (progn
 	(find-file (nbm-root-f "nbm-home.txt"))
-	(insert (concat (getenv "HOME") (my-dropbox "newbiemacs/")))
+	(insert "~/Dropbox/newbiemacs/")
 	(save-buffer) (kill-buffer)
-	(message (format "nbm-home.txt created. (contents:%s)" (my-dropbox "newbiemacs/")))
-	))))
+	(message "nbm-home.txt created. (contents:~/Dropbox/newbiemacs/)")))))
 
 (defun nbm-update-version ()
   "Update Newbiemacs version."
