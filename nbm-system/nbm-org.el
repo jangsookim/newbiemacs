@@ -104,7 +104,7 @@ For example, 20221109090747-test.org will be changed to test.org."
     (when (string= (org-element-property :type (org-element-context)) "file")
       (setq file (org-element-property :path (org-element-context)))
       (setq dir (file-name-directory file))
-      (find-file dir) (goto-char (point-min))
+      (find-file dir) (revert-buffer) (goto-char (point-min)) 
       (search-forward (file-name-nondirectory file)))))
 
 (defun nbm-org-jump-to-url ()
