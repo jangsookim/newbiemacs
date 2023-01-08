@@ -94,13 +94,17 @@ Enter here: ")))
   (let (buf)
     (setq buf (current-buffer))
     (switch-to-prev-buffer)
-    (make-frame) (nbm-magnet-move-frame ?h)
+    (make-frame)
+    (if (equal system-type 'gnu/linux) (other-frame 1))
+    (nbm-magnet-move-frame ?h)
     (switch-to-buffer buf)))
 
 (defun nbm-clone-frame ()
   "Clone this frame and adjust it."
   (interactive)
-  (make-frame) (nbm-magnet))
+  (clone-frame)
+  (if (equal system-type 'gnu/linux) (other-frame 1))
+  (nbm-magnet))
 
 (defun nbm-yank-favorite-string ()
   "Copy a frequently used string to the kill-ring."
