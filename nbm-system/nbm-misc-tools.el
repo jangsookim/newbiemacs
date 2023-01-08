@@ -109,10 +109,10 @@ Enter here: ")))
 (defun nbm-expel-window ()
   "Expel current window to a new frame."
   (interactive)
-  (nbm-clone-frame) (other-frame 1)
+  (nbm-clone-frame) (other-frame -1)
   (if (> (length (window-list)) 1)
       (delete-window) (switch-to-prev-buffer))
-  (other-frame -1))
+  (other-frame 1))
 
 (defun nbm-yank-favorite-string ()
   "Copy a frequently used string to the kill-ring."
