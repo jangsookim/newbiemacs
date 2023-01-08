@@ -100,7 +100,7 @@ Enter here: ")))
 (defun nbm-clone-frame ()
   "Clone this frame and adjust it."
   (interactive)
-  (clone-frame) (nbm-magnet))
+  (make-frame) (nbm-magnet))
 
 (defun nbm-yank-favorite-string ()
   "Copy a frequently used string to the kill-ring."
