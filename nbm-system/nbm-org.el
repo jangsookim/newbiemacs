@@ -123,7 +123,7 @@ For example, 20221109090747-test.org will be changed to test.org."
   "Export to html and open it."
   (interactive)
   (org-html-export-to-html)
-  (shell-command (format "open %s.html"
+  (shell-command (format "open \"%s.html\""
 		 (file-name-sans-extension (buffer-file-name)))))
 
 (defun nbm-org-html-theme ()
