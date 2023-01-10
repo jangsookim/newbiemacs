@@ -70,10 +70,8 @@ For example, 20221109090747-test.org will be changed to test.org."
   "Jump to a heading in the current org file."
   (interactive)
   (let (org-refile-history org-refile-targets level)
-    (setq level (read-char "Enter the max level of headings to search (default 1):"))
-    (if (member level '(?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9))
-	(setq org-refile-targets (cons `(,(buffer-file-name) . (:maxlevel . ,level)) org-refile-targets))
-      (setq org-refile-targets '((nil . (:level . 1)))))
+    (org-next-visible-heading 1)
+    (setq org-refile-targets (cons `(,(buffer-file-name) . (:maxlevel . ,9)) org-refile-targets))
     (org-refile (universal-argument))))
 
 (defun nbm-org-jump-to-tex ()
