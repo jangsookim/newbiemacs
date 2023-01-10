@@ -21,7 +21,7 @@
 			     )))
     (cond ((equal ?a choice) (nbm-magnet-adjust-height))
 	  ((equal ?s choice) (nbm-save-frame-as-startup))
-	  (t (nbm-magnet-move-frame choice)))))
+	  (t (nbm-magnet-move-frame choice) (nbm-magnet-move-frame choice)))))
 
 (defun nbm-magnet-move-frame (pos)
   "Move the current frame as Magnet does."
