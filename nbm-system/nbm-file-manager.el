@@ -147,9 +147,12 @@ e) el"))
 (defun nbm-show-in-finder ()
   "Open Finder on the current folder."
   (interactive)
-  (if (equal system-type 'windows-nt)
-      (shell-command (format "start %s" (file-name-directory (nbm-get-file-name))))
-    (shell-command (format "open -R \"%s\"" (nbm-get-file-name)))))
+  (cond ((equal system-type 'windows-nt)
+	 (shell-command (format "start %s" (file-name-directory (nbm-get-file-name)))))
+	((equal system-type 'darwin)
+	 (shell-command (format "open -R \"%s\"" (nbm-get-file-name))))
+	((equal system-type 'gnu/linux)
+	 (shell-command (format "nautilus --browser \"%s\"" (nbm-get-file-name))))))
 
 (defun nbm-show-trash-bin ()
   "Open Finder on the trash bin."
