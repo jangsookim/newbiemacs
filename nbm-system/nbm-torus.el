@@ -30,7 +30,7 @@
 	 )
 	((equal theme 2)
 	 (defun torus-color-x (string)
-	   (propertize string 'face '(:foreground "white" :weight bold)))
+	   (propertize string 'face '(:foreground "Navajowhite1" :weight bold)))
 	 (defun torus-color-a (string)
 	   (propertize string 'face '(:foreground "Red1" :weight bold)))
 	 (defun torus-color-b (string)
@@ -46,7 +46,7 @@
 	 )
 	((equal theme 3)
 	 (defun torus-color-x (string)
-	   (propertize string 'face '(:foreground "#ffca80" :weight bold))) ; CUD ver4 baige
+	   (propertize string 'face '(:foreground "Navajowhite1" :weight bold))) ; CUD ver4 baige
 	   ;(propertize string 'face '(:foreground "#ffff80" :weight bold))) ; CUD ver4 cream
 	(defun torus-color-a (string)
 	   (propertize string 'face '(:foreground "#FF4B00" :weight bold))) ; CUD ver4 red
@@ -101,6 +101,7 @@
     (setq prompt (format "%s\n%s" prompt (torus-change-theme-prompt 4)))
     (setq choice (read-char prompt))
     (torus-load-theme (string-to-number (char-to-string choice)))
+    (nbm-set-user-variable "torus" choice)
     )
   )
 
@@ -108,7 +109,11 @@
   (interactive)
   (switch-to-buffer "torus")
   (torus-mode)
-  (torus-load-theme 1)
+  ;; (torus-load-theme 1)
+  (torus-load-theme
+   (if (nbm-get-user-variable "torus" nil)
+       (string-to-number (nbm-get-user-variable "torus" nil))
+     1))
   (torus-init)
   (if (fboundp 'evil-local-set-key)
       (progn

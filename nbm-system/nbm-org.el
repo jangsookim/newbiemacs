@@ -70,10 +70,8 @@ For example, 20221109090747-test.org will be changed to test.org."
   "Jump to a heading in the current org file."
   (interactive)
   (let (org-refile-history org-refile-targets level)
-    (setq level (read-char "Enter the max level of headings to search (default 1):"))
-    (if (member level '(?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9))
-	(setq org-refile-targets (cons `(,(buffer-file-name) . (:maxlevel . ,level)) org-refile-targets))
-      (setq org-refile-targets '((nil . (:level . 1)))))
+    (org-next-visible-heading 1)
+    (setq org-refile-targets (cons `(,(buffer-file-name) . (:maxlevel . ,9)) org-refile-targets))
     (org-refile (universal-argument))))
 
 (defun nbm-org-jump-to-tex ()
@@ -97,6 +95,17 @@ For example, 20221109090747-test.org will be changed to test.org."
     (setq file (completing-read "Choose a file to open: " file-list nil t ""))
     (find-file file)))
 
+(defun nbm-org-jump-to-dir-at-point ()
+  "Jump to the directory of the current file link.
+This does not recognize a link if it has an underscore."
+  (interactive)
+  (let (file dir)
+    (when (string= (org-element-property :type (org-element-context)) "file")
+      (setq file (org-element-property :path (org-element-context)))
+      (setq dir (file-name-directory file))
+      (find-file dir) (revert-buffer) (goto-char (point-min)) 
+      (search-forward (file-name-nondirectory file)))))
+
 (defun nbm-org-jump-to-url ()
   "Jump to a url in the current org file."
   (interactive)
@@ -113,7 +122,7 @@ For example, 20221109090747-test.org will be changed to test.org."
   "Export to html and open it."
   (interactive)
   (org-html-export-to-html)
-  (shell-command (format "open %s.html"
+  (shell-command (format "open \"%s.html\""
 		 (file-name-sans-extension (buffer-file-name)))))
 
 (defun nbm-org-html-theme ()

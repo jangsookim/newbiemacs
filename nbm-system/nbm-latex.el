@@ -436,7 +436,7 @@ CHOICE 3: ChoKimLee2022"
       (while (member (format "%s%c" key a) keys) ; Attach a or b ... if the key is already used.
 	(setq a (+ a 1)))
       (setq key (format "%s%c" key a)))
-    key))
+    (nbm-modify-paper-filename key)))
 
 (defun nbm-latex-new-bib-item ()
   "Create a bib item in the main bib file using citation data from arxiv or MathSciNet.

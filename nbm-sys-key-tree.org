@@ -91,6 +91,7 @@
 *** key: -, function: split-window-below
 *** key: m, function: delete-other-windows
 *** key: d, function: delete-window
+*** key: e, description: expel window, function: nbm-expel-window
 *** key: o, description: other-window, function: nbm-other-window
 *** key: r, description: rotate-downwards, function: evil-window-rotate-downwards
 *** key: R, description: rotate-upwards, function: evil-window-rotate-upwards
@@ -194,6 +195,7 @@
 ** key: i, description: insert org-roam-node, function: org-roam-node-insert
 ** key: j, description: Jump
 *** key: a, description: jump-to-archive, function: nbm-org-jump-to-archive
+*** key: d, description: jump-to-dir-link, function: nbm-org-jump-to-dir-at-point
 *** key: f, description: jump-to-file, function: nbm-org-jump-to-file
 *** key: h, description: jump-to-heading, function: nbm-org-jump-to-heading
 *** key: t, description: jump-to-tex, function: nbm-org-jump-to-tex
