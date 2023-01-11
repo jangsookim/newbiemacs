@@ -298,6 +298,16 @@ q) quit" file (file-name-directory (nbm-get-file-name)))))
 	  (setq newest file)))
     newest))
 
+(defun nbm-newest-downloaded-file (ext-list)
+  "Return the newest downloaded file with extension in EXT-LIST."
+  (let (reg-str ext)
+    (setq reg-str "")
+    (dolist (ext ext-list)
+      (if (equal reg-str "")
+	  (setq reg-str (format ".*[.]%s$" ext))
+	(setq reg-str (format "%s\\|.*[.]%s$" reg-str ext))))
+    (nbm-newest-file (directory-files *nbm-downloads* t reg-str))))
+
 (defun nbm-sort-files-by-modified-time (files)
   "Return the sorted list of files by modified time."
   (interactive)
