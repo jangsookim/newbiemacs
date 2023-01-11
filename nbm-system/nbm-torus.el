@@ -74,52 +74,31 @@
 	   (propertize string 'face '(:foreground "#Ac8e68" :weight bold))) ; Systembrowncolor
 	 (defun torus-color-e (string)
 	   (propertize string 'face '(:foreground "#32d74b" :weight bold))) ; Systemgreencolor
-	 )
 	 (defun torus-color-y (string)
 	   (propertize string 'face '(:foreground "Navajowhite1" :weight bold)))
-	)
-  )
+	)))
+
+(defun torus-change-theme-prompt (theme)
+  (torus-load-theme theme)
+  (format " %s) %s %s %s %s %s (%s) %s"
+	  theme
+	  (torus-color-a "@@@")
+	  (torus-color-b "@@@")
+	  (torus-color-c "@@@")
+	  (torus-color-d "@@@")
+	  (torus-color-e "@@@")
+	  (torus-color-y "@@@")
+	  (torus-color-x "---")
+	  ))
 
 (defun torus-change-theme ()
   (interactive)
   (let (choice prompt)
     (setq prompt (format "Choose the color theme:"))
-    (torus-load-theme 1)
-    (setq prompt (format "%s\n\n1) %s%s%s%s%s"
-			 prompt
-			 (torus-color-a " @@@ ")
-			 (torus-color-b " @@@ ")
-			 (torus-color-c " @@@ ")
-			 (torus-color-d " @@@ ")
-			 (torus-color-e " @@@ ")
-			 ))
-    (torus-load-theme 2)
-    (setq prompt (format "%s\n\n2) %s%s%s%s%s"
-			 prompt
-			 (torus-color-a " @@@ ")
-			 (torus-color-b " @@@ ")
-			 (torus-color-c " @@@ ")
-			 (torus-color-d " @@@ ")
-			 (torus-color-e " @@@ ")
-			 ))
-    (torus-load-theme 3)
-    (setq prompt (format "%s\n\n3) %s%s%s%s%s"
-			 prompt
-			 (torus-color-a " @@@ ")
-			 (torus-color-b " @@@ ")
-			 (torus-color-c " @@@ ")
-			 (torus-color-d " @@@ ")
-			 (torus-color-e " @@@ ")
-			 ))
-    (torus-load-theme 4)
-    (setq prompt (format "%s\n\n4) %s%s%s%s%s"
-			 prompt
-			 (torus-color-a " @@@ ")
-			 (torus-color-b " @@@ ")
-			 (torus-color-c " @@@ ")
-			 (torus-color-d " @@@ ")
-			 (torus-color-e " @@@ ")
-			 ))
+    (setq prompt (format "%s\n%s" prompt (torus-change-theme-prompt 1)))
+    (setq prompt (format "%s\n%s" prompt (torus-change-theme-prompt 2)))
+    (setq prompt (format "%s\n%s" prompt (torus-change-theme-prompt 3)))
+    (setq prompt (format "%s\n%s" prompt (torus-change-theme-prompt 4)))
     (setq choice (read-char prompt))
     (torus-load-theme (string-to-number (char-to-string choice)))
     (nbm-set-user-variable "torus" choice)
@@ -132,8 +111,10 @@
   (torus-mode)
   ;; (torus-load-theme 1)
   (torus-load-theme
-   (if (nbm-get-user-variable "torus" nil)
-       (string-to-number (nbm-get-user-variable "torus" nil))
+   (if (fboundp 'nbm-get-user-variable)
+       (if (nbm-get-user-variable "torus" nil)
+	   (string-to-number (nbm-get-user-variable "torus" nil))
+	 1)
      1))
   (torus-init)
   (if (fboundp 'evil-local-set-key)
