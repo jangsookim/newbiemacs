@@ -30,3 +30,29 @@
   (interactive)
   (kill-new (format "load(\"%s\")" (buffer-file-name)))
   (message (format "Copied to clipboard: %s" (current-kill 0))))
+
+(defun nbm-get-user-variable (var all)
+  "Return the content of the file nbm-VAR.txt in the folder
+newbiemacs/nbm-user-settings/nbm-variables.
+If ALL is t, then return the full content.
+Otherwise, return the first line."
+  (interactive)
+  (let (file)
+    (setq file (concat *nbm-home* (format "nbm-user-settings/nbm-variables/nbm-%s.txt" var)))
+    (when (file-exists-p file)
+      (with-temp-buffer
+	(insert-file-contents file)
+	(if all
+	    (buffer-string)
+	  (car (split-string (buffer-string) "\n")))))))
+    
+(defun nbm-set-user-variable (var content)
+  "Set CONTENT to be the content of the file nbm-VAR.txt in the folder
+newbiemacs/nbm-user-settings/nbm-variables."
+  (let (file)
+    (setq file (concat *nbm-home* (format "nbm-user-settings/nbm-variables/nbm-%s.txt" var)))
+    (find-file file) (erase-buffer)
+    (insert content) (save-buffer) (kill-buffer)))
+
+
+
