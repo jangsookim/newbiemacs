@@ -104,7 +104,14 @@
     (setq buf (current-buffer))
     (kill-buffer buf)))
 
+(defun nbm-open-file (file)
+  "Open FILE using system's default program."
+  (interactive)
+  (if (equal system-type 'windows-nt)
+      (shell-command (format "start %s" file))
+    (shell-command (format "open \"%s\"" file))))
+
 (defun nbm-cheat-sheet ()
   "Open Newbiemacs cheat sheet."
   (interactive)
-  (shell-command (concat "open " (nbm-root-f "newbiemacs_cheat_sheet.pdf"))))
+  (nbm-open-file (nbm-root-f "newbiemacs_cheat_sheet.pdf")))

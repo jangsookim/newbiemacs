@@ -96,7 +96,8 @@ For example, 20221109090747-test.org will be changed to test.org."
     (find-file file)))
 
 (defun nbm-org-jump-to-dir-at-point ()
-  "Jump to the directory of the current file link."
+  "Jump to the directory of the current file link.
+This does not recognize a link if it has an underscore."
   (interactive)
   (let (file dir)
     (when (string= (org-element-property :type (org-element-context)) "file")

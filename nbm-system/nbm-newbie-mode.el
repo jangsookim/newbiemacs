@@ -225,9 +225,7 @@
 
 (defun newbie-open-file ()
   (interactive) (kill-buffer)
-  (if (equal system-type 'windows-nt)
-      (shell-command (format "start %s" *newbie-current-file*))
-    (shell-command (format "open \"%s\"" *newbie-current-file*))))
+  (nbm-open-file *newbie-current-file*))
 
 (defun newbie-yank-file-name ()
   (interactive)
