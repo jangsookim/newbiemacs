@@ -24,7 +24,12 @@ If there is no checkbox, create one."
 	(if (string= (char-to-string (char-after)) "[")
 	    (org-toggle-checkbox)
 	  (if (equal (substring (match-string 1) 0 1) "*")
-	      (insert "[/] ")
+	      (progn
+		(if (equal (buffer-substring (point) (+ (point) 4)) "TODO")
+		    (forward-char 5))
+		(if (equal (buffer-substring (point) (+ (point) 1)) "[")
+		    (org-update-checkbox-count)
+		  (insert "[/] ")))
 	    (insert "[ ] ")))))))
 
 (defun nbm-make-permanant-note ()
