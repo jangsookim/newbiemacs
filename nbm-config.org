@@ -254,7 +254,7 @@
   (global-tab-line-mode)
 
   (setq tab-line-new-button-show nil)
-  (setq tab-line-separator " ") 
+  (setq tab-line-separator " ")
   (set-face-attribute 'tab-line-tab nil
                       :background "YellowGreen" :foreground "black" :box nil)
   (set-face-attribute 'tab-line-tab-current nil
@@ -263,6 +263,9 @@
                       :background "DarkGray" :foreground "black" :box nil)
   (set-face-attribute 'tab-line-highlight nil
                       :background "Seagreen1" :foreground 'unspecified)
+
+  (setq tab-line-exclude-modes
+        '(completion-list-mode org-agenda-mode helm-major-mode help-mode magit-status-mode))
 #+end_src
 
 ** mode line
