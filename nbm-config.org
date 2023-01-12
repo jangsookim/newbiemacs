@@ -230,6 +230,8 @@
 
   (setq sentence-end-double-space nil)
   (add-to-list 'auto-mode-alist '("\\.sage\\'" . python-mode))
+
+  (global-tab-line-mode)
 #+end_src
 ** appearance
 #+begin_src emacs-lisp :tangle yes
