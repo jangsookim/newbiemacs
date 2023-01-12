@@ -230,8 +230,6 @@
 
   (setq sentence-end-double-space nil)
   (add-to-list 'auto-mode-alist '("\\.sage\\'" . python-mode))
-
-  (global-tab-line-mode)
 #+end_src
 ** appearance
 #+begin_src emacs-lisp :tangle yes
@@ -251,6 +249,22 @@
 
   (setq inhibit-startup-screen t)
 #+end_src
+** tab-line-mode
+#+begin_src emacs-lisp :tangle yes
+  (global-tab-line-mode)
+
+  (setq tab-line-new-button-show nil)
+  (setq tab-line-separator " ") 
+  (set-face-attribute 'tab-line-tab nil
+                      :background "YellowGreen" :foreground "black" :box nil)
+  (set-face-attribute 'tab-line-tab-current nil
+                      :background "Yellow1" :foreground "black" :box nil)
+  (set-face-attribute 'tab-line-tab-inactive nil
+                      :background "DarkGray" :foreground "black" :box nil)
+  (set-face-attribute 'tab-line-highlight nil
+                      :background "Seagreen1" :foreground 'unspecified)
+#+end_src
+
 ** mode line
 #+begin_src emacs-lisp :tangle yes
   (spaceline-spacemacs-theme)
