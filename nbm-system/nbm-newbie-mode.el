@@ -290,8 +290,7 @@ q) quit"))
       (when (member choice '(?1 ?2 ?3 ?6))
 	(if (equal system-type 'windows-nt) (setq editor "notepad ") (setq editor "open "))
 	(shell-command (concat editor (nbm-path-string path))))
-      (when (member choice '(?4 ?5))
-	(find-file (nbm-path-string path))))))
+      (when (member choice '(?4 ?5)) (find-file path)))))
 
 (defun newbie-config ()
   "Open one of the nbm configuration files."
