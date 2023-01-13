@@ -41,7 +41,7 @@
 *** key: f, description: find-files, function: helm-find-files
 *** key: r, description: recent files, function: helm-recentf
 *** key: j, function: dired-jump
-*** key: m, description: move downloaded files, function: nbm-move-files-from-downloads
+*** key: m, description: move newest file, function: nbm-move-newest-file
 *** key: n, description: new-file, function: nbm-new-file
 *** key: p, description: move-pdf-from-downloads, function: nbm-move-pdf-from-downloads
 *** key: s, function: save-buffer

@@ -161,44 +161,44 @@ e) el"))
       (shell-command (format "start %s" trash-directory))
     (shell-command (format "open -R \"%s\"" trash-directory))))
 
-(defun nbm-move-files-from-downloads ()
-  "Move the files in Downloads to various folders."
-  (interactive)
-  (let (file file-list choice)
-    (setq file-list (sort (directory-files *nbm-downloads* t "\\`[^.$#]")
-			  'nbm-time>))
-    (while (and file-list (not (equal choice ?q)))
-      (setq file (car file-list))
-      (setq file-list (cdr file-list))
-      (setq choice (read-char (format "Move %s to:
+(defun nbm-move-to-folder (file)
+  "Move FILE to one of the following folders.
+current folder, inbox, desktop, pdf, trash-bin"
+  (let (choice)
+    (setq choice (read-char (format "Move %s to:
 c) current folder: %s
 i) inbox
 d) desktop
 p) pdf
 x) trash-bin
 q) quit" file (file-name-directory (nbm-get-file-name)))))
-      (if (equal choice ?x)
-	  (if (file-directory-p file)
-	      (delete-directory file t t)
-	    (delete-file file t)))
-      (when (member choice '(?c ?i ?d ?p))
-	(setq new-file (read-string "Enter the new filename: "
-				    (file-name-nondirectory file))))
-      (when (equal choice ?i)
-	(unless (file-exists-p (nbm-f "inbox/"))
-	  (make-directory (nbm-f "inbox/")))
-	(rename-file file (concat (nbm-f "inbox/") new-file) 1))
-      (if (equal choice ?p)
-	  (rename-file file (concat (nbm-f "pdf/")
-				    new-file) 1))
-      (if (equal choice ?c)
-	  (rename-file file (concat (file-name-directory (nbm-get-file-name))
-				    new-file) 1))
-      (if (equal choice ?d)
-	  (rename-file file (concat *nbm-desktop* new-file) 1)))
-    (if (equal choice ?q)
-	(message "Aborted.")
-      (message "All files in Downloads folder have been checked."))))
+    (if (equal choice ?x)
+	(if (file-directory-p file)
+	    (delete-directory file t t)
+	  (delete-file file t)))
+    (when (member choice '(?c ?i ?d ?p))
+      (setq new-file (read-string "Enter the new filename: "
+				  (file-name-nondirectory file))))
+    (when (equal choice ?i)
+      (unless (file-exists-p (nbm-f "inbox/"))
+	(make-directory (nbm-f "inbox/")))
+      (rename-file file (concat (nbm-f "inbox/") new-file) 1))
+    (if (equal choice ?p)
+	(rename-file file (concat (nbm-f "pdf/") new-file) 1))
+    (if (equal choice ?c)
+	(rename-file file (concat (file-name-directory (nbm-get-file-name)) new-file) 1))
+    (if (equal choice ?d)
+	(rename-file file (concat *nbm-desktop* new-file) 1))
+    (if (equal choice ?q) (message "Aborted."))))
+
+(defun nbm-move-newest-file ()
+  "Move the newest file in the folders in *nbm-screenshots*."
+  (interactive)
+  (let (dir file-list)
+    (dolist (dir *nbm-screenshots*)
+      (setq file-list (append file-list (directory-files dir t "\\`[^.$#]"))))
+    (nbm-move-to-folder (nbm-newest-file
+			 (seq-remove 'file-directory-p file-list)))))
 
 (defun nbm-get-lowest-dir-name ()
   "Return the lowest directory name of the current file."
