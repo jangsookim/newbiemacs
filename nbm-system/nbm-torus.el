@@ -101,7 +101,8 @@
     (setq prompt (format "%s\n%s" prompt (torus-change-theme-prompt 4)))
     (setq choice (read-char prompt))
     (torus-load-theme (string-to-number (char-to-string choice)))
-    (nbm-set-user-variable "torus" choice)
+    (if (fboundp 'nbm-set-user-variable)
+	(nbm-set-user-variable "torus" choice))
     )
   )
 
