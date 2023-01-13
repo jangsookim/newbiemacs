@@ -93,13 +93,18 @@
 
 (defun torus-change-theme ()
   (interactive)
-  (let (choice prompt)
-    (setq prompt (format "Choose the color theme:"))
-    (setq prompt (format "%s\n%s" prompt (torus-change-theme-prompt 1)))
-    (setq prompt (format "%s\n%s" prompt (torus-change-theme-prompt 2)))
-    (setq prompt (format "%s\n%s" prompt (torus-change-theme-prompt 3)))
-    (setq prompt (format "%s\n%s" prompt (torus-change-theme-prompt 4)))
-    (setq choice (read-char prompt))
+  (let (choice)
+    (setq choice (read-char
+		  (concat
+		   "Choose the color theme:\n"
+		   (torus-change-theme-prompt 1)
+		   "\n"
+		   (torus-change-theme-prompt 2)
+		   "\n"
+		   (torus-change-theme-prompt 3)
+		   "\n"
+		   (torus-change-theme-prompt 4)		   
+		  )))
     (torus-load-theme (string-to-number (char-to-string choice)))
     (if (fboundp 'nbm-set-user-variable)
 	(nbm-set-user-variable "torus" choice))
