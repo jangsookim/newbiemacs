@@ -332,3 +332,13 @@ q) quit" file (file-name-directory (nbm-get-file-name)))))
     (setq new (read-string "Enter a file name to save-as the current file: " old))
     (copy-file old new)
     (message (concat "Saved as: " new))))
+
+(defun nbm-path-string (path)
+  "Make PATH a valid string. For example,
+\"~/this is/an example.txt\" will be changed to
+\"~/this\\ is/an\\ example.txt\" on MacOS
+and to \"\"~/this is/an example.txt\"\" on Windows."
+  (if (equal system-type 'windows-nt)
+      (format "\"%s\"" path)
+    (replace-regexp-in-string " " "\\\\ " path)))
+

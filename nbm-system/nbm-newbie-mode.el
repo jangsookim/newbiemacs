@@ -240,7 +240,7 @@
 (defun newbie-setting ()
   (interactive)
   (with-output-to-temp-buffer "newbie-setting"
-    (let ((inhibit-read-only t) choice editor)
+    (let ((inhibit-read-only t) choice editor path)
       (switch-to-buffer "newbie-setting")
       (insert "\n  Current variables are shown below.\n\n")
       (newbie-print-variables)
@@ -279,32 +279,21 @@ u) Update Newbiemacs
 q) quit"))
       (if (equal choice ?q) (kill-buffer)
 	(progn
-	  (if (equal system-type 'windows-nt)
-	      (setq editor "notepad")
-	    (setq editor "open")
-	    )
+	  (setq path (concat *nbm-home* "nbm-user-settings/"))
 	  (cond
-	   ((equal choice ?1)
-	    (shell-command (format "%s \"%s%s\"" editor *nbm-home*
-				   "nbm-user-settings/nbm-variables/nbm-desktop.txt")))
-	   ((equal choice ?2)
-	    (shell-command (format "%s \"%s%s\"" editor *nbm-home*
-				   "nbm-user-settings/nbm-variables/nbm-downloads.txt")))
-	   ((equal choice ?3)
-	    (shell-command (format "%s \"%s%s\"" editor *nbm-home*
-				   "nbm-user-settings/nbm-variables/nbm-screenshots.txt")))
-	   ((equal choice ?4)
-	    (shell-command (format "%s \"%s%s\"" editor *nbm-home*
-				   "nbm-user-settings/templates/")))
-	   ((equal choice ?5)
-	    (shell-command (format "%s \"%s%s\"" editor *nbm-home*
-				   "nbm-user-settings/references")))
-	   ((equal choice ?6)
-	    (shell-command (format "%s \"%s%s/favorites.txt\"" editor *nbm-home*
-				   "nbm-user-settings/references")))
-	   ((equal choice ?u)
-	    (nbm-update-newbiemacs))
-	   )
+	   ((equal choice ?1) (setq path (concat path "nbm-variables/nbm-desktop.txt")))
+	   ((equal choice ?2) (setq path (concat path "nbm-variables/nbm-downloads.txt")))
+	   ((equal choice ?3) (setq path (concat path "nbm-variables/nbm-screenshots.txt")))
+	   ((equal choice ?4) (setq path (concat path "templates")))
+	   ((equal choice ?5) (setq path (concat path "references")))
+	   ((equal choice ?6) (setq path (concat path "references/favorites.txt")))
+	   ((equal choice ?u) (nbm-update-newbiemacs)))
+	  (when (member choice '(?1 ?2 ?3 ?6))
+	    (if (equal system-type 'windows-nt) (setq editor "notepad ") (setq editor "open "))
+	    (shell-command (concat editor (nbm-path-string path))))
+	  (when (member choice '(?4 ?5))
+	    (if (equal system-type 'windows-nt) (setq editor "start ") (setq editor "open "))
+	    (shell-command (concat editor (nbm-path-string path))))
 	  (setq choice (read-char "What do you want to do?\nr) Reload Newbiemacs\nq) quit"))
 	  (if (equal choice ?r) (newbie-reload) (kill-buffer)))))))
 
