@@ -167,6 +167,11 @@
     (setq avy-background t)
     (setq avy-keys (number-sequence ?a ?z))
     (setq avy-all-windows nil))
+
+  (use-package frog-jump-buffer :ensure t
+    :init
+    (setq frog-jump-buffer-default-filter 'frog-jump-buffer-filter-file-buffers)
+    (setq frog-jump-buffer-include-current-buffer nil))
 #+end_src
 ** Diminish
 #+begin_src emacs-lisp :tangle yes
@@ -436,6 +441,7 @@
       (nbm-set-startup-frame)
     (nbm-magnet-move-frame ?l))
   (newbie)
+  (if (get-buffer "*scratch*") (kill-buffer "*scratch*"))
 #+end_src
 
 * Windows only
