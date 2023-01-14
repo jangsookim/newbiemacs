@@ -170,7 +170,6 @@
 
   (use-package frog-jump-buffer :ensure t
     :init
-    (setq frog-jump-buffer-default-filter 'frog-jump-buffer-filter-file-buffers)
     (setq frog-jump-buffer-include-current-buffer nil))
 #+end_src
 ** Diminish
