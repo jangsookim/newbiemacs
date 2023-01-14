@@ -23,6 +23,11 @@
       (dired-get-filename)
     (buffer-file-name)))
 
+(defun nbm-get-dir-name ()
+  (if (equal major-mode 'dired-mode)
+      (dired-current-directory)
+    (file-name-directory (buffer-file-name))))
+
 (defun nbm-copy-file-name ()
   (interactive)
   (kill-new (file-name-nondirectory (nbm-get-file-name)))
