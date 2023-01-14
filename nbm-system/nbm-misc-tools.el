@@ -54,5 +54,18 @@ newbiemacs/nbm-user-settings/nbm-variables."
     (find-file file) (erase-buffer)
     (insert content) (save-buffer) (kill-buffer)))
 
-
-
+(defun nbm-tab-line-jump ()
+  "Jump to a tab in the tab line list."
+  (interactive)
+  (let (key pos)
+    (setq key ?h)
+    (while (member key '(?h ?l))
+      (setq key (read-char "h) go to the previous buffer
+l) go to the next buffer
+other key) stop"))
+      (if (and (equal key ?l)
+	       (not (equal (current-buffer) (car (last (tab-line-tabs-window-buffers))))))
+	  (tab-line-switch-to-next-tab))
+      (if (and (equal key ?h)
+	       (not (equal (current-buffer) (car (tab-line-tabs-window-buffers)))))
+	  (tab-line-switch-to-prev-tab)))))
