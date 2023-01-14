@@ -265,8 +265,7 @@
                       :background "Seagreen1" :foreground 'unspecified)
 
   (setq tab-line-exclude-modes
-        '(help-mode completion-list-mode org-agenda-mode helm-major-mode magit-status-mode 
-                    magit-diff-mode newbie-mode))
+        '(help-mode completion-list-mode org-agenda-mode helm-major-mode magit-status-mode))
 #+end_src
 
 ** mode line
