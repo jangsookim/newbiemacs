@@ -184,16 +184,16 @@
   (torus-difficulty-as-str *torus-difficulty*)
   )
 
-(defun torus-change-difficulty-prompt (difficulty)
+(defun torus-select-difficulty-prompt (difficulty)
   "Return prompt of the option to select difficulty"
   (format " (%s) %s" difficulty (torus-difficulty-as-str difficulty)))
 
-(defun torus-set-difficulty ()
+(defun torus-select-difficulty ()
   (interactive)
   (if (equal ?1 (read-char
 		 (concat
 		  "Choose difficulty:\n"
-		  (mapconcat 'torus-change-difficulty-prompt (list 1 2) "  "))
+		  (mapconcat 'torus-select-difficulty-prompt (list 1 2) "  "))
 		 )
 	     )
       (progn
@@ -896,7 +896,7 @@ q: Quit game")))
 (defun torus-start-game ()
   (interactive)
   (torus-pause-game)
-  (torus-set-difficulty)
+  (torus-select-difficulty)
   (torus-init)
   (torus-run-game)
   (message "Game started."))
