@@ -298,7 +298,7 @@ In this case you are recommended to play \"torus\" instead.
 
 
 (defun torus-get-torus-color (c part)
-  "Return the difficulty in string format."
+  "Return color of torus."
   (if (equal 1 *torus-difficulty*) c (if (equal 1 part) c 100 )))
 
 (defun torus-print-flying-torus (row col)
