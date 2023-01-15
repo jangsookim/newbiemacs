@@ -173,6 +173,16 @@
   (torus-print-main)
   )
 
+(defun torus-set-difficulty (difficulty)
+  (cond ((equal ?1 difficulty)
+	 (setq *torus-difficulty* 1)
+	 (defconst *torus-game-speed* 0.1)             ; the lower the faster
+	 )
+	(t
+	 (setq *torus-difficulty* 2)
+	 (defconst  *torus-game-speed* 0.1)
+	 )))
+	 
 (defun torus-difficulty-as-str (difficulty)
   "Return the difficulty in string format."
   (if (equal 1 difficulty)
@@ -184,23 +194,17 @@
   (torus-difficulty-as-str *torus-difficulty*)
   )
 
-(defun torus-set-difficulty ()
+(defun torus-select-difficulty-prompt (difficulty)
+  "Return prompt of the option to select difficulty"
+  (format " (%s) %s" difficulty (torus-difficulty-as-str difficulty)))
+
+(defun torus-select-difficulty ()
   (interactive)
-  (if (equal ?1 (read-char
-		 (concat
-		  "Choose difficulty:\n"
-		  "  (1) " (torus-difficulty-as-str 1)
-		  "  (2) " (torus-difficulty-as-str 2))
-		 )
-	     )
-      (progn
-	(setq *torus-difficulty* 1)
-	(defconst *torus-game-speed* 0.1)             ; the lower the faster
-	)
-    (progn
-      (setq *torus-difficulty* 2)
-      (defconst  *torus-game-speed* 0.1)
-      )))
+  (torus-set-difficulty (read-char
+			 (concat
+			  "Choose difficulty:\n"
+			  (mapconcat 'torus-select-difficulty-prompt (list 1 2) "  "))
+			 )))
 
 (defvar *torus-box* nil
   "The torus box which is a list.")
@@ -298,7 +302,7 @@ In this case you are recommended to play \"torus\" instead.
 
 
 (defun torus-get-torus-color (c part)
-  "Return the difficulty in string format."
+  "Return color of torus."
   (if (equal 1 *torus-difficulty*) c (if (equal 1 part) c 100 )))
 
 (defun torus-print-flying-torus (row col)
@@ -893,7 +897,7 @@ q: Quit game")))
 (defun torus-start-game ()
   (interactive)
   (torus-pause-game)
-  (torus-set-difficulty)
+  (torus-select-difficulty)
   (torus-init)
   (torus-run-game)
   (message "Game started."))
