@@ -184,13 +184,16 @@
   (torus-difficulty-as-str *torus-difficulty*)
   )
 
+(defun torus-change-difficulty-prompt (difficulty)
+  "Return prompt of the option to select difficulty"
+  (format " (%s) %s" difficulty (torus-difficulty-as-str difficulty)))
+
 (defun torus-set-difficulty ()
   (interactive)
   (if (equal ?1 (read-char
 		 (concat
 		  "Choose difficulty:\n"
-		  "  (1) " (torus-difficulty-as-str 1)
-		  "  (2) " (torus-difficulty-as-str 2))
+		  (mapconcat 'torus-change-difficulty-prompt (list 1 2) "  "))
 		 )
 	     )
       (progn
