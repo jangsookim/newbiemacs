@@ -173,6 +173,16 @@
   (torus-print-main)
   )
 
+(defun torus-set-difficulty (difficulty)
+  (cond ((equal difficulty 1)
+	 (setq *torus-difficulty* 1)
+	 (defconst *torus-game-speed* 0.1)             ; the lower the faster
+	 )
+	(t
+	 (setq *torus-difficulty* 2)
+	 (defconst  *torus-game-speed* 0.1)
+	 )))
+	 
 (defun torus-difficulty-as-str (difficulty)
   "Return the difficulty in string format."
   (if (equal 1 difficulty)
@@ -196,14 +206,8 @@
 		  (mapconcat 'torus-select-difficulty-prompt (list 1 2) "  "))
 		 )
 	     )
-      (progn
-	(setq *torus-difficulty* 1)
-	(defconst *torus-game-speed* 0.1)             ; the lower the faster
-	)
-    (progn
-      (setq *torus-difficulty* 2)
-      (defconst  *torus-game-speed* 0.1)
-      )))
+      (torus-set-difficulty 1)
+    (torus-set-difficulty 2)))
 
 (defvar *torus-box* nil
   "The torus box which is a list.")
