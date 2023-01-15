@@ -266,6 +266,8 @@
 
   (setq tab-line-exclude-modes
         '(help-mode completion-list-mode org-agenda-mode helm-major-mode magit-status-mode))
+  (setq tab-line-tab-name-function 'tab-line-tab-name-truncated-buffer)
+  (setq tab-line-tab-name-truncated-max 15)
 #+end_src
 
 ** mode line

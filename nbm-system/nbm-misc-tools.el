@@ -59,10 +59,12 @@ newbiemacs/nbm-user-settings/nbm-variables."
   (interactive)
   (let (key pos)
     (setq key ?h)
-    (while (member key '(?h ?l))
+    (while (member key '(?h ?l ?k))
       (setq key (read-char "h) go to the previous buffer
 l) go to the next buffer
+k) kill this buffer
 other key) stop"))
+      (if (equal key ?k) (kill-buffer (current-buffer)))
       (if (and (equal key ?l)
 	       (not (equal (current-buffer) (car (last (tab-line-tabs-window-buffers))))))
 	  (tab-line-switch-to-next-tab))
