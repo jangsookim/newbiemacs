@@ -174,7 +174,7 @@
   )
 
 (defun torus-set-difficulty (difficulty)
-  (cond ((equal difficulty 1)
+  (cond ((equal ?1 difficulty)
 	 (setq *torus-difficulty* 1)
 	 (defconst *torus-game-speed* 0.1)             ; the lower the faster
 	 )
@@ -200,14 +200,11 @@
 
 (defun torus-select-difficulty ()
   (interactive)
-  (if (equal ?1 (read-char
-		 (concat
-		  "Choose difficulty:\n"
-		  (mapconcat 'torus-select-difficulty-prompt (list 1 2) "  "))
-		 )
-	     )
-      (torus-set-difficulty 1)
-    (torus-set-difficulty 2)))
+  (torus-set-difficulty (read-char
+			 (concat
+			  "Choose difficulty:\n"
+			  (mapconcat 'torus-select-difficulty-prompt (list 1 2) "  "))
+			 )))
 
 (defvar *torus-box* nil
   "The torus box which is a list.")
