@@ -649,7 +649,9 @@ Return the string \"Author1, Author2. Year. Title.pdf\"."
 
 (defun nbm-move-pdf-from-downloads ()
   "Move the most recent PDF from the downloads folder to the pdf folder.
-Two lines from arxiv or a bibtex code from mathscinet must be copied first."
+Two lines from arxiv or a bibtex code from mathscinet must be copied first.
+If a string is copied from mathscinet, then ask if the user wants to
+add a new bib item."
   (interactive)
   (let (file choice temp file-name mathscinet)
     (setq pdf (nbm-newest-file (directory-files *nbm-downloads* t
@@ -671,10 +673,11 @@ Two lines from arxiv or a bibtex code from mathscinet must be copied first."
 					pdf *nbm-pdf* file-name)))
 	(when (equal choice ?y)
 	  (rename-file pdf (concat *nbm-pdf* file-name) 1)
-	  (message "File moved!"))
-	(if (equal choice ?q) (message "Aborted.")))
-      )
-    ))
+	  (message "File moved!")
+	  (when (and mathscinet
+		     (equal ?y (read-char "Do you want to add a bib item? (Type y for yes.): ")))
+	    (nbm-latex-new-bib-item)))
+	(if (equal choice ?q) (message "Aborted."))))))
 
 (defun nbm-latex-Cref ()
   "Reftex with Cref."
