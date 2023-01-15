@@ -432,9 +432,10 @@
 
 * Welcome page
 #+begin_src emacs-lisp :tangle yes
-  (if *nbm-startup-frame*
-      (nbm-set-startup-frame)
-    (nbm-magnet-move-frame ?l))
+  (when (window-system)  ; if emacs is run as an application other than terminal
+    (if *nbm-startup-frame*
+        (nbm-set-startup-frame)
+      (nbm-magnet-move-frame ?l)))
   (newbie)
   (if (get-buffer "*scratch*") (kill-buffer "*scratch*"))
 #+end_src
