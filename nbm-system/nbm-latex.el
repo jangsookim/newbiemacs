@@ -496,6 +496,7 @@ https://beta.mathscinet.ams.org/mathscinet/beta"
 
 (defun nbm-latex-insert-figure ()
   "Insert the most recent file from *nbm-screenshots* to ./figures."
+  (interactive)
   (let (fig files ext file choice dir)
     (setq files '())
     (dolist (dir *nbm-screenshots*)
