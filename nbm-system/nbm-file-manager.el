@@ -306,10 +306,27 @@ q) quit" file (nbm-get-dir-name))))
 	(setq reg-str (format "%s\\|[.]%s$" reg-str ext))))
     (nbm-newest-file (directory-files *nbm-downloads* t reg-str))))
 
+(defun nbm-downloaded-files ()
+  "Return the list of downloaded files sorted by modified time."
+  (nbm-sort-files-by-modified-time (directory-files *nbm-downloads* t)))
+
+(defun nbm-exclude-file-extensions (file-list ext-list)
+  "Remove the directories or files in FILE-LIST with extension in EXT-LIST."
+  (seq-remove (lambda (file) (or (member (file-name-extension file) ext-list)
+				 (file-directory-p file)))
+	      file-list))
+
+(defun nbm-open-downloaded-file ()
+  "Open a downloaded file."
+  (interactive)
+  (nbm-open-file (completing-read "Choose a file to open: "
+				  (nbm-exclude-file-extensions
+				   (nbm-downloaded-files) '("ini" "BIN")))))
+
 (defun nbm-sort-files-by-modified-time (files)
   "Return the sorted list of files by modified time."
   (interactive)
-  (sort files 'nbm-time<))
+  (sort files 'nbm-time>))
 
 (defun nbm-rename-current-file ()
   "Rename the current file."

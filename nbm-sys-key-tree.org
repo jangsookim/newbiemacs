@@ -38,6 +38,7 @@
 *** key: c, description: colors, function: helm-colors
 ** key: f, description: Files, function:
 *** key: b, function: bookmark-set
+*** key: d, description: open dowloaded file, function: nbm-open-downloaded-file
 *** key: f, description: find-files, function: helm-find-files
 *** key: r, description: recent files, function: helm-recentf
 *** key: j, function: dired-jump
