@@ -65,7 +65,12 @@
 **** key: S, description: strong, function: password-generator-strong
 **** key: n, description: numeric, function: password-generator-numeric
 **** key: p, description: paranoid, function: password-generator-paranoid
-** key: j, description: jump to word, function: evil-avy-goto-word-or-subword-1
+** key: j, description: jump
+*** key: t, description: recent tex, function: nbm-recent-tex
+*** key: o, description: recent org, function: nbm-recent-org
+*** key: p, description: recent pdf, function: nbm-recent-pdf
+*** key: e, description: recent el, function: nbm-recent-el
+*** key: s, description: recent sage, function: nbm-recent-sage
 ** key: k, description: key bindings
 *** key: s, description: sys-key-tree, function: nbm-find-sys-key-tree
 *** key: u, description: user-key-tree, function: nbm-find-user-key-tree

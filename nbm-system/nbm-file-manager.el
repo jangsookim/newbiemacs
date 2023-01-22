@@ -22,6 +22,13 @@ If search-flag is non-nil, it will list files ending with EXT."
       (kill-buffer buf))
     (minibuffer-with-setup-hook 'nbm-temp-insert (call-interactively 'helm-projectile))))
 
+(defun nbm-recent-file-with-extension (ext)
+  "Find a recent file with extension EXT.
+EXT should be tex, pdf, el, or sage."
+  (defun nbm-temp-insert ()
+    (insert (concat ext "$ ")))
+  (minibuffer-with-setup-hook 'nbm-temp-insert (call-interactively 'helm-recentf)))
+
 (defun nbm-find-pdf ()
   "Find a pdf file in the pdf folder."
   (interactive)
@@ -49,6 +56,31 @@ If search-flag is non-nil, it will list files ending with EXT."
     (find-file (nbm-f "misc/"))
     (setq buf (current-buffer))
     (helm-projectile)))
+
+(defun nbm-recent-pdf ()
+  "Find a recent pdf file."
+  (interactive)
+  (nbm-recent-file-with-extension "pdf"))
+
+(defun nbm-recent-tex ()
+  "Find a recent tex file."
+  (interactive)
+  (nbm-recent-file-with-extension "tex"))
+
+(defun nbm-recent-org ()
+  "Find a recent org file."
+  (interactive)
+  (nbm-recent-file-with-extension "org"))
+
+(defun nbm-recent-el ()
+  "Find a recent el file."
+  (interactive)
+  (nbm-recent-file-with-extension "el"))
+
+(defun nbm-recent-sage ()
+  "Find a recent sage file."
+  (interactive)
+  (nbm-recent-file-with-extension "sage"))
 
 (defun nbm-add-to-misc-symlinks ()
   "Create a symbolic link of the current file in the misc-symlinks folder."
