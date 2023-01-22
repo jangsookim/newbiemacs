@@ -56,6 +56,7 @@
     :init
     (setq yas-snippet-dirs (list (concat *nbm-home* "nbm-user-settings/snippets/")))
     (setq yas-triggers-in-field t); Enable nested triggering of snippets
+    (add-to-list 'warning-suppress-types '(yasnippet backquote-change))
     (yas-global-mode 1) (yas-reload-all))
 
   (use-package spacemacs-theme :defer t
