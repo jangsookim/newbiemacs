@@ -684,24 +684,28 @@ add a new bib item."
   "Reftex with Cref."
   (interactive)
   (let ((reftex-refstyle "\\Cref"))
-       (reftex-reference " ")))
+    (reftex-reset-mode) 
+    (reftex-reference " ")))
 
 (defun nbm-latex-eqref ()
   "Reftex with eqref."
   (interactive)
   (let ((reftex-refstyle "\\eqref"))
+    (reftex-reset-mode) 
        (reftex-reference "e")))
 
 (defun nbm-latex-fig-ref ()
   "Reftex with figure."
   (interactive)
   (let ((reftex-refstyle "\\Cref"))
+       (reftex-reset-mode) 
        (reftex-reference "f")))
 
 (defun nbm-latex-sec-ref ()
   "Reftex with section."
   (interactive)
   (let ((reftex-refstyle "\\Cref"))
+       (reftex-reset-mode) 
        (reftex-reference "s")))
 
 (defun nbm-latex-section ()
