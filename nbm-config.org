@@ -317,17 +317,6 @@
   (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
   (add-hook 'LaTeX-mode-hook (lambda () (setq TeX-command-default "LatexMk")))
 
-  (setq LaTeX-math-list
-        '((?, "dots" nil nil )
-          (?. "cdots" nil nil )
-          (?5 "widetilde" nil nil )	; for no good reason (or 5 is next to 6)
-          (?6 "widehat" nil nil )	; 6 with shift is ^
-          (?9 "qquad" nil nil )		; 9 is pronouced Q in Japanese
-          (?- "overline" nil nil )
-          (?3 "comment" nil nil )
-          (?= "equiv" nil nil )
-          (? "" nil nil )))
-
   ;; On Mac, Skim will be used as a pdf-viewer.
   (when (equal system-type 'darwin)
     (setq TeX-view-program-list
@@ -340,24 +329,9 @@
 
   ;; The following is helpful for recognizing ^ and _ in latex code.
   (custom-set-faces
-   '(font-latex-script-char-face ((t (:foreground "Systemorangecolor"))))
-   '(font-latex-sectioning-2-face ((t (:foreground "Systemyellowcolor")))))
+   '(font-latex-script-char-face ((t (:foreground "#Ff9f0a"))))
+   '(font-latex-sectioning-2-face ((t (:foreground "#Ffd60a")))))
 
-  (setq font-latex-user-keyword-classes
-        '(("mathcomment" ("comment") custom-changed noarg)
-          ("mathnoarg1" ("frac" "binom") success noarg)
-          ("mathnoarg2" ("left" "right" ) custom-variable-tag noarg)
-          ("mathnoarg3" ("le" "ge") epa-mark noarg)
-          ("Greek" ("Gamma" "Delta" "Theta" "Lambda" "Phi" "Psi" "Omega")
-           package-status-unsigned noarg)
-          ("greek" ("alpha" "beta" "gamma" "delta" "epsilon" "zeta" "eta"
-                    "theta" "iota" "kappa" "lambda" "mu" "nu" "xi" "omicron"
-                    "pi" "rho" "sigma" "tau" "upsilon" "phi" "chi" "psi" "omega")
-           imenu-list-entry-face-0 noarg)
-          ("mathnoarg6" ("sum" "prod") message-header-subject noarg)
-          ("mathnoarg7" ("delta") message-mml noarg)
-          ("mathnoarg8" ("epsilon") message-header-other noarg)
-          ("mathnoarg9" ("kappa") org-level-4 noarg)))
 #+end_src
 
 ** auctex-latexmk
