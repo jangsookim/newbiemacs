@@ -70,11 +70,11 @@
   (use-package magit
     :init
     (setq transient-values
-	  '((magit-log:magit-log-mode "-n256" "--graph" "--color" "--decorate"))))
+          '((magit-log:magit-log-mode "-n256" "--graph" "--color" "--decorate"))))
 
   (use-package evil-surround
     :bind (:map evil-visual-state-map
-		("s" . evil-surround-region))
+                ("s" . evil-surround-region))
     :init (global-evil-surround-mode 1))
 
   (use-package evil-org :diminish evil-org-mode
@@ -95,10 +95,10 @@
     :init
     (evil-owl-mode)
     (setq evil-owl-display-method 'posframe
-	  evil-owl-extra-posframe-args '(:width 50 :height 30
-						:internal-border-width 1
-						:internal-border-color "Darkolivegreen1")
-	  evil-owl-max-string-length 50)
+          evil-owl-extra-posframe-args '(:width 50 :height 30
+                                                :internal-border-width 1
+                                                :internal-border-color "Darkolivegreen1")
+          evil-owl-max-string-length 50)
     (setq evil-owl-local-mark-format " %m: %s")
     (setq evil-owl-global-mark-format " %m: %s")
     (setq evil-owl-idle-delay 0.5))
@@ -126,17 +126,17 @@
   (use-package winum
     :init
     (setq winum-keymap
-	  (let ((map (make-sparse-keymap)))
-	    (define-key map (kbd "M-0") 'winum-select-window-0-or-10)
-	    (define-key map (kbd "M-1") 'winum-select-window-1)
-	    (define-key map (kbd "M-2") 'winum-select-window-2)
-	    (define-key map (kbd "M-3") 'winum-select-window-3)
-	    (define-key map (kbd "M-4") 'winum-select-window-4)
-	    (define-key map (kbd "M-5") 'winum-select-window-5)
-	    (define-key map (kbd "M-6") 'winum-select-window-6)
-	    (define-key map (kbd "M-7") 'winum-select-window-7)
-	    (define-key map (kbd "M-8") 'winum-select-window-8)
-	    map))
+          (let ((map (make-sparse-keymap)))
+            (define-key map (kbd "M-0") 'winum-select-window-0-or-10)
+            (define-key map (kbd "M-1") 'winum-select-window-1)
+            (define-key map (kbd "M-2") 'winum-select-window-2)
+            (define-key map (kbd "M-3") 'winum-select-window-3)
+            (define-key map (kbd "M-4") 'winum-select-window-4)
+            (define-key map (kbd "M-5") 'winum-select-window-5)
+            (define-key map (kbd "M-6") 'winum-select-window-6)
+            (define-key map (kbd "M-7") 'winum-select-window-7)
+            (define-key map (kbd "M-8") 'winum-select-window-8)
+            map))
     (winum-mode))
 
   (use-package anzu :diminish anzu-mode
@@ -167,6 +167,7 @@
     :init
     (setq avy-background t)
     (setq avy-keys (number-sequence ?a ?z))
+    (global-set-key (kbd "M-n") 'avy-goto-word-or-subword-1)
     (setq avy-all-windows nil))
 #+end_src
 ** Diminish
