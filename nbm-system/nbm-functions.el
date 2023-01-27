@@ -122,4 +122,4 @@
 (defun nbm-cheat-sheet ()
   "Open Newbiemacs cheat sheet."
   (interactive)
-  (nbm-open-file (nbm-root-f "newbiemacs_cheat_sheet.pdf")))
+  (find-file (nbm-root-f "newbiemacs_cheat_sheet.pdf")))

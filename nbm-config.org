@@ -48,9 +48,7 @@
 
   (use-package openwith :init (openwith-mode t)
     (if (equal system-type 'gnu/linux)
-        (setq openwith-associations '(("\\.pdf\\'" "xdg-open" (file))
-                                      ("\\.xlsx\\'" "xdg-open" (file))
-                                      ("\\.djvu\\'" "xdg-open" (file)))))
+        (setq openwith-associations '(("\\.pdf\\'" "okular" (file)))))
     (unless (equal system-type 'gnu/linux)
       (setq openwith-associations '(("\\.pdf\\'" "open" (file))
                                     ("\\.hwp\\'" "open" (file))
