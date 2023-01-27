@@ -189,8 +189,8 @@
 	 
 (defun torus-difficulty-as-str (difficulty)
   (cond ((equal 1 difficulty) "Normal")
-	((equal 2 difficulty) "Half-glazed 'CRAYZY'")
-	(t "Half-glazed (Testing)")
+	((equal 2 difficulty) "Half-glazed/rotate (Testing)")
+	(t "Half-glazed (flip)")
 	))
     
 
@@ -377,6 +377,11 @@ In this case you are recommended to play \"torus\" instead.
       (insert (torus-color-y string)))
   )
 
+(defun torus-print-horizontal-torus (n)
+  (torus-print-string " @" n)
+  (torus-print-string "@" n)
+  (torus-print-string "@ " n)
+  )
 
 (defun torus-print-entry (n)
   (if (eq n nil)
@@ -388,7 +393,7 @@ In this case you are recommended to play \"torus\" instead.
   (if (eq n -2)
       (torus-print-string " --- " -1))
   (if (or (equal n 0) (equal n 1) (equal n 2) (equal n 3) (equal n 4) (equal n 100))
-      (progn (torus-print-string " @" n) (torus-print-string "@" n) (torus-print-string "@ " n)))
+      (torus-print-horizontal-torus n))
   ;(torus-print-string " @@@ " n))
   )
 
@@ -518,7 +523,25 @@ In this case you are recommended to play \"torus\" instead.
       (if (sequencep torus)
 	  (list
 	   (elt torus 0)
-	   (if (= 1 (elt torus 1)) 4 1))
+	   (mod 6 (+ (elt torus 1) 3)))
+	torus)
+    nil))
+
+(defun torus-rotated-r-torus (torus)
+  (if torus
+      (if (sequencep torus)
+	  (list
+	   (elt torus 0)
+	   (mod 6 (+ (elt torus 1) 1)))
+	torus)
+    nil))
+
+(defun torus-rotated-l-torus (torus)
+  (if torus
+      (if (sequencep torus)
+	  (list
+	   (elt torus 0)
+	   (mod 6 (+ (elt torus 1) -1)))
 	torus)
     nil))
 
