@@ -523,7 +523,7 @@ In this case you are recommended to play \"torus\" instead.
       (if (sequencep torus)
 	  (list
 	   (elt torus 0)
-	   (mod 6 (+ (elt torus 1) 3)))
+	   (% (+ (elt torus 1) 3) 6))
 	torus)
     nil))
 
@@ -532,7 +532,7 @@ In this case you are recommended to play \"torus\" instead.
       (if (sequencep torus)
 	  (list
 	   (elt torus 0)
-	   (mod 6 (+ (elt torus 1) 1)))
+	   (% (+ (elt torus 1) 1) 6))
 	torus)
     nil))
 
@@ -541,12 +541,12 @@ In this case you are recommended to play \"torus\" instead.
       (if (sequencep torus)
 	  (list
 	   (elt torus 0)
-	   (mod 6 (+ (elt torus 1) -1)))
+	   (% (+ (elt torus 1) -1) 6))
 	torus)
     nil))
 
 (defun torus-get-torus-to-insert-to-pole (torus)
-  (if (eq  *torus-difficulty* 2) torus (torus-fliped-torus torus)))
+  (if (eq  *torus-difficulty* 2) (torus-rotated-l-torus torus) (torus-fliped-torus torus)))
 
 (defun torus-pole-insert ()
   "Insert into the pole the bottom torus in the column where the pole is at."
@@ -597,7 +597,7 @@ In this case you are recommended to play \"torus\" instead.
   (torus-box-set-entry (- *torus-box-height* (torus-get-num-tori col) 1)
                        col (list
 			    torus
-			    (if (< (% (+ 3 (elt *torus-flying-tori-height* col)) 4) 2) 2 1)
+			    (if (< (% (+ 3 (elt *torus-flying-tori-height* col)) 4) 2) 4 1)
 			    ) )
   (torus-increase-num-tori col))
 
