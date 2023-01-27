@@ -439,15 +439,15 @@ CHOICE 3: ChoKimLee2022"
     (nbm-modify-paper-filename key)))
 
 (defun nbm-latex-new-bib-item ()
-  "Create a bib item in the main bib file using citation data from arxiv or MathSciNet.
-https://beta.mathscinet.ams.org/mathscinet/beta"
+  "Create a bib item in the main bib file using citation data from arxiv, MathSciNet, or zbMATH."
   (interactive)
   (save-excursion
     (let (str choice beg end)
       (with-output-to-temp-buffer "bib-item-temp-buffer"
 	(setq str (current-kill 0))
 	(switch-to-buffer "bib-item-temp-buffer")
-	(insert str) (beginning-of-buffer)
+	(insert str)
+	(beginning-of-buffer)
 	;; If the bib item is @Online, change it to @misc.
 	(when (search-forward "@Online" nil t)
 	  (replace-match "@misc")
@@ -478,8 +478,10 @@ https://beta.mathscinet.ams.org/mathscinet/beta"
 	(when (equal (read-char "Do you want to save this bib item? (Type y or n)") ?y)
 	  (setq str (buffer-string))
 	  (find-file (nbm-f "nbm-user-settings/references/ref.bib"))
-	  (end-of-buffer) (insert str) (save-buffer) (kill-buffer))
-	)
+	  (end-of-buffer)
+	  (while (not (equal (buffer-substring (- (point-max) 2) (point-max)) "\n\n"))
+	    (insert "\n") (save-buffer))
+	  (insert str) (save-buffer) (kill-buffer)))
       (kill-buffer "bib-item-temp-buffer"))))
 
 (defun nbm-latex-get-bib-key-list ()
