@@ -545,11 +545,14 @@ In this case you are recommended to play \"torus\" instead.
 	torus)
     nil))
 
+(defun torus-get-torus-to-insert-to-pole (torus)
+  (if (eq  *torus-difficulty* 2) torus (torus-fliped-torus torus)))
+
 (defun torus-pole-insert ()
   "Insert into the pole the bottom torus in the column where the pole is at."
   (torus-pole-set-entry (- *torus-pole-height* *torus-num-tori-in-pole* 1)
                         *torus-pole-pos*
-                        (torus-fliped-torus (torus-box-get-raw-entry (1- *torus-box-height*) *torus-pole-pos*)))
+                        (torus-get-torus-to-insert-to-pole (torus-box-get-raw-entry (1- *torus-box-height*) *torus-pole-pos*)))
   (torus-increase-num-tori-in-pole)
   )
 
