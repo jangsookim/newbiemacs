@@ -178,16 +178,22 @@
 	 (setq *torus-difficulty* 1)
 	 (defconst *torus-game-speed* 0.1)             ; the lower the faster
 	 )
-	(t
+	((equal ?2 difficulty)
 	 (setq *torus-difficulty* 2)
+	 (defconst *torus-game-speed* 0.1)             ; the lower the faster
+	 )
+	(t
+	 (setq *torus-difficulty* 3)
 	 (defconst  *torus-game-speed* 0.1)
 	 )))
 	 
 (defun torus-difficulty-as-str (difficulty)
-  "Return the difficulty in string format."
-  (if (equal 1 difficulty)
-      "Normal"
-    "Half-glazed (Testing)"))
+  (cond ((equal 1 difficulty) "Normal")
+	((equal 2 difficulty) "Half-glazed 'CRAYZY'")
+	(t "Half-glazed (Testing)")
+	))
+    
+
 
 (defun torus-get-str-difficulty ()
   "Return the current difficulty in string format."
@@ -203,7 +209,7 @@
   (torus-set-difficulty (read-char
 			 (concat
 			  "Choose difficulty:\n"
-			  (mapconcat 'torus-select-difficulty-prompt (list 1 2) "  "))
+			  (mapconcat 'torus-select-difficulty-prompt (list 1 2 3) "  "))
 			 )))
 
 (defvar *torus-box* nil
@@ -370,6 +376,7 @@ In this case you are recommended to play \"torus\" instead.
   (if (equal color 100)
       (insert (torus-color-y string)))
   )
+
 
 (defun torus-print-entry (n)
   (if (eq n nil)
