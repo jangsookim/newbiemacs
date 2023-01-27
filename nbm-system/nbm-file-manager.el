@@ -351,9 +351,11 @@ q) quit" file (nbm-get-dir-name))))
 (defun nbm-open-downloaded-file ()
   "Open a downloaded file."
   (interactive)
-  (nbm-open-file (completing-read "Choose a file to open: "
+  (let (file)
+    (setq file (completing-read "Choose a file to open: "
 				  (nbm-exclude-file-extensions
-				   (nbm-downloaded-files) '("ini" "BIN")))))
+				   (nbm-downloaded-files) '("ini" "BIN"))))
+    (find-file file)))
 
 (defun nbm-sort-files-by-modified-time (files)
   "Return the sorted list of files by modified time."

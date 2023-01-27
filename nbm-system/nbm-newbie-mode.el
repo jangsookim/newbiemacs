@@ -44,7 +44,7 @@
   ;; (evil-local-set-key 'normal (kbd "l") ')
   (evil-local-set-key 'normal (kbd "m") 'nbm-move-pdf-from-downloads)
   (evil-local-set-key 'normal (kbd "n") 'nbm-latex-new-file)
-  ;; (evil-local-set-key 'normal (kbd "o") 'newbie-open-file)
+  ;; (evil-local-set-key 'normal (kbd "o") ')
   (evil-local-set-key 'normal (kbd "p") 'nbm-find-pdf)
   (evil-local-set-key 'normal (kbd "q") 'newbie-quit)
   (evil-local-set-key 'normal (kbd "r") 'org-roam-node-find)
@@ -222,10 +222,6 @@
 (defun newbie-latex-change-variable ()
   (interactive) (kill-buffer)
   (nbm-latex-change-variable))
-
-(defun newbie-open-file ()
-  (interactive) (kill-buffer)
-  (nbm-open-file *newbie-current-file*))
 
 (defun newbie-yank-file-name ()
   (interactive)
