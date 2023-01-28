@@ -46,7 +46,7 @@
 	 )
 	((equal theme 3)
 	 (defun torus-color-x (string)
-	   (propertize string 'face '(:foreground "Navajowhite1" :weight bold))) ; CUD ver4 baige
+	   (propertize string 'face '(:foreground "Navajowhite1" :weight bold))) 
 	   ;(propertize string 'face '(:foreground "#ffff80" :weight bold))) ; CUD ver4 cream
 	(defun torus-color-a (string)
 	   (propertize string 'face '(:foreground "#FF4B00" :weight bold))) ; CUD ver4 red
