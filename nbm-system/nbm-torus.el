@@ -531,7 +531,7 @@ In this case you are recommended to play \"torus\" instead.
     nil))
 
 (defun torus-get-torus-to-insert-to-pole (torus)
-  (if (eq  *torus-difficulty* 2) (torus-rotated-r-torus torus) (torus-fliped-torus torus)))
+  (if (eq  *torus-difficulty* 2) torus (torus-fliped-torus torus)))
 
 (defun torus-pole-insert ()
   "Insert into the pole the bottom torus in the column where the pole is at."
@@ -609,7 +609,9 @@ In this case you are recommended to play \"torus\" instead.
     (dotimes (r k)
       (setq rr (+ (- *torus-box-height* k 1) r))
       (torus-box-set-entry rr col
-                           (torus-box-get-raw-entry (1+ rr) col)))
+			   (if (equal 2 *torus-difficulty*)
+			       (torus-rotated-r-torus (torus-box-get-raw-entry (1+ rr) col))
+                               (torus-box-get-raw-entry (1+ rr) col))))
     (setq rr (1- *torus-box-height*))
     (torus-box-set-entry rr col (torus-pole-get-top-torus))
     (torus-increase-num-tori col))
@@ -622,7 +624,9 @@ In this case you are recommended to play \"torus\" instead.
     (dotimes (r (1- k))
       (setq rr (- row r))
       (torus-box-set-entry rr col
-                           (torus-box-get-raw-entry (1- rr) col)))
+			   (if (equal 2 *torus-difficulty*)
+			       (torus-rotated-l-torus (torus-box-get-raw-entry (1- rr) col))
+                               (torus-box-get-raw-entry (1- rr) col))))
     (setq rr (- row (1- k)))
     (torus-box-set-entry rr col nil)
     (torus-decrease-num-tori col)
