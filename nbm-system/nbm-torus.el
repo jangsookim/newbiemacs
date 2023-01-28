@@ -304,9 +304,7 @@ In this case you are recommended to play \"torus\" instead.
                      (equal row (1- (- *torus-box-height* (elt *torus-flying-tori-height* col))))))
             (torus-print-flying-torus row col)
 	  (torus-print-entry (torus-box-get-raw-entry row col))))
-          ;(torus-print-entry (torus-box-get-entry-to-print row col))))
       (torus-print-string "|\n" -1))))
-
 
 (defun torus-get-torus-color (c angle part)
   "Return color of torus."
