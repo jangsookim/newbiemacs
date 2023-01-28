@@ -177,14 +177,29 @@
   (cond ((equal ?1 difficulty)
 	 (setq *torus-difficulty* 1)
 	 (defconst *torus-game-speed* 0.1)             ; the lower the faster
+	 (defun torus-get-torus-color (c angle part) c) 
+	 (defun torus-get-torus-to-insert-to-pole (torus) torus)
+	 (defun torus-get-torus-to-insert-from-pole (torus) torus)
+	 (defun torus-get-torus-to-go-down (torus) torus)
+	 (defun torus-get-torus-to-go-up (torus) torus)
 	 )
 	((equal ?2 difficulty)
 	 (setq *torus-difficulty* 2)
 	 (defconst *torus-game-speed* 0.1)             ; the lower the faster
+	 (defun torus-get-torus-color (c angle part) (torus-get-halfglazed-torus-color c angle part))
+	 (defun torus-get-torus-to-insert-to-pole (torus) (torus-rotated-l-torus torus))
+	 (defun torus-get-torus-to-insert-from-pole (torus) (torus-rotated-r-torus torus))
+	 (defun torus-get-torus-to-go-down (torus) (torus-rotated-l-torus torus))
+	 (defun torus-get-torus-to-go-up (torus) (torus-rotated-r-torus torus))
 	 )
 	(t
 	 (setq *torus-difficulty* 3)
 	 (defconst  *torus-game-speed* 0.1)
+	 (defun torus-get-torus-color (c angle part) (torus-get-halfglazed-torus-color c angle part))
+	 (defun torus-get-torus-to-insert-to-pole (torus) (torus-fliped-torus torus))
+	 (defun torus-get-torus-to-insert-from-pole (torus) torus)
+	 (defun torus-get-torus-to-go-down (torus) torus)
+	 (defun torus-get-torus-to-go-up (torus) torus)
 	 )))
 	 
 (defun torus-difficulty-as-str (difficulty)
@@ -306,9 +321,8 @@ In this case you are recommended to play \"torus\" instead.
 	  (torus-print-entry (torus-box-get-raw-entry row col))))
       (torus-print-string "|\n" -1))))
 
-(defun torus-get-torus-color (c angle part)
-  "Return color of torus."
-  (if (equal 1 *torus-difficulty*) c (if (> 3 (% (+ angle part 5) 6)) c 100 )))
+(defun torus-get-halfglazed-torus-color (c angle part)
+  (if (> 3 (% (+ angle part 5) 6)) c 100))
 
 (defun torus-print-flying-torus (row col)
   (let ((inhibit-read-only t))
@@ -458,9 +472,9 @@ In this case you are recommended to play \"torus\" instead.
   (elt *torus-num-tori* col))
 
 (defun torus-pole-get-top-torus ()
-    (torus-pole-get-raw-entry
-     (- *torus-pole-height* *torus-num-tori-in-pole*)
-     *torus-pole-pos*))
+    (torus-get-torus-to-insert-from-pole (torus-pole-get-raw-entry
+					  (- *torus-pole-height* *torus-num-tori-in-pole*)
+					  *torus-pole-pos*)))
 
 ;; initiate the pole
 
@@ -527,9 +541,6 @@ In this case you are recommended to play \"torus\" instead.
 	   (% (+ (elt torus 1) 1) 6))
 	torus)
     nil))
-
-(defun torus-get-torus-to-insert-to-pole (torus)
-  (if (eq  *torus-difficulty* 2) torus (torus-fliped-torus torus)))
 
 (defun torus-pole-insert ()
   "Insert into the pole the bottom torus in the column where the pole is at."
@@ -607,9 +618,7 @@ In this case you are recommended to play \"torus\" instead.
     (dotimes (r k)
       (setq rr (+ (- *torus-box-height* k 1) r))
       (torus-box-set-entry rr col
-			   (if (equal 2 *torus-difficulty*)
-			       (torus-rotated-r-torus (torus-box-get-raw-entry (1+ rr) col))
-                               (torus-box-get-raw-entry (1+ rr) col))))
+			   (torus-get-torus-to-go-up (torus-box-get-raw-entry (1+ rr) col))))
     (setq rr (1- *torus-box-height*))
     (torus-box-set-entry rr col (torus-pole-get-top-torus))
     (torus-increase-num-tori col))
@@ -621,10 +630,7 @@ In this case you are recommended to play \"torus\" instead.
     (setq k (- (+ (1+ row) (torus-get-num-tori col)) *torus-box-height*)) ; k is the number of boxes to modify
     (dotimes (r (1- k))
       (setq rr (- row r))
-      (torus-box-set-entry rr col
-			   (if (equal 2 *torus-difficulty*)
-			       (torus-rotated-l-torus (torus-box-get-raw-entry (1- rr) col))
-                               (torus-box-get-raw-entry (1- rr) col))))
+      (torus-box-set-entry rr col (torus-get-torus-to-go-down (torus-box-get-raw-entry (1- rr) col))))
     (setq rr (- row (1- k)))
     (torus-box-set-entry rr col nil)
     (torus-decrease-num-tori col)
