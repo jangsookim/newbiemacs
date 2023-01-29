@@ -783,3 +783,10 @@ Delete or insert a label accordingly."
     (setq new (file-name-nondirectory (buffer-file-name)))
     (shell-command (format "latexdiff \"%s\" \"%s\" > diff.tex" old new))
     (find-file "diff.tex")))
+
+;; toc behavior
+
+(defun nbm-latex-toc-quit ()
+  "Quit the toc buffer with keeping the tabline buffer list."
+  (interactive)
+  (other-window 1) (delete-window) (kill-buffer))
