@@ -164,11 +164,15 @@
 *** key: i, description: item, function: LaTeX-insert-item
 *** key: F, description: figure, function: nbm-latex-insert-figure
 *** key: l, description: label, function: nbm-latex-insert-label
+** key: j, description: jump
+*** key: k, description: previous heading, function: outline-previous-heading
+*** key: j, description: next heading, function: outline-next-heading
 ** key: n, description: new item/macro/section
 *** key: b, description: bib-item, function: nbm-latex-new-bib-item
 *** key: m, description: macro, function: nbm-latex-new-macro
 *** key: s, description: section, function: nbm-latex-section
 ** key: r, description: reference
+*** key: c, description: cross reference, function: reftex-view-crossref
 *** key: e, description: eqref, function: nbm-latex-eqref
 *** key: f, description: fig-ref, function: nbm-latex-fig-ref
 *** key: r, description: reftex-reference, function: reftex-reference
