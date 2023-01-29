@@ -165,8 +165,9 @@
 *** key: F, description: figure, function: nbm-latex-insert-figure
 *** key: l, description: label, function: nbm-latex-insert-label
 ** key: j, description: jump
-*** key: k, description: previous heading, function: outline-previous-heading
-*** key: j, description: next heading, function: outline-next-heading
+*** key: k, description: previous section, function: outline-previous-heading
+*** key: j, description: next section, function: outline-next-heading
+*** key: s, description: jump sections, function: nbm-latex-jump-section
 ** key: n, description: new item/macro/section
 *** key: b, description: bib-item, function: nbm-latex-new-bib-item
 *** key: m, description: macro, function: nbm-latex-new-macro

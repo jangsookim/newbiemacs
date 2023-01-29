@@ -790,3 +790,17 @@ Delete or insert a label accordingly."
   "Quit the toc buffer with keeping the tabline buffer list."
   (interactive)
   (other-window 1) (delete-window) (kill-buffer))
+
+;; jump headings
+
+(defun nbm-latex-jump-section ()
+  "Jump to a section in the current tex file."
+  (interactive)
+  (let (key)
+    (setq key ?j)
+    (while (member key '(?j ?k))
+      (setq key (read-char "k) go to the previous section 
+j) go to the next section
+other key) stop"))
+      (if (equal key ?j) (outline-next-heading))
+      (if (equal key ?k) (outline-previous-heading)))))
