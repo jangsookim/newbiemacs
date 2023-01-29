@@ -133,6 +133,9 @@
 * description: LaTeX-mode
 ** key: RET, description: Korean/English, function: toggle-input-method
 ** key: ,, description: master command, function: TeX-command-master
+** key: =, description: table of contents, function: reftex-toc
+** key: a, description: applications
+*** key: d, description: latex diff, function: nbm-latex-diff
 ** key: b, description: build tex, function: TeX-command-run-all
 ** key: v, description: view pdf, function: TeX-view
 ** key: c, description: copy math, function: nbm-latex-copy-math
@@ -157,7 +160,7 @@
 ** key: ., description: mark-environment, function: LaTeX-mark-environment
 ** key: *, description: mark-section, function: LaTeX-mark-section
 ** key: i, description: Insert
-*** key: e, description: environment, function: LaTeX-environment
+*** key: c, description: citation, function: helm-bibtex
 *** key: i, description: item, function: LaTeX-insert-item
 *** key: F, description: figure, function: nbm-latex-insert-figure
 *** key: l, description: label, function: nbm-latex-insert-label
@@ -166,8 +169,6 @@
 *** key: m, description: macro, function: nbm-latex-new-macro
 *** key: s, description: section, function: nbm-latex-section
 ** key: r, description: reference
-*** key: =, description: table of contents, function: reftex-toc
-*** key: c, description: citation, function: helm-bibtex
 *** key: e, description: eqref, function: nbm-latex-eqref
 *** key: f, description: fig-ref, function: nbm-latex-fig-ref
 *** key: r, description: reftex-reference, function: reftex-reference
