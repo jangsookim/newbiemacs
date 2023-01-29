@@ -77,7 +77,7 @@ If there is no title, return the filename."
 	  (message (format "Command copied in the clipboard. Past it in the command prompt run as administrator.")))
       (progn
 	(shell-command (format "ln -s \"%s\" \"%stex/symlinks/%s.tex\""
-			       (nbm-get-file-name) *nbm-home* file-name))   
+			       (nbm-get-file-name) *nbm-home* file-name))
 	(message (format "A symbolic link created: %s.tex" file-name))))))
 
 (defun nbm-latex-new-file ()
@@ -686,28 +686,28 @@ add a new bib item."
   "Reftex with Cref."
   (interactive)
   (let ((reftex-refstyle "\\Cref"))
-    (reftex-reset-mode) 
+    (reftex-reset-mode)
     (reftex-reference " ")))
 
 (defun nbm-latex-eqref ()
   "Reftex with eqref."
   (interactive)
   (let ((reftex-refstyle "\\eqref"))
-    (reftex-reset-mode) 
+    (reftex-reset-mode)
        (reftex-reference "e")))
 
 (defun nbm-latex-fig-ref ()
   "Reftex with figure."
   (interactive)
   (let ((reftex-refstyle "\\Cref"))
-       (reftex-reset-mode) 
+       (reftex-reset-mode)
        (reftex-reference "f")))
 
 (defun nbm-latex-sec-ref ()
   "Reftex with section."
   (interactive)
   (let ((reftex-refstyle "\\Cref"))
-       (reftex-reset-mode) 
+       (reftex-reset-mode)
        (reftex-reference "s")))
 
 (defun nbm-latex-section ()
@@ -791,16 +791,34 @@ Delete or insert a label accordingly."
   (interactive)
   (other-window 1) (delete-window) (kill-buffer))
 
-;; jump headings
+;; jump sections
 
-(defun nbm-latex-jump-section ()
-  "Jump to a section in the current tex file."
+(defun nbm-latex-jump-section-mode ()
+  "Start jump-mode to a section in the current tex file."
   (interactive)
   (let (key)
     (setq key ?j)
     (while (member key '(?j ?k))
-      (setq key (read-char "k) go to the previous section 
+      (setq key (read-char "k) go to the previous section
 j) go to the next section
 other key) stop"))
       (if (equal key ?j) (outline-next-heading))
       (if (equal key ?k) (outline-previous-heading)))))
+
+(defun nbm-latex-jump-section ()
+  "Jump to a section in the current tex file."
+  (interactive)
+  (let (section-list section beg end)
+    (save-excursion
+      (beginning-of-buffer)
+      (setq section-list '())
+      (while (re-search-forward "\\\\section\\|\\\\subsection\\|\\\\subsubsection\\|\\\\chapter\\|\\\\part" nil t)
+	(setq end (point))
+	(search-backward "\\") (setq beg (point))
+	(goto-char end) (forward-sexp) (setq end (point))
+	(setq section (buffer-substring beg end))
+	(setq section-list (nbm-append section section-list))))
+    (setq section (completing-read "Choose a section to jump: "
+				   section-list))
+    (beginning-of-buffer)
+    (search-forward section)))

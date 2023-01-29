@@ -45,7 +45,7 @@ Otherwise, return the first line."
 	(if all
 	    (buffer-string)
 	  (car (split-string (buffer-string) "\n")))))))
-    
+
 (defun nbm-set-user-variable (var content)
   "Set CONTENT to be the content of the file nbm-VAR.txt in the folder
 newbiemacs/nbm-user-settings/nbm-variables."

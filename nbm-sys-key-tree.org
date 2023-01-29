@@ -167,7 +167,8 @@
 ** key: j, description: jump
 *** key: k, description: previous section, function: outline-previous-heading
 *** key: j, description: next section, function: outline-next-heading
-*** key: s, description: jump sections, function: nbm-latex-jump-section
+*** key: m, description: jump mode, function: nbm-latex-jump-section-mode
+*** key: s, description: jump to a section, function: nbm-latex-jump-section
 ** key: n, description: new item/macro/section
 *** key: b, description: bib-item, function: nbm-latex-new-bib-item
 *** key: m, description: macro, function: nbm-latex-new-macro
