@@ -46,7 +46,7 @@
 	 )
 	((equal theme 3)
 	 (defun torus-color-x (string)
-	   (propertize string 'face '(:foreground "Navajowhite1" :weight bold))) ; CUD ver4 baige
+	   (propertize string 'face '(:foreground "Navajowhite1" :weight bold))) 
 	   ;(propertize string 'face '(:foreground "#ffff80" :weight bold))) ; CUD ver4 cream
 	(defun torus-color-a (string)
 	   (propertize string 'face '(:foreground "#FF4B00" :weight bold))) ; CUD ver4 red
@@ -177,17 +177,38 @@
   (cond ((equal ?1 difficulty)
 	 (setq *torus-difficulty* 1)
 	 (defconst *torus-game-speed* 0.1)             ; the lower the faster
+	 (defun torus-get-torus-color (c angle part) c) 
+	 (defun torus-get-torus-to-insert-to-pole (torus) torus)
+	 (defun torus-get-torus-to-insert-from-pole (torus) torus)
+	 (defun torus-get-torus-to-go-down (torus) torus)
+	 (defun torus-get-torus-to-go-up (torus) torus)
+	 )
+	((equal ?2 difficulty)
+	 (setq *torus-difficulty* 2)
+	 (defconst *torus-game-speed* 0.1)             ; the lower the faster
+	 (defun torus-get-torus-color (c angle part) (torus-get-halfglazed-torus-color c angle part))
+	 (defun torus-get-torus-to-insert-to-pole (torus) (torus-rotated-l-torus torus))
+	 (defun torus-get-torus-to-insert-from-pole (torus) (torus-rotated-r-torus torus))
+	 (defun torus-get-torus-to-go-down (torus) (torus-rotated-l-torus torus))
+	 (defun torus-get-torus-to-go-up (torus) (torus-rotated-r-torus torus))
 	 )
 	(t
-	 (setq *torus-difficulty* 2)
+	 (setq *torus-difficulty* 3)
 	 (defconst  *torus-game-speed* 0.1)
+	 (defun torus-get-torus-color (c angle part) (torus-get-halfglazed-torus-color c angle part))
+	 (defun torus-get-torus-to-insert-to-pole (torus) (torus-fliped-torus torus))
+	 (defun torus-get-torus-to-insert-from-pole (torus) torus)
+	 (defun torus-get-torus-to-go-down (torus) torus)
+	 (defun torus-get-torus-to-go-up (torus) torus)
 	 )))
 	 
 (defun torus-difficulty-as-str (difficulty)
-  "Return the difficulty in string format."
-  (if (equal 1 difficulty)
-      "Normal"
-    "Half-glazed (Testing)"))
+  (cond ((equal 1 difficulty) "Normal")
+	((equal 2 difficulty) "Half-glazed/rotate (Testing)")
+	(t "Half-glazed (flip)")
+	))
+    
+
 
 (defun torus-get-str-difficulty ()
   "Return the current difficulty in string format."
@@ -203,7 +224,7 @@
   (torus-set-difficulty (read-char
 			 (concat
 			  "Choose difficulty:\n"
-			  (mapconcat 'torus-select-difficulty-prompt (list 1 2) "  "))
+			  (mapconcat 'torus-select-difficulty-prompt (list 1 2 3) "  "))
 			 )))
 
 (defvar *torus-box* nil
@@ -297,28 +318,26 @@ In this case you are recommended to play \"torus\" instead.
                      (equal row (1+ (- *torus-box-height* (elt *torus-flying-tori-height* col))))
                      (equal row (1- (- *torus-box-height* (elt *torus-flying-tori-height* col))))))
             (torus-print-flying-torus row col)
-          (torus-print-entry (torus-box-get-entry-to-print row col))))
+	  (torus-print-entry (torus-box-get-raw-entry row col))))
       (torus-print-string "|\n" -1))))
 
-
-(defun torus-get-torus-color (c part)
-  "Return color of torus."
-  (if (equal 1 *torus-difficulty*) c (if (equal 1 part) c 100 )))
+(defun torus-get-halfglazed-torus-color (c angle part)
+  (if (> 3 (% (+ angle part 5) 6)) c 100))
 
 (defun torus-print-flying-torus (row col)
   (let ((inhibit-read-only t))
     (if (equal (% (elt *torus-flying-tori-height* col) 4) 0) ; the flying torus is rotating with cycle 4
         (progn
           (if (equal row (- *torus-box-height* (elt *torus-flying-tori-height* col)))
-              (torus-print-string " @ @ "  (torus-get-torus-color (elt *torus-flying-tori* col) 0)))
+              (torus-print-string " @ @ "  (torus-get-torus-color (elt *torus-flying-tori* col) 4 1)))
           (if (equal row (1- (- *torus-box-height* (elt *torus-flying-tori-height* col))))
-              (torus-print-string " /@\\ " (torus-get-torus-color (elt *torus-flying-tori* col) 2)))
+              (torus-print-string " /@\\ " (torus-get-torus-color (elt *torus-flying-tori* col) 4 1)))
           (if (equal row (1+ (- *torus-box-height* (elt *torus-flying-tori-height* col))))
-              (torus-print-string " \\@/ " (torus-get-torus-color (elt *torus-flying-tori* col) 1))))
+              (torus-print-string " \\@/ " (torus-get-torus-color (elt *torus-flying-tori* col) 1 1))))
       (if (equal (% (elt *torus-flying-tori-height* col) 4) 1) ; the flying torus is rotating with cycle 4
 	  (progn
             (if (equal row (- *torus-box-height* (elt *torus-flying-tori-height* col)))
-		(torus-print-string " @@@ " (torus-get-torus-color (elt *torus-flying-tori* col) 2)))
+		(torus-print-string " @@@ " (torus-get-torus-color (elt *torus-flying-tori* col) 4 1)))
             (if (equal row (1- (- *torus-box-height* (elt *torus-flying-tori-height* col))))
 		(torus-print-string "     " (elt *torus-flying-tori* col)))
             (if (equal row (1+ (- *torus-box-height* (elt *torus-flying-tori-height* col))))
@@ -326,14 +345,14 @@ In this case you are recommended to play \"torus\" instead.
 	(if (equal (% (elt *torus-flying-tori-height* col) 4) 2) ; the flying torus is rotating with cycle 4
             (progn
               (if (equal row (- *torus-box-height* (elt *torus-flying-tori-height* col)))
-		  (torus-print-string " @ @ " (torus-get-torus-color (elt *torus-flying-tori* col) 0)))
+		  (torus-print-string " @ @ " (torus-get-torus-color (elt *torus-flying-tori* col) 4 1)))
               (if (equal row (1- (- *torus-box-height* (elt *torus-flying-tori-height* col))))
-		  (torus-print-string " /@\\ " (torus-get-torus-color (elt *torus-flying-tori* col) 1)))
+		  (torus-print-string " /@\\ " (torus-get-torus-color (elt *torus-flying-tori* col) 1 1)))
               (if (equal row (1+ (- *torus-box-height* (elt *torus-flying-tori-height* col))))
-		  (torus-print-string " \\@/ " (torus-get-torus-color (elt *torus-flying-tori* col) 2))))
+		  (torus-print-string " \\@/ " (torus-get-torus-color (elt *torus-flying-tori* col) 4 1))))
 	  (progn
             (if (equal row (- *torus-box-height* (elt *torus-flying-tori-height* col)))
-		(torus-print-string " @@@ " (torus-get-torus-color (elt *torus-flying-tori* col) 1)))
+		(torus-print-string " @@@ " (torus-get-torus-color (elt *torus-flying-tori* col) 1 1)))
             (if (equal row (1- (- *torus-box-height* (elt *torus-flying-tori-height* col))))
 		(torus-print-string "     " (elt *torus-flying-tori* col)))
             (if (equal row (1+ (- *torus-box-height* (elt *torus-flying-tori-height* col))))
@@ -344,7 +363,7 @@ In this case you are recommended to play \"torus\" instead.
     (dotimes (row *torus-pole-height*)
       (torus-print-string " |" -1)
       (dotimes (col *torus-num-cols*)
-        (torus-print-entry (torus-pole-get-entry row col)))
+        (torus-print-entry (torus-pole-get-raw-entry row col)))
       (torus-print-string "|\n" -1))
   (torus-print-string " |" -1)
   (dotimes (col *torus-num-cols*)
@@ -371,18 +390,24 @@ In this case you are recommended to play \"torus\" instead.
       (insert (torus-color-y string)))
   )
 
-(defun torus-print-entry (n)
-  (if (eq n nil)
-      (torus-print-string "     " -1))
-  (if (equal n "*")
-      (torus-print-string "*" -1))
-  (if (eq n -1)
-      (torus-print-string "  |  " -1))
-  (if (eq n -2)
-      (torus-print-string " --- " -1))
-  (if (or (equal n 0) (equal n 1) (equal n 2) (equal n 3) (equal n 4) (equal n 100))
-      (torus-print-string " @@@ " n))
+(defun torus-print-horizontal-torus (n)
+  (torus-print-string " @" (torus-get-torus-color (elt n 0) (elt n 1) 0))
+  (torus-print-string "@" (torus-get-torus-color (elt n 0) (elt n 1) 1))
+  (torus-print-string "@ " (torus-get-torus-color (elt n 0) (elt n 1) 2))
   )
+
+(defun torus-print-entry (n)
+  (cond ((eq n nil)
+	 (torus-print-string "     " -1))
+	((equal n "*")
+	 (torus-print-string "*" -1))
+	((eq n -1)
+	 (torus-print-string "  |  " -1))
+	((eq n -2)
+	 (torus-print-string " --- " -1))
+	((sequencep n)
+	 (torus-print-horizontal-torus n))
+  ))
 
 
 (defun torus-print-score ()
@@ -418,13 +443,6 @@ In this case you are recommended to play \"torus\" instead.
               *torus-num-cols*))
         value))
 
-(defun torus-box-get-entry-to-print (row col)
-  (if (torus-box-get-raw-entry row col)
-      (if (sequencep (torus-box-get-raw-entry row col))
-	   (torus-get-torus-color (elt (torus-box-get-raw-entry row col) 0) (elt (torus-box-get-raw-entry row col) 1))
-	(torus-box-get-raw-entry row col))
-    nil))
-
 (defun torus-box-get-entry (row col)
   (if (sequencep (torus-box-get-raw-entry row col))
       (elt (torus-box-get-raw-entry row col) 0)
@@ -435,14 +453,6 @@ In this case you are recommended to play \"torus\" instead.
      (+ col
         (* row
            *torus-num-cols*))))
-
-
-(defun torus-pole-get-entry (row col)
-  (if (torus-pole-get-raw-entry row col)
-      (if (sequencep (torus-pole-get-raw-entry row col))
-	  (torus-get-torus-color (elt (torus-pole-get-raw-entry row col) 0) (elt (torus-pole-get-raw-entry row col) 1))
-	(torus-pole-get-raw-entry row col))
-    nil))
 
 (defun torus-pole-get-raw-entry (row col)
   (elt *torus-pole*
@@ -462,9 +472,9 @@ In this case you are recommended to play \"torus\" instead.
   (elt *torus-num-tori* col))
 
 (defun torus-pole-get-top-torus ()
-    (torus-pole-get-raw-entry
-     (- *torus-pole-height* *torus-num-tori-in-pole*)
-     *torus-pole-pos*))
+    (torus-get-torus-to-insert-from-pole (torus-pole-get-raw-entry
+					  (- *torus-pole-height* *torus-num-tori-in-pole*)
+					  *torus-pole-pos*)))
 
 ;; initiate the pole
 
@@ -510,7 +520,25 @@ In this case you are recommended to play \"torus\" instead.
       (if (sequencep torus)
 	  (list
 	   (elt torus 0)
-	   (if (= 1 (elt torus 1)) 2 1))
+	   (% (+ (elt torus 1) 3) 6))
+	torus)
+    nil))
+
+(defun torus-rotated-r-torus (torus)
+  (if torus
+      (if (sequencep torus)
+	  (list
+	   (elt torus 0)
+	   (% (+ (elt torus 1) 5) 6))
+	torus)
+    nil))
+
+(defun torus-rotated-l-torus (torus)
+  (if torus
+      (if (sequencep torus)
+	  (list
+	   (elt torus 0)
+	   (% (+ (elt torus 1) 1) 6))
 	torus)
     nil))
 
@@ -518,7 +546,7 @@ In this case you are recommended to play \"torus\" instead.
   "Insert into the pole the bottom torus in the column where the pole is at."
   (torus-pole-set-entry (- *torus-pole-height* *torus-num-tori-in-pole* 1)
                         *torus-pole-pos*
-                        (torus-fliped-torus (torus-box-get-raw-entry (1- *torus-box-height*) *torus-pole-pos*)))
+                        (torus-get-torus-to-insert-to-pole (torus-box-get-raw-entry (1- *torus-box-height*) *torus-pole-pos*)))
   (torus-increase-num-tori-in-pole)
   )
 
@@ -563,7 +591,7 @@ In this case you are recommended to play \"torus\" instead.
   (torus-box-set-entry (- *torus-box-height* (torus-get-num-tori col) 1)
                        col (list
 			    torus
-			    (if (< (% (+ 3 (elt *torus-flying-tori-height* col)) 4) 2) 2 1)
+			    (if (< (% (+ 3 (elt *torus-flying-tori-height* col)) 4) 2) 4 1)
 			    ) )
   (torus-increase-num-tori col))
 
@@ -590,7 +618,7 @@ In this case you are recommended to play \"torus\" instead.
     (dotimes (r k)
       (setq rr (+ (- *torus-box-height* k 1) r))
       (torus-box-set-entry rr col
-                           (torus-box-get-raw-entry (1+ rr) col)))
+			   (torus-get-torus-to-go-up (torus-box-get-raw-entry (1+ rr) col))))
     (setq rr (1- *torus-box-height*))
     (torus-box-set-entry rr col (torus-pole-get-top-torus))
     (torus-increase-num-tori col))
@@ -602,8 +630,7 @@ In this case you are recommended to play \"torus\" instead.
     (setq k (- (+ (1+ row) (torus-get-num-tori col)) *torus-box-height*)) ; k is the number of boxes to modify
     (dotimes (r (1- k))
       (setq rr (- row r))
-      (torus-box-set-entry rr col
-                           (torus-box-get-raw-entry (1- rr) col)))
+      (torus-box-set-entry rr col (torus-get-torus-to-go-down (torus-box-get-raw-entry (1- rr) col))))
     (setq rr (- row (1- k)))
     (torus-box-set-entry rr col nil)
     (torus-decrease-num-tori col)
