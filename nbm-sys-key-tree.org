@@ -140,6 +140,7 @@
 ** key: d, description: delete math, function: nbm-latex-delete-math
 ** key: e, description: Environments
 *** key: d, description: delete labels, function: nbm-latex-delete-label
+*** key: n, description: new environment, function: LaTeX-environment
 *** key: u, description: update-environment, function: nbm-latex-environment-update
 ** key: D, description: delete math with \( \), function: nbm-latex-delete-math-with-paren
 ** key: f, description: Fonts

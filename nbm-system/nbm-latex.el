@@ -772,3 +772,14 @@ Delete or insert a label accordingly."
 (defun nbm-latex-font-delete ()
   (interactive)
   (TeX-font nil 4))
+
+;; latex diff
+
+(defun nbm-latex-diff ()
+  "Compare the current file with its previous version."
+  (interactive)
+  (let (old new)
+    (setq old (read-file-name "Choose an older version to compare: "))
+    (setq new (file-name-nondirectory (buffer-file-name)))
+    (shell-command (format "latexdiff \"%s\" \"%s\" > diff.tex" old new))
+    (find-file "diff.tex")))
