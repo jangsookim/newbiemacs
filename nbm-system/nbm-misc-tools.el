@@ -71,3 +71,22 @@ other key) stop"))
       (if (and (equal key ?h)
 	       (not (equal (current-buffer) (car (tab-line-tabs-window-buffers)))))
 	  (tab-line-switch-to-prev-tab)))))
+
+(defun nbm-yasnippet-quick-new ()
+  "Create a new snippet quickly."
+  (interactive)
+  (let (name key content)
+    (setq name (read-string "Enter a name of a new snippet: "))
+    (setq key (read-string "Enter a key of a new snippet: "))
+    (setq content (read-string "Enter a content of a new snippet: "))
+    (find-file (nbm-f (format "nbm-user-settings/snippets/%s/%s"
+			      major-mode name)))
+    (insert (format "# -*- mode: snippet -*-
+# name: %s
+# key: %s
+# --
+%s" name key content))
+    (save-buffer) (kill-buffer)
+    (message (concat "Created a snippet file:"
+		     (nbm-f (format "nbm-user-settings/snippets/%s/%s"
+				    major-mode name))))))

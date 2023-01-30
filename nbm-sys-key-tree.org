@@ -126,6 +126,7 @@
 *** key: s, description: settings, function: newbie-setting
 *** key: u, description: update Newbiemacs, function: nbm-update-newbiemacs
 ** key: Y, description: yasnippet
+*** key: q, description: quick new snippet, function: nbm-yasnippet-quick-new
 *** key: i, description: insert-snippet, function: yas-insert-snippet
 *** key: n, description: new-snippet, function: yas-new-snippet
 *** key: f, description: visit-snippet-file, function: yas-visit-snippet-file
