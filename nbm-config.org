@@ -124,7 +124,11 @@
     :ensure t :defer t :init
     (with-eval-after-load 'org
       (org-download-enable)
-      (setq org-download-heading-lvl 0)))
+      (setq-default org-download-image-dir (concat *nbm-home* "org/reference-files"))
+      (setq org-download-annotate-function (lambda (_link) ""))
+      (setq org-download-timestamp "")
+      (setq org-download-display-inline-images nil)
+      (setq org-download-heading-lvl nil)))
 
   (use-package winum
     :init

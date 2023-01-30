@@ -252,6 +252,7 @@
 *** key: T, function: org-todo
 *** key: r, description: org-roam-buffer, function: org-roam-buffer-toggle
 *** key: v, description: valign, function: nbm-toggle-valign
+*** key: i, description: images, function: org-toggle-inline-images
 * description: emacs-lisp-mode
 ** key: e, description: eval
 *** key: b, function: eval-buffer
