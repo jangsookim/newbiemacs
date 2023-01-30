@@ -183,6 +183,9 @@
 *** key: r, description: reftex-reference, function: reftex-reference
 *** key: s, description: sec-ref, function: nbm-latex-sec-ref
 *** key: C, description: Cref, function: nbm-latex-Cref
+** key: s, description: snippets
+*** key: m, description: matrix, function: nbm-snippet-latex-matrix
+*** key: y, description: Young tableau, function: nbm-snippet-latex-ytableau
 ** key: t, description: toggle
 *** key: b, description: bbl-file, function: nbm-latex-toggle-bbl-file
 *** key: e, description: equation, function: nbm-latex-toggle-equation
