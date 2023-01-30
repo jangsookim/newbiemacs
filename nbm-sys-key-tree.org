@@ -126,11 +126,13 @@
 *** key: s, description: settings, function: newbie-setting
 *** key: u, description: update Newbiemacs, function: nbm-update-newbiemacs
 ** key: Y, description: yasnippet
+*** key: d, description: delete snippet, function: nbm-yasnippet-delete
 *** key: q, description: quick new snippet, function: nbm-yasnippet-quick-new
 *** key: i, description: insert-snippet, function: yas-insert-snippet
 *** key: n, description: new-snippet, function: yas-new-snippet
 *** key: f, description: visit-snippet-file, function: yas-visit-snippet-file
 *** key: t, description: table of snippets, function: yas-describe-tables
+*** key: r, description: reload all, function: yas-reload-all
 * description: LaTeX-mode
 ** key: RET, description: Korean/English, function: toggle-input-method
 ** key: ,, description: master command, function: TeX-command-master

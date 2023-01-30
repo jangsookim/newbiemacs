@@ -104,3 +104,36 @@ other key) stop"))
     (message (concat "Created a snippet file:"
 		     (nbm-f (format "nbm-user-settings/snippets/%s/%s"
 				    major-mode name))))))
+
+(defun nbm-yasnippet-delete ()
+  "Delete a snippet."
+  (interactive)
+  (let (file-name)
+    (setq file-name (read-file-name
+		     "Choose the snippet to delete: "
+		     (nbm-f (format "nbm-user-settings/snippets/%s/" major-mode))
+		     nil t nil '(lambda (file-name)
+				  (not (or (f-hidden-p file-name)
+					   (file-directory-p file-name))))))
+    (find-file file-name)
+    (if (equal ?y (read-char "Do you want to delete this snippet? (type y for yes)"))
+	(delete-file file-name))
+    (kill-buffer)))
+
+(defun nbm-yasnippet-delete ()
+  "Delete a snippet."
+  (interactive)
+  (let (file-name)
+    (setq file-name (read-file-name
+		"Choose the snippet to delete: "
+		(nbm-f (format "nbm-user-settings/snippets/%s/" major-mode))
+		nil t nil 'nbm-file-name-non-dot-p))
+    (find-file file-name)
+    (when (equal ?y (read-char "Do you want to delete this snippet? (type y for yes)"))
+      (delete-file file-name)
+      (message (format "File deleted: %s" file-name)))
+    (kill-buffer)))
+
+(defun nbm-file-name-non-dot-p (file)
+  "Return t if FILE does not start with the dot . symbol."
+  (not (equal (substring (file-name-nondirectory file) 0 1) ".")))
