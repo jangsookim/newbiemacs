@@ -336,7 +336,8 @@
    '(font-latex-script-char-face ((t (:foreground "#Ff9f0a"))))
    '(font-latex-sectioning-2-face ((t (:foreground "#Ffd60a")))))
 
-  (evil-define-key 'emacs reftex-toc-mode-map (kbd "q") 'nbm-latex-toc-quit)
+  (evil-define-key 'emacs reftex-toc-mode-map (kbd "q") 'nbm-reftex-toc-quit)
+  (evil-define-key 'emacs reftex-toc-mode-map (kbd "RET") 'nbm-reftex-toc-goto-line-and-hide)
   (evil-define-key 'emacs reftex-toc-mode-map (kbd "j") 'reftex-toc-next)
   (evil-define-key 'emacs reftex-toc-mode-map (kbd "k") 'reftex-toc-previous)
 

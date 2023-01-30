@@ -784,12 +784,22 @@ Delete or insert a label accordingly."
     (shell-command (format "latexdiff \"%s\" \"%s\" > diff.tex" old new))
     (find-file "diff.tex")))
 
-;; toc behavior
+;; changing reftex toc behavior for tabline
 
-(defun nbm-latex-toc-quit ()
+(defun nbm-reftex-toc-quit ()
   "Quit the toc buffer with keeping the tabline buffer list."
   (interactive)
   (other-window 1) (delete-window) (kill-buffer))
+
+(defun nbm-reftex-toc-goto-line-and-hide ()
+  "Visit the current line in toc and quit the toc buffer with keeping the tabline buffer list."
+  (interactive)
+  (let (pos)
+    (reftex-toc-goto-line)
+    (setq pos (point))
+    (other-window 1)
+    (nbm-reftex-toc-quit)
+    (goto-char pos)))
 
 ;; jump sections
 
