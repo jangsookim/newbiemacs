@@ -29,8 +29,8 @@
 *** key: b, description: buffers-list, function: helm-buffers-list
 *** key: d, function: kill-this-buffer
 *** key: j, description: jump buffer, function: nbm-tab-line-jump
-*** key: h, function: previous-buffer
-*** key: l, function: next-buffer
+*** key: h, description: previous buffer, function: nbm-tab-line-previous-buffer
+*** key: l, description: next buffer, function: nbm-tab-line-next-buffer
 *** key: w, function: kill-buffer-and-window
 *** key: R, function: revert-buffer
 ** key: c, description: Comment/Color

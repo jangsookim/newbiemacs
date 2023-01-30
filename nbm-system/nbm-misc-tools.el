@@ -72,6 +72,20 @@ other key) stop"))
 	       (not (equal (current-buffer) (car (tab-line-tabs-window-buffers)))))
 	  (tab-line-switch-to-prev-tab)))))
 
+(defun nbm-tab-line-previous-buffer ()
+  "Jump to the previous tab in the tab line list."
+  (interactive)
+  (unless (equal (current-buffer)
+		 (car (tab-line-tabs-window-buffers)))
+    (tab-line-switch-to-prev-tab)))
+
+(defun nbm-tab-line-next-buffer ()
+  "Jump to the next tab in the tab line list."
+  (interactive)
+  (unless (equal (current-buffer)
+		 (car (last (tab-line-tabs-window-buffers))))
+    (tab-line-switch-to-next-tab)))
+
 (defun nbm-yasnippet-quick-new ()
   "Create a new snippet quickly."
   (interactive)
