@@ -345,6 +345,8 @@
   (evil-define-key 'emacs reftex-toc-mode-map (kbd "j") 'reftex-toc-next)
   (evil-define-key 'emacs reftex-toc-mode-map (kbd "k") 'reftex-toc-previous)
 
+  (evil-define-key 'emacs reftex-select-label-mode-map (kbd "k") 'reftex-select-previous)
+  (evil-define-key 'emacs reftex-select-label-mode-map (kbd "j") 'reftex-select-next)
 #+end_src
 
 ** auctex-latexmk

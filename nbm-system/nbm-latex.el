@@ -358,14 +358,17 @@ and END are the starting and ending points of the environment."
   (save-excursion
     (let (env label)
       (setq env (LaTeX-current-environment))
-      (goto-char (car (LaTeX-env-beginning-pos-col)))
-      (if (> (length env) 3)
-	  (setq env (substring env 0 3)))
-      (search-forward "\\begin" nil t) (forward-sexp)
-      (if (member env '("equ" "ali" "mul"))
-	  (setq env "eq"))
-      (setq label (read-string "Enter a label: "))
-      (insert (format "\\label{%s:%s}" env label)))))
+      (if (equal env "document")
+	  (message "You are not in a proper environment!")
+	(progn
+	  (goto-char (car (LaTeX-env-beginning-pos-col)))
+	  (if (> (length env) 3)
+	      (setq env (substring env 0 3)))
+	  (search-forward "\\begin" nil t) (forward-sexp)
+	  (if (member env '("equ" "ali" "mul"))
+	      (setq env "eq"))
+	  (setq label (read-string "Enter a label: "))
+	  (insert (format "\\label{%s:%s}" env label)))))))
 
 (defun nbm-latex-delete-label ()
   "Delete the labels in the current environment."
