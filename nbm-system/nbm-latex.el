@@ -835,3 +835,16 @@ other key) stop"))
 				   section-list))
     (beginning-of-buffer)
     (search-forward section)))
+
+(defun nbm-reftex-insert-ref ()
+  "Insert a reference in the helm style."
+  (interactive)
+  (reftex-access-scan-info)
+  (let* ((docstruct (symbol-value reftex-docstruct-symbol))
+         (label (completing-read "Choose a reference to insert: "
+				 docstruct
+                                 (lambda (x) (stringp (car x))) t)))
+    (if (equal (substring label 0 3) "eq:")
+	(insert "\\eqref")
+      (insert "\\Cref"))
+    (insert (format "{%s}" label))))

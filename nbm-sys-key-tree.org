@@ -180,6 +180,7 @@
 *** key: c, description: cross reference, function: reftex-view-crossref
 *** key: e, description: eqref, function: nbm-latex-eqref
 *** key: f, description: fig-ref, function: nbm-latex-fig-ref
+*** key: i, description: insert ref, function: nbm-reftex-insert-ref
 *** key: r, description: reftex-reference, function: reftex-reference
 *** key: s, description: sec-ref, function: nbm-latex-sec-ref
 *** key: C, description: Cref, function: nbm-latex-Cref
