@@ -839,6 +839,7 @@ other key) stop"))
 (defun nbm-reftex-insert-ref ()
   "Insert a reference in the helm style."
   (interactive)
+  (reftex-reset-mode)
   (reftex-access-scan-info)
   (let* ((docstruct (symbol-value reftex-docstruct-symbol))
          (label (completing-read "Choose a reference to insert: "
@@ -853,6 +854,7 @@ other key) stop"))
   "Modified from reftex-goto-label so that Cref and eqref work as default.
 Prompt for a label (with completion) and jump to the location of this label."
   (interactive "P")
+  (reftex-reset-mode)
   (reftex-access-scan-info)
   (let* ((wcfg (current-window-configuration))
          (docstruct (symbol-value reftex-docstruct-symbol))
