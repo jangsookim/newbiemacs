@@ -848,3 +848,29 @@ other key) stop"))
 	(insert "\\eqref")
       (insert "\\Cref"))
     (insert (format "{%s}" label))))
+
+(defun nbm-reftex-goto-label (&optional other-window)
+  "Modified from reftex-goto-label so that Cref and eqref work as default.
+Prompt for a label (with completion) and jump to the location of this label."
+  (interactive "P")
+  (reftex-access-scan-info)
+  (let* ((wcfg (current-window-configuration))
+         (docstruct (symbol-value reftex-docstruct-symbol))
+	 ;; If point is inside a \ref{} or \pageref{}, use that as
+	 ;; default value.
+	 (default (when (looking-back "\\\\\\(?:\\(page\\|eq\\|C\\)\\)?ref{[-a-zA-Z0-9_*.:]*"
+                                      (line-beginning-position))
+		    (reftex-this-word "-a-zA-Z0-9_*.:")))
+         (label (completing-read (format-prompt "Label" default)
+				 docstruct
+                                 (lambda (x) (stringp (car x))) t nil nil
+				 default))
+         (selection (assoc label docstruct))
+         (where (progn
+                  (reftex-show-label-location selection t nil 'stay)
+                  (point-marker))))
+    (unless other-window
+      (set-window-configuration wcfg)
+      (switch-to-buffer (marker-buffer where))
+      (goto-char where))
+    (reftex-unhighlight 0)))

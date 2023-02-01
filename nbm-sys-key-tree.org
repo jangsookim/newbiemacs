@@ -171,6 +171,7 @@
 *** key: k, description: previous section, function: outline-previous-heading
 *** key: j, description: next section, function: outline-next-heading
 *** key: m, description: jump mode, function: nbm-latex-jump-section-mode
+*** key: l, description: label, function: nbm-reftex-goto-label
 *** key: s, description: jump to a section, function: nbm-latex-jump-section
 ** key: n, description: new item/macro/section
 *** key: b, description: bib-item, function: nbm-latex-new-bib-item
@@ -218,12 +219,12 @@
 *** key: T, description: time-stamp-inactive, function: org-time-stamp-inactive
 ** key: i, description: insert org-roam-node, function: org-roam-node-insert
 ** key: j, description: Jump
-*** key: a, description: jump-to-archive, function: nbm-org-jump-to-archive
-*** key: d, description: jump-to-dir-link, function: nbm-org-jump-to-dir-at-point
-*** key: f, description: jump-to-file, function: nbm-org-jump-to-file
-*** key: h, description: jump-to-heading, function: nbm-org-jump-to-heading
-*** key: t, description: jump-to-tex, function: nbm-org-jump-to-tex
-*** key: u, description: jump-to-url, function: nbm-org-jump-to-url
+*** key: a, description: archive, function: nbm-org-jump-to-archive
+*** key: d, description: dir-link, function: nbm-org-jump-to-dir-at-point
+*** key: f, description: file, function: nbm-org-jump-to-file
+*** key: s, description: section/heading, function: nbm-org-jump-to-heading
+*** key: t, description: tex, function: nbm-org-jump-to-tex
+*** key: u, description: url, function: nbm-org-jump-to-url
 ** key: h, description: HTML
 *** key: e, description: html-export, function: nbm-org-html-export
 *** key: t, description: html-theme, function: nbm-org-html-theme

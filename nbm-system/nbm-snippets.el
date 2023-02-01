@@ -8,7 +8,7 @@
 For example, the 2x2 identity matrix is written as follows.
 1 0
 0 1
-(Type C-j to create a new line.)
+(Type M-j to create a new line.)
 Enter the entries below:
 "))
   (insert "\\end{pmatrix}"))
@@ -26,7 +26,7 @@ of shape (4,3,1)/(2,1).
 . . 1 3
 . 1 2
 2
-(Type C-j to create a new line.)
+(Type M-j to create a new line.)
 Enter the entries below:
 "))
   (insert "\\end{ytableau}"))
