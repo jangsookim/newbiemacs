@@ -559,8 +559,6 @@ In this case you are recommended to play \"torus\" instead.
                         *torus-pole-pos* -1)
   (torus-decrease-num-tori-in-pole))
 
-
-
 ;; flying torus
 
 (defun torus-update-flying-tori ()
@@ -704,7 +702,7 @@ In this case you are recommended to play \"torus\" instead.
   (dotimes (row *torus-box-height*)
     (torus-delete-melted-torus-in-row row)))
 
-(defun torus-delete-same-rows ()
+(defun torus-melt-same-rows ()
   "Delete all rows with the same torus."
   (dotimes (row *torus-box-height*)
     ;(torus-delete-melted-torus-in-row row)
@@ -893,7 +891,7 @@ q: Quit game")))
   (when *torus-game-on*
     (torus-delete-melted-tori)
     (torus-update-flying-tori)
-    (torus-delete-same-rows)
+    (torus-melt-same-rows)
     (torus-increase-time)
     (when (eq *torus-level-gauge* (* *torus-level-up-time* *torus-num-cols*))
       (torus-increase-level)
@@ -930,7 +928,7 @@ q: Quit game")))
         (progn
           (torus-box-insert-from-pole)
           (torus-pole-delete-top)
-          (torus-delete-same-rows)
+          (torus-melt-same-rows)
           (torus-print-all))))
   )
 
@@ -942,7 +940,7 @@ q: Quit game")))
         (progn
           (torus-pole-insert)
           (torus-remove-bottom *torus-pole-pos*)
-          (torus-delete-same-rows)
+          (torus-melt-same-rows)
           (torus-print-all)
           )
       ))
