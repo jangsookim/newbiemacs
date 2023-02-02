@@ -207,107 +207,76 @@ except the environment macro."
       (list TYPE START END))))
 
 (defun nbm-latex-find-math-mode ()
-  "Return (TYPE START END), where TYPE is [], (), or nil and, START
+  "Return (TYPE START END), where TYPE is \"\\[\", \"\\(\", or nil and, START
 and END are the starting and ending points of the environment."
   (save-excursion
     (let (pt dm im TYPE START END)
-      (setq pt (point) dm (point-min) im (point-min))
-      (if (search-backward "\\[" nil t nil)
-          (setq dm (point)))
-      (goto-char pt)
-      (if (search-backward "\\(" nil t nil)
-          (setq im (point)))
-      (goto-char pt)
-      (if (> dm im)                     ; if you are in display math mode
-          (progn (goto-char dm)
-                 (search-forward "\\]" nil t nil)
-                 (if (< pt (point))     ; if you are really in display math mode
-                     (setq TYPE "[]" START dm END (point))
-                   (setq TYPE nil START nil END nil))))
-      (if (< dm im)                     ; if you are in in-line math mode
-          (progn (goto-char im)
-                 (search-forward "\\)" nil t nil)
-                 (if (< pt (point))     ; if you are really in in-line math mode
-                       (setq TYPE "()" START im END (point))
-                   (setq TYPE nil START nil END nil))))
-      (message TYPE)
+      (when (and (texmathp)
+		 (member (car texmathp-why) (list "\\[" "\\(")))
+	(setq TYPE (car texmathp-why)
+	      START (cdr texmathp-why))
+	(if (equal TYPE "\\[")
+	    (search-forward "\\]")
+	  (search-forward "\\)"))
+	(setq END (point)))
       (list TYPE START END))))
+
+(defun nbm-latex-math-beg-end (include-paren)
+  "If the point is inside a math mode \\( \\) or \\[ \\],
+then return (beg . end), where beg and end are the starting
+and ending points of the math mode except the parentheses.
+If INCLUDE-PARENT is non-nil, the regions from beg and end
+includes the parentheses."
+  (let ((math (nbm-latex-find-math-mode)) beg end)
+    (when (car math)
+      (setq beg (nth 1 math) end (nth 2 math))
+      (unless include-paren
+	(setq beg (+ beg 2) end (- end 2))
+	(if (member (buffer-substring beg (1+ beg)) '("\n" " "))
+	    (setq beg (1+ beg)))
+	(if (member (buffer-substring (1- end) end) '("\n" " "))
+	    (setq end (1- end))))
+      (cons beg end))))
 
 (defun nbm-latex-copy-math-with-paren()
   "Copy the content in \\( \\) or \\[ \\] including the parentheses."
   (interactive)
-  (save-excursion
-    (let (TYPE START END temp)
-      (setq temp (nbm-latex-find-math-mode))
-      (setq TYPE (nth 0 temp) START (nth 1 temp) END (nth 2 temp))
-      (if (equal TYPE "[]")             ; if you are in display math mode
-          (progn
-            (copy-region-as-kill START END)
-            (message "Copied the content in \\[ \\] with parentheses.")))
-      (if (equal TYPE "()")             ; if you are in in-line math mode
-          (progn
-            (copy-region-as-kill START END)
-            (message "Copied the content in \\( \\) with parentheses.")))
-      (unless TYPE (message "You are not in math mode!")))))
+  (let ((math (nbm-latex-math-beg-end t)))
+    (if math
+	(progn
+	  (copy-region-as-kill (car math) (cdr math))
+	  (message "Copied the math content."))
+      (message "You are not in math mode!"))))
 
 (defun nbm-latex-delete-math-with-paren()
   "Delete the content in \\( \\) or \\[ \\] including the parentheses."
   (interactive)
-  (save-excursion
-    (let (TYPE START END temp)
-      (setq temp (nbm-latex-find-math-mode))
-      (setq TYPE (nth 0 temp) START (nth 1 temp) END (nth 2 temp))
-      (if (equal TYPE "[]")             ; if you are in display math mode
-          (progn
-            (kill-region START END)
-            (message "Deleted the content in \\[ \\].")))
-      (if (equal TYPE "()")             ; if you are in in-line math mode
-          (progn
-            (kill-region START END)
-            (message "Deleted the content in \\( \\).")))
-      (unless TYPE (message "You are not in math mode!")))))
+  (let ((math (nbm-latex-math-beg-end t)))
+    (if math
+	(progn
+	  (kill-region (car math) (cdr math))
+	  (message "Delted the math content."))
+      (message "You are not in math mode!"))))
+
+(defun nbm-latex-delete-math()
+  "Delete the content in \\( \\) or \\[ \\]."
+  (interactive)
+  (let ((math (nbm-latex-math-beg-end nil)))
+    (if math
+	(progn
+	  (kill-region (car math) (cdr math))
+	  (message "Delted the math content."))
+      (message "You are not in math mode!"))))
 
 (defun nbm-latex-copy-math()
   "Copy the content in \\( \\) or \\[ \\]."
   (interactive)
-  (save-excursion
-    (let (TYPE START END temp)
-      (setq temp (nbm-latex-find-math-mode))
-      (setq TYPE (nth 0 temp) START (nth 1 temp) END (nth 2 temp))
-      (if (equal TYPE "[]")             ; if you are in display math mode
-          (progn
-            (copy-region-as-kill (+ START 3) (- END 3))
-            (message "Copied the content in \\[ \\] without parentheses.")))
-      (if (equal TYPE "()")             ; if you are in in-line math mode
-          (progn
-            (copy-region-as-kill
-             (if (equal (buffer-substring START (+ START 3)) "\\( ") ; if it's like \( a+b\)
-                 (+ START 3) (+ START 2))
-             (if (equal (buffer-substring (- END 3) END) " \\)") ; if it's like \(a+b \)
-                 (- END 3) (- END 2)))
-            (message "Copied the content in \\( \\) without parentheses.")))
-      (unless TYPE (message "You are not in math mode!")))))
-
-(defun nbm-latex-delete-math()
-  "Copy the content in \\( \\) or \\[ \\]."
-  (interactive)
-  (save-excursion
-    (let (TYPE START END temp)
-      (setq temp (nbm-latex-find-math-mode))
-      (setq TYPE (nth 0 temp) START (nth 1 temp) END (nth 2 temp))
-      (if (equal TYPE "[]")             ; if you are in display math mode
-          (progn
-            (kill-region (+ START 3) (- END 3))
-            (message "Deleted the content in \\[ \\].")))
-      (if (equal TYPE "()")             ; if you are in in-line math mode
-          (progn
-            (kill-region
-             (if (equal (buffer-substring START (+ START 3)) "\\( ") ; if it's like \( a+b\)
-                 (+ START 3) (+ START 2))
-             (if (equal (buffer-substring (- END 3) END) " \\)") ; if it's like \(a+b \)
-                 (- END 3) (- END 2)))
-            (message "Deleted the content in \\( \\).")))
-      (unless TYPE (message "You are not in math mode!")))))
+  (let ((math (nbm-latex-math-beg-end nil)))
+    (if math
+	(progn
+	  (copy-region-as-kill (car math) (cdr math))
+	  (message "Copied the math content."))
+      (message "You are not in math mode!"))))
 
 (defun nbm-latex-toggle-equation ()
   "Change \\ [ \\] to \\begin{equation}...\\end{equation} or vice versa."
