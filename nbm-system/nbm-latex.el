@@ -206,75 +206,72 @@ except the environment macro."
       (setq END (point))
       (list TYPE START END))))
 
-(defun nbm-latex-find-math-mode ()
-  "Return (TYPE START END), where TYPE is \"\\[\", \"\\(\", or nil and, START
-and END are the starting and ending points of the environment."
-  (save-excursion
-    (let (pt dm im TYPE START END)
-      (when (and (texmathp)
-		 (member (car texmathp-why) (list "\\[" "\\(")))
-	(setq TYPE (car texmathp-why)
-	      START (cdr texmathp-why))
-	(if (equal TYPE "\\[")
-	    (search-forward "\\]")
-	  (search-forward "\\)"))
-	(setq END (point)))
-      (list TYPE START END))))
-
-(defun nbm-latex-math-beg-end (include-paren)
-  "If the point is inside a math mode \\( \\) or \\[ \\],
-then return (beg . end), where beg and end are the starting
-and ending points of the math mode except the parentheses.
-If INCLUDE-PARENT is non-nil, the regions from beg and end
+(defun nbm-latex-find-math-mode (include-paren)
+  "Return (type beg end).
+type is \"\\[\", \"\\(\",equation, etc, or nil.
+beg and end are the starting and ending points of the environment.
+If INCLUDE-PAREN is non-nil, then the region from beg and end
 includes the parentheses."
-  (let ((math (nbm-latex-find-math-mode)) beg end)
-    (when (car math)
-      (setq beg (nth 1 math) end (nth 2 math))
-      (unless include-paren
-	(setq beg (+ beg 2) end (- end 2))
-	(if (member (buffer-substring beg (1+ beg)) '("\n" " "))
-	    (setq beg (1+ beg)))
-	(if (member (buffer-substring (1- end) end) '("\n" " "))
-	    (setq end (1- end))))
-      (cons beg end))))
+  (save-excursion
+    (let (type end end)
+      (when (texmathp)
+	(setq type (car texmathp-why)
+	      beg (cdr texmathp-why))
+	(cond ((equal type "\\[")
+	       (search-forward "\\]"))
+	      ((equal type "\\(")
+	       (search-forward "\\)"))
+	      (t (LaTeX-find-matching-end)))
+	(setq end (point))
+	(unless include-paren
+	  (if (member type '("\\(" "\\["))
+	      (setq beg (+ beg 2) end (- end 2))
+	    (progn
+	      (goto-char beg) (search-forward "}") (setq beg (point))
+	      (goto-char end) (search-backward "\\") (setq end (point))))
+	  (if (member (buffer-substring beg (1+ beg)) '("\n" " "))
+	      (setq beg (1+ beg)))
+	  (if (member (buffer-substring (1- end) end) '("\n" " "))
+	      (setq end (1- end)))))
+      (list type beg end))))
 
 (defun nbm-latex-copy-math-with-paren()
-  "Copy the content in \\( \\) or \\[ \\] including the parentheses."
+  "Copy the content in the current math mode including the parentheses."
   (interactive)
-  (let ((math (nbm-latex-math-beg-end t)))
-    (if math
+  (let ((math (nbm-latex-find-math-mode t)))
+    (if (car math)
 	(progn
-	  (copy-region-as-kill (car math) (cdr math))
+	  (copy-region-as-kill (nth 1 math) (nth 2 math))
 	  (message "Copied the math content."))
       (message "You are not in math mode!"))))
 
 (defun nbm-latex-delete-math-with-paren()
-  "Delete the content in \\( \\) or \\[ \\] including the parentheses."
+  "Delete the content in the current math mode including the parentheses."
   (interactive)
-  (let ((math (nbm-latex-math-beg-end t)))
-    (if math
+  (let ((math (nbm-latex-find-math-mode t)))
+    (if (car math)
 	(progn
-	  (kill-region (car math) (cdr math))
+	  (kill-region (nth 1 math) (nth 2 math))
 	  (message "Delted the math content."))
       (message "You are not in math mode!"))))
 
 (defun nbm-latex-delete-math()
-  "Delete the content in \\( \\) or \\[ \\]."
+  "Delete the content in the current math mode."
   (interactive)
-  (let ((math (nbm-latex-math-beg-end nil)))
-    (if math
+  (let ((math (nbm-latex-find-math-mode nil)))
+    (if (car math)
 	(progn
-	  (kill-region (car math) (cdr math))
+	  (kill-region (nth 1 math) (nth 2 math))
 	  (message "Delted the math content."))
       (message "You are not in math mode!"))))
 
 (defun nbm-latex-copy-math()
-  "Copy the content in \\( \\) or \\[ \\]."
+  "Copy the content in the current math mode."
   (interactive)
-  (let ((math (nbm-latex-math-beg-end nil)))
-    (if math
+  (let ((math (nbm-latex-find-math-mode nil)))
+    (if (car math)
 	(progn
-	  (copy-region-as-kill (car math) (cdr math))
+	  (copy-region-as-kill (nth 1 math) (nth 2 math))
 	  (message "Copied the math content."))
       (message "You are not in math mode!"))))
 
