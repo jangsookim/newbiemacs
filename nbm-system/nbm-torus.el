@@ -391,7 +391,7 @@ In this case you are recommended to play \"torus\" instead.
   )
 
 (defun torus-print-horizontal-torus (n)
-  (if (equal (elt n 1) -1)
+  (if (torus-is-melted-torus n)
       (torus-print-string " *** " (torus-get-torus-color (elt n 0) 1 0))
     (torus-print-string " @" (torus-get-torus-color (elt n 0) (elt n 1) 0))
     (torus-print-string "@" (torus-get-torus-color (elt n 0) (elt n 1) 1))
@@ -700,10 +700,14 @@ In this case you are recommended to play \"torus\" instead.
     (torus-box-set-entry row col (torus-get-melted-torus (torus-box-get-raw-entry row col)))
     ))
 
+(defun torus-delete-melted-tori ()
+  (dotimes (row *torus-box-height*)
+    (torus-delete-melted-torus-in-row row)))
+
 (defun torus-delete-same-rows ()
   "Delete all rows with the same torus."
   (dotimes (row *torus-box-height*)
-    (torus-delete-melted-torus-in-row row)
+    ;(torus-delete-melted-torus-in-row row)
     (when (torus-check-row row)
       (torus-increase-score)
       (torus-put-melted-torus-row row)
@@ -887,6 +891,7 @@ q: Quit game")))
     (torus-pause-game))
 
   (when *torus-game-on*
+    (torus-delete-melted-tori)
     (torus-update-flying-tori)
     (torus-delete-same-rows)
     (torus-increase-time)
