@@ -343,13 +343,14 @@ includes the parentheses."
   "Delete the labels in the current environment."
   (interactive)
   (save-excursion
-    (let (bound beg end)
+    (let (bound beg end (count 0))
       (setq bound (car (LaTeX-env-beginning-pos-col)))
       (LaTeX-find-matching-end)
       (while (search-backward "\\label" bound t)
-	(when (eq ?y (read-char "Are you sure to delete this label? (Type y for yes): "))
-	  (setq beg (point)) (forward-char 6) (forward-sexp)
-	  (delete-region beg (point)) (delete-blank-lines))))))
+	(setq count (1+ count))
+	(setq beg (point)) (forward-char 6) (forward-sexp)
+	(delete-region beg (point)) (delete-blank-lines))
+      (message (format "%s label(s) deleted." count)))))
 
 (defun nbm-latex-toggle-bbl-file ()
   "Insert the bib file or remove it."
