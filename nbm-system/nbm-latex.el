@@ -275,10 +275,11 @@ includes the parentheses."
 	  (message "Copied the math content."))
       (message "You are not in math mode!"))))
 
-(defun nbm-latex-toggle-equation ()
-  "Change \\ [ \\] to \\begin{equation}...\\end{equation} or vice versa."
-  (interactive)
-  (let ((math (nbm-latex-find-math-mode t)))
+(defun nbm-latex-toggle-display-math ()
+  "Change display math \"[..]\" to \\begin{equation}...\\end{equation} or
+any math environment to display math."
+  (save-excursion
+    (let ((math (nbm-latex-find-math-mode t)))
     (cond ((not (car math))
 	   (message "You are not inside a math mode!"))
 	  ((equal (car math) "\\(")
@@ -289,11 +290,8 @@ includes the parentheses."
 	   (insert "\\end{equation}")
 	   (goto-char (nth 1 math))
 	   (delete-region (point) (+ (point) 2))
-	   (insert "\\begin{equation}")
-	   (forward-char) (nbm-latex-insert-label))
+	   (insert "\\begin{equation}"))
 	  (t
-	   (nbm-latex-delete-label)
-	   (setq math (nbm-latex-find-math-mode t))
 	   (goto-char (nth 2 math))
 	   (search-backward "\\")
 	   (delete-region (point) (nth 2 math))
@@ -301,7 +299,67 @@ includes the parentheses."
 	   (goto-char (nth 1 math))
 	   (search-forward "}")
 	   (delete-region (nth 1 math) (point))
-	   (insert "\\[") (forward-char)))))
+	   (insert "\\["))))))
+
+(defun nbm-latex-toggle-equation ()
+  "Change \\ [ \\] to \\begin{equation}...\\end{equation} or vice versa.
+Delete or add a label accordingly."
+  (interactive)
+  (save-excursion
+    (let ((math (nbm-latex-find-math-mode t)))
+    (cond ((not (car math))
+	   (message "You are not inside a math mode!"))
+	  ((equal (car math) "\\(")
+	   (message "You are not inside a display math mode!"))
+	  ((equal (car math) "\\[")
+	   (nbm-latex-toggle-display-math)
+	   (nbm-latex-insert-label))
+	  (t
+	   (nbm-latex-delete-label)
+	   (nbm-latex-toggle-display-math))))))
+
+(defun nbm-latex-change-env-name (new-env)
+  "Change the environment with NEW-ENV."
+  (save-excursion
+    (let ((old-env (LaTeX-current-environment))
+	(beg (car (LaTeX-env-beginning-pos-col)))
+	(end (LaTeX-find-matching-end)))
+    (goto-char end)
+    (search-backward old-env)
+    (replace-match new-env)
+    (goto-char beg)
+    (search-forward old-env)
+    (replace-match new-env))))
+
+(defun nbm-latex-toggle-align ()
+  "Change \\ [ \\] or \\begin{equation}...\\end{equation}
+to \\begin{align}...\\end{align} or vice versa."
+  (interactive)
+  (let ((math (nbm-latex-find-math-mode t)))
+    (when (equal (car math) "\\[")
+      (nbm-latex-toggle-display-math)
+      (nbm-latex-change-env-name "equation*")
+      (setq math (nbm-latex-find-math-mode t)))
+    (cond ((not (car math))
+	   (message "You are not inside a math mode!"))
+	  ((equal (car math) "\\(")
+	   (message "You are not inside a display math mode!"))
+	  ((member (car math) '("align*" "align"))
+	   (save-excursion
+	     (goto-char (nth 1 math))
+	     (while (re-search-forward "&\\|\\\\\\\\" (nth 2 math) t)
+	       (replace-match "")))
+	   (if (equal (car math) "align")
+	       (nbm-latex-change-env-name "equation")
+	     (nbm-latex-toggle-display-math)))
+	  (t
+	   (save-excursion
+	     (goto-char (nth 1 math))
+	     (while (re-search-forward "=" (nth 2 math) t)
+	       (replace-match "&=")))
+	   (if (member (car math) '("equation" "multline"))
+	       (nbm-latex-change-env-name "align")
+	     (nbm-latex-change-env-name "align*"))))))
 
 (defun nbm-latex-insert-label ()
   "Insert the label in the current environment."
