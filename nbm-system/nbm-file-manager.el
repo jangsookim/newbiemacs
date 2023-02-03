@@ -376,12 +376,19 @@ q) quit" file (nbm-get-dir-name))))
       (message "File name changed."))))
 
 (defun nbm-save-as ()
-  "Save-as the current file."
+  "Save-as the current file (or the content of the buffer
+if the buffer is not associated with a file.)."
   (interactive)
-  (let (old new choice pos)
-    (setq old (file-name-nondirectory (buffer-file-name)))
-    (setq new (read-string "Enter a file name to save-as the current file: " old))
-    (copy-file old new)
+  (let (old new choice pos content)
+    (if buffer-file-name
+	(progn
+	  (setq old (file-name-nondirectory (buffer-file-name)))
+	  (setq new (read-string "Enter a file name to save-as the current file: " old))
+	  (copy-file old new))
+      (progn
+	(setq new (read-string "Enter a file name to save-as the buffer content: "))
+	(setq content (buffer-string))
+	(find-file new) (insert content) (save-buffer) (kill-buffer)))
     (message (concat "Saved as: " new))))
 
 (defun nbm-path-string (path)

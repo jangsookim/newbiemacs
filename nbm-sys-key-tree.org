@@ -188,10 +188,11 @@
 ** key: s, description: snippets
 *** key: m, description: matrix, function: nbm-snippet-latex-matrix
 *** key: y, description: Young tableau, function: nbm-snippet-latex-ytableau
-** key: t, description: toggle
+** key: t, description: toggle/change
 *** key: b, description: bbl-file, function: nbm-latex-toggle-bbl-file
 *** key: e, description: equation, function: nbm-latex-toggle-equation
 *** key: a, description: align, function: nbm-latex-toggle-align
+*** key: l, description: label, function: reftex-change-label
 *** key: m, description: multline, function: nbm-latex-toggle-multline
 *** key: *, description: environment with *, function: nbm-latex-toggle-star
 *** key: p, description: pgml to latex, function: nbm-latex-toggle-pgml
