@@ -391,10 +391,12 @@ In this case you are recommended to play \"torus\" instead.
   )
 
 (defun torus-print-horizontal-torus (n)
-  (torus-print-string " @" (torus-get-torus-color (elt n 0) (elt n 1) 0))
-  (torus-print-string "@" (torus-get-torus-color (elt n 0) (elt n 1) 1))
-  (torus-print-string "@ " (torus-get-torus-color (elt n 0) (elt n 1) 2))
-  )
+  (if (torus-is-melted-torus n)
+      (torus-print-string " *** " (torus-get-torus-color (elt n 0) 1 0))
+    (torus-print-string " @" (torus-get-torus-color (elt n 0) (elt n 1) 0))
+    (torus-print-string "@" (torus-get-torus-color (elt n 0) (elt n 1) 1))
+    (torus-print-string "@ " (torus-get-torus-color (elt n 0) (elt n 1) 2))
+  ))
 
 (defun torus-print-entry (n)
   (cond ((eq n nil)
@@ -445,7 +447,8 @@ In this case you are recommended to play \"torus\" instead.
 
 (defun torus-box-get-entry (row col)
   (if (sequencep (torus-box-get-raw-entry row col))
-      (elt (torus-box-get-raw-entry row col) 0)
+      (if (torus-is-melted-torus (torus-box-get-raw-entry row col)) nil
+	(elt (torus-box-get-raw-entry row col) 0))
     (torus-box-get-raw-entry row col)))
 
 (defun torus-box-get-raw-entry (row col)
@@ -555,8 +558,6 @@ In this case you are recommended to play \"torus\" instead.
   (torus-pole-set-entry (- *torus-pole-height* *torus-num-tori-in-pole*)
                         *torus-pole-pos* -1)
   (torus-decrease-num-tori-in-pole))
-
-
 
 ;; flying torus
 
@@ -679,12 +680,35 @@ In this case you are recommended to play \"torus\" instead.
   (dotimes (col *torus-num-cols*)
     (torus-box-remove-torus row col)))
 
-(defun torus-delete-same-rows ()
+(defun torus-delete-melted-torus-in-row (row)
+  "Delete melted torus in the row in the box."
+  (dotimes (col *torus-num-cols*)
+    (if (torus-is-melted-torus (torus-box-get-raw-entry row col))
+	(torus-box-remove-torus row col))))
+  
+(defun torus-is-melted-torus (torus)
+  (eq (elt torus 1) -1))
+
+(defun torus-get-melted-torus (torus)
+  (list (elt torus 0) -1))
+
+(defun torus-put-melted-torus-row (row)
+  "Put somethin in the row in the box."
+  (dotimes (col *torus-num-cols*)
+    (torus-box-set-entry row col (torus-get-melted-torus (torus-box-get-raw-entry row col)))
+    ))
+
+(defun torus-delete-melted-tori ()
+  (dotimes (row *torus-box-height*)
+    (torus-delete-melted-torus-in-row row)))
+
+(defun torus-melt-same-rows ()
   "Delete all rows with the same torus."
   (dotimes (row *torus-box-height*)
+    ;(torus-delete-melted-torus-in-row row)
     (when (torus-check-row row)
       (torus-increase-score)
-      (torus-delete-row row)
+      (torus-put-melted-torus-row row)
       )))
 
 ;; update game score, time, and level
@@ -865,8 +889,9 @@ q: Quit game")))
     (torus-pause-game))
 
   (when *torus-game-on*
+    (torus-delete-melted-tori)
     (torus-update-flying-tori)
-    (torus-delete-same-rows)
+    (torus-melt-same-rows)
     (torus-increase-time)
     (when (eq *torus-level-gauge* (* *torus-level-up-time* *torus-num-cols*))
       (torus-increase-level)
@@ -903,7 +928,7 @@ q: Quit game")))
         (progn
           (torus-box-insert-from-pole)
           (torus-pole-delete-top)
-          (torus-delete-same-rows)
+          (torus-melt-same-rows)
           (torus-print-all))))
   )
 
@@ -915,7 +940,7 @@ q: Quit game")))
         (progn
           (torus-pole-insert)
           (torus-remove-bottom *torus-pole-pos*)
-          (torus-delete-same-rows)
+          (torus-melt-same-rows)
           (torus-print-all)
           )
       ))
