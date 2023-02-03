@@ -192,6 +192,7 @@
 *** key: b, description: bbl-file, function: nbm-latex-toggle-bbl-file
 *** key: e, description: equation, function: nbm-latex-toggle-equation
 *** key: a, description: align, function: nbm-latex-toggle-align
+*** key: m, description: multline, function: nbm-latex-toggle-multline
 *** key: *, description: environment with *, function: nbm-latex-toggle-star
 *** key: p, description: pgml to latex, function: nbm-latex-toggle-pgml
 *** key: h, description: hwp, function: nbm-latex-convert-to-hwp

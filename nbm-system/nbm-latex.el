@@ -357,6 +357,40 @@ to \\begin{align}...\\end{align} or vice versa."
 	       (nbm-latex-change-env-name "align")
 	     (nbm-latex-change-env-name "align*"))))))
 
+(defun nbm-latex-toggle-multline ()
+  "Change \\ [ \\] or \\begin{equation}...\\end{equation}
+to \\begin{multline}...\\end{multline} or vice versa."
+  (interactive)
+  (let ((math (nbm-latex-find-math-mode t)))
+    (when (equal (car math) "\\[")
+      (nbm-latex-toggle-display-math)
+      (nbm-latex-change-env-name "equation*")
+      (setq math (nbm-latex-find-math-mode t)))
+    (cond ((not (car math))
+	   (message "You are not inside a math mode!"))
+	  ((equal (car math) "\\(")
+	   (message "You are not inside a display math mode!"))
+	  ((member (car math) '("multline*" "multline"))
+	   (save-excursion
+	     (goto-char (nth 1 math))
+	     (while (re-search-forward "\\\\\\\\" (nth 2 math) t)
+	       (replace-match "")))
+	   (if (equal (car math) "multline")
+	       (nbm-latex-change-env-name "equation")
+	     (nbm-latex-toggle-display-math)))
+	  ((member (car math) '("align*" "align"))
+	   (save-excursion
+	     (goto-char (nth 1 math))
+	     (while (re-search-forward "&\\|\\\\\\\\" (nth 2 math) t)
+	       (replace-match "")))
+	   (if (equal (car math) "align")
+	       (nbm-latex-change-env-name "multline")
+	     (nbm-latex-change-env-name "multline*")))
+	  (t
+	   (if (member (car math) '("equation"))
+	       (nbm-latex-change-env-name "multline")
+	     (nbm-latex-change-env-name "multline*"))))))
+
 (defun nbm-latex-insert-label ()
   "Insert the label in the current environment."
   (interactive)
