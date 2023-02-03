@@ -353,10 +353,6 @@ to \\begin{align}...\\end{align} or vice versa."
 	       (nbm-latex-change-env-name "equation")
 	     (nbm-latex-toggle-display-math)))
 	  (t
-	   (save-excursion
-	     (goto-char (nth 1 math))
-	     (while (re-search-forward "=" (nth 2 math) t)
-	       (replace-match "&=")))
 	   (if (member (car math) '("equation" "multline"))
 	       (nbm-latex-change-env-name "align")
 	     (nbm-latex-change-env-name "align*"))))))
