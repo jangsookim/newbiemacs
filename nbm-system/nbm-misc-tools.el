@@ -36,7 +36,6 @@
 newbiemacs/nbm-user-settings/nbm-variables.
 If ALL is t, then return the full content.
 Otherwise, return the first line."
-  (interactive)
   (let (file)
     (setq file (concat *nbm-home* (format "nbm-user-settings/nbm-variables/nbm-%s.txt" var)))
     (when (file-exists-p file)
@@ -104,21 +103,6 @@ other key) stop"))
     (message (concat "Created a snippet file:"
 		     (nbm-f (format "nbm-user-settings/snippets/%s/%s"
 				    major-mode name))))))
-
-(defun nbm-yasnippet-delete ()
-  "Delete a snippet."
-  (interactive)
-  (let (file-name)
-    (setq file-name (read-file-name
-		     "Choose the snippet to delete: "
-		     (nbm-f (format "nbm-user-settings/snippets/%s/" major-mode))
-		     nil t nil '(lambda (file-name)
-				  (not (or (f-hidden-p file-name)
-					   (file-directory-p file-name))))))
-    (find-file file-name)
-    (if (equal ?y (read-char "Do you want to delete this snippet? (type y for yes)"))
-	(delete-file file-name))
-    (kill-buffer)))
 
 (defun nbm-yasnippet-delete ()
   "Delete a snippet."
