@@ -174,16 +174,7 @@
   )
 
 (defun torus-set-difficulty (difficulty)
-  (cond ((equal ?1 difficulty)
-	 (setq *torus-difficulty* 1)
-	 (defconst *torus-game-speed* 0.1)             ; the lower the faster
-	 (defun torus-get-torus-color (c angle part) c) 
-	 (defun torus-get-torus-to-insert-to-pole (torus) torus)
-	 (defun torus-get-torus-to-insert-from-pole (torus) torus)
-	 (defun torus-get-torus-to-go-down (torus) torus)
-	 (defun torus-get-torus-to-go-up (torus) torus)
-	 )
-	((equal ?2 difficulty)
+  (cond ((equal ?2 difficulty)
 	 (setq *torus-difficulty* 2)
 	 (defconst *torus-game-speed* 0.1)             ; the lower the faster
 	 (defun torus-get-torus-color (c angle part) (torus-get-halfglazed-torus-color c angle part))
@@ -192,7 +183,7 @@
 	 (defun torus-get-torus-to-go-down (torus) (torus-rotated-l-torus torus))
 	 (defun torus-get-torus-to-go-up (torus) (torus-rotated-r-torus torus))
 	 )
-	(t
+	((equal ?3 difficulty)
 	 (setq *torus-difficulty* 3)
 	 (defconst  *torus-game-speed* 0.1)
 	 (defun torus-get-torus-color (c angle part) (torus-get-halfglazed-torus-color c angle part))
@@ -200,20 +191,23 @@
 	 (defun torus-get-torus-to-insert-from-pole (torus) torus)
 	 (defun torus-get-torus-to-go-down (torus) torus)
 	 (defun torus-get-torus-to-go-up (torus) torus)
-	 )))
+	 )
+	(t
+	 (setq *torus-difficulty* 1)
+	 (defconst *torus-game-speed* 0.1)             ; the lower the faster
+	 (defun torus-get-torus-color (c angle part) c) 
+	 (defun torus-get-torus-to-insert-to-pole (torus) torus)
+	 (defun torus-get-torus-to-insert-from-pole (torus) torus)
+	 (defun torus-get-torus-to-go-down (torus) torus)
+	 (defun torus-get-torus-to-go-up (torus) torus)
+	 )
+	))
 	 
 (defun torus-difficulty-as-str (difficulty)
-  (cond ((equal 1 difficulty) "Normal")
-	((equal 2 difficulty) "Half-glazed/rotate (Testing)")
-	(t "Half-glazed (flip)")
+  (cond ((equal 2 difficulty) "Half-glazed/rotate (Testing)")
+	((equal 3 difficulty) "Half-glazed (flip)")
+	(t "Normal")
 	))
-    
-
-
-(defun torus-get-str-difficulty ()
-  "Return the current difficulty in string format."
-  (torus-difficulty-as-str *torus-difficulty*)
-  )
 
 (defun torus-select-difficulty-prompt (difficulty)
   "Return prompt of the option to select difficulty"
@@ -798,8 +792,7 @@ In this case you are recommended to play \"torus\" instead.
 
 (defun torus-increase-num-cols ()
   "Increase the number of columns by 1."
-  (setq *torus-num-cols* (1+ *torus-num-cols*))
-  )
+  (setq *torus-num-cols* (1+ *torus-num-cols*)))
 
 ;; system commands
 
