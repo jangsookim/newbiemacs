@@ -65,22 +65,43 @@ If there is no property, it returns the empty string \"\"."
 *** key: z, description: calculator, function: quick-calc
 A key-tree structure is (level key description function)."
   (save-excursion
-    (let (nodes line new-node level beg end)
+    (let (nodes line new-node level beg end rank)
       (find-file org-file)
       (setq nodes '())
       (beginning-of-buffer)
       (while (re-search-forward "\\(^[*]+\\)" nil t)
-        (setq level (- (match-end 1) (match-beginning 1)))
-        (beginning-of-line) (setq beg (point))
-        (end-of-line) (setq end (point))
-        (setq line (buffer-substring-no-properties beg end))
-        (setq new-node (list level
-                             (nbm-parse-property line "key")
-                             (nbm-parse-property line "description")
-                             (nbm-parse-property line "function")))
-        (setq nodes (nbm-append new-node nodes)))
+	(setq level (- (match-end 1) (match-beginning 1)))
+	(beginning-of-line) (setq beg (point))
+	(end-of-line) (setq end (point))
+	(setq line (buffer-substring-no-properties beg end))
+	(if (equal (nbm-parse-property line "rank") "")
+	    (setq rank 0)
+	  (setq rank (string-to-number (nbm-parse-property line "rank"))))
+	(when (<= rank (nbm-get-user-rank))
+	  (setq new-node (list level
+			       (nbm-parse-property line "key")
+			       (nbm-parse-property line "description")
+			       (nbm-parse-property line "function"))))
+	(setq nodes (nbm-append new-node nodes)))
       (kill-buffer)
       nodes)))
+
+(defun nbm-set-user-rank ()
+  "Set user rank."
+  (let (rank)
+    (setq rank (read-char (format "Set your rank (current rank is %s):
+0) Beginner
+1) Intermidiate
+2) Advanced
+3) Expert" (nbm-get-user-rank)))))
+  (when (member rank '(?0 ?1 ?2 ?3))
+    (nbm-set-user-variable "rank" (char-to-string rank))))
+
+(defun nbm-get-user-rank ()
+  "Return user rank. By default it is 0."
+  (unless (nbm-get-user-variable "rank" nil)
+    (nbm-set-user-variable "rank" "0"))
+  (string-to-number (nbm-get-user-variable "rank" nil)))
 
 (defun nbm-key-tree-from-nodes (nodes)
   "Create a key-tree from NODES."

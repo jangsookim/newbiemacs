@@ -7,12 +7,12 @@
 
 * description: global
 ** key: SPC, description: M-x, function: helm-M-x
-** key: RET, description: bookmark, function: helm-filtered-bookmarks
-** key: TAB, description: Last buffer, function: evil-switch-to-windows-last-buffer
-** key: ;, description: Toggle Korean/English, function: toggle-input-method
-** key: !, description: shell command, function: nbm-shell-commend
-** key: ?, description: Help, function: nbm-cheat-sheet
-** key: 0, description: Developer only
+** key: RET, description: bookmark, function: helm-filtered-bookmarks, rank 1
+** key: TAB, description: Last buffer, function: evil-switch-to-windows-last-buffer, rank 1
+** key: ;, description: Toggle Korean/English, function: toggle-input-method, rank 1
+** key: !, description: shell command, function: nbm-shell-commend, rank: 3
+** key: ?, description: Help, function: nbm-cheat-sheet, rank 0
+** key: 0, description: Developer only, rank 3
 *** key: h, function: nbm-toggle-nbm-home
 ** key: ', description: shell, function: eshell
 ** key: ., description: org-roam-today, function: nbm-org-roam-today
