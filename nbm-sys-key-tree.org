@@ -37,13 +37,13 @@
 ** key: f, description: Files, function:, level: 1
 *** key: b, function: bookmark-set, level: 1
 *** key: d, description: open dowloaded file, function: nbm-open-downloaded-file, level: 3
-*** key: f, description: find-files, function: helm-find-files, level: 1
+*** key: f, description: find files, function: helm-find-files, level: 1
 *** key: r, description: recent files, function: helm-recentf, level: 1
 *** key: j, function: dired-jump, level: 2
 *** key: m, description: move newest file, function: nbm-move-newest-file, level: 3
 *** key: n, description: new-file, function: nbm-new-file, level: 2
 *** key: p, description: move-pdf-from-downloads, function: nbm-move-pdf-from-downloads, level: 2
-*** key: s, function: save-buffer, level: 1
+*** key: s, description: save, function: save-buffer, level: 1
 *** key: A, description: save as, function: nbm-save-as, level: 1
 *** key: D, description: copy-to-desktop, function: nbm-copy-to-desktop, level: 2
 *** key: F, description: Finder (file manager), function: nbm-show-in-finder, level: 1
@@ -78,7 +78,7 @@
 *** key: a, description: agenda, function: org-agenda-list, level: 1
 *** key: A, description: agenda-commands, function: org-agenda, level: 2
 *** key: c, description: capture, function: nbm-org-capture, level: 2
-*** key: r, description: org-roam-node-find, function: org-roam-node-find, level: 1
+*** key: r, description: org roam find, function: org-roam-node-find, level: 1
 *** key: s, description: Store link, function: org-store-link, level: 2
 *** key: i, description: Insert link, function: org-insert-link, level: 2
 *** key: S, description: Sync database, function: org-roam-db-sync, level: 3
@@ -96,8 +96,8 @@
 ** key: w, description: Windows, level: 1
 *** key: /, function: split-window-right, level: 2
 *** key: -, function: split-window-below, level: 2
-*** key: m, function: delete-other-windows, level: 1
-*** key: d, function: delete-window, level: 1
+*** key: m, description: maximize window, function: delete-other-windows, level: 1
+*** key: d, description: delete window, function: delete-window, level: 1
 *** key: e, description: expel window, function: nbm-expel-window, level: 3
 *** key: o, description: other-window, function: nbm-other-window, level: 2
 *** key: r, description: rotate-downwards, function: evil-window-rotate-downwards, level: 3

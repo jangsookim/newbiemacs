@@ -295,17 +295,19 @@ Repeated key-seqs are saved in *nbm-key-seqs-repeated*"
 
 (defun nbm-key-tree-add-keybinding ()
   (interactive)
-  "Insert the string \"** key: KEY, description: DESCRIPTION, function: FUNCTION\" in the next line."
-  (let (key description function line)
+  "Insert the string \"** key: KEY, description: DESCRIPTION, function: FUNCTION, level: LEVEL\" in the next line."
+  (let (key description function line level)
     (setq key (read-string "Enter key: "))
     (setq description (read-string "Enter description: "))
-(setq function (read-command "Enter function: " 'nbm-nil-function))
+    (setq function (read-command "Enter function: " 'nbm-nil-function))
+    (setq level (read-string "Enter level: " "1"))
     (end-of-line) (newline)
     (setq line (format "** key: %s" key))
     (unless (string= description "")
       (setq line (format "%s, description: %s" line description)))
     (unless (string= function "nbm-nil-function")
       (setq line (format "%s, function: %s" line function)))
+    (setq line (format "%s, level: %s" line level))
     (insert line)))
 
 (defun nbm-nil-function ()
