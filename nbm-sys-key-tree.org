@@ -6,268 +6,267 @@
 # A description or a function may be missing.
 
 * description: global
-** key: SPC, description: M-x, function: helm-M-x
-** key: RET, description: bookmark, function: helm-filtered-bookmarks, rank 1
-** key: TAB, description: Last buffer, function: evil-switch-to-windows-last-buffer, rank 1
-** key: ;, description: Toggle Korean/English, function: toggle-input-method, rank 1
-** key: !, description: shell command, function: nbm-shell-commend, rank: 3
-** key: ?, description: Help, function: nbm-cheat-sheet, rank 0
-** key: 0, description: Developer only, rank 3
-*** key: h, function: nbm-toggle-nbm-home
-** key: ', description: shell, function: eshell
-** key: ., description: org-roam-today, function: nbm-org-roam-today
-** key: a, description: Applications
-*** key: a, description: agenda, function: org-agenda-list
-*** key: A, description: agenda-commands, function: org-agenda
-*** key: m, description: magnet, function: nbm-magnet
-*** key: g, description: games
-**** key: f, description: tofus, function: tofus
-**** key: r, description: torus, function: torus
-**** key: t, description: tetris, function: tetris
-*** key: c, function: quick-calc
-** key: b, description: Buffers
-*** key: b, description: buffers-list, function: helm-buffers-list
-*** key: d, function: kill-this-buffer
-*** key: j, description: jump buffer, function: nbm-tab-line-jump
-*** key: h, description: previous buffer, function: nbm-tab-line-previous-buffer
-*** key: l, description: next buffer, function: nbm-tab-line-next-buffer
-*** key: w, function: kill-buffer-and-window
-*** key: R, function: revert-buffer
-** key: c, description: Comment/Color
-*** key: l, description: (un-)comment line, function: nbm-comment-or-uncomment-line
-*** key: c, description: colors, function: helm-colors
-** key: f, description: Files, function:
-*** key: b, function: bookmark-set
-*** key: d, description: open dowloaded file, function: nbm-open-downloaded-file
-*** key: f, description: find-files, function: helm-find-files
-*** key: r, description: recent files, function: helm-recentf
-*** key: j, function: dired-jump
-*** key: m, description: move newest file, function: nbm-move-newest-file
-*** key: n, description: new-file, function: nbm-new-file
-*** key: p, description: move-pdf-from-downloads, function: nbm-move-pdf-from-downloads
-*** key: s, function: save-buffer
-*** key: A, description: save as, function: nbm-save-as
-*** key: D, description: copy-to-desktop, function: nbm-copy-to-desktop
-*** key: F, description: Finder (file manager), function: nbm-show-in-finder
-*** key: R, description: rename current file, function: nbm-rename-current-file
-*** key: S, description: add-to-symlinks, function: nbm-add-to-symlinks
-*** key: T, description: show-trash-bin, function: nbm-show-trash-bin
-*** key: y, description: Yank/Copy
-**** key: d, description: copy-directory-path, function: nbm-copy-directory-path
-**** key: n, description: copy-file-name, function: nbm-copy-file-name
-**** key: y, description: copy-file-path, function: nbm-copy-file-path
-** key: g, description: git
-*** key: i, description: init, function: nbm-magit-init
-*** key: s, description: status, function: magit-status
-** key: i, description: Insert
-*** key: p, description: Passwords
-**** key: s, description: simple, function: password-generator-simple
-**** key: S, description: strong, function: password-generator-strong
-**** key: n, description: numeric, function: password-generator-numeric
-**** key: p, description: paranoid, function: password-generator-paranoid
-** key: j, description: jump
-*** key: t, description: recent tex, function: nbm-recent-tex
-*** key: o, description: recent org, function: nbm-recent-org
-*** key: p, description: recent pdf, function: nbm-recent-pdf
-*** key: e, description: recent el, function: nbm-recent-el
-*** key: s, description: recent sage, function: nbm-recent-sage
-** key: k, description: key bindings
-*** key: s, description: sys-key-tree, function: nbm-find-sys-key-tree
-*** key: u, description: user-key-tree, function: nbm-find-user-key-tree
-*** key: c, description: Check key-bindings, function: nbm-key-tree-show-repeated-keys
-** key: m, description: find misc file, function: nbm-find-misc
-** key: o, description: Org-mode
-*** key: a, description: agenda, function: org-agenda-list
-*** key: A, description: agenda-commands, function: org-agenda
-*** key: c, description: capture, function: nbm-org-capture
-*** key: r, description: org-roam-node-find, function: org-roam-node-find
-*** key: s, description: Store link, function: org-store-link
-*** key: i, description: Insert link, function: org-insert-link
-*** key: S, description: Sync database, function: org-roam-db-sync
-*** key: u, description: UI mode, function: org-roam-ui-mode
-** key: p, description: Find pdf, function: nbm-find-pdf
-** key: r, description: Registers
-*** key: s, description: Set counter, function: nbm-set-counter
-*** key: a, description: Add counter, function: nbm-add-counter
-*** key: i, description: Insert counter, function: nbm-insert-counter
-** key: s, description: Search
-*** key: e, description: Find el, function: nbm-find-el
-*** key: s, description: Find sage, function: nbm-find-sage
-** key: t, description: Find tex file, function: nbm-find-tex
-** key: u, function: universal-argument
-** key: w, description: Windows
-*** key: /, function: split-window-right
-*** key: -, function: split-window-below
-*** key: m, function: delete-other-windows
-*** key: d, function: delete-window
-*** key: e, description: expel window, function: nbm-expel-window
-*** key: o, description: other-window, function: nbm-other-window
-*** key: r, description: rotate-downwards, function: evil-window-rotate-downwards
-*** key: R, description: rotate-upwards, function: evil-window-rotate-upwards
-** key: x, description: Text
-*** key: d, description: Delete
-**** key: w, description: trailing whitespace, function: delete-trailing-whitespace
-**** key: l, description: double-empty-lines, function: nbm-delete-double-empty-lines
-** key: y, description: Yank
-*** key: k, description: From kill-ring, function: helm-show-kill-ring
-*** key: f, description: Favorite string, function: nbm-yank-favorite-string
-** key: F, description: Frames
-*** key: d, function: delete-frame
-*** key: c, description: clone frame, function: nbm-clone-frame
-** key: S, description: Spell-check
-*** key: b, description: buffer, function: flyspell-buffer
-*** key: i, description: interactive, function: ispell
-*** key: w, description: word, function: ispell-word
-** key: T, description: toggle
-*** key: F, description: Fullscreen, function: toggle-frame-fullscreen
-** key: N, description: Newbiemacs
-*** key: c, description: config, function: newbie-config
-*** key: r, description: reload, function: newbie-reload
-*** key: s, description: settings, function: newbie-setting
-*** key: u, description: update Newbiemacs, function: nbm-update-newbiemacs
-** key: Y, description: yasnippet
-*** key: d, description: delete snippet, function: nbm-yasnippet-delete
-*** key: q, description: quick new snippet, function: nbm-yasnippet-quick-new
-*** key: i, description: insert-snippet, function: yas-insert-snippet
-*** key: n, description: new-snippet, function: yas-new-snippet
-*** key: f, description: visit-snippet-file, function: yas-visit-snippet-file
-*** key: t, description: table of snippets, function: yas-describe-tables
-*** key: r, description: reload all, function: yas-reload-all
-* description: LaTeX-mode
-** key: RET, description: Korean/English, function: toggle-input-method
-** key: ,, description: master command, function: TeX-command-master
-** key: =, description: table of contents, function: reftex-toc
-** key: a, description: applications
-*** key: d, description: latex diff, function: nbm-latex-diff
-** key: b, description: build tex, function: TeX-command-run-all
-** key: v, description: view pdf, function: TeX-view
-** key: c, description: copy math, function: nbm-latex-copy-math
-** key: C, description: copy math with \( \), function: nbm-latex-copy-math-with-paren
-** key: d, description: delete math, function: nbm-latex-delete-math
-** key: e, description: Environments
-*** key: d, description: delete labels, function: nbm-latex-delete-label
-*** key: n, description: new environment, function: LaTeX-environment
-*** key: u, description: update-environment, function: nbm-latex-environment-update
-** key: D, description: delete math with \( \), function: nbm-latex-delete-math-with-paren
-** key: f, description: Fonts
-*** key: b, description: bold, function: nbm-latex-font-bold
-*** key: e, description: emph, function: nbm-latex-font-emph
-*** key: r, description: roman, function: nbm-latex-font-roman
-*** key: B, description: mathbb, function: nbm-latex-font-mathbb
-*** key: t, description: true-type, function: nbm-latex-font-truetype
-*** key: s, description: small-caps, function: nbm-latex-font-sc
-*** key: S, description: sans-serif, function: nbm-latex-font-sf
-*** key: c, description: mathcal, function: nbm-latex-font-mathcal
-*** key: f, description: frak, function: nbm-latex-font-mathfrak
-*** key: d, description: delete, function: nbm-latex-font-delete
-** key: ., description: mark-environment, function: LaTeX-mark-environment
-** key: *, description: mark-section, function: LaTeX-mark-section
-** key: i, description: Insert
-*** key: c, description: citation, function: helm-bibtex
-*** key: i, description: item, function: LaTeX-insert-item
-*** key: F, description: figure, function: nbm-latex-insert-figure
-*** key: l, description: label, function: nbm-latex-insert-label
-** key: j, description: jump
-*** key: k, description: previous section, function: outline-previous-heading
-*** key: j, description: next section, function: outline-next-heading
-*** key: m, description: jump mode, function: nbm-latex-jump-section-mode
-*** key: l, description: label, function: nbm-reftex-goto-label
-*** key: s, description: jump to a section, function: nbm-latex-jump-section
-** key: n, description: new item/macro/section
-*** key: b, description: bib-item, function: nbm-latex-new-bib-item
-*** key: m, description: macro, function: nbm-latex-new-macro
-*** key: s, description: section, function: nbm-latex-section
-** key: r, description: reference
-*** key: c, description: cross reference, function: reftex-view-crossref
-*** key: e, description: eqref, function: nbm-latex-eqref
-*** key: f, description: fig-ref, function: nbm-latex-fig-ref
-*** key: i, description: insert ref, function: nbm-reftex-insert-ref
-*** key: r, description: reftex-reference, function: reftex-reference
-*** key: s, description: sec-ref, function: nbm-latex-sec-ref
-*** key: C, description: Cref, function: nbm-latex-Cref
-** key: s, description: snippets
-*** key: m, description: matrix, function: nbm-snippet-latex-matrix
-*** key: y, description: Young tableau, function: nbm-snippet-latex-ytableau
-** key: t, description: toggle/change
-*** key: b, description: bbl-file, function: nbm-latex-toggle-bbl-file
-*** key: e, description: equation, function: nbm-latex-toggle-equation
-*** key: a, description: align, function: nbm-latex-toggle-align
-*** key: l, description: label, function: reftex-change-label
-*** key: m, description: multline, function: nbm-latex-toggle-multline
-*** key: *, description: environment with *, function: nbm-latex-toggle-star
-*** key: p, description: pgml to latex, function: nbm-latex-toggle-pgml
-*** key: h, description: hwp, function: nbm-latex-convert-to-hwp
-*** key: v, description: change-variable, function: nbm-latex-change-variable
-** key: y, description: yank
-*** key: f, description: make-and-yank-filename, function: nbm-latex-make-and-yank-filename
-* description: org-mode
-** key: RET, description: Korean/English, function: toggle-input-method
-** key: a, description: org-archive
-*** key: t, description: subtree, function: org-archive-subtree
-*** key: s, description: sibling, function: org-archive-to-archive-sibling
-*** key: m, description: move to archived dir, function: nbm-org-move-to-archived
-** key: b, description: org-babel
-*** key: t, description: tangle, function: org-babel-tangle
-*** key: e, description: edit special mode, function: org-edit-special
-*** key: s, description: sage load, function: nbm-org-sage-tangle
-*** key: i, description: in-line-math, function: nbm-org-latex-in-line-math
-*** key: d, description: display-math, function: nbm-org-latex-display-math
-** key: c, function: org-ctrl-c-ctrl-c
-** key: e, description: export-dispatch, function: org-export-dispatch
-** key: d, description: Dates
-*** key: c, description: consecutive dates, function: nbm-org-consecutive-dates
-*** key: d, description: deadline, function: org-deadline
-*** key: s, description: schedule, function: org-schedule
-*** key: t, description: time-stamp, function: org-time-stamp
-*** key: T, description: time-stamp-inactive, function: org-time-stamp-inactive
-** key: i, description: insert org-roam-node, function: org-roam-node-insert
-** key: j, description: Jump
-*** key: a, description: archive, function: nbm-org-jump-to-archive
-*** key: d, description: dir-link, function: nbm-org-jump-to-dir-at-point
-*** key: f, description: file, function: nbm-org-jump-to-file
-*** key: s, description: section/heading, function: nbm-org-jump-to-heading
-*** key: t, description: tex, function: nbm-org-jump-to-tex
-*** key: u, description: url, function: nbm-org-jump-to-url
-** key: h, description: HTML
-*** key: e, description: html-export, function: nbm-org-html-export
-*** key: t, description: html-theme, function: nbm-org-html-theme
-** key: k, description: add keybinding, function: nbm-key-tree-add-keybinding
-** key: u, description: UI mode, function: org-roam-ui-mode
-** key: p, description: make-permanant-note, function: nbm-make-permanant-note
-** key: r, function: org-refile
-** key: t, description: Tables
-*** key: -, description: Draw horizontal line, function: org-ctrl-c-minus
-*** key: =, description: calculate tables, function: org-table-recalculate-buffer-tables
-*** key: c, description: Columns
-**** key: d, description: delete-column, function: org-table-delete-column
-**** key: i, description: insert-column, function: org-table-insert-column
-**** key: h, description: move-column-left, function: org-table-move-column-left
-**** key: l, description: move-column-right, function: org-table-move-column-right
-*** key: r, description: Rows
-**** key: d, description: delete-row, function: org-table-kill-row
-**** key: i, description: insert-row, function: org-table-insert-row
-**** key: j, description: move-row-down, function: org-table-move-row-down
-**** key: k, description: move-row-up, function: org-table-move-row-up
-*** key: C, description: Cells
-**** key: h, description: move-cell-left, function: org-table-move-cell-left
-**** key: j, description: move-cell-down, function: org-table-move-cell-down
-**** key: k, description: move-cell-up, function: org-table-move-cell-up
-**** key: l, description: move-cell-right, function: org-table-move-cell-right
-** key: x, description: Text
-*** key: c, description: checkbox, function: nbm-org-toggle-checkbox
-*** key: i, description: insert-item, function: org-insert-item
-*** key: s, description: strike-through, function: nbm-org-toggle-strike-through
-*** key: y, description: yank code line, function: nbm-org-yank-code
-** key: R, function: org-roam-refile
-** key: T, description: Toggle
-*** key: T, function: org-todo
-*** key: r, description: org-roam-buffer, function: org-roam-buffer-toggle
-*** key: v, description: valign, function: nbm-toggle-valign
-*** key: i, description: images, function: org-toggle-inline-images
-* description: emacs-lisp-mode
-** key: e, description: eval
-*** key: b, function: eval-buffer
-** key: f, description: Find
-*** key: f, function: nbm-nil-function
-* description: python-mode
-** key: l, description: load-sage, function: nbm-load-sage
+** key: SPC, description: M-x, function: helm-M-x, level: 1
+** key: RET, description: bookmark, function: helm-filtered-bookmarks, level: 2
+** key: TAB, description: Last buffer, function: evil-switch-to-windows-last-buffer, level: 2
+** key: ;, description: Toggle Korean/English, function: toggle-input-method, level: 3
+** key: !, description: shell command, function: nbm-shell-commend, level: 3
+** key: ?, description: Help, function: nbm-cheat-sheet, level: 1
+** key: 0, description: Developer only, level: 3
+*** key: h, function: nbm-toggle-nbm-home, level: 3
+** key: ', description: shell, function: eshell, level: 3
+** key: ., description: org-roam-today, function: nbm-org-roam-today, level: 2
+** key: a, description: Applications, level: 1
+*** key: m, description: magnet, function: nbm-magnet, level: 1
+*** key: g, description: games, level: 1
+**** key: f, description: tofus, function: tofus, level: 1
+**** key: r, description: torus, function: torus, level: 1
+**** key: t, description: tetris, function: tetris, level: 1
+*** key: c, function: quick-calc, level: 2
+** key: b, description: Buffers, level: 1
+*** key: b, description: buffers-list, function: helm-buffers-list, level: 1
+*** key: d, function: kill-this-buffer, level: 1
+*** key: j, description: jump buffer, function: nbm-tab-line-jump, level: 2
+*** key: h, description: previous buffer, function: nbm-tab-line-previous-buffer, level: 2
+*** key: l, description: next buffer, function: nbm-tab-line-next-buffer, level: 2
+*** key: w, function: kill-buffer-and-window, level: 2
+*** key: R, function: revert-buffer, level: 2
+** key: c, description: Comment/Color, level: 2
+*** key: l, description: (un-)comment line, function: nbm-comment-or-uncomment-line, level: 2
+*** key: c, description: colors, function: helm-colors, level: 3
+** key: f, description: Files, function:, level: 1
+*** key: b, function: bookmark-set, level: 2
+*** key: d, description: open dowloaded file, function: nbm-open-downloaded-file, level: 3
+*** key: f, description: find-files, function: helm-find-files, level: 1
+*** key: r, description: recent files, function: helm-recentf, level: 1
+*** key: j, function: dired-jump, level: 2
+*** key: m, description: move newest file, function: nbm-move-newest-file, level: 3
+*** key: n, description: new-file, function: nbm-new-file, level: 2
+*** key: p, description: move-pdf-from-downloads, function: nbm-move-pdf-from-downloads, level: 2
+*** key: s, function: save-buffer, level: 1
+*** key: A, description: save as, function: nbm-save-as, level: 2
+*** key: D, description: copy-to-desktop, function: nbm-copy-to-desktop, level: 2
+*** key: F, description: Finder (file manager), function: nbm-show-in-finder, level: 2
+*** key: R, description: rename current file, function: nbm-rename-current-file, level: 2
+*** key: S, description: add-to-symlinks, function: nbm-add-to-symlinks, level: 2
+*** key: T, description: show-trash-bin, function: nbm-show-trash-bin, level: 3
+*** key: y, description: Yank/Copy, level: 3
+**** key: d, description: copy-directory-path, function: nbm-copy-directory-path, level: 3
+**** key: n, description: copy-file-name, function: nbm-copy-file-name, level: 3
+**** key: y, description: copy-file-path, function: nbm-copy-file-path, level: 3
+** key: g, description: git, level: 2
+*** key: i, description: init, function: nbm-magit-init, level: 2
+*** key: s, description: status, function: magit-status, level: 2
+** key: i, description: Insert, level: 3
+*** key: p, description: Passwords, level: 3
+**** key: s, description: simple, function: password-generator-simple, level: 3
+**** key: S, description: strong, function: password-generator-strong, level: 3
+**** key: n, description: numeric, function: password-generator-numeric, level: 3
+**** key: p, description: paranoid, function: password-generator-paranoid, level: 3
+** key: j, description: jump, level: 2
+*** key: t, description: recent tex, function: nbm-recent-tex, level: 2
+*** key: o, description: recent org, function: nbm-recent-org, level: 2
+*** key: p, description: recent pdf, function: nbm-recent-pdf, level: 2
+*** key: e, description: recent el, function: nbm-recent-el, level: 2
+*** key: s, description: recent sage, function: nbm-recent-sage, level: 2
+** key: k, description: key bindings, level: 3
+*** key: s, description: sys-key-tree, function: nbm-find-sys-key-tree, level: 3
+*** key: u, description: user-key-tree, function: nbm-find-user-key-tree, level: 3
+*** key: c, description: Check key-bindings, function: nbm-key-tree-show-repeated-keys, level: 3
+** key: m, description: find misc file, function: nbm-find-misc, level: 2
+** key: o, description: Org-mode, level: 1
+*** key: a, description: agenda, function: org-agenda-list, level: 1
+*** key: A, description: agenda-commands, function: org-agenda, level: 2
+*** key: c, description: capture, function: nbm-org-capture, level: 2
+*** key: r, description: org-roam-node-find, function: org-roam-node-find, level: 1
+*** key: s, description: Store link, function: org-store-link, level: 2
+*** key: i, description: Insert link, function: org-insert-link, level: 2
+*** key: S, description: Sync database, function: org-roam-db-sync, level: 3
+*** key: u, description: UI mode, function: org-roam-ui-mode, level: 1
+** key: p, description: Find pdf, function: nbm-find-pdf, level: 1
+** key: r, description: Registers, level: 3
+*** key: s, description: Set counter, function: nbm-set-counter, level: 3
+*** key: a, description: Add counter, function: nbm-add-counter, level: 3
+*** key: i, description: Insert counter, function: nbm-insert-counter, level: 3
+** key: s, description: Search, level: 3
+*** key: e, description: Find el, function: nbm-find-el, level: 3
+*** key: s, description: Find sage, function: nbm-find-sage, level: 3
+** key: t, description: Find tex file, function: nbm-find-tex, level: 1
+** key: u, function: universal-argument, level: 3
+** key: w, description: Windows, level: 1
+*** key: /, function: split-window-right, level: 2
+*** key: -, function: split-window-below, level: 2
+*** key: m, function: delete-other-windows, level: 1
+*** key: d, function: delete-window, level: 1
+*** key: e, description: expel window, function: nbm-expel-window, level: 3
+*** key: o, description: other-window, function: nbm-other-window, level: 2
+*** key: r, description: rotate-downwards, function: evil-window-rotate-downwards, level: 3
+*** key: R, description: rotate-upwards, function: evil-window-rotate-upwards, level: 3
+** key: x, description: Text, level: 3
+*** key: d, description: Delete, level: 3
+**** key: w, description: trailing whitespace, function: delete-trailing-whitespace, level: 3
+**** key: l, description: double-empty-lines, function: nbm-delete-double-empty-lines, level: 3
+** key: y, description: Yank, level: 2
+*** key: k, description: From kill-ring, function: helm-show-kill-ring, level: 3
+*** key: f, description: Favorite string, function: nbm-yank-favorite-string, level: 2
+** key: F, description: Frames, level: 3
+*** key: d, function: delete-frame, level: 3
+*** key: c, description: clone frame, function: nbm-clone-frame, level: 3
+** key: S, description: Spell-check, level: 2
+*** key: b, description: buffer, function: flyspell-buffer, level: 2
+*** key: i, description: interactive, function: ispell, level: 2
+*** key: w, description: word, function: ispell-word, level: 2
+** key: T, description: toggle, level: 2
+*** key: F, description: Fullscreen, function: toggle-frame-fullscreen, level: 2
+** key: N, description: Newbiemacs, level: 1
+*** key: c, description: config, function: newbie-config, level: 3
+*** key: r, description: reload, function: newbie-reload, level: 1
+*** key: s, description: settings, function: newbie-setting, level: 2
+*** key: l, description: Set User Level, function: nbm-set-user-level, level: 1
+*** key: u, description: update Newbiemacs, function: nbm-update-newbiemacs, level: 1
+** key: Y, description: yasnippet, level: 1
+*** key: d, description: delete snippet, function: nbm-yasnippet-delete, level: 3
+*** key: q, description: quick new snippet, function: nbm-yasnippet-quick-new, level: 3
+*** key: i, description: insert-snippet, function: yas-insert-snippet, level: 1
+*** key: n, description: new-snippet, function: yas-new-snippet, level: 2
+*** key: f, description: visit-snippet-file, function: yas-visit-snippet-file, level: 2
+*** key: t, description: table of snippets, function: yas-describe-tables, level: 1
+*** key: r, description: reload all, function: yas-reload-all, level: 2
+* description: LaTeX-mode, level: 1
+** key: RET, description: Korean/English, function: toggle-input-method, level: 3
+** key: ,, description: master command, function: TeX-command-master, level: 2
+** key: =, description: table of contents, function: reftex-toc, level: 2
+** key: a, description: applications, level: 3
+*** key: d, description: latex diff, function: nbm-latex-diff, level: 3
+** key: b, description: build tex, function: TeX-command-run-all, level: 1
+** key: v, description: view pdf, function: TeX-view, level: 1
+** key: c, description: copy math, function: nbm-latex-copy-math, level: 2
+** key: C, description: copy math with \( \), function: nbm-latex-copy-math-with-paren, level: 2
+** key: d, description: delete math, function: nbm-latex-delete-math, level: 2
+** key: e, description: Environments, level: 1
+*** key: d, description: delete labels, function: nbm-latex-delete-label, level: 2
+*** key: n, description: new environment, function: LaTeX-environment, level: 1
+*** key: u, description: update-environment, function: nbm-latex-environment-update, level: 1
+** key: D, description: delete math with \( \), function: nbm-latex-delete-math-with-paren, level: 2
+** key: f, description: Fonts, level: 1
+*** key: b, description: bold, function: nbm-latex-font-bold, level: 1
+*** key: e, description: emph, function: nbm-latex-font-emph, level: 1
+*** key: r, description: roman, function: nbm-latex-font-roman, level: 1
+*** key: B, description: mathbb, function: nbm-latex-font-mathbb, level: 1
+*** key: t, description: true-type, function: nbm-latex-font-truetype, level: 3
+*** key: s, description: small-caps, function: nbm-latex-font-sc, level: 3
+*** key: S, description: sans-serif, function: nbm-latex-font-sf, level: 3
+*** key: c, description: mathcal, function: nbm-latex-font-mathcal, level: 1
+*** key: f, description: mathfrak, function: nbm-latex-font-mathfrak, level: 1
+*** key: d, description: delete, function: nbm-latex-font-delete, level: 1
+** key: ., description: mark-environment, function: LaTeX-mark-environment, level: 2
+** key: *, description: mark-section, function: LaTeX-mark-section, level: 2
+** key: i, description: Insert, level: 1
+*** key: c, description: citation, function: helm-bibtex, level: 1
+*** key: i, description: item, function: LaTeX-insert-item, level: 2
+*** key: F, description: figure, function: nbm-latex-insert-figure, level: 1
+*** key: l, description: label, function: nbm-latex-insert-label, level: 2
+** key: j, description: jump, level: 2
+*** key: k, description: previous section, function: outline-previous-heading, level: 2
+*** key: j, description: next section, function: outline-next-heading, level: 2
+*** key: m, description: jump mode, function: nbm-latex-jump-section-mode, level: 2
+*** key: l, description: label, function: nbm-reftex-goto-label, level: 2
+*** key: s, description: jump to a section, function: nbm-latex-jump-section, level: 2
+** key: n, description: new item/macro/section, level: 1
+*** key: b, description: bib-item, function: nbm-latex-new-bib-item, level: 1
+*** key: m, description: macro, function: nbm-latex-new-macro, level: 2
+*** key: s, description: section, function: nbm-latex-section, level: 2
+** key: r, description: reference, level: 1
+*** key: c, description: cross reference, function: reftex-view-crossref, level: 2
+*** key: e, description: eqref, function: nbm-latex-eqref, level: 1
+*** key: f, description: fig-ref, function: nbm-latex-fig-ref, level: 2
+*** key: i, description: insert ref, function: nbm-reftex-insert-ref, level: 2
+*** key: r, description: reftex-reference, function: reftex-reference, level: 2
+*** key: s, description: sec-ref, function: nbm-latex-sec-ref, level: 2
+*** key: C, description: Cref, function: nbm-latex-Cref, level: 1
+** key: s, description: snippets, level: 2
+*** key: m, description: matrix, function: nbm-snippet-latex-matrix, level: 2
+*** key: y, description: Young tableau, function: nbm-snippet-latex-ytableau, level: 2
+** key: t, description: toggle/change, level: 1
+*** key: b, description: bbl-file, function: nbm-latex-toggle-bbl-file, level: 2
+*** key: e, description: equation, function: nbm-latex-toggle-equation, level: 2
+*** key: a, description: align, function: nbm-latex-toggle-align, level: 2
+*** key: l, description: label, function: reftex-change-label, level: 2
+*** key: m, description: multline, function: nbm-latex-toggle-multline, level: 2
+*** key: *, description: environment with *, function: nbm-latex-toggle-star, level: 1
+*** key: p, description: pgml to latex, function: nbm-latex-toggle-pgml, level: 3
+*** key: h, description: hwp math, function: nbm-latex-convert-to-hwp, level: 1
+*** key: v, description: change-variable, function: nbm-latex-change-variable, level: 1
+** key: y, description: yank, level: 3
+*** key: f, description: make-and-yank-filename, function: nbm-latex-make-and-yank-filename, level: 3
+* description: org-mode, level: 1
+** key: RET, description: Korean/English, function: toggle-input-method, level: 3
+** key: a, description: org-archive, level: 3
+*** key: t, description: subtree, function: org-archive-subtree, level: 3
+*** key: s, description: sibling, function: org-archive-to-archive-sibling, level: 3
+*** key: m, description: move to archived dir, function: nbm-org-move-to-archived, level: 3
+** key: b, description: org-babel, level: 3
+*** key: t, description: tangle, function: org-babel-tangle, level: 3
+*** key: e, description: edit special mode, function: org-edit-special, level: 3
+*** key: s, description: sage load, function: nbm-org-sage-tangle, level: 3
+*** key: i, description: in-line-math, function: nbm-org-latex-in-line-math, level: 3
+*** key: d, description: display-math, function: nbm-org-latex-display-math, level: 3
+** key: c, function: org-ctrl-c-ctrl-c, level: 3
+** key: e, description: export-dispatch, function: org-export-dispatch, level: 1
+** key: d, description: Dates, level: 2
+*** key: c, description: consecutive dates, function: nbm-org-consecutive-dates, level: 2
+*** key: d, description: deadline, function: org-deadline, level: 2
+*** key: s, description: schedule, function: org-schedule, level: 2
+*** key: t, description: time-stamp, function: org-time-stamp, level: 2
+*** key: T, description: time-stamp-inactive, function: org-time-stamp-inactive, level: 2
+** key: i, description: insert org-roam-node, function: org-roam-node-insert, level: 1
+** key: j, description: Jump, level: 2
+*** key: a, description: archive, function: nbm-org-jump-to-archive, level: 3
+*** key: d, description: dir-link, function: nbm-org-jump-to-dir-at-point, level: 3
+*** key: f, description: file, function: nbm-org-jump-to-file, level: 2
+*** key: s, description: section/heading, function: nbm-org-jump-to-heading, level: 2
+*** key: t, description: tex, function: nbm-org-jump-to-tex, level: 3
+*** key: u, description: url, function: nbm-org-jump-to-url, level: 3
+** key: h, description: HTML, level: 1
+*** key: e, description: html-export, function: nbm-org-html-export, level: 1
+*** key: t, description: html-theme, function: nbm-org-html-theme, level: 1
+** key: k, description: add keybinding, function: nbm-key-tree-add-keybinding, level: 3
+** key: u, description: UI mode, function: org-roam-ui-mode, level: 1
+** key: p, description: make-permanant-note, function: nbm-make-permanant-note, level: 1
+** key: r, function: org-refile, level: 3
+** key: t, description: Tables, level: 3
+*** key: -, description: Draw horizontal line, function: org-ctrl-c-minus, level: 3
+*** key: =, description: calculate tables, function: org-table-recalculate-buffer-tables, level: 3
+*** key: c, description: Columns, level: 3
+**** key: d, description: delete-column, function: org-table-delete-column, level: 3
+**** key: i, description: insert-column, function: org-table-insert-column, level: 3
+**** key: h, description: move-column-left, function: org-table-move-column-left, level: 3
+**** key: l, description: move-column-right, function: org-table-move-column-right, level: 3
+*** key: r, description: Rows, level: 3
+**** key: d, description: delete-row, function: org-table-kill-row, level: 3
+**** key: i, description: insert-row, function: org-table-insert-row, level: 3
+**** key: j, description: move-row-down, function: org-table-move-row-down, level: 3
+**** key: k, description: move-row-up, function: org-table-move-row-up, level: 3
+*** key: C, description: Cells, level: 3
+**** key: h, description: move-cell-left, function: org-table-move-cell-left, level: 3
+**** key: j, description: move-cell-down, function: org-table-move-cell-down, level: 3
+**** key: k, description: move-cell-up, function: org-table-move-cell-up, level: 3
+**** key: l, description: move-cell-right, function: org-table-move-cell-right, level: 3
+** key: x, description: Text, level: 2
+*** key: c, description: checkbox, function: nbm-org-toggle-checkbox, level: 2
+*** key: i, description: insert-item, function: org-insert-item, level: 2
+*** key: s, description: strike-through, function: nbm-org-toggle-strike-through, level: 2
+*** key: y, description: yank code line, function: nbm-org-yank-code, level: 2
+** key: R, function: org-roam-refile, level: 3
+** key: T, description: Toggle, level: 1
+*** key: T, function: org-todo, level: 1
+*** key: r, description: org-roam-buffer, function: org-roam-buffer-toggle, level: 3
+*** key: v, description: valign, function: nbm-toggle-valign, level: 3
+*** key: i, description: images, function: org-toggle-inline-images, level: 3
+* description: emacs-lisp-mode, level: 3
+** key: e, description: eval, level: 3
+*** key: b, function: eval-buffer, level: 3
+** key: f, description: Find, level: 3
+*** key: f, function: nbm-nil-function, level: 3
+* description: python-mode, level: 3
+** key: l, description: load-sage, function: nbm-load-sage, level: 3

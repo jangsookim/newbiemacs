@@ -4,15 +4,15 @@
 ;; Technically *nbm-key-tree* is a "key-forest".
 ;; In other words, *nbm-key-tree* is a list of key-trees.
 ;; A key-tree is a list of the following form.
-;; (level key description function subtrees)
+;; (depth key description function subtrees)
 ;; SUBTREES is a list of key-trees.
 
 ;; A key-node is of the following form.
-;; (level key description function)
-;; LEVEL is a nonnegative integer.
-;; If LEVEL=0 or 1 then, KEY and FUNCTION are both the empty string "".
-;; If LEVEL=0, then DESCRIPTION is either "system" or "user".
-;; If LEVEL=1, then DESCRIPTION is a mode name such as "global" or "latex-mode".
+;; (depth key description function)
+;; DEPTH is a nonnegative integer.
+;; If DEPTH=0 or 1 then, KEY and FUNCTION are both the empty string "".
+;; If DEPTH=0, then DESCRIPTION is either "system" or "user".
+;; If DEPTH=1, then DESCRIPTION is a mode name such as "global" or "latex-mode".
 
 ;; A key-seq is a list of the following form.
 ;; (keys description function)
@@ -22,7 +22,7 @@
 (defvar *nbm-key-seqs*)
 (defvar *nbm-key-seqs-repeated*)
 
-(defun nbm-key-tree-level (tree)
+(defun nbm-key-tree-depth (tree)
   (nth 0 tree))
 
 (defun nbm-key-tree-key (tree)
@@ -63,58 +63,58 @@ If there is no property, it returns the empty string \"\"."
 (defun nbm-key-tree-nodes-from-org-file (org-file)
   "Let a list of key-tree from ORG-FILE, in which each line looks like this.
 *** key: z, description: calculator, function: quick-calc
-A key-tree structure is (level key description function)."
+A key-tree structure is (depth key description function)."
   (save-excursion
-    (let (nodes line new-node level beg end rank)
+    (let (nodes line new-node depth beg end level)
       (find-file org-file)
       (setq nodes '())
       (beginning-of-buffer)
       (while (re-search-forward "\\(^[*]+\\)" nil t)
-	(setq level (- (match-end 1) (match-beginning 1)))
+	(setq depth (- (match-end 1) (match-beginning 1)))
 	(beginning-of-line) (setq beg (point))
 	(end-of-line) (setq end (point))
 	(setq line (buffer-substring-no-properties beg end))
-	(if (equal (nbm-parse-property line "rank") "")
-	    (setq rank 0)
-	  (setq rank (string-to-number (nbm-parse-property line "rank"))))
-	(when (<= rank (nbm-get-user-rank))
-	  (setq new-node (list level
+	(if (equal (nbm-parse-property line "level") "")
+	    (setq level 1)
+	  (setq level (string-to-number (nbm-parse-property line "level"))))
+	(when (<= level (nbm-get-user-level))
+	  (setq new-node (list depth
 			       (nbm-parse-property line "key")
 			       (nbm-parse-property line "description")
-			       (nbm-parse-property line "function"))))
-	(setq nodes (nbm-append new-node nodes)))
+			       (nbm-parse-property line "function")))
+	  (setq nodes (nbm-append new-node nodes))))
       (kill-buffer)
       nodes)))
 
-(defun nbm-set-user-rank ()
-  "Set user rank."
-  (let (rank)
-    (setq rank (read-char (format "Set your rank (current rank is %s):
-0) Beginner
-1) Intermidiate
-2) Advanced
-3) Expert" (nbm-get-user-rank)))))
-  (when (member rank '(?0 ?1 ?2 ?3))
-    (nbm-set-user-variable "rank" (char-to-string rank))))
+(defun nbm-set-user-level ()
+  "Set user level."
+  (interactive)
+  (let (level)
+    (setq level (read-char (format "Set your level (current level is %s):
+1) Beginner (Only basic commands are shown when hitting the space key.)
+2) Intermidiate (More commands are shown.)
+3) Advanced (All commands are shown.)" (nbm-get-user-level))))
+    (when (member level '(?1 ?2 ?3))
+      (nbm-set-user-variable "level" (char-to-string level)))))
 
-(defun nbm-get-user-rank ()
-  "Return user rank. By default it is 0."
-  (unless (nbm-get-user-variable "rank" nil)
-    (nbm-set-user-variable "rank" "0"))
-  (string-to-number (nbm-get-user-variable "rank" nil)))
+(defun nbm-get-user-level ()
+  "Return user level. By default it is 0."
+  (unless (nbm-get-user-variable "level" nil)
+    (nbm-set-user-variable "level" "1"))
+  (string-to-number (nbm-get-user-variable "level" nil)))
 
 (defun nbm-key-tree-from-nodes (nodes)
   "Create a key-tree from NODES."
   (save-excursion
-    (let (tree level node first-node subnodes second-part)
+    (let (tree depth node first-node subnodes second-part)
       (when nodes
         (setq first-node (car nodes))
-        (setq level (nbm-key-tree-level first-node))
+        (setq depth (nbm-key-tree-depth first-node))
         (setq nodes (cdr nodes)))
       (setq subnodes '())
       (while (and nodes (not second-part))
         (setq node (car nodes))
-        (if (> (nbm-key-tree-level node) level)
+        (if (> (nbm-key-tree-depth node) depth)
             (setq subnodes (nbm-append node subnodes)
                   nodes (cdr nodes))
           (setq second-part t)))
@@ -163,13 +163,13 @@ A key-tree structure is (level key description function)."
 
 (defun nbm-key-seqs-from-nodes (nodes)
   "Create key-seqs from NODES."
-  (let (key key-seq key-seqs level node)
+  (let (key key-seq key-seqs depth node)
     (dolist (node nodes key-seqs)
-      (setq level (car node))
-      (when (equal level 1)   	              ;; if level=1 then set key-seq
+      (setq depth (car node))
+      (when (equal depth 1)   	              ;; if depth=1 then set key-seq
 	(setq key (list (nth 2 node)))) ;; to be description of node
-      (when (> level 1)
-	(if (<= level (length key))
+      (when (> depth 1)
+	(if (<= depth (length key))
 	    (setq key (butlast key
 			       (- (length key) (- (car node) 1)))))
 	(setq key (nbm-append (nth 1 node) key)))
@@ -194,16 +194,16 @@ Repeated key-seqs are saved in *nbm-key-seqs-repeated*"
 
 (defun nbm-key-nodes-from-key-seqs (key-seqs)
   "Convert KEY-SEQS to key-nodes. KEY-SEQS must be sorted before."
-  (let (nodes node level key desc func key-seq last-key-seq new-key-seq)
+  (let (nodes node depth key desc func key-seq last-key-seq new-key-seq)
     (dolist (key-seq key-seqs nodes)
-      (setq level (length (car key-seq))
+      (setq depth (length (car key-seq))
 	    key (car (last (car key-seq)))
 	    desc (nth 1 key-seq)
 	    func (nth 2 key-seq))
-      (when (equal level 1)
+      (when (equal depth 1)
 	(setq key ""
 	      desc (car (car key-seq))))
-      (setq node (list level key desc func))
+      (setq node (list depth key desc func))
       (setq nodes (nbm-append node nodes)))))
 
 (defun nbm-key-tree-show-repeated-keys ()
@@ -289,7 +289,7 @@ Repeated key-seqs are saved in *nbm-key-seqs-repeated*"
   (let (tree)
     (dolist (tree *nbm-key-tree*)
       (unless mode (setq mode (format "%s" major-mode)))
-      (when (string= (downcase (nbm-key-tree-description tree)) ;; description of level 1 tree has mode name
+      (when (string= (downcase (nbm-key-tree-description tree)) ;; description of depth 1 tree has mode name
 		     (downcase mode))
 	(nbm-key-tree-prompt tree)))))
 

@@ -73,7 +73,7 @@
   ;; (evil-local-set-key 'normal (kbd "O") ')
   ;; (evil-local-set-key 'normal (kbd "P") ')
   ;; (evil-local-set-key 'normal (kbd "Q") ')
-  ;; (evil-local-set-key 'normal (kbd "R") ')
+  (evil-local-set-key 'normal (kbd "l") 'nbm-set-user-level)
   (evil-local-set-key 'normal (kbd "S") 'newbie-add-to-symlinks)
   (evil-local-set-key 'normal (kbd "T") 'newbie-toggle-dotemacs)
   (evil-local-set-key 'normal (kbd "U") 'newbie-update)
@@ -154,6 +154,8 @@
   (nbm-insert 4 (format "%2s%-17s" "" "g: games"))
   (nbm-insert 4 (format "%2s%-19s" "" "x: settings"))
   (nbm-insert 4 (format "%2s%-19s\n" "" "q: quit"))
+  (nbm-insert 4 (format "%2s%-15s->  " "" ""))
+  (nbm-insert 4 (format "%2s%-17s" "" "l: Set User Level (This unlocks more commands.)"))
 
   ;; (insert "\n")
   ;; (nbm-insert 1 "color 1  ")
