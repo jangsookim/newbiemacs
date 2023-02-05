@@ -118,6 +118,3 @@ other key) stop"))
       (message (format "File deleted: %s" file-name)))
     (kill-buffer)))
 
-(defun nbm-file-name-non-dot-p (file)
-  "Return t if FILE does not start with the dot . symbol."
-  (not (equal (substring (file-name-nondirectory file) 0 1) ".")))

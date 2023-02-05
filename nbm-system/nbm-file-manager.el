@@ -400,3 +400,6 @@ and to \"\"~/this is/an example.txt\"\" on Windows."
       (format "\"%s\"" path)
     (replace-regexp-in-string " " "\\\\ " path)))
 
+(defun nbm-file-name-non-dot-p (file)
+  "Return t if FILE does not start with the dot . symbol."
+  (not (equal (substring (file-name-nondirectory file) 0 1) ".")))
