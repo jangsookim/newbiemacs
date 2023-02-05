@@ -1,9 +1,5 @@
 ;; This file contains simple functions for newbiemacs.
 
-(defun nbm-key-tree-org-mode ()
-  (interactive)
-  (nbm-key-tree-mode "org-mode"))
-
 (defun nbm-magit-init ()
   (interactive)
   (magit-init (file-name-directory (nbm-get-file-name))))

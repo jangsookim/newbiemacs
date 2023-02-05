@@ -301,14 +301,14 @@
   (setq evil-undo-system 'undo-tree)
 
   (evil-define-key '(normal visual motion) 'global (kbd "SPC") 'nbm-key-tree-global)
-  (evil-define-key '(normal visual motion) 'global (kbd ",") 'nbm-key-tree-mode)
-  (evil-define-key '(normal visual motion insert) 'global (kbd "M-RET") 'nbm-key-tree-mode)
+  (evil-define-key '(normal visual motion) 'global (kbd ",") 'nbm-key-tree-major-mode)
+  (evil-define-key '(normal visual motion insert) 'global (kbd "M-RET") 'nbm-key-tree-major-mode)
   (evil-define-key 'motion help-mode-map (kbd "TAB") 'forward-button)
 
   (evil-set-leader '(normal visual motion insert) (kbd "<f5>"))
   (evil-set-leader '(normal visual motion insert) (kbd "<f6>") t)
   (evil-define-key 'emacs 'global (kbd "<f5>") 'nbm-key-tree-global)
-  (evil-define-key 'emacs 'global (kbd "<f6>") 'nbm-key-tree-mode)
+  (evil-define-key 'emacs 'global (kbd "<f6>") 'nbm-key-tree-major-mode)
 #+end_src
 
 * latex
@@ -409,7 +409,7 @@
   (evil-set-initial-state 'dired-mode 'emacs)
   (evil-define-key 'emacs dired-mode-map (kbd "<backspace>") 'newbie)
   (evil-define-key 'emacs dired-mode-map (kbd "SPC") 'nbm-key-tree-global)
-  (evil-define-key 'emacs dired-mode-map (kbd ",") 'nbm-key-tree-mode)
+  (evil-define-key 'emacs dired-mode-map (kbd ",") 'nbm-key-tree-major-mode)
 #+end_src
 
 * Emacs mode

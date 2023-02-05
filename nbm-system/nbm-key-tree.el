@@ -283,7 +283,7 @@ Repeated key-seqs are saved in *nbm-key-seqs-repeated*"
       (when (string= (nbm-key-tree-description tree) "global")
         (nbm-key-tree-prompt tree)))))
 
-(defun nbm-key-tree-mode (&optional mode)
+(defun nbm-key-tree-major-mode (&optional mode)
   (interactive)
   "Run key-tree from the root key tree for the current mode."
   (let (tree)
