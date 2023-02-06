@@ -159,11 +159,9 @@ X and Y are lists of variables. Each X_i will be replace by Y_i."
 				      (string-replace "\\" "\\\\" (nth i x))))))
       (setq reg-exp (substring reg-exp 2 nil))
       (setq done nil)
-      (while (and (< (point) end) (re-search-forward reg-exp nil t))
+      (while (and (re-search-forward reg-exp nil t) (< (point) end))
 	(setq temp (match-string 0))
-	(when (and (texmathp)
-		   (not (TeX-current-macro))
-		   (not (TeX-in-commented-line)))
+	(when (nbm-latex-is-variable temp)
 	  (setq i (-elem-index temp x))
 	  (unless replace-all
 	    (setq choice (read-char (format "Do you want to replace this %s by %s?
@@ -173,6 +171,20 @@ X and Y are lists of variables. Each X_i will be replace by Y_i."
 	    (delete-region (- (point) (length temp)) (point))
 	    (insert (nth i y))
 	    (setq end (+ end (length (nth i y)) (- (length (nth i x)))))))))))
+
+(defun nbm-latex-is-variable (var)
+  "Return t if VAR is in math mode and not part of a macro or comment."
+  (save-excursion
+    (let ((is-var t))
+      (if (not (texmathp)) (setq is-var nil))
+      (if (TeX-in-commented-line) (setq is-var nil))
+      (goto-char (- (point) (length var)))
+      (re-search-backward "[^a-zA-Z]")
+      (if (or (equal (buffer-substring (point) (1+ (point))) "\\")
+		  (equal (buffer-substring (- (point) 6) (1+ (point))) "\\begin{")
+		  (equal (buffer-substring (- (point) 4) (1+ (point))) "\\end{"))
+	  (setq is-var nil))
+      is-var)))
 
 (defun nbm-latex-find-math-mode (include-paren)
   "Return (type beg end).
