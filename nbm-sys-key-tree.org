@@ -135,19 +135,19 @@
 * description: LaTeX-mode, level: 1
 ** key: RET, description: Korean/English, function: toggle-input-method, level: 3
 ** key: ,, description: master command, function: TeX-command-master, level: 1
-** key: =, description: table of contents, function: reftex-toc, level: 2
+** key: =, description: table of contents, function: reftex-toc, level: 1
 ** key: a, description: applications, level: 3
 *** key: d, description: latex diff, function: nbm-latex-diff, level: 3
 ** key: b, description: build tex, function: TeX-command-run-all, level: 1
 ** key: v, description: view pdf, function: TeX-view, level: 1
-** key: c, description: copy math, function: nbm-latex-copy-math, level: 2
-** key: C, description: copy math with \( \), function: nbm-latex-copy-math-with-paren, level: 2
-** key: d, description: delete math, function: nbm-latex-delete-math, level: 2
+** key: c, description: copy math, function: nbm-latex-copy-math, level: 1
+** key: C, description: copy math with \( \), function: nbm-latex-copy-math-with-paren, level: 1
+** key: d, description: delete math, function: nbm-latex-delete-math, level: 1
 ** key: e, description: Environments, level: 1
 *** key: d, description: delete labels, function: nbm-latex-delete-label, level: 2
 *** key: n, description: new environment, function: LaTeX-environment, level: 1
 *** key: u, description: update-environment, function: nbm-latex-environment-update, level: 1
-** key: D, description: delete math with \( \), function: nbm-latex-delete-math-with-paren, level: 2
+** key: D, description: delete math with \( \), function: nbm-latex-delete-math-with-paren, level: 1
 ** key: f, description: Fonts, level: 1
 *** key: b, description: bold, function: nbm-latex-font-bold, level: 1
 *** key: e, description: emph, function: nbm-latex-font-emph, level: 1
@@ -160,12 +160,12 @@
 *** key: f, description: mathfrak, function: nbm-latex-font-mathfrak, level: 1
 *** key: d, description: delete, function: nbm-latex-font-delete, level: 1
 ** key: ., description: mark-environment, function: LaTeX-mark-environment, level: 1
-** key: *, description: mark-section, function: LaTeX-mark-section, level: 2
+** key: *, description: mark-section, function: LaTeX-mark-section, level: 1
 ** key: i, description: Insert, level: 1
 *** key: c, description: citation, function: helm-bibtex, level: 1
 *** key: i, description: item, function: LaTeX-insert-item, level: 2
 *** key: F, description: figure, function: nbm-latex-insert-figure, level: 1
-*** key: l, description: label, function: nbm-latex-insert-label, level: 2
+*** key: l, description: label, function: nbm-latex-insert-label, level: 1
 ** key: j, description: jump, level: 2
 *** key: k, description: previous section, function: outline-previous-heading, level: 2
 *** key: j, description: next section, function: outline-next-heading, level: 2
@@ -175,7 +175,7 @@
 ** key: n, description: new item/macro/section, level: 1
 *** key: b, description: bib-item, function: nbm-latex-new-bib-item, level: 1
 *** key: m, description: macro, function: nbm-latex-new-macro, level: 1
-*** key: s, description: section, function: nbm-latex-section, level: 2
+*** key: s, description: section, function: nbm-latex-section, level: 1
 ** key: r, description: reference, level: 1
 *** key: c, description: cross reference, function: reftex-view-crossref, level: 2
 *** key: e, description: eqref, function: nbm-latex-eqref, level: 1
@@ -184,12 +184,12 @@
 *** key: r, description: ref, function: nbm-latex-ref, level: 1
 *** key: s, description: sec-ref, function: nbm-latex-sec-ref, level: 2
 *** key: C, description: Cref, function: nbm-latex-Cref, level: 1
-** key: s, description: snippets, level: 2
-*** key: m, description: matrix, function: nbm-snippet-latex-matrix, level: 2
-*** key: y, description: Young tableau, function: nbm-snippet-latex-ytableau, level: 2
+** key: s, description: snippets, level: 1
+*** key: m, description: matrix, function: nbm-snippet-latex-matrix, level: 1
+*** key: y, description: Young tableau, function: nbm-snippet-latex-ytableau, level: 1
 ** key: t, description: toggle/change, level: 1
-*** key: b, description: bbl-file, function: nbm-latex-toggle-bbl-file, level: 2
-*** key: e, description: equation, function: nbm-latex-toggle-equation, level: 2
+*** key: b, description: bbl-file, function: nbm-latex-toggle-bbl-file, level: 1
+*** key: e, description: equation, function: nbm-latex-toggle-equation, level: 1
 *** key: a, description: align, function: nbm-latex-toggle-align, level: 2
 *** key: l, description: label, function: reftex-change-label, level: 2
 *** key: m, description: multline, function: nbm-latex-toggle-multline, level: 2
@@ -201,6 +201,8 @@
 *** key: f, description: make-and-yank-filename, function: nbm-latex-make-and-yank-filename, level: 3
 * description: org-mode, level: 1
 ** key: RET, description: Korean/English, function: toggle-input-method, level: 3
+** key: [, description: add to agenda, function: org-agenda-file-to-front, level: 1
+** key: ], description: remove from agenda, function: org-remove-file, level: 1
 ** key: a, description: org-archive, level: 3
 *** key: t, description: subtree, function: org-archive-subtree, level: 3
 *** key: s, description: sibling, function: org-archive-to-archive-sibling, level: 3
@@ -213,11 +215,11 @@
 *** key: d, description: display-math, function: nbm-org-latex-display-math, level: 3
 ** key: c, function: org-ctrl-c-ctrl-c, level: 3
 ** key: e, description: export-dispatch, function: org-export-dispatch, level: 1
-** key: d, description: Dates, level: 2
+** key: d, description: Dates, level: 1
 *** key: c, description: consecutive dates, function: nbm-org-consecutive-dates, level: 2
-*** key: d, description: deadline, function: org-deadline, level: 2
-*** key: s, description: schedule, function: org-schedule, level: 2
-*** key: t, description: time-stamp, function: org-time-stamp, level: 2
+*** key: d, description: deadline, function: org-deadline, level: 1
+*** key: s, description: schedule, function: org-schedule, level: 1
+*** key: t, description: time-stamp, function: org-time-stamp, level: 1
 *** key: T, description: time-stamp-inactive, function: org-time-stamp-inactive, level: 2
 ** key: i, description: insert org-roam-node, function: org-roam-node-insert, level: 1
 ** key: j, description: Jump, level: 2
