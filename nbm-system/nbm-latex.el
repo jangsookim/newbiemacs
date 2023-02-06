@@ -165,7 +165,7 @@ X and Y are lists of variables. Each X_i will be replace by Y_i."
 	  (setq i (-elem-index temp x))
 	  (unless replace-all
 	    (setq choice (read-char (format "Do you want to replace this %s by %s?
-(type y for yes, and type ! to replace all): " (nth i x) (nth i y))))
+(type y for yes, and type ! to replace all)" (nth i x) (nth i y))))
 	    (if (equal choice ?!) (setq replace-all t)))
 	  (when (or replace-all (equal ?y choice))
 	    (delete-region (- (point) (length temp)) (point))
@@ -406,25 +406,31 @@ to \\begin{multline}...\\end{multline} or vice versa."
   "Insert the bib file or remove it."
   (interactive)
   (save-excursion
-    (let (b f bib-exist)
+    (let (bib-exist beg end)
       (goto-char (point-max))
-      (if (search-backward "\\bibliography{" nil t nil)
-	  (progn (previous-line)
-		 (kill-line) (kill-line) (kill-line) (kill-line)
-		 (setq f (file-name-sans-extension (file-name-nondirectory (buffer-file-name))))
-		 (insert-file (concat f ".bbl"))
-		 (message "Bibtex toggled: bibtex OFF"))
-	(progn (when (search-backward "\\begin{thebibliography}" nil t nil)
-		 (setq bib-exist t)
-		 (setq b (point))
-		 (search-forward "\\end{thebibliography}" nil t nil)
-		 (delete-region b (point)))
-	       (unless bib-exist
-		 (search-backward "\\end{document}" nil t nil)
-		 (insert "\n") (previous-line))
-	       (insert (format "\\bibliographystyle{abbrv}\n\\bibliography{%s}"
-			       (nbm-f "nbm-user-settings/references/ref.bib")))
-	       (message "Bibtex toggled: bibtex ON"))))))
+      (if (search-backward "\\bibliography{" nil t)
+	  (progn
+	    (setq beg (point))
+	    (search-forward "{") (backward-char) (forward-sexp)
+	    (if (equal (char-after) ?\n)
+		(setq end (1+ (point)))
+	      (setq end (point)))
+	    (kill-region beg end)
+	    (insert-file (concat (file-name-sans-extension (file-name-nondirectory (buffer-file-name))) ".bbl"))
+	    (message "Bibtex toggled: bibtex OFF"))
+	(progn
+	  (if (search-backward "\\begin{thebibliography}" nil t)
+	      (progn
+		(setq beg (point))
+		(search-forward "\\end{thebibliography}")
+		(delete-region beg (point)))
+	    (progn
+	      (search-backward "\\end{document}" nil t)
+	      (insert "\n\n") (previous-line 2)
+	      (insert "\\bibliographystyle{abbrv}\n")))
+	  (insert (format "\\bibliography{%s}"
+			  (nbm-f "nbm-user-settings/references/ref.bib")))
+	  (message "Bibtex toggled: bibtex ON"))))))
 
 (defun nbm-bib-item-create-key (bib-str choice)
   "Create a key for the bib item given by BIB-STR.
