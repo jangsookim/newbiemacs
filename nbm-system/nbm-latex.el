@@ -711,6 +711,13 @@ add a new bib item."
 	    (nbm-latex-new-bib-item)))
 	(if (equal choice ?q) (message "Aborted."))))))
 
+(defun nbm-latex-ref ()
+  "Reftex with ref."
+  (interactive)
+  (let ((reftex-refstyle "\\ref"))
+    (reftex-reset-mode)
+    (reftex-reference " ")))
+
 (defun nbm-latex-Cref ()
   "Reftex with Cref."
   (interactive)

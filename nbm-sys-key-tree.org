@@ -181,7 +181,7 @@
 *** key: e, description: eqref, function: nbm-latex-eqref, level: 1
 *** key: f, description: fig-ref, function: nbm-latex-fig-ref, level: 2
 *** key: i, description: insert ref, function: nbm-reftex-insert-ref, level: 2
-*** key: r, description: reftex-reference, function: reftex-reference, level: 2
+*** key: r, description: ref, function: nbm-latex-ref, level: 1
 *** key: s, description: sec-ref, function: nbm-latex-sec-ref, level: 2
 *** key: C, description: Cref, function: nbm-latex-Cref, level: 1
 ** key: s, description: snippets, level: 2
