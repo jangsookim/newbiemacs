@@ -125,86 +125,54 @@ of the first occurence of \"\\necommand\" or \"\\begin{document}\"."
       (insert (concat "\n\\newcommand\\" macro-name "{" macro-body "}"))
       (if no-flag
 	  (message "The following line has been added in the tex file.
-\n%s\n\nDo NOT delete or modify this line." flag))
-      )))
+\n%s\n\nDo NOT delete or modify this line." flag)))))
 
-(defvar *nbm-latex-change-variable-confirm* t)
-
-(defun nbm-latex-change-variable ()
-  "Replace a variable in a math mode in current buffer."
+(defun nbm-latex-change-variables ()
+  "Replace variable x_1,x_2,...,x_k to y_1,y_2,...,y_k in a math mode in current buffer."
   (interactive)
-  (let ((case-fold-search t) x y TYPE START END temp choice case r-start r-end)
-    (save-excursion
-      (setq x (read-string "Variable to change from: " nil nil nil))
-      (setq y (read-string "Variable to change to: " nil nil nil))
-      (setq TYPE t)
+  (let (x y prompt)
+    (setq x (read-string "Write the variables to change from. If there are more than one variable write them separated by commas. For example, x,y,z
+Variables to change from: " nil nil nil))
+    (setq y (read-string "Write the variables to change to. If there are more than one variable write them separated by commas. For example, x,y,z
+Variables to change to: " nil nil nil))
+    (setq x (split-string (string-replace " " "" x) ",")
+	  y (split-string (string-replace " " "" y) ","))
+    (setq prompt "Do you want to change variables as follows? (type y for yes)\n")
+    (dotimes (i (length x))
+      (setq prompt (concat prompt (format "%s -> %s\n" (nth i x) (nth i y)))))
+    (when (equal ?y (read-char (substring prompt 0 -1)))
+      (nbm-latex-replace-x-y x y))))
+
+(defun nbm-latex-replace-x-y (x y)
+  "Replace X by Y in the current buffer or the selected region.
+X and Y are lists of variables. Each X_i will be replace by Y_i."
+  (save-excursion
+    (let ((case-fold-search nil) reg-exp i temp beg end done choice replace-all)
       (if (use-region-p)
-          (setq r-start (region-beginning) r-end (region-end))
-        (setq r-start (point-min) r-end (point-max)))
-      (goto-char r-start)
-      (while TYPE
-        (setq temp (nbm-latex-find-next-math-mode))
-        (setq TYPE (nth 0 temp) START (nth 1 temp) END (nth 2 temp))
-        (if TYPE
-            (progn
-              (nbm-latex-replace-x-y-region x y START END)
-              (goto-char END)
-              (if (> END r-end) (setq TYPE nil))))))
-    (setq *nbm-latex-change-variable-confirm* t)))
-
-(defun nbm-latex-replace-x-y-region (x y START END)
-  "Replace x by y from START to END in the current buffer if x is not macro."
-  (save-excursion
-    (goto-char START)
-    (while (search-forward x END t nil)
-      (unless (nbm-latex-is-macro 1)
-        (when *nbm-latex-change-variable-confirm*
-	  (if (commandp 'beacon-blink)	; Execute beacon if it's installed.
-	      (beacon-blink))
-          (setq choice (read-char (format "Change %s to %s?: (Type y for yes. Type ! to change everything.)" x y))))
-        (if (eq choice ?!)
-            (setq *nbm-latex-change-variable-confirm* nil))
-        (if (or (not *nbm-latex-change-variable-confirm*) (eq choice ?y))
-            (progn
-              (delete-region (- (point) (string-width x)) (point))
-              (insert y)))))))
-
-(defun nbm-latex-is-macro (k)
-  "Determine whether k characters from the current point represents a macro."
-  (save-excursion
-    (goto-char (- (point) k))
-    (while (looking-at "[a-z-A-Z]") (backward-char))
-    (if (equal (buffer-substring (point) (+ (point) 1)) "\\")
-        t nil)))
-
-(defun nbm-latex-find-next-math-mode()
-  "Return (TYPE START END), where TYPE is [, (, $, $$, n, or nil and,
-START and END are the starting and ending points of the environment
-except the environment macro."
-  (save-excursion
-    (let (TYPE START END)
-      (setq TYPE nil START nil END nil)
-      (when (re-search-forward "\\\\\\[\\|\\\\(\\|\\$\\|\\\\begin{equation\\|\\\\begin{align\\|\\\\begin{multlin" nil t nil)
-        (setq TYPE (buffer-substring (1- (point)) (point)))
-        (when (equal (buffer-substring (1- (point)) (1+ (point))) "$$")
-          (setq TYPE "$$") (forward-char))
-        (when (equal (buffer-substring (1- (point)) (point)) "n")
-          (search-forward "}"))
-        (setq START (point)))
-      (if (equal TYPE "n")
-          (progn
-            (LaTeX-find-matching-end)
-            (search-backward "\\")))
-      (if (equal TYPE "[")
-          (search-forward "\\]" nil t nil))
-      (if (equal TYPE "(")
-          (search-forward "\\)" nil t nil))
-      (if (equal TYPE "$$")
-          (search-forward "$$" nil t nil))
-      (if (equal TYPE "$")
-          (search-forward "$" nil t nil))
-      (setq END (point))
-      (list TYPE START END))))
+	  (setq beg (region-beginning) end (region-end))
+	(setq beg (point-min) end (point-max)))
+      (goto-char beg)
+      (setq reg-exp "")
+      (dotimes (i (length x))
+	(setq reg-exp (concat reg-exp
+			      (format "\\|%s"
+				      (string-replace "\\" "\\\\" (nth i x))))))
+      (setq reg-exp (substring reg-exp 2 nil))
+      (setq done nil)
+      (while (and (< (point) end) (re-search-forward reg-exp nil t))
+	(setq temp (match-string 0))
+	(when (and (texmathp)
+		   (not (TeX-current-macro))
+		   (not (TeX-in-commented-line)))
+	  (setq i (-elem-index temp x))
+	  (unless replace-all
+	    (setq choice (read-char (format "Do you want to replace this %s by %s?
+(type y for yes, and type ! to replace all): " (nth i x) (nth i y))))
+	    (if (equal choice ?!) (setq replace-all t)))
+	  (when (or replace-all (equal ?y choice))
+	    (delete-region (- (point) (length temp)) (point))
+	    (insert (nth i y))
+	    (setq end (+ end (length (nth i y)) (- (length (nth i x)))))))))))
 
 (defun nbm-latex-find-math-mode (include-paren)
   "Return (type beg end).
