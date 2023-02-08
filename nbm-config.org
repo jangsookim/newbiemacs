@@ -43,9 +43,10 @@
 
   (use-package which-key :diminish which-key-mode
     :init
+    (setq which-key-sort-order 'which-key-key-order-alpha)
     (setq which-key-idle-delay 0.1)
     (setq which-key-prefix-prefix nil)
-    (which-key-mode))
+    (which-key-mode 1))
 
   (use-package openwith :init (openwith-mode t)
     (if (equal system-type 'gnu/linux)
@@ -258,6 +259,15 @@
   (set-cursor-color "LightGreen")
 
   (setq inhibit-startup-screen t)
+
+  (set-face-attribute 'which-key-key-face nil
+                      :foreground "MediumSpringGreen" :weight 'bold)
+  (set-face-attribute 'which-key-separator-face nil
+                      :foreground "Gold1")
+  (set-face-attribute 'which-key-command-description-face nil
+                      :foreground "SandyBrown")
+  (set-face-attribute 'which-key-group-description-face nil
+                      :foreground "Deepskyblue1")
 #+end_src
 ** tab-line-mode
 #+begin_src emacs-lisp :tangle yes
@@ -301,15 +311,11 @@
 #+begin_src emacs-lisp :tangle yes
   (setq evil-undo-system 'undo-tree)
 
-  (evil-define-key '(normal visual motion) 'global (kbd "SPC") 'nbm-key-tree-global)
-  (evil-define-key '(normal visual motion) 'global (kbd ",") 'nbm-key-tree-major-mode)
-  (evil-define-key '(normal visual motion insert) 'global (kbd "M-RET") 'nbm-key-tree-major-mode)
-  (evil-define-key 'motion help-mode-map (kbd "TAB") 'forward-button)
+  (evil-set-leader '(normal visual motion) (kbd "SPC"))
+  (evil-set-leader '(normal visual motion) (kbd ",") t)
+  (evil-set-leader '(normal visual motion insert) (kbd "M-RET") t)
 
-  (evil-set-leader '(normal visual motion insert) (kbd "<f5>"))
-  (evil-set-leader '(normal visual motion insert) (kbd "<f6>") t)
-  (evil-define-key 'emacs 'global (kbd "<f5>") 'nbm-key-tree-global)
-  (evil-define-key 'emacs 'global (kbd "<f6>") 'nbm-key-tree-major-mode)
+  (evil-define-key 'motion help-mode-map (kbd "TAB") 'forward-button)
 #+end_src
 
 * latex
