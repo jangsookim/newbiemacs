@@ -193,6 +193,13 @@ beg and end are the starting and ending points of the environment.
 If INCLUDE-ENV is non-nil, then the region from beg and end
 includes the environment macro."
   (save-excursion
+    (cond ((or (equal (buffer-substring (point) (+ (point) 2)) "\\(")
+	      (equal (buffer-substring (1- (point)) (1+ (point))) "\\(")
+	      (equal (buffer-substring (point) (+ (point) 2)) "\\[")
+	      (equal (buffer-substring (1- (point)) (1+ (point))) "\\["))
+	   (forward-char 2))
+	  ((equal (TeX-current-macro) "begin")
+	   (search-forward "}")))
     (let (type end end)
       (when (texmathp)
 	(setq type (car texmathp-why)
