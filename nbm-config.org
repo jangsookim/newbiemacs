@@ -43,8 +43,9 @@
 
   (use-package which-key :diminish which-key-mode
     :init
-    (which-key-mode)
-    (setq which-key-prefix-prefix nil))
+    (setq which-key-idle-delay 0.1)
+    (setq which-key-prefix-prefix nil)
+    (which-key-mode))
 
   (use-package openwith :init (openwith-mode t)
     (if (equal system-type 'gnu/linux)

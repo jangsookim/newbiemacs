@@ -148,12 +148,14 @@ A key-tree structure is (depth key description function)."
 
 (defun nbm-key-seq< (A B)
   "Return t if A occurs earlier than B."
-  (let (a b keyA keyB done result)
+  (let (a b keyA keyB done result (sort-fold-case t))
     (setq keyA (car A) keyB (car B))
     (while (and (not done) keyA keyB)
       (setq a (pop keyA) b (pop keyB))
       (cond ((> (length a) (length b)) (setq result t done t))
 	    ((< (length a) (length b)) (setq result nil done t))
+	    ((string< (upcase a) (upcase b)) (setq result t done t))
+	    ((string> (upcase a) (upcase b)) (setq result nil done t))
 	    ((string< a b) (setq result t done t))
 	    ((string> a b) (setq result nil done t))))
     (unless done
@@ -236,7 +238,8 @@ Repeated key-seqs are saved in *nbm-key-seqs-repeated*"
 	(dolist (key keys)
 	  (cond ((equal key "SPC") (setq key "<SPC>"))
 		((equal key "RET") (setq key "<RET>"))
-		((equal key "TAB") (setq key "?\\t"))
+		((equal key "TAB") (setq key "<tab>"))
+		;; ((equal key "TAB") (setq key "?\\t"))
 		((equal key "\"") (setq key "\\\"")))
 	  (setq key-str (concat key-str key)))
 	(insert (format "(evil-define-key '(normal visual motion insert) %s (kbd \"%s%s\") '(\"%s\" . %s))\n"
@@ -335,7 +338,7 @@ Repeated key-seqs are saved in *nbm-key-seqs-repeated*"
 	  (setq desc (nbm-string-terminal-node desc))
 	(setq desc (nbm-string-internal-node desc)))
       (setq key (nbm-string-key (nbm-key-tree-key T)))
-      (setq prompt (format (concat "%s%3s: %-"
+      (setq prompt (format (concat "%s%3s → %-"
 				   (number-to-string (- col-width 5))
 				   "s")
 			   prompt key desc))
