@@ -236,10 +236,9 @@ Repeated key-seqs are saved in *nbm-key-seqs-repeated*"
 	(if (equal desc "") (setq desc func))
 	(setq key-str "")
 	(dolist (key keys)
-	  (cond ((equal key "SPC") (setq key "<SPC>"))
-		((equal key "RET") (setq key "<RET>"))
-		((equal key "TAB") (setq key "<tab>"))
-		;; ((equal key "TAB") (setq key "?\\t"))
+	  (cond ((equal key "SPC") (setq key " SPC"))
+		((equal key "RET") (setq key " RET"))
+		((equal key "TAB") (setq key " TAB"))
 		((equal key "\"") (setq key "\\\"")))
 	  (setq key-str (concat key-str key)))
 	(insert (format "(evil-define-key '(normal visual motion insert) %s (kbd \"%s%s\") '(\"%s\" . %s))\n"
