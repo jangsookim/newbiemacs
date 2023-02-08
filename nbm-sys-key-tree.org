@@ -141,9 +141,9 @@
 ** key: b, description: build tex, function: TeX-command-run-all, level: 1
 ** key: v, description: view pdf, function: TeX-view, level: 1
 ** key: c, description: copy math only, function: nbm-latex-copy-math, level: 1
-** key: C, description: copy math with env, function: nbm-latex-copy-math-with-paren, level: 1
+** key: C, description: copy math with env, function: nbm-latex-copy-math-with-env, level: 1
 ** key: d, description: delete math only, function: nbm-latex-delete-math, level: 1
-** key: D, description: delete math with env, function: nbm-latex-delete-math-with-paren, level: 1
+** key: D, description: delete math with env, function: nbm-latex-delete-math-with-env, level: 1
 ** key: e, description: Environments, level: 1
 *** key: d, description: delete labels, function: nbm-latex-delete-label, level: 2
 *** key: n, description: new environment, function: LaTeX-environment, level: 1

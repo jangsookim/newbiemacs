@@ -186,12 +186,12 @@ X and Y are lists of variables. Each X_i will be replace by Y_i."
 	  (setq is-var nil))
       is-var)))
 
-(defun nbm-latex-find-math-mode (include-paren)
+(defun nbm-latex-find-math-mode (include-env)
   "Return (type beg end).
 type is \"\\[\", \"\\(\",equation, etc, or nil.
 beg and end are the starting and ending points of the environment.
-If INCLUDE-PAREN is non-nil, then the region from beg and end
-includes the parentheses."
+If INCLUDE-ENV is non-nil, then the region from beg and end
+includes the environment macro."
   (save-excursion
     (let (type end end)
       (when (texmathp)
@@ -203,7 +203,7 @@ includes the parentheses."
 	       (search-forward "\\)"))
 	      (t (LaTeX-find-matching-end)))
 	(setq end (point))
-	(unless include-paren
+	(unless include-env
 	  (if (member type '("\\(" "\\["))
 	      (setq beg (+ beg 2) end (- end 2))
 	    (progn
@@ -212,40 +212,40 @@ includes the parentheses."
 	  (if (member (buffer-substring beg (1+ beg)) '("\n" " "))
 	      (setq beg (1+ beg)))
 	  (if (member (buffer-substring (1- end) end) '("\n" " "))
-	      (setq end (1- end)))))
-      (list type beg end))))
+	      (setq end (1- end))))
+	(list type beg end)))))
 
-(defun nbm-latex-copy-math-with-paren()
-  "Copy the content in the current math mode including the parentheses."
+(defun nbm-latex-copy-math-with-env ()
+  "Copy the content in the current math mode including the environment macro."
   (interactive)
   (let ((math (nbm-latex-find-math-mode t)))
     (if (car math)
 	(progn
 	  (copy-region-as-kill (nth 1 math) (nth 2 math))
-	  (message "Copied the math content."))
+	  (message "Copied the math content with the environment macro."))
       (message "You are not in math mode!"))))
 
-(defun nbm-latex-delete-math-with-paren()
-  "Delete the content in the current math mode including the parentheses."
+(defun nbm-latex-delete-math-with-env ()
+  "Delete the content in the current math mode including the environment macro."
   (interactive)
   (let ((math (nbm-latex-find-math-mode t)))
     (if (car math)
 	(progn
 	  (kill-region (nth 1 math) (nth 2 math))
-	  (message "Delted the math content."))
+	  (message "Deleted the math content with the environment macro."))
       (message "You are not in math mode!"))))
 
-(defun nbm-latex-delete-math()
+(defun nbm-latex-delete-math ()
   "Delete the content in the current math mode."
   (interactive)
   (let ((math (nbm-latex-find-math-mode nil)))
     (if (car math)
 	(progn
 	  (kill-region (nth 1 math) (nth 2 math))
-	  (message "Delted the math content."))
+	  (message "Deleted the math content."))
       (message "You are not in math mode!"))))
 
-(defun nbm-latex-copy-math()
+(defun nbm-latex-copy-math ()
   "Copy the content in the current math mode."
   (interactive)
   (let ((math (nbm-latex-find-math-mode nil)))
