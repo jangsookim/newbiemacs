@@ -197,6 +197,7 @@ includes the environment macro."
       (when (texmathp)
 	(setq type (car texmathp-why)
 	      beg (cdr texmathp-why))
+	(goto-char (1+ beg))
 	(cond ((equal type "\\[")
 	       (search-forward "\\]"))
 	      ((equal type "\\(")
