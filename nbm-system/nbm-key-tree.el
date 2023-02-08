@@ -147,7 +147,8 @@ A key-tree structure is (depth key description function)."
     (setq *nbm-key-tree* tree)))
 
 (defun nbm-key-seq< (A B)
-  "Return t if A occurs earlier than B."
+  "Return t if A occurs earlier than B.
+This is case-insensitive."
   (let (a b keyA keyB done result (sort-fold-case t))
     (setq keyA (car A) keyB (car B))
     (while (and (not done) keyA keyB)
@@ -241,59 +242,14 @@ Repeated key-seqs are saved in *nbm-key-seqs-repeated*"
 		((equal key "TAB") (setq key " TAB"))
 		((equal key "\"") (setq key "\\\"")))
 	  (setq key-str (concat key-str key)))
-	(insert (format "(evil-define-key '(normal visual motion insert) %s (kbd \"%s%s\") '(\"%s\" . %s))\n"
+	(insert (format "(evil-define-key '(normal visual motion insert emacs) %s (kbd \"%s%s\") '(\"%s\" . %s))\n"
 			(if (equal mode "global") "'global" (concat mode "-map"))
 			(if (equal mode "global") "<leader>" "<localleader>")
 			key-str desc
 			(if (equal func "") "(keymap)" func)))))
     (save-buffer) (kill-buffer buf)))
 
-;; key-tree interface
-
-(defun nbm-key-tree-prompt (tree)
-  "Run key-tree from TREE."
-  (let (prompt subtrees T key func match)
-    (setq func (nbm-key-tree-function tree))
-    (if (not (string= func "")) (command-execute (intern func)))
-    (when (nbm-key-tree-subtrees tree)
-      (setq subtrees (nbm-key-tree-subtrees tree))
-      (setq key (char-to-string (read-char (nbm-key-tree-prompt-string subtrees))))
-      (setq subtrees (nbm-key-tree-subtrees tree))
-      (while subtrees
-	(setq T (pop subtrees))
-	(when (nbm-key-tree-compare-key key T)
-	  (setq match t)
-	  (nbm-key-tree-prompt T)))
-      (unless match
-	(message "You typed an undefined key sequence.")))))
-
-(defun nbm-key-tree-compare-key (key T)
-  "Return t if KEY is the same as the key in T."
-  (cond ((string= key " ")
-	       (if (string= (nbm-key-tree-key T) "SPC") t nil))
-        ((string= key "\^M")
-	       (if (string= (nbm-key-tree-key T) "RET") t nil))
-        ((string= key "\t")
-	       (if (string= (nbm-key-tree-key T) "TAB") t nil))
-        (t (string= key (nbm-key-tree-key T)))))
-
-(defun nbm-key-tree-global ()
-  (interactive)
-  "Run key-tree from the root key tree for global mode."
-  (let (tree)
-    (dolist (tree *nbm-key-tree*)
-      (when (string= (nbm-key-tree-description tree) "global")
-        (nbm-key-tree-prompt tree)))))
-
-(defun nbm-key-tree-major-mode (&optional mode)
-  (interactive)
-  "Run key-tree from the root key tree for the current mode."
-  (let (tree)
-    (dolist (tree *nbm-key-tree*)
-      (unless mode (setq mode (format "%s" major-mode)))
-      (when (string= (downcase (nbm-key-tree-description tree)) ;; description of depth 1 tree has mode name
-		     (downcase mode))
-	(nbm-key-tree-prompt tree)))))
+;; Functions for adding a keybiding to key tree
 
 (defun nbm-key-tree-add-keybinding ()
   (interactive)
@@ -315,48 +271,3 @@ Repeated key-seqs are saved in *nbm-key-seqs-repeated*"
 (defun nbm-nil-function ()
   "This is a function doing nothing but to be passed to nbm-key-tree-add-keybinding."
   (interactive))
-
-(defun nbm-key-tree-prompt-string (subtrees)
-  "Return a string for the key-tree-prompt from SUBTREES."
-  (setq col-width 30)
-  (let (prompt temp T key col pos desc)
-    (setq col (/ (frame-width) col-width)
-	  pos 0
-	  prompt ""
-	  temp subtrees)
-    (defun nbm-temp-prompt (T color)
-      (when (equal pos col)
-	(setq prompt (concat prompt "\n"))
-	(setq pos 0))
-      (setq desc (nbm-key-tree-description T))
-      (if (> (length desc) (- col-width 6))
-	  (setq desc (concat (substring desc 0
-					(- col-width 9))
-			     "...")))
-      (if (equal color 1)
-	  (setq desc (nbm-string-terminal-node desc))
-	(setq desc (nbm-string-internal-node desc)))
-      (setq key (nbm-string-key (nbm-key-tree-key T)))
-      (setq prompt (format (concat "%s%3s → %-"
-				   (number-to-string (- col-width 5))
-				   "s")
-			   prompt key desc))
-      (setq pos (+ 1 pos)))
-    (while temp
-      (setq T (pop temp))
-      (if (nbm-key-tree-subtrees T)
-	  (nbm-temp-prompt T 2)
-	(nbm-temp-prompt T 1)))
-    prompt))
-
-(defun nbm-string-key (string)
-  "Return STRING with font for keys."
-  (propertize string 'face '(:foreground "MediumSpringGreen" :weight bold)))
-
-(defun nbm-string-terminal-node (string)
-  "Return STRING with font for keys."
-  (propertize string 'face '(:foreground "SandyBrown")))
-
-(defun nbm-string-internal-node (string)
-  "Return STRING with font for keys."
-  (propertize string 'face '(:foreground "Deepskyblue1")))
