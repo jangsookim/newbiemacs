@@ -61,6 +61,23 @@
     :init (load-theme 'spacemacs-dark t))
 
   (use-package spaceline)
+
+  (use-package which-key :diminish which-key-mode
+    :init
+    (setq which-key-sort-order 'which-key-key-order-alpha)
+    (setq which-key-idle-delay 0.1)
+    (setq which-key-prefix-prefix nil)
+    (which-key-mode 1)
+    (set-face-attribute 'which-key-key-face nil
+                        :foreground "MediumSpringGreen" :weight 'bold)
+    (set-face-attribute 'which-key-separator-face nil
+                        :foreground "Antiquewhite1")
+    (set-face-attribute 'which-key-command-description-face nil
+                        :foreground "SandyBrown")
+    (set-face-attribute 'which-key-group-description-face nil
+                        :foreground "Deepskyblue1")
+    (set-face-attribute 'which-key-note-face nil
+                        :foreground "Mediumpurple1"))
 #+end_src
 
 ** Additional Package
@@ -188,6 +205,8 @@
     (load-file file))
   (setq bookmark-default-file (concat *nbm-home* "nbm-user-settings/references/bookmark.el"))
 
+  (nbm-key-tree-load)
+
   (if (equal system-type 'windows-nt)
       (progn
         (setq ispell-program-name "hunspell")
@@ -252,27 +271,6 @@
 #+end_src
 ** which-key
 #+begin_src emacs-lisp :tangle yes
-  (use-package which-key :diminish which-key-mode
-    :init
-    (setq which-key-sort-order 'which-key-key-order-alpha)
-    (setq which-key-idle-delay 0.1)
-    (setq which-key-prefix-prefix nil)
-    (which-key-mode 1)
-    (set-face-attribute 'which-key-key-face nil
-                        :foreground "MediumSpringGreen" :weight 'bold)
-    (set-face-attribute 'which-key-separator-face nil
-                        :foreground "Antiquewhite1")
-    (set-face-attribute 'which-key-command-description-face nil
-                        :foreground "SandyBrown")
-    (set-face-attribute 'which-key-group-description-face nil
-                        :foreground "Deepskyblue1")
-    (set-face-attribute 'which-key-note-face nil
-                        :foreground "Mediumpurple1")
-    (set-face-attribute 'which-key-local-map-description-face nil
-                        :foreground "blue")
-    (nbm-key-tree-load)
-    (nbm-key-tree-appear-in-which-key)
-    (load-file (nbm-f "nbm-user-settings/nbm-which-key.el")))
 #+end_src
 
 ** tab-line-mode

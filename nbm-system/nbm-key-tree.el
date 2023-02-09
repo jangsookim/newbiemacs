@@ -11,9 +11,6 @@
 ;; (keys description function)
 ;; KEYS is a list of the form e.g. ("global" "a" "e")
 
-(defvar *nbm-key-seqs*)
-(defvar *nbm-key-seqs-repeated*)
-
 (defun nbm-parse-property (line property)
   "LINE is a string of the following form.
 
@@ -59,23 +56,6 @@ A key-tree structure is (depth key description function)."
       (kill-buffer)
       nodes)))
 
-(defun nbm-set-user-level ()
-  "Set user level."
-  (interactive)
-  (let (level)
-    (setq level (read-char (format "Set your level (current level is %s):
-1) Beginner (Only basic commands are shown when hitting the space key.)
-2) Intermidiate (More commands are shown.)
-3) Advanced (All commands are shown.)" (nbm-get-user-level))))
-    (when (member level '(?1 ?2 ?3))
-      (nbm-set-user-variable "level" (char-to-string level)))))
-
-(defun nbm-get-user-level ()
-  "Return user level. By default it is 0."
-  (unless (nbm-get-user-variable "level" nil)
-    (nbm-set-user-variable "level" "1"))
-  (string-to-number (nbm-get-user-variable "level" nil)))
-
 ;; The following should be loaded at the beginning of emacs session.
 ;; The loading process is as follows.
 ;; 1. Create key-nodes from user-key-tree.org and nbm-sys-key-tree.org.
@@ -83,15 +63,17 @@ A key-tree structure is (depth key description function)."
 ;; 3. Sort key sequences
 
 (defun nbm-key-tree-load ()
-  "Initiate *nbm-key-seqs*."
-  (let (nbm-nodes user-nodes all-nodes tree)
+  "Convert the key-tree org files to key seqs and then to keybindings.
+Thenn load the resulting file of keybindings."
+  (let (nbm-nodes user-nodes all-nodes key-seqs)
     (setq user-nodes (nbm-key-tree-nodes-from-org-file
 		      (nbm-f "nbm-user-settings/user-key-tree.org")))
     (setq nbm-nodes (nbm-key-tree-nodes-from-org-file
 		     (nbm-root-f "nbm-sys-key-tree.org")))
     (setq key-seqs (append (nbm-key-seqs-from-nodes user-nodes)
 			   (nbm-key-seqs-from-nodes nbm-nodes)))
-    (setq *nbm-key-seqs* (nbm-sort-and-remove-repeated-key-seqs key-seqs))))
+    (setq key-seqs (nbm-sort-and-remove-repeated-key-seqs key-seqs))
+    (nbm-key-seqs-to-keybindings key-seqs)))
 
 (defun nbm-key-seq< (A B)
   "Return t if A occurs earlier than B.
@@ -126,6 +108,8 @@ This is case-insensitive."
       (setq key-seq (cons key (nthcdr 2 node)))
       (setq key-seqs (nbm-append key-seq key-seqs)))))
 
+(defvar *nbm-key-seqs-repeated*)
+
 (defun nbm-sort-and-remove-repeated-key-seqs (key-seqs)
   "Sort and remove repeated key sequences.
 Repeated key-seqs are saved in *nbm-key-seqs-repeated*"
@@ -155,13 +139,15 @@ Repeated key-seqs are saved in *nbm-key-seqs-repeated*"
       (setq prompt "There are no repeated key sequences."))
     (message (format "%s" prompt))))
 
-(defun nbm-key-tree-appear-in-which-key ()
-  "Make the key-tree appear in which-key."
+(defun nbm-key-seqs-to-keybindings (key-seqs)
+  "Create a file with keybindings from KEY-SEQS and load it.
+The file will be saved in nbm-user-settings/nbm-keybinding.el
+to check things later if necessary."
   (let (key-seq mode keys desc func buf key-str key)
-    (find-file (nbm-f "nbm-user-settings/nbm-which-key.el"))
+    (find-file (nbm-f "nbm-user-settings/nbm-keybinding.el"))
     (erase-buffer)
     (setq buf (current-buffer))
-    (dolist (key-seq *nbm-key-seqs*)
+    (dolist (key-seq key-seqs)
       (when (> (length (car key-seq)) 1)
 	(setq mode (car (car key-seq))
 	      keys (cdr (car key-seq))
@@ -177,7 +163,7 @@ Repeated key-seqs are saved in *nbm-key-seqs-repeated*"
 			(if (equal mode "global") "<leader>" "<localleader>")
 			key-str desc
 			(if (equal func "") "(keymap)" func)))))
-    (save-buffer) (kill-buffer buf)))
+    (save-buffer) (eval-buffer) (kill-buffer buf)))
 
 ;; Functions for adding a keybiding to key tree
 
@@ -201,3 +187,20 @@ Repeated key-seqs are saved in *nbm-key-seqs-repeated*"
 (defun nbm-nil-function ()
   "This is a function doing nothing but to be passed to nbm-key-tree-add-keybinding."
   (interactive))
+
+(defun nbm-set-user-level ()
+  "Set user level."
+  (interactive)
+  (let (level)
+    (setq level (read-char (format "Set your level (current level is %s):
+1) Beginner (Only basic commands are shown when hitting the space key.)
+2) Intermidiate (More commands are shown.)
+3) Advanced (All commands are shown.)" (nbm-get-user-level))))
+    (when (member level '(?1 ?2 ?3))
+      (nbm-set-user-variable "level" (char-to-string level)))))
+
+(defun nbm-get-user-level ()
+  "Return user level. By default it is 0."
+  (unless (nbm-get-user-variable "level" nil)
+    (nbm-set-user-variable "level" "1"))
+  (string-to-number (nbm-get-user-variable "level" nil)))
