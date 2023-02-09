@@ -147,7 +147,7 @@ Variables to change to: " nil nil nil))
   "Replace X by Y in the current buffer or the selected region.
 X and Y are lists of variables. Each X_i will be replace by Y_i."
   (save-excursion
-    (let ((case-fold-search nil) reg-exp i temp beg end done choice replace-all custom)
+    (let ((case-fold-search nil) reg-exp i temp beg end done choice replace-all custom quit)
       (if (use-region-p)
 	  (setq beg (region-beginning) end (region-end))
 	(setq beg (point-min) end (point-max)))
@@ -158,28 +158,27 @@ X and Y are lists of variables. Each X_i will be replace by Y_i."
 			      (format "\\|%s"
 				      (string-replace "\\" "\\\\" (nth i x))))))
       (setq reg-exp (substring reg-exp 2 nil))
-      (setq done nil)
-      (while (and (re-search-forward reg-exp nil t) (< (point) end))
+      (while (and (re-search-forward reg-exp nil t) (< (point) end) (not quit))
 	(setq temp (match-string 0))
 	(when (nbm-latex-is-variable temp)
 	  (setq i (-elem-index temp x))
 	  (unless replace-all
 	    (setq choice (read-char (format "Do you want to replace this %s by %s?
 (Type y for yes,
- type c for a customized change, and
- type ! to replace all for the rest.)" (nth i x) (nth i y))))
+ type c for a customized change,
+ type ! to replace all for the rest, and
+ type q to quit.)" (nth i x) (nth i y))))
 	    (if (equal choice ?!) (setq replace-all t)))
 	  (cond ((or replace-all (equal ?y choice))
 		 (delete-region (- (point) (length temp)) (point))
 		 (insert (nth i y))
 		 (setq end (+ end (length (nth i y)) (- (length (nth i x))))))
 		((equal ?c choice)
-		 (setq custom (read-string "Enter a new variable below.
-(A backslash \\ must be written twice like \\\\.
-For example, to enter \\ell type \\\\ell.)
-A new variable to be inserted: "))
+		 (setq custom (read-string "Enter a new variable to be inserted: "))
 		 (delete-region (- (point) (length temp)) (point))
-		 (insert custom))))))))
+		 (insert custom))
+		((equal ?q choice)
+		 (setq quit t))))))))
 
 (defun nbm-latex-is-variable (var)
   "Return t if VAR is in math mode and not part of a macro or comment."
