@@ -1,50 +1,23 @@
-;; The following three are the important concepts in this file.
-
-;; A key-tree is a tree that stores key-bindings.
-;; Technically *nbm-key-tree* is a "key-forest".
-;; In other words, *nbm-key-tree* is a list of key-trees.
-;; A key-tree is a list of the following form.
-;; (depth key description function subtrees)
-;; SUBTREES is a list of key-trees.
-
+;; The following two are the important concepts in this file.
+;;
 ;; A key-node is of the following form.
 ;; (depth key description function)
 ;; DEPTH is a nonnegative integer.
 ;; If DEPTH=0 or 1 then, KEY and FUNCTION are both the empty string "".
 ;; If DEPTH=0, then DESCRIPTION is either "system" or "user".
 ;; If DEPTH=1, then DESCRIPTION is a mode name such as "global" or "latex-mode".
-
+;;
 ;; A key-seq is a list of the following form.
 ;; (keys description function)
 ;; KEYS is a list of the form e.g. ("global" "a" "e")
 
-(defvar *nbm-key-tree*)
 (defvar *nbm-key-seqs*)
 (defvar *nbm-key-seqs-repeated*)
-
-(defun nbm-key-tree-depth (tree)
-  (nth 0 tree))
-
-(defun nbm-key-tree-key (tree)
-  (nth 1 tree))
-
-(defun nbm-key-tree-description (tree)
-  (let (str)
-    (setq str (nth 2 tree))
-    (if (equal str "") (setq str (nbm-key-tree-function tree)))
-    (if (equal str "") (setq str "prefix"))
-    str))
-
-(defun nbm-key-tree-function (tree)
-  (nth 3 tree))
-
-(defun nbm-key-tree-subtrees (tree)
-  (nth 4 tree))
 
 (defun nbm-parse-property (line property)
   "LINE is a string of the following form.
 
-key: z, description: calculator, function: quick-calc
+** key: z, description: calculator, function: quick-calc, level: 2
 
 In the above example, if  PROPERTY is \"mode\",
 then it returns \"global\".
@@ -61,8 +34,8 @@ If there is no property, it returns the empty string \"\"."
       "")))
 
 (defun nbm-key-tree-nodes-from-org-file (org-file)
-  "Let a list of key-tree from ORG-FILE, in which each line looks like this.
-*** key: z, description: calculator, function: quick-calc
+  "Return a list of key nodes from ORG-FILE, in which each line looks like this.
+*** key: z, description: calculator, function: quick-calc, level 2
 A key-tree structure is (depth key description function)."
   (save-excursion
     (let (nodes line new-node depth beg end level)
@@ -103,37 +76,14 @@ A key-tree structure is (depth key description function)."
     (nbm-set-user-variable "level" "1"))
   (string-to-number (nbm-get-user-variable "level" nil)))
 
-(defun nbm-key-tree-from-nodes (nodes)
-  "Create a key-tree from NODES."
-  (save-excursion
-    (let (tree depth node first-node subnodes second-part)
-      (when nodes
-        (setq first-node (car nodes))
-        (setq depth (nbm-key-tree-depth first-node))
-        (setq nodes (cdr nodes)))
-      (setq subnodes '())
-      (while (and nodes (not second-part))
-        (setq node (car nodes))
-        (if (> (nbm-key-tree-depth node) depth)
-            (setq subnodes (nbm-append node subnodes)
-                  nodes (cdr nodes))
-          (setq second-part t)))
-      (if subnodes
-          (setq first-node (nbm-append (nbm-key-tree-from-nodes subnodes)
-                                       first-node))
-        (setq first-node (nbm-append nil first-node)))
-      (if nodes
-          (setq tree (cons first-node (nbm-key-tree-from-nodes nodes)))
-        (setq tree (list first-node)))
-      tree)))
-
-;; This should be loaded at the beginning.
+;; The following should be loaded at the beginning of emacs session.
 ;; The loading process is as follows.
 ;; 1. Create key-nodes from user-key-tree.org and nbm-sys-key-tree.org.
 ;; 2. Convert the key-nodes to key-seqs.
 ;; 3. Sort key sequences
 
 (defun nbm-key-tree-load ()
+  "Initiate *nbm-key-seqs*."
   (let (nbm-nodes user-nodes all-nodes tree)
     (setq user-nodes (nbm-key-tree-nodes-from-org-file
 		      (nbm-f "nbm-user-settings/user-key-tree.org")))
@@ -141,10 +91,7 @@ A key-tree structure is (depth key description function)."
 		     (nbm-root-f "nbm-sys-key-tree.org")))
     (setq key-seqs (append (nbm-key-seqs-from-nodes user-nodes)
 			   (nbm-key-seqs-from-nodes nbm-nodes)))
-    (setq *nbm-key-seqs* (nbm-sort-and-remove-repeated-key-seqs key-seqs))
-    (setq all-nodes (nbm-key-nodes-from-key-seqs *nbm-key-seqs*))
-    (setq tree (nbm-key-tree-from-nodes all-nodes))
-    (setq *nbm-key-tree* tree)))
+    (setq *nbm-key-seqs* (nbm-sort-and-remove-repeated-key-seqs key-seqs))))
 
 (defun nbm-key-seq< (A B)
   "Return t if A occurs earlier than B.
@@ -169,7 +116,7 @@ This is case-insensitive."
   (let (key key-seq key-seqs depth node)
     (dolist (node nodes key-seqs)
       (setq depth (car node))
-      (when (equal depth 1)   	              ;; if depth=1 then set key-seq
+      (when (equal depth 1)   	        ;; if depth=1 then set key-seq
 	(setq key (list (nth 2 node)))) ;; to be description of node
       (when (> depth 1)
 	(if (<= depth (length key))
@@ -194,20 +141,6 @@ Repeated key-seqs are saved in *nbm-key-seqs-repeated*"
 					      *nbm-key-seqs-repeated*))
 	(setq no-repeat (nbm-append new-key-seq no-repeat))))
     no-repeat))
-
-(defun nbm-key-nodes-from-key-seqs (key-seqs)
-  "Convert KEY-SEQS to key-nodes. KEY-SEQS must be sorted before."
-  (let (nodes node depth key desc func key-seq last-key-seq new-key-seq)
-    (dolist (key-seq key-seqs nodes)
-      (setq depth (length (car key-seq))
-	    key (car (last (car key-seq)))
-	    desc (nth 1 key-seq)
-	    func (nth 2 key-seq))
-      (when (equal depth 1)
-	(setq key ""
-	      desc (car (car key-seq))))
-      (setq node (list depth key desc func))
-      (setq nodes (nbm-append node nodes)))))
 
 (defun nbm-key-tree-show-repeated-keys ()
   "Message if there are repeated keys."
@@ -237,10 +170,7 @@ Repeated key-seqs are saved in *nbm-key-seqs-repeated*"
 	(if (equal desc "") (setq desc func))
 	(setq key-str "")
 	(dolist (key keys)
-	  (cond ((equal key "SPC") (setq key " SPC"))
-		((equal key "RET") (setq key " RET"))
-		((equal key "TAB") (setq key " TAB"))
-		((equal key "\"") (setq key "\\\"")))
+	  (if (equal key "\"") (setq key "\\\""))
 	  (setq key-str (concat key-str key)))
 	(insert (format "(evil-define-key '(normal visual motion insert emacs) %s (kbd \"%s%s\") '(\"%s\" . %s))\n"
 			(if (equal mode "global") "'global" (concat mode "-map"))

@@ -113,3 +113,7 @@ Enter here: ")))
   (if (> (length (window-list)) 1)
       (delete-window) (switch-to-prev-buffer))
   (other-frame 1))
+
+(defun nbm-string-key (string)
+  "Return STRING with font for keys."
+  (propertize string 'face '(:foreground "MediumSpringGreen" :weight bold)))
