@@ -147,7 +147,7 @@ Variables to change to: " nil nil nil))
   "Replace X by Y in the current buffer or the selected region.
 X and Y are lists of variables. Each X_i will be replace by Y_i."
   (save-excursion
-    (let ((case-fold-search nil) reg-exp i temp beg end done choice replace-all)
+    (let ((case-fold-search nil) reg-exp i temp beg end done choice replace-all custom)
       (if (use-region-p)
 	  (setq beg (region-beginning) end (region-end))
 	(setq beg (point-min) end (point-max)))
@@ -165,12 +165,21 @@ X and Y are lists of variables. Each X_i will be replace by Y_i."
 	  (setq i (-elem-index temp x))
 	  (unless replace-all
 	    (setq choice (read-char (format "Do you want to replace this %s by %s?
-(type y for yes, and type ! to replace all)" (nth i x) (nth i y))))
+(Type y for yes,
+ type c for a customized change, and
+ type ! to replace all for the rest.)" (nth i x) (nth i y))))
 	    (if (equal choice ?!) (setq replace-all t)))
-	  (when (or replace-all (equal ?y choice))
-	    (delete-region (- (point) (length temp)) (point))
-	    (insert (nth i y))
-	    (setq end (+ end (length (nth i y)) (- (length (nth i x)))))))))))
+	  (cond ((or replace-all (equal ?y choice))
+		 (delete-region (- (point) (length temp)) (point))
+		 (insert (nth i y))
+		 (setq end (+ end (length (nth i y)) (- (length (nth i x))))))
+		((equal ?c choice)
+		 (setq custom (read-string "Enter a new variable below.
+(A backslash \\ must be written twice like \\\\.
+For example, to enter \\ell type \\\\ell.)
+A new variable to be inserted: "))
+		 (delete-region (- (point) (length temp)) (point))
+		 (insert custom))))))))
 
 (defun nbm-latex-is-variable (var)
   "Return t if VAR is in math mode and not part of a macro or comment."

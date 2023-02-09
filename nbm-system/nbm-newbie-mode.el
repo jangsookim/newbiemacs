@@ -51,7 +51,7 @@
   (evil-local-set-key 'normal (kbd "s") 'nbm-find-misc)
   (evil-local-set-key 'normal (kbd "t") 'nbm-find-tex)
   (evil-local-set-key 'normal (kbd "u") 'org-roam-ui-mode)
-  (evil-local-set-key 'normal (kbd "v") 'newbie-latex-change-variable)
+  (evil-local-set-key 'normal (kbd "v") 'newbie-latex-change-variables)
   ;; (evil-local-set-key 'normal (kbd "w") ')
   (evil-local-set-key 'normal (kbd "x") 'newbie-setting)
   ;; (evil-local-set-key 'normal (kbd "y") 'newbie-yank-file-name)
@@ -221,9 +221,9 @@
   (interactive) (kill-buffer)
   (nbm-latex-insert-figure))
 
-(defun newbie-latex-change-variable ()
+(defun newbie-latex-change-variables ()
   (interactive) (kill-buffer)
-  (nbm-latex-change-variable))
+  (nbm-latex-change-variables))
 
 (defun newbie-yank-file-name ()
   (interactive)

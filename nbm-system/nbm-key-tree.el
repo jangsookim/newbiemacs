@@ -64,7 +64,7 @@ A key-tree structure is (depth key description function)."
 
 (defun nbm-key-tree-load ()
   "Convert the key-tree org files to key seqs and then to keybindings.
-Thenn load the resulting file of keybindings."
+Then load the resulting file of keybindings."
   (let (nbm-nodes user-nodes all-nodes key-seqs)
     (setq user-nodes (nbm-key-tree-nodes-from-org-file
 		      (nbm-f "nbm-user-settings/user-key-tree.org")))
