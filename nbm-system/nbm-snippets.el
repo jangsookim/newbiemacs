@@ -1,5 +1,5 @@
 (defun nbm-snippet-latex-matrix ()
-  "Create a latex snippet for a matrix."
+  "Insert a latex snippet for a matrix."
   (interactive)
   (insert "\\begin{pmatrix}\n")
   (nbm-snippet-insert-matrix-entries
@@ -14,7 +14,7 @@ Enter the entries below:
   (insert "\\end{pmatrix}"))
 
 (defun nbm-snippet-latex-ytableau ()
-  "Create a latex snippet for a young tableau."
+  "Insert a latex snippet for a young tableau."
   (interactive)
   (insert "\\begin{ytableau}\n")
   (nbm-snippet-insert-matrix-entries
@@ -49,3 +49,10 @@ to \"\\none\"."
       (if (equal i (1- row))
 	  (insert "\n")
 	(insert "\\\\\n")))))
+
+(defun nbm-snippet-equation ()
+  "Insert an equation snippet."
+  (interactive)
+  (insert "\\begin{equation}\n  \n\\end{equation}\n")
+  (search-backward "\n\\end")
+  (nbm-latex-insert-label))

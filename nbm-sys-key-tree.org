@@ -185,6 +185,7 @@
 *** key: s, description: sec-ref, function: nbm-latex-sec-ref, level: 2
 *** key: C, description: Cref, function: nbm-latex-Cref, level: 1
 ** key: s, description: snippets, level: 1
+*** key: e, description: equation, function: nbm-snippet-latex-equation, level: 1
 *** key: m, description: matrix, function: nbm-snippet-latex-matrix, level: 1
 *** key: y, description: Young tableau, function: nbm-snippet-latex-ytableau, level: 1
 ** key: t, description: toggle/change, level: 1
