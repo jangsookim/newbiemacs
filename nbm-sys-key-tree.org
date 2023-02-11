@@ -9,7 +9,6 @@
 ** key: SPC, description: M-x, function: helm-M-x, level: 1
 ** key: RET, description: bookmark, function: helm-filtered-bookmarks, level: 1
 ** key: TAB, description: Last buffer, function: evil-switch-to-windows-last-buffer, level: 1
-** key: ;, description: Toggle Korean/English, function: toggle-input-method, level: 3
 ** key: !, description: shell command, function: nbm-shell-commend, level: 3
 ** key: ?, description: Help, function: nbm-cheat-sheet, level: 1
 ** key: 0, description: Developer only, level: 3
@@ -133,7 +132,6 @@
 *** key: t, description: table of snippets, function: yas-describe-tables, level: 2
 *** key: r, description: reload all, function: yas-reload-all, level: 2
 * description: LaTeX-mode, level: 1
-** key: RET, description: Korean/English, function: toggle-input-method, level: 3
 ** key: ,, description: master command, function: TeX-command-master, level: 1
 ** key: =, description: table of contents, function: reftex-toc, level: 1
 ** key: a, description: applications, level: 3
@@ -201,7 +199,6 @@
 ** key: y, description: yank, level: 3
 *** key: f, description: make-and-yank-filename, function: nbm-latex-make-and-yank-filename, level: 3
 * description: org-mode, level: 1
-** key: RET, description: Korean/English, function: toggle-input-method, level: 3
 ** key: [, description: add to agenda, function: org-agenda-file-to-front, level: 1
 ** key: ], description: remove from agenda, function: org-remove-file, level: 1
 ** key: a, description: org-archive, level: 3

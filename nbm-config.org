@@ -234,8 +234,6 @@
   (setq trash-directory (nbm-f "trash-bin/"))
   (unless (file-exists-p trash-directory) (make-directory trash-directory))
 
-  (setq default-input-method "korean-hangul")
-
   (setq help-window-select t)
   (defalias 'yes-or-no-p 'y-or-n-p)
   (setq large-file-warning-threshold nil)
