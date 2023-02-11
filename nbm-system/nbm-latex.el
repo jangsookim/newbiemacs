@@ -391,19 +391,23 @@ to \\begin{multline}...\\end{multline} or vice versa."
   "Insert the label in the current environment."
   (interactive)
   (save-excursion
-    (let (env label)
-      (setq env (LaTeX-current-environment))
-      (if (equal env "document")
-	  (message "You are not in a proper environment!")
-	(progn
-	  (goto-char (car (LaTeX-env-beginning-pos-col)))
-	  (if (> (length env) 3)
-	      (setq env (substring env 0 3)))
-	  (search-forward "\\begin" nil t) (forward-sexp)
-	  (if (member env '("equ" "ali" "mul"))
-	      (setq env "eq"))
-	  (setq label (read-string "Enter a label: "))
-	  (insert (format "\\label{%s:%s}" env label)))))))
+    (let ((env (LaTeX-current-environment)) num)
+      (cond ((equal env "document")
+	     (message "You are not in a proper environment!"))
+	    ((texmathp)
+	     (setq label (read-string "Enter a label below. (If you type XXX, then eq:XXX will be inserted. If you type nothing, a unique numeric label will be inserted.)\n"))
+	     (if (equal label "") (setq label (reftex-label nil t))
+	       (setq label (concat "eq:" label))))
+	    (t
+	     (setq env (concat (substring env 0 3) ":"))
+	     (setq label (read-string (format "Enter a label below. (If you type XXX, then %sXXX will be inserted. If you type nothing, a unique numeric label will be inserted.)\n" env)))
+	     (if (equal label "")
+		 (setq label (reftex-uniquify-label env t))
+	       (setq label (concat env label)))))
+      (unless (equal env "document")
+	(goto-char (car (LaTeX-env-beginning-pos-col)))
+	(search-forward "\\begin" nil t) (forward-sexp)
+	(insert (format "\\label{%s}" label))))))
 
 (defun nbm-latex-delete-label ()
   "Delete the labels in the current environment."
