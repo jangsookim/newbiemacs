@@ -50,7 +50,7 @@ to \"\\none\"."
 	  (insert "\n")
 	(insert "\\\\\n")))))
 
-(defun nbm-snippet-equation ()
+(defun nbm-snippet-latex-equation ()
   "Insert an equation snippet."
   (interactive)
   (insert "\\begin{equation}\n  \n\\end{equation}\n")
