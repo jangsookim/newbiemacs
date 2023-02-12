@@ -270,6 +270,7 @@ includes the environment macro."
 	  (setq str (buffer-substring (nth 1 math) (nth 2 math)))
 	  (setq str (replace-regexp-in-string "\\\\label{[^}]*}" "" str))
 	  (setq str (replace-regexp-in-string "\n *\n" "\n" str))
+	  (setq str (replace-regexp-in-string "^\n" "" str))
 	  (kill-new str)
 	  (message "Copied the math content."))
       (message "You are not in math mode!"))))
