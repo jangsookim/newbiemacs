@@ -264,10 +264,13 @@ includes the environment macro."
 (defun nbm-latex-copy-math ()
   "Copy the content in the current math mode."
   (interactive)
-  (let ((math (nbm-latex-find-math-mode nil)))
+  (let ((math (nbm-latex-find-math-mode nil)) str)
     (if (car math)
 	(progn
-	  (copy-region-as-kill (nth 1 math) (nth 2 math))
+	  (setq str (buffer-substring (nth 1 math) (nth 2 math)))
+	  (setq str (replace-regexp-in-string "\\\\label{[^}]*}" "" str))
+	  (setq str (replace-regexp-in-string "\n *\n" "\n" str))
+	  (kill-new str)
 	  (message "Copied the math content."))
       (message "You are not in math mode!"))))
 
