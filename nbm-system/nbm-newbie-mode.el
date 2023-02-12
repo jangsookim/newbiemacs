@@ -82,8 +82,7 @@
   ;; (evil-local-set-key 'normal (kbd "X") ')
   (evil-local-set-key 'normal (kbd "Y") 'newbie-yas-new-snippet)
   ;; (evil-local-set-key 'normal (kbd "Z") ')
-  (evil-force-normal-state)
-  )
+  (evil-force-normal-state))
 
 (defun newbie-mode ()
   (setq major-mode 'newbie-mode)
@@ -106,8 +105,7 @@
    ((equal color 7) (insert (propertize string 'font-lock-face '(:foreground "#Ff453a")))) ; Systemredcolor
    ((equal color 8) (insert (propertize string 'font-lock-face '(:foreground "#0a84ff")))) ; Systembluecolor
    ((equal color 9) (insert (propertize string 'font-lock-face '(:foreground "#Ac8e68")))) ; Systembrowncolor
-   ((equal color 5) (insert (propertize string 'font-lock-face '(:foreground "#Ff375f")))) ; Systempinkcolor
-   ))
+   ((equal color 5) (insert (propertize string 'font-lock-face '(:foreground "#Ff375f")))) ; Systempinkcolor))
 
 (defun newbie-print-version ()
   "Start newbie."
@@ -115,7 +113,7 @@
 
 (defun newbie-print-logo ()
   "Start newbie."
-    (nbm-insert 6 "
+  (nbm-insert 6 "
   +-+    +-+ +----; +-+    +-+ +----,  +-+ +----; +-+    +-+   ,--,   +----; +----;
   |  \\   | | | +--' | |    | | | ,_, \\ | | | +--' |  \\  /  |  / __ \\  | +--' | +--'
   | . \\  | | | |    | |    | | | | | | | | | |    | . \\/ . | / /  \\ \\ | |    | |
@@ -125,7 +123,7 @@
   | |   \\  | | +--; |  /  \\  | | '-' / | | | +--; | |    | | | |  | | | +--; ;--+ |
   +-+    +-+ +----' +-+    +-+ +----'  +-+ +----' +-+    +-+ +-+  +-+ +----' '----+
 ")
-    (nbm-insert 1 "          Newbiemacs is designed for mathematicians who are new to Emacs.          \n\n"))
+  (nbm-insert 1 "          Newbiemacs is designed for mathematicians who are new to Emacs.          \n\n"))
 
 (defun newbie-print-menu ()
   "Start newbie."
@@ -155,30 +153,21 @@
   (nbm-insert 4 (format "%2s%-19s" "" "x: settings"))
   (nbm-insert 4 (format "%2s%-19s\n" "" "q: quit"))
   (nbm-insert 4 (format "%2s%-15s->  " "" ""))
-  (nbm-insert 4 (format "%2s%-17s" "" "l: Set User Level (This unlocks more commands.)"))
-
-  ;; (insert "\n")
-  ;; (nbm-insert 1 "color 1  ")
-  ;; (nbm-insert 2 "color 2  ")
-  ;; (nbm-insert 3 "color 3  ")
-  ;; (nbm-insert 4 "color 4  ")
-  ;; (nbm-insert 5 "color 5  ")
-  ;; (nbm-insert 6 "color 6  ")
-  ;; (nbm-insert 7 "color 7  ")
-  ;; (nbm-insert 8 "color 8  ")
-  ;; (nbm-insert 9 "color 9\n")
-  )
+  (nbm-insert 4 (format "%2s%-17s" "" "l: Set User Level (This unlocks more commands.)")))
 
 (defun newbie-print-all ()
   "Start newbie."
   (let ((inhibit-read-only t))
+    (setq tab-width 30)
     (newbie-print-version)
     (newbie-print-logo)
+    (insert "\t")
+    (insert-image (create-image (nbm-root-f "nbm-logo.jpeg") nil nil :width 180))
+    (insert "\n\n")
     (newbie-print-menu)
     ;; (newbie-print-variables)
     (newbie-print-current-file)
-    (beginning-of-buffer)
-    ))
+    (beginning-of-buffer)))
 
 (defun newbie-quit ()
   (interactive)
@@ -313,10 +302,6 @@ u) user-init.el"))
 	(find-file (nbm-f "nbm-user-settings/user-key-tree.org")))
     (if (equal choice ?u)
 	(find-file (nbm-f "nbm-user-settings/user-init.el")))))
-
-(defun newbie-homepage ()
-  (interactive)
-  (browse-url "https://jangsookim.github.io/newbiemacs/newbiemacs-home.html"))
 
 (defun newbie-update ()
   (interactive)

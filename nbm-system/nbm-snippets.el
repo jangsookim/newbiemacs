@@ -11,7 +11,7 @@ For example, the 2x2 identity matrix is written as follows.
 (Type M-j to create a new line.)
 Enter the entries below:
 "))
-  (insert "\\end{pmatrix}"))
+  (insert "\\end{pmatrix}\n"))
 
 (defun nbm-snippet-latex-ytableau ()
   "Insert a latex snippet for a young tableau."
@@ -29,7 +29,7 @@ of shape (4,3,1)/(2,1).
 (Type M-j to create a new line.)
 Enter the entries below:
 "))
-  (insert "\\end{ytableau}"))
+  (insert "\\end{ytableau}\n"))
 
 (defun nbm-snippet-insert-matrix-entries (str)
   "Parse STR and insert the result in the current buffer.
