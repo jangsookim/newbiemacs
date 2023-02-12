@@ -97,15 +97,15 @@
 (defun nbm-insert (color string)
   "Insert STRING with foreground color COLOR."
   (cond
-   ((equal color 1) (insert (propertize string 'font-lock-face '(:foreground "#98989d")))) ; Systemgraycolor
-   ((equal color 2) (insert (propertize string 'font-lock-face '(:foreground "#Ff9f0a")))) ; Systemorangecolor
-   ((equal color 3) (insert (propertize string 'font-lock-face '(:foreground "#Ffd60a")))) ; Systemyellowcolor
-   ((equal color 4) (insert (propertize string 'font-lock-face '(:foreground "#Bf5af2")))) ; Systempurplecolor
-   ((equal color 6) (insert (propertize string 'font-lock-face '(:foreground "#32d74b")))) ; Systemgreencolor
-   ((equal color 7) (insert (propertize string 'font-lock-face '(:foreground "#Ff453a")))) ; Systemredcolor
-   ((equal color 8) (insert (propertize string 'font-lock-face '(:foreground "#0a84ff")))) ; Systembluecolor
-   ((equal color 9) (insert (propertize string 'font-lock-face '(:foreground "#Ac8e68")))) ; Systembrowncolor
-   ((equal color 5) (insert (propertize string 'font-lock-face '(:foreground "#Ff375f")))) ; Systempinkcolor))
+   ((equal color 1) (insert (propertize string 'font-lock-face '(:foreground "#98989d"))))
+   ((equal color 2) (insert (propertize string 'font-lock-face '(:foreground "#Ff9f0a"))))
+   ((equal color 3) (insert (propertize string 'font-lock-face '(:foreground "#Ffd60a"))))
+   ((equal color 4) (insert (propertize string 'font-lock-face '(:foreground "#Bf5af2"))))
+   ((equal color 6) (insert (propertize string 'font-lock-face '(:foreground "#32d74b"))))
+   ((equal color 7) (insert (propertize string 'font-lock-face '(:foreground "#Ff453a"))))
+   ((equal color 8) (insert (propertize string 'font-lock-face '(:foreground "#0a84ff"))))
+   ((equal color 9) (insert (propertize string 'font-lock-face '(:foreground "#Ac8e68"))))
+   ((equal color 5) (insert (propertize string 'font-lock-face '(:foreground "#Ff375f"))))))
 
 (defun newbie-print-version ()
   "Start newbie."
