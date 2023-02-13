@@ -56,3 +56,20 @@ Version 2015-06-08"
       (insert String)
       (xah-asciify-text (point-min) (point-max))
       (buffer-string)))
+
+  ;; the following two functions have been deleated from the github source
+  ;; https://github.com/emacs-evil/evil/blob/master/evil-core.el
+
+  (defun evil-send-leader ()
+    "Put symbol leader in `unread-command-events' to trigger any
+  <leader> bindings."
+    (interactive)
+    (setq prefix-arg current-prefix-arg)
+    (push '(t . leader) unread-command-events))
+
+  (defun evil-send-localleader ()
+    "Put symbol localleader in `unread-command-events' to trigger any
+  <localleader> bindings."
+    (interactive)
+    (setq prefix-arg current-prefix-arg)
+    (push '(t . localleader) unread-command-events))
