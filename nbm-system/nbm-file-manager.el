@@ -182,7 +182,8 @@ e) el"))
 	((equal system-type 'darwin)
 	 (shell-command (format "open -R \"%s\"" (nbm-get-file-name))))
 	((equal system-type 'gnu/linux)
-	 (shell-command (format "nautilus --browser \"%s\"" (nbm-get-file-name))))))
+	 (let ((process-connection-type nil))
+	   (start-process "" nil "nautilus" "--browser" (nbm-get-file-name))))))
 
 (defun nbm-show-trash-bin ()
   "Open Finder on the trash bin."
