@@ -43,7 +43,7 @@
 
   (use-package openwith :init (openwith-mode t)
     (if (equal system-type 'gnu/linux)
-        (setq openwith-associations '(("\\.pdf\\'" "okular" (file)))))
+        (setq openwith-associations '(("\\.pdf\\'" "evince" (file)))))
     (unless (equal system-type 'gnu/linux)
       (setq openwith-associations '(("\\.pdf\\'" "open" (file))
                                     ("\\.hwp\\'" "open" (file))
