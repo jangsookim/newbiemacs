@@ -207,15 +207,17 @@
 
   (nbm-key-tree-load)
 
-  (if (equal system-type 'windows-nt)
-      (progn
-        (setq ispell-program-name "hunspell")
-        (setq ispell-dictionary "en_US")
-        (setq ispell-hunspell-dictionary-alist '(("en_US" "c:/msys64/mingw64/share/hunspell/en_US.aff")))
-        (setq ispell-local-dictionary-alist '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8))))
-    (if (file-exists-p "/opt/homebrew/bin/ispell")
-        (setq ispell-program-name "/opt/homebrew/bin/ispell")
-      (setq ispell-program-name "/usr/local/bin/ispell")))
+  (cond ((equal system-type 'windows-nt)
+         (setq ispell-program-name "hunspell")
+         (setq ispell-dictionary "en_US")
+         (setq ispell-hunspell-dictionary-alist '(("en_US" "c:/msys64/mingw64/share/hunspell/en_US.aff")))
+         (setq ispell-local-dictionary-alist '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8))))
+        ((equal system-type 'darwin)
+         (if (file-exists-p "/opt/homebrew/bin/ispell")
+             (setq ispell-program-name "/opt/homebrew/bin/ispell")
+           (setq ispell-program-name "/usr/local/bin/ispell")))
+        ((equal system-type 'gnu/linux)
+         (setq ispell-program-name "/usr/bin/ispell")))
 
   (unless (file-exists-p (concat *nbm-home* "nbm-user-settings/references/my-dictionary"))
     (copy-file (concat (getenv "HOME") "/nbm-root/newbiemacs/nbm-user-settings/references/my-dictionary")
