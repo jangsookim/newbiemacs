@@ -427,7 +427,8 @@ to \\begin{multline}...\\end{multline} or vice versa."
       (message (format "%s label(s) deleted." count)))))
 
 (defun nbm-latex-toggle-bbl-file ()
-  "Insert the bib file or remove it."
+  "Insert the bib file or remove it.
+If there is a space in the path, replace it by a dash."
   (interactive)
   (save-excursion
     (let (bib-exist beg end)
@@ -453,7 +454,8 @@ to \\begin{multline}...\\end{multline} or vice versa."
 	      (insert "\n\n") (previous-line 2)
 	      (insert "\\bibliographystyle{abbrv}\n")))
 	  (insert (format "\\bibliography{%s}"
-			  (nbm-f "nbm-user-settings/references/ref.bib")))
+			  (string-replace " " "-"
+					  (nbm-f "nbm-user-settings/references/ref.bib"))))
 	  (message "Bibtex toggled: bibtex ON"))))))
 
 (defun nbm-bib-item-create-key (bib-str choice)
