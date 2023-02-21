@@ -74,10 +74,19 @@ For example, 20221109090747-test.org will be changed to test.org."
 (defun nbm-org-jump-to-heading ()
   "Jump to a heading in the current org file."
   (interactive)
-  (let (org-refile-history org-refile-targets level)
-    (org-next-visible-heading 1)
-    (setq org-refile-targets (cons `(,(buffer-file-name) . (:maxlevel . ,9)) org-refile-targets))
-    (org-refile (universal-argument))))
+  (let (heading-list heading beg end)
+    (save-excursion
+      (beginning-of-buffer)
+      (setq heading-list '())
+      (while (re-search-forward "^[*]+ .+$" nil t)
+	(beginning-of-line) (setq beg (point))
+	(end-of-line) (setq end (point))
+	(setq heading (buffer-substring beg end))
+	(setq heading-list (nbm-append heading heading-list))))
+    (setq heading (completing-read "Choose a heading to jump: "
+				   heading-list))
+    (beginning-of-buffer)
+    (re-search-forward (concat "^" heading))))
 
 (defun nbm-org-jump-to-tex ()
   "Jump to the tex file for the current org file."
