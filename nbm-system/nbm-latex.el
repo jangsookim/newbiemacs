@@ -83,19 +83,23 @@ If there is no title, return the filename."
 (defun nbm-latex-new-file ()
   "Create a new latex file from a template."
   (interactive)
-  (let (choice title filename dirname temp)
+  (let (new-dir (dirname ".") choice title filename temp)
+    (if (equal ?y (read-char (concat "Create a directory under the newbiemacs/tex directory?
+(Type y for yes or type anything else for creating a tex file in the current directory.) ")))
+	(setq new-dir t))
     (setq title (read-string (concat "Enter a new latex filename (default: note): ")
-                             nil nil "note" nil))
-    (setq dirname (concat (nbm-f "tex/") (format-time-string "%Y-%m-%d-") title))
+			     nil nil "note" nil))
+    (when new-dir
+      (setq dirname (concat (nbm-f "tex/") (format-time-string "%Y-%m-%d-") title))
+      (make-directory dirname))
     (setq temp (read-file-name "Choose the template file: (default is template.tex) "
 			       (nbm-f "nbm-user-settings/templates/")
 			       "template.tex"))
-    (make-directory dirname)
     (setq filename (concat dirname "/" title ".tex"))
     (copy-file temp filename)
     (find-file filename) (goto-char (point-min))
     (when (search-forward "\\title{" nil t nil)
-     (insert title))
+      (insert title))
     (search-forward "begin{document}" nil t nil)
     (next-line) (recenter-top-bottom) (save-buffer)
     (message "Created a new file.")))
