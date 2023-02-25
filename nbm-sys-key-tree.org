@@ -54,6 +54,7 @@
 **** key: n, description: copy-file-name, function: nbm-copy-file-name, level: 3
 **** key: y, description: copy-file-path, function: nbm-copy-file-path, level: 3
 ** key: g, description: git, level: 2
+*** key: c, description: clone, function: magit-clone, level: 2
 *** key: i, description: init, function: nbm-magit-init, level: 2
 *** key: s, description: status, function: magit-status, level: 2
 ** key: i, description: Insert, level: 3
