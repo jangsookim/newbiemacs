@@ -10,17 +10,15 @@
   "Append LAST at the end of LIST."
   (reverse (cons last (reverse list))))
 
-(defun nbm-find-file-with-extension (ext search-flag)
+(defun nbm-find-file-with-extension (ext)
   "Find a file with extension EXT in the EXT folder.
-EXT should be tex, pdf, el, or sage.
-If search-flag is non-nil, it will list files ending with EXT."
-  (let (buf)
-    (find-file (nbm-f (concat ext "/")))
-    (setq buf (current-buffer))
-    (defun nbm-temp-insert ()
-      (if search-flag (insert (concat ext "$ ")))
-      (kill-buffer buf))
-    (minibuffer-with-setup-hook 'nbm-temp-insert (call-interactively 'helm-projectile))))
+EXT should be tex, el, or sage."
+  (let (file dir file-list)
+    (setq dir (nbm-f (concat ext "/")))
+    (setq file-list (directory-files-recursively dir (format "[.]%s$" ext)))
+    (setq file-list (mapcar (lambda (arg) (substring arg (length dir) nil)) file-list))
+    (setq file (completing-read "Choose a file to open: " file-list))
+    (find-file (concat dir file))))
 
 (defun nbm-recent-file-with-extension (ext)
   "Find a recent file with extension EXT.
@@ -30,27 +28,31 @@ EXT should be tex, pdf, el, or sage."
   (minibuffer-with-setup-hook 'nbm-temp-insert (call-interactively 'helm-recentf)))
 
 (defun nbm-find-pdf ()
-  "Find a pdf file in the pdf folder."
+  "Find a file in the pdf folder."
   (interactive)
-  (nbm-find-file-with-extension "pdf" nil))
+  (let (buf)
+    (find-file (nbm-f "pdf/"))
+    (setq buf (current-buffer))
+    (defun nbm-temp () (kill-buffer buf))
+    (minibuffer-with-setup-hook 'nbm-temp (call-interactively 'helm-projectile))))
 
 (defun nbm-find-tex ()
   "Find a tex file in the tex folder."
   (interactive)
-  (nbm-find-file-with-extension "tex" t))
+  (nbm-find-file-with-extension "tex"))
 
 (defun nbm-find-el ()
   "Find a el file in the el folder."
   (interactive)
-  (nbm-find-file-with-extension "el" t))
+  (nbm-find-file-with-extension "el"))
 
 (defun nbm-find-sage ()
   "Find a sage file in the sage folder."
   (interactive)
-  (nbm-find-file-with-extension "sage" t))
+  (nbm-find-file-with-extension "sage"))
 
 (defun nbm-find-misc ()
-  "Find a sage file in the sage folder."
+  "Find a file in the misc folder."
   (interactive)
   (let (buf)
     (find-file (nbm-f "misc/"))
