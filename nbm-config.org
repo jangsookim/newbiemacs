@@ -329,6 +329,7 @@
   (setq reftex-default-bibliography (concat *nbm-home* "nbm-user-settings/references/ref.bib"))
 
   (setq TeX-save-query nil)
+  (setq TeX-debug-warnings t)
   (setq TeX-auto-save t)
   (setq TeX-electric-math (cons "\\( " " \\)"))
   (setq reftex-plug-into-AUCTeX t)

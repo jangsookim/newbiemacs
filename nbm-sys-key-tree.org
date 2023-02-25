@@ -196,6 +196,7 @@
 *** key: p, description: pgml to latex, function: nbm-latex-toggle-pgml, level: 3
 *** key: h, description: hwp math, function: nbm-latex-convert-to-hwp, level: 1
 *** key: v, description: change variables, function: nbm-latex-change-variables, level: 1
+*** key: w, description: debug warnings, function: TeX-toggle-debug-warnings, level: 3
 ** key: y, description: yank, level: 3
 *** key: f, description: make-and-yank-filename, function: nbm-latex-make-and-yank-filename, level: 3
 * description: org-mode, level: 1
