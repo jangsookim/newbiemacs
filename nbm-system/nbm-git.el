@@ -12,7 +12,9 @@
       (shell-command (format "git remote add origin https://github.com/%s/%s.git" username repo-name))
       (shell-command "git branch -M main")
       (shell-command "git push -u origin main")
-      (message (format "Repo created: %s" repo-name)))))
+      (message (format "Repo created: %s
+Note: If this repository was not created, make sure that you have installed GitHub CLI and run the following command in a terminal.
+gh auth login" repo-name)))))
 
 (defun nbm-set-github-username ()
   "Set your github your name."
@@ -42,4 +44,3 @@
   (magit-init (file-name-directory (nbm-get-file-name)))
   (when (equal ?y (read-char "Do you want to publish the current repository to github? (Type y for yes): "))
     (nbm-git-publish-to-github)))
-
