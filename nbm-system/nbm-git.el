@@ -15,7 +15,7 @@
       (message (format "Repo created: %s" repo-name)))))
 
 (defun nbm-set-github-username ()
-  "Set your github your name."
+  "Set your github user name."
   (interactive)
   (nbm-set-user-variable "nbm-github-username"
 			 (read-string "Enter your github username: ")))
