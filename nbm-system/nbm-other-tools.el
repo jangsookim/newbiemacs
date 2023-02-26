@@ -57,7 +57,7 @@ Version 2015-06-08"
       (xah-asciify-text (point-min) (point-max))
       (buffer-string)))
 
-  ;; the following two functions have been deleated from the github source
+  ;; the following two functions have been deleted from the github source
   ;; https://github.com/emacs-evil/evil/blob/master/evil-core.el
 
   (defun evil-send-leader ()
