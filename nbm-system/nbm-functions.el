@@ -1,9 +1,5 @@
 ;; This file contains simple functions for newbiemacs.
 
-(defun nbm-magit-init ()
-  (interactive)
-  (magit-init (file-name-directory (nbm-get-file-name))))
-
 (defun nbm-latex-environment-update ()
   (interactive)
   (LaTeX-environment t))
