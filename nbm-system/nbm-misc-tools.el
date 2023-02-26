@@ -31,7 +31,7 @@
   (kill-new (format "load(\"%s\")" (buffer-file-name)))
   (message (format "Copied to clipboard: %s" (current-kill 0))))
 
-(defun nbm-get-user-variable (var all)
+(defun nbm-get-user-variable (var &optional all)
   "Return the content of the file nbm-VAR.txt in the folder
 newbiemacs/nbm-user-settings/nbm-variables.
 If ALL is t, then return the full content.

@@ -201,6 +201,6 @@ to check things later if necessary."
 
 (defun nbm-get-user-level ()
   "Return user level. By default it is 0."
-  (unless (nbm-get-user-variable "level" nil)
+  (unless (nbm-get-user-variable "level")
     (nbm-set-user-variable "level" "1"))
-  (string-to-number (nbm-get-user-variable "level" nil)))
+  (string-to-number (nbm-get-user-variable "level")))

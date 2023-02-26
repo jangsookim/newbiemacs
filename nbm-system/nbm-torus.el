@@ -110,8 +110,8 @@
   ;; (torus-load-theme 1)
   (torus-load-theme
    (if (fboundp 'nbm-get-user-variable)
-       (if (nbm-get-user-variable "torus" nil)
-	   (string-to-number (nbm-get-user-variable "torus" nil))
+       (if (nbm-get-user-variable "torus")
+	   (string-to-number (nbm-get-user-variable "torus"))
 	 1)
      1))
   (torus-init)
