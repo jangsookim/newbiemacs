@@ -42,8 +42,9 @@
   (use-package org-roam-ui)
 
   (use-package openwith :init (openwith-mode t)
-    (if (equal system-type 'gnu/linux)
-        (setq openwith-associations '(("\\.pdf\\'" "evince" (file)))))
+    (when (equal system-type 'gnu/linux)
+      (setq process-connection-type nil)
+      (setq openwith-associations '(("\\.pdf\\'" "xdg-open" (file)))))
     (unless (equal system-type 'gnu/linux)
       (setq openwith-associations '(("\\.pdf\\'" "open" (file))
                                     ("\\.hwp\\'" "open" (file))

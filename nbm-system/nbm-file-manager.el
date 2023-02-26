@@ -16,7 +16,7 @@ EXT should be pdf, tex, el, or sage."
   (let (file dir file-list)
     (setq dir (nbm-f (concat ext "/")))
     (if (equal ext "pdf")
-	(setq file-list (directory-files-recursively dir "[.]pdf$\\|[.]djvu"))
+	(setq file-list (directory-files-recursively dir "[.]pdf$\\|[.]djvu$"))
       (setq file-list (directory-files-recursively dir (format "[.]%s$" ext))))
     (setq file-list (mapcar (lambda (arg) (cons (substring arg (length dir) nil) arg)) file-list))
     (helm :sources (helm-build-sync-source "find-file"
@@ -185,7 +185,7 @@ e) el"))
 	((equal system-type 'darwin)
 	 (shell-command (format "open -R \"%s\"" (nbm-get-file-name))))
 	((equal system-type 'gnu/linux)
-	 (let ((process-connection-type nil))
+	 (let (process-connection-type)
 	   (start-process "" nil "nautilus" "--browser" (nbm-get-file-name))))))
 
 (defun nbm-show-trash-bin ()
