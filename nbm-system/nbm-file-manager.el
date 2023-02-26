@@ -12,29 +12,23 @@
 
 (defun nbm-find-file-with-extension (ext)
   "Find a file with extension EXT in the EXT folder.
-EXT should be tex, el, or sage."
+EXT should be pdf, tex, el, or sage."
   (let (file dir file-list)
     (setq dir (nbm-f (concat ext "/")))
-    (setq file-list (directory-files-recursively dir (format "[.]%s$" ext)))
-    (setq file-list (mapcar (lambda (arg) (substring arg (length dir) nil)) file-list))
-    (setq file (completing-read "Choose a file to open: " file-list))
-    (find-file (concat dir file))))
-
-(defun nbm-recent-file-with-extension (ext)
-  "Find a recent file with extension EXT.
-EXT should be tex, pdf, el, or sage."
-  (defun nbm-temp-insert ()
-    (insert (concat ext "$ ")))
-  (minibuffer-with-setup-hook 'nbm-temp-insert (call-interactively 'helm-recentf)))
+    (if (equal ext "pdf")
+	(setq file-list (directory-files-recursively dir "[.]pdf$\\|[.]djvu"))
+      (setq file-list (directory-files-recursively dir (format "[.]%s$" ext))))
+    (setq file-list (mapcar (lambda (arg) (cons (substring arg (length dir) nil) arg)) file-list))
+    (helm :sources (helm-build-sync-source "find-file"
+		     :candidates file-list
+		     :action 'helm-type-file-actions)
+	  :prompt "Find files: "
+	  :buffer "*helm find files*")))
 
 (defun nbm-find-pdf ()
   "Find a file in the pdf folder."
   (interactive)
-  (let (buf)
-    (find-file (nbm-f "pdf/"))
-    (setq buf (current-buffer))
-    (defun nbm-temp () (kill-buffer buf))
-    (minibuffer-with-setup-hook 'nbm-temp (call-interactively 'helm-projectile))))
+  (nbm-find-file-with-extension "pdf"))
 
 (defun nbm-find-tex ()
   "Find a tex file in the tex folder."
@@ -58,6 +52,13 @@ EXT should be tex, pdf, el, or sage."
     (find-file (nbm-f "misc/"))
     (setq buf (current-buffer))
     (helm-projectile)))
+
+(defun nbm-recent-file-with-extension (ext)
+  "Find a recent file with extension EXT.
+EXT should be tex, pdf, el, or sage."
+  (defun nbm-temp-insert ()
+    (insert (concat ext "$ ")))
+  (minibuffer-with-setup-hook 'nbm-temp-insert (call-interactively 'helm-recentf)))
 
 (defun nbm-recent-pdf ()
   "Find a recent pdf file."
