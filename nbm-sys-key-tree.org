@@ -21,7 +21,8 @@
 **** key: f, description: tofus, function: tofus, level: 1
 **** key: r, description: torus, function: torus, level: 1
 **** key: t, description: tetris, function: tetris, level: 1
-*** key: c, function: quick-calc, level: 2
+*** key: c, function: calc, level: 2
+*** key: q, function: quick-calc, level: 2
 ** key: b, description: Buffers, level: 1
 *** key: b, description: buffers-list, function: helm-buffers-list, level: 1
 *** key: d, function: kill-this-buffer, level: 1
