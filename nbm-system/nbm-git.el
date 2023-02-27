@@ -18,9 +18,13 @@
       (shell-command (format "git remote add origin https://github.com/%s/%s.git" username repo-name))
       (shell-command "git branch -M main")
       (shell-command "git push -u origin main")
-      (message (format "Repo created: %s
-Note: If this repository was not created, make sure that you have installed GitHub CLI and run the following command in a terminal.
-gh auth login" repo-name)))))
+      (if (string-search "Repository not found"
+			 (shell-command-to-string "git ls-remote --exit-code"))
+	  (message (format "The repository was not created.
+Make sure that you have installed GitHub CLI and run the following command in a terminal.
+gh auth login"))
+	(message (format "The following repository has been created.
+https://github.com/%s/%s.git" username repo-name))))))
 
 (defun nbm-git-merge ()
   "Run a simple git merge tool in the current file."
