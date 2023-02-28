@@ -21,7 +21,8 @@
 **** key: f, description: tofus, function: tofus, level: 1
 **** key: r, description: torus, function: torus, level: 1
 **** key: t, description: tetris, function: tetris, level: 1
-*** key: c, function: quick-calc, level: 2
+*** key: c, function: calc, level: 2
+*** key: q, function: quick-calc, level: 2
 ** key: b, description: Buffers, level: 1
 *** key: b, description: buffers-list, function: helm-buffers-list, level: 1
 *** key: d, function: kill-this-buffer, level: 1
@@ -165,7 +166,8 @@
 ** key: i, description: Insert, level: 1
 *** key: c, description: citation, function: helm-bibtex, level: 1
 *** key: i, description: item, function: LaTeX-insert-item, level: 2
-*** key: F, description: figure, function: nbm-latex-insert-figure, level: 1
+*** key: f, description: figure only, function: nbm-latex-insert-figure-only, level: 1
+*** key: F, description: figure with environment, function: nbm-latex-insert-figure-with-env, level: 1
 *** key: l, description: label, function: nbm-latex-insert-label, level: 1
 ** key: j, description: jump, level: 2
 *** key: k, description: previous section, function: outline-previous-heading, level: 2

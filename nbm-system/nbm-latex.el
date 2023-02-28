@@ -555,14 +555,14 @@ CHOICE 3: ChoKimLee2022"
     (kill-buffer)
     keys))
 
-(defun nbm-latex-insert-figure ()
-  "Insert the most recent file from *nbm-screenshots* to ./figures."
-  (interactive)
+(defun nbm-latex-insert-figure (env)
+  "Insert the most recent file from *nbm-screenshots* to ./figures.
+If ENV is non-nil, insert a figure environment."
   (let (fig files ext file choice dir)
     (setq files '())
     (dolist (dir *nbm-screenshots*)
       (if (file-exists-p dir)
-	(setq files (append files (directory-files dir t "[.]jpeg\\|[.]png\\|[.]jpg")))))
+	  (setq files (append files (directory-files dir t "[.]jpeg\\|[.]png\\|[.]jpg")))))
     (setq newest (nbm-newest-file files))
     (setq ext (concat "." (file-name-extension newest)))
     (setq choice (read-char (concat "Move this file?: (Type y for yes.)\n" newest)))
@@ -575,14 +575,29 @@ CHOICE 3: ChoKimLee2022"
       (setq choice (read-char (concat "Delete this file?: (Type y for yes.)\n" newest)))
       (when (eq choice ?y) (delete-file newest))
       (end-of-line)
-      (insert (concat " See Figure~\\ref{fig:" fig "}.\n"
-		      "\n\\begin{figure}\n"
-		      "  \\centering\n"
-		      "  \\includegraphics[scale=.5]{./figures/" fig ext "}\n"
-		      "  \\caption{}\n"
-		      "  \\label{fig:" fig "}\n"
-		      "\\end{figure}\n\n"))
-      (goto-char (- (point) (+ 31 (length fig)))))))
+      (if env
+	  (progn
+	    (insert (concat " See Figure~\\ref{fig:" fig "}.\n"
+			    "\n\\begin{figure}\n"
+			    "  \\centering\n"
+			    "  \\includegraphics[scale=.5]{./figures/" fig ext "}\n"
+			    "  \\caption{}\n"
+			    "  \\label{fig:" fig "}\n"
+			    "\\end{figure}\n"))
+	    (goto-char (- (point) (+ 31 (length fig)))))
+	(insert (concat "\n\\begin{center}\n"
+			"  \\includegraphics[scale=.5]{./figures/" fig ext "}\n"
+			"\\end{center}\n"))))))
+
+(defun nbm-latex-insert-figure-with-env ()
+  "Insert the most recent file from *nbm-screenshots* to ./figures with a figure environment."
+  (interactive)
+  (nbm-latex-insert-figure t))
+
+(defun nbm-latex-insert-figure-only ()
+  "Insert the most recent file from *nbm-screenshots* to ./figures with a figure environment."
+  (interactive)
+  (nbm-latex-insert-figure nil))
 
 ;; converting code
 
