@@ -1,7 +1,13 @@
-(defun nbm-snippet-latex-matrix ()
-  "Insert a latex snippet for a matrix."
+(defun nbm-snippet-latex-matrix (&optional bracket)
+  "Insert a latex snippet for a matrix using the pmatrix environment.
+If bracket is non-nill use the bmatrix environment instead."
   (interactive)
-  (insert "\\begin{pmatrix}\n")
+  (unless (texmathp)
+    (insert "\\[\n\n\\]\n")
+    (backward-char 4))
+  (if bracket
+      (insert "\\begin{bmatrix}\n")
+    (insert "\\begin{pmatrix}\n"))
   (nbm-snippet-insert-matrix-entries
    (read-from-minibuffer
     "Instructions: The matrix entries must be separated by a space.
@@ -11,7 +17,9 @@ For example, the 2x2 identity matrix is written as follows.
 (Type M-j to create a new line.)
 Enter the entries below:
 "))
-  (insert "\\end{pmatrix}\n"))
+  (if bracket
+      (insert "\\end{bmatrix}")
+    (insert "\\end{pmatrix}")))
 
 (defun nbm-snippet-latex-ytableau ()
   "Insert a latex snippet for a young tableau."
