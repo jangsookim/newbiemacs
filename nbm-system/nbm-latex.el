@@ -5,13 +5,13 @@
     (let (START END)
       (goto-char (point-min))
       (when (search-forward "\\title" nil t nil)
-            (if (string= (buffer-substring (point) (1+ (point))) "[")
-                (forward-sexp))
-            (search-forward "{")
-            (setq START (point))
-            (backward-char) (forward-sexp)
-            (setq END (1- (point)))
-            (format "%s" (buffer-substring START END))))))
+	(if (string= (buffer-substring (point) (1+ (point))) "[")
+	    (forward-sexp))
+	(search-forward "{")
+	(setq START (point))
+	(backward-char) (forward-sexp)
+	(setq END (1- (point)))
+	(format "%s" (buffer-substring START END))))))
 
 (defun nbm-latex-get-authors ()
   "Return a reversely ordered list of the authors of the current tex file."
@@ -20,10 +20,10 @@
       (setq authors '())
       (goto-char (point-min))
       (while (search-forward "\\author{" nil t nil)
-        (setq START (point))
-        (backward-char) (forward-sexp)
-        (setq END (1- (point)))
-        (setq authors (cons (format "%s" (buffer-substring START END)) authors)))
+	(setq START (point))
+	(backward-char) (forward-sexp)
+	(setq END (1- (point)))
+	(setq authors (cons (format "%s" (buffer-substring START END)) authors)))
       authors)))
 
 (defun nbm-latex-make-filename ()
@@ -34,7 +34,7 @@ If there is no title, return the filename."
     (setq title (nbm-latex-get-title))
     (setq authors (nbm-latex-get-authors))
     (if title
-        (setq file-name (concat ". " title))
+	(setq file-name (concat ". " title))
       (setq file-name (file-name-sans-extension (file-name-nondirectory (buffer-file-name)))))
     (while authors
       (setq temp (car (last (split-string (pop authors) " "))))
@@ -193,8 +193,8 @@ X and Y are lists of variables. Each X_i will be replace by Y_i."
       (goto-char (- (point) (length var)))
       (re-search-backward "[^a-zA-Z]")
       (if (or (equal (buffer-substring (point) (1+ (point))) "\\")
-		  (equal (buffer-substring (- (point) 6) (1+ (point))) "\\begin{")
-		  (equal (buffer-substring (- (point) 4) (1+ (point))) "\\end{"))
+	      (equal (buffer-substring (- (point) 6) (1+ (point))) "\\begin{")
+	      (equal (buffer-substring (- (point) 4) (1+ (point))) "\\end{"))
 	  (setq is-var nil))
       is-var)))
 
@@ -206,9 +206,9 @@ If INCLUDE-ENV is non-nil, then the region from beg and end
 includes the environment macro."
   (save-excursion
     (cond ((or (equal (buffer-substring (point) (+ (point) 2)) "\\(")
-	      (equal (buffer-substring (1- (point)) (1+ (point))) "\\(")
-	      (equal (buffer-substring (point) (+ (point) 2)) "\\[")
-	      (equal (buffer-substring (1- (point)) (1+ (point))) "\\["))
+	       (equal (buffer-substring (1- (point)) (1+ (point))) "\\(")
+	       (equal (buffer-substring (point) (+ (point) 2)) "\\[")
+	       (equal (buffer-substring (1- (point)) (1+ (point))) "\\["))
 	   (forward-char 2))
 	  ((equal (TeX-current-macro) "begin")
 	   (search-forward "}")))
@@ -279,31 +279,55 @@ includes the environment macro."
 	  (message "Copied the math content."))
       (message "You are not in math mode!"))))
 
+(defun nbm-latex-toggle-inline-math ()
+  "Change inline math \"(..)\" to display math \"[..]\" or vice versa."
+  (interactive)
+  (save-excursion
+    (let ((math (nbm-latex-find-math-mode t)))
+      (cond ((not (car math))
+	     (message "You are not inside a math mode!"))
+	    ((equal (car math) "\\(")
+	     (goto-char (nth 2 math))
+	     (delete-region (- (point) 2) (point))
+	     (insert "\\]")
+	     (goto-char (nth 1 math))
+	     (delete-region (point) (+ (point) 2))
+	     (insert "\\["))
+	    ((equal (car math) "\\[")
+	     (goto-char (nth 2 math))
+	     (delete-region (- (point) 2) (point))
+	     (insert "\\)")
+	     (goto-char (nth 1 math))
+	     (delete-region (point) (+ (point) 2))
+	     (insert "\\("))
+	    (t
+	     (message "You are not inside a proper math mode for toggling!"))))))
+
 (defun nbm-latex-toggle-display-math ()
   "Change display math \"[..]\" to \\begin{equation}...\\end{equation} or
 any math environment to display math."
   (save-excursion
     (let ((math (nbm-latex-find-math-mode t)))
-    (cond ((not (car math))
-	   (message "You are not inside a math mode!"))
-	  ((equal (car math) "\\(")
-		 (message "You are not inside a display math mode!"))
-	  ((equal (car math) "\\[")
-	   (goto-char (nth 2 math))
-	   (delete-region (- (point) 2) (point))
-	   (insert "\\end{equation}")
-	   (goto-char (nth 1 math))
-	   (delete-region (point) (+ (point) 2))
-	   (insert "\\begin{equation}"))
-	  (t
-	   (goto-char (nth 2 math))
-	   (search-backward "\\")
-	   (delete-region (point) (nth 2 math))
-	   (insert "\\]")
-	   (goto-char (nth 1 math))
-	   (search-forward "}")
-	   (delete-region (nth 1 math) (point))
-	   (insert "\\["))))))
+      (cond ((not (car math))
+	     (message "You are not inside a math mode!"))
+	    ((equal (car math) "\\(")
+	     (message "You are not inside a display math mode!"))
+	    ((equal (car math) "\\[")
+	     (goto-char (nth 2 math))
+	     (delete-region (- (point) 2) (point))
+	     (insert "\\end{equation}")
+	     (goto-char (nth 1 math))
+	     (delete-region (point) (+ (point) 2))
+	     (insert "\\begin{equation}"))
+	    (t
+	     (goto-char (nth 2 math))
+	     (search-backward "\\")
+	     (delete-region (point) (nth 2 math))
+	     (insert "\\]")
+	     (goto-char (nth 1 math))
+	     (search-forward "}")
+	     (delete-region (nth 1 math) (point))
+	     (insert "\\["))))))
 
 (defun nbm-latex-toggle-equation ()
   "Change \\ [ \\] to \\begin{equation}...\\end{equation} or vice versa.
@@ -311,29 +335,29 @@ Delete or add a label accordingly."
   (interactive)
   (save-excursion
     (let ((math (nbm-latex-find-math-mode t)))
-    (cond ((not (car math))
-	   (message "You are not inside a math mode!"))
-	  ((equal (car math) "\\(")
-	   (message "You are not inside a display math mode!"))
-	  ((equal (car math) "\\[")
-	   (nbm-latex-toggle-display-math)
-	   (nbm-latex-insert-label))
-	  (t
-	   (nbm-latex-delete-label)
-	   (nbm-latex-toggle-display-math))))))
+      (cond ((not (car math))
+	     (message "You are not inside a math mode!"))
+	    ((equal (car math) "\\(")
+	     (message "You are not inside a display math mode!"))
+	    ((equal (car math) "\\[")
+	     (nbm-latex-toggle-display-math)
+	     (nbm-latex-insert-label))
+	    (t
+	     (nbm-latex-delete-label)
+	     (nbm-latex-toggle-display-math))))))
 
 (defun nbm-latex-change-env-name (new-env)
   "Change the environment with NEW-ENV."
   (save-excursion
     (let ((old-env (LaTeX-current-environment))
-	(beg (car (LaTeX-env-beginning-pos-col)))
-	(end (LaTeX-find-matching-end)))
-    (goto-char end)
-    (search-backward old-env)
-    (replace-match new-env)
-    (goto-char beg)
-    (search-forward old-env)
-    (replace-match new-env))))
+	  (beg (car (LaTeX-env-beginning-pos-col)))
+	  (end (LaTeX-find-matching-end)))
+      (goto-char end)
+      (search-backward old-env)
+      (replace-match new-env)
+      (goto-char beg)
+      (search-forward old-env)
+      (replace-match new-env))))
 
 (defun nbm-latex-toggle-align ()
   "Change \\ [ \\] or \\begin{equation}...\\end{equation}
@@ -609,11 +633,11 @@ If ENV is non-nil, insert a figure environment."
     (save-excursion
       (goto-char r-start)
       (if (search-forward "[`" r-end t)
-          (nbm-replace-strings '("[`" "\\(" "`]" "\\)") r-start r-end)
-        (nbm-replace-strings '("\\[" "[`" "\\]" "`]"
-                               "\\(" "[`" "\\)" "`]"
-                               "\\{" "\\lbrace " "\\}" "\\rbrace ")
-                             r-start r-end)))))
+	  (nbm-replace-strings '("[`" "\\(" "`]" "\\)") r-start r-end)
+	(nbm-replace-strings '("\\[" "[`" "\\]" "`]"
+			       "\\(" "[`" "\\)" "`]"
+			       "\\{" "\\lbrace " "\\}" "\\rbrace ")
+			     r-start r-end)))))
 
 (defun nbm-replace-strings (change-list &optional START END)
   "Replace a to b and c to d etc if CHANGE-LIST = '(a b c d ...)."
@@ -628,7 +652,7 @@ If ENV is non-nil, insert a figure environment."
       (setq to-string (car change-list))
       (setq change-list (cdr change-list))
       (while (search-forward from-string nil t)
-        (replace-match to-string nil t))))
+	(replace-match to-string nil t))))
   (widen))
 
 (defun nbm-latex-convert-to-hwp ()
@@ -718,9 +742,9 @@ Return the string \"Author1, Author2. Year. Title.pdf\"."
     (setq filename "")
     (while authors
       (if (> (length filename) 0)
-          (setq filename (concat filename ", ")))
+	  (setq filename (concat filename ", ")))
       (setq filename (concat filename
-                             (car (last (split-string (car authors) " ")))))
+			     (car (last (split-string (car authors) " ")))))
       (setq authors (cdr authors)))
     (setq filename (nbm-modify-paper-filename (concat filename ". " title ".pdf")))))
 
@@ -775,21 +799,21 @@ add a new bib item."
   (interactive)
   (let ((reftex-refstyle "\\eqref"))
     (reftex-reset-mode)
-       (reftex-reference "e")))
+    (reftex-reference "e")))
 
 (defun nbm-latex-fig-ref ()
   "Reftex with figure."
   (interactive)
   (let ((reftex-refstyle "\\Cref"))
-       (reftex-reset-mode)
-       (reftex-reference "f")))
+    (reftex-reset-mode)
+    (reftex-reference "f")))
 
 (defun nbm-latex-sec-ref ()
   "Reftex with section."
   (interactive)
   (let ((reftex-refstyle "\\Cref"))
-       (reftex-reset-mode)
-       (reftex-reference "s")))
+    (reftex-reset-mode)
+    (reftex-reference "s")))
 
 (defun nbm-latex-section ()
   "Reftex with section."
@@ -920,9 +944,9 @@ other key) stop"))
   (reftex-reset-mode)
   (reftex-access-scan-info)
   (let* ((docstruct (symbol-value reftex-docstruct-symbol))
-         (label (completing-read "Choose a reference to insert: "
+	 (label (completing-read "Choose a reference to insert: "
 				 docstruct
-                                 (lambda (x) (stringp (car x))) t)))
+				 (lambda (x) (stringp (car x))) t)))
     (if (equal (substring label 0 3) "eq:")
 	(insert "\\eqref")
       (insert "\\Cref"))
@@ -935,20 +959,20 @@ Prompt for a label (with completion) and jump to the location of this label."
   (reftex-reset-mode)
   (reftex-access-scan-info)
   (let* ((wcfg (current-window-configuration))
-         (docstruct (symbol-value reftex-docstruct-symbol))
+	 (docstruct (symbol-value reftex-docstruct-symbol))
 	 ;; If point is inside a \ref{} or \pageref{}, use that as
 	 ;; default value.
 	 (default (when (looking-back "\\\\\\(?:\\(page\\|eq\\|C\\)\\)?ref{[-a-zA-Z0-9_*.:]*"
-                                      (line-beginning-position))
+				      (line-beginning-position))
 		    (reftex-this-word "-a-zA-Z0-9_*.:")))
-         (label (completing-read (format-prompt "Label" default)
+	 (label (completing-read (format-prompt "Label" default)
 				 docstruct
-                                 (lambda (x) (stringp (car x))) t nil nil
+				 (lambda (x) (stringp (car x))) t nil nil
 				 default))
-         (selection (assoc label docstruct))
-         (where (progn
-                  (reftex-show-label-location selection t nil 'stay)
-                  (point-marker))))
+	 (selection (assoc label docstruct))
+	 (where (progn
+		  (reftex-show-label-location selection t nil 'stay)
+		  (point-marker))))
     (unless other-window
       (set-window-configuration wcfg)
       (switch-to-buffer (marker-buffer where))

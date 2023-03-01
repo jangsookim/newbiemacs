@@ -195,6 +195,7 @@
 *** key: b, description: bbl-file, function: nbm-latex-toggle-bbl-file, level: 1
 *** key: e, description: equation, function: nbm-latex-toggle-equation, level: 1
 *** key: a, description: align, function: nbm-latex-toggle-align, level: 2
+*** key: i, description: inline math, function: nbm-latex-toggle-inline-math, level: 1
 *** key: l, description: label, function: reftex-change-label, level: 2
 *** key: m, description: multline, function: nbm-latex-toggle-multline, level: 2
 *** key: *, description: environment with *, function: nbm-latex-toggle-star, level: 1
