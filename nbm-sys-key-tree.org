@@ -105,10 +105,11 @@
 *** key: o, description: other-window, function: nbm-other-window, level: 2
 *** key: r, description: rotate-downwards, function: evil-window-rotate-downwards, level: 3
 *** key: R, description: rotate-upwards, function: evil-window-rotate-upwards, level: 3
-** key: x, description: Text, level: 3
+** key: x, description: Text, level: 2
 *** key: d, description: Delete, level: 3
 **** key: w, description: trailing whitespace, function: delete-trailing-whitespace, level: 3
 **** key: l, description: double-empty-lines, function: nbm-delete-double-empty-lines, level: 3
+*** key: j, description: join line, function: join-line, level: 2
 ** key: y, description: Yank, level: 2
 *** key: k, description: From kill-ring, function: helm-show-kill-ring, level: 3
 *** key: f, description: Favorite string, function: nbm-yank-favorite-string, level: 2
