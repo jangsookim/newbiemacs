@@ -13,23 +13,24 @@
 	(insert "+") (end-of-line) (insert "+")))))
 
 (defun nbm-org-toggle-checkbox ()
-  "Toggle checkbox in the current item.
-If there is no checkbox, create one."
+  "Toggle checkbox in the current item. If there is no checkbox, create one."
   (interactive)
   (save-excursion
     (let (end)
       (end-of-line) (setq end (point))
       (beginning-of-line) (re-search-forward "\\(^[*]+ \\|^ *[-+] \\|^ *[0-9]+[.)] \\)" end t)
       (when (match-string 1)
-	(if (string= (char-to-string (char-after)) "[")
-	    (org-toggle-checkbox)
-	  (if (equal (substring (match-string 1) 0 1) "*")
-	      (progn
-		(if (equal (buffer-substring (point) (+ (point) 4)) "TODO")
-		    (forward-char 5))
-		(if (equal (buffer-substring (point) (+ (point) 1)) "[")
-		    (org-update-checkbox-count)
-		  (insert "[/] ")))
+	(if (equal (substring (match-string 1) 0 1) "*")
+	    (progn
+	      (when (and (<= (+ (point) 4) (point-max))
+			 (equal (buffer-substring (point) (+ (point) 4)) "TODO"))
+		(forward-char 5))
+	      (if (and (<= (+ (point) 1) (point-max))
+		       (equal (buffer-substring (point) (+ (point) 1)) "["))
+		  (org-update-checkbox-count)
+		(insert "[/] ")))
+	  (if (and (char-after) (string= (char-to-string (char-after)) "["))
+	      (org-toggle-checkbox)
 	    (insert "[ ] ")))))))
 
 (defun nbm-org-consecutive-dates ()
