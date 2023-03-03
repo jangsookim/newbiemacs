@@ -22,7 +22,7 @@ Current directory: %s" (nbm-get-dir-name))))
       (progn
 	(if (file-exists-p "/opt/homebrew/bin/gh")
 	    (setq gh "/opt/homebrew/bin/gh") (setq gh "gh"))
-	(setq status (shell-command-to-string "gh auth status"))
+	(setq status (shell-command-to-string (format "%s auth status" gh)))
 	(string-match "Logged in to github.com as \\([^ ]+\\) " status)
 	(setq username (match-string 1 status))
 	(unless username 
