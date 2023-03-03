@@ -119,8 +119,7 @@ This does not recognize a link if it has an underscore."
   "Export to html and open it."
   (interactive)
   (org-html-export-to-html)
-  (shell-command (format "open \"%s.html\""
-		 (file-name-sans-extension (buffer-file-name)))))
+  (org-open-file (format "%s.html" (file-name-sans-extension (buffer-file-name)))))
 
 (defun nbm-org-html-theme ()
   "Insert org-html-theme in the header."
