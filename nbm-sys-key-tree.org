@@ -138,6 +138,7 @@
 *** key: r, description: reload all, function: yas-reload-all, level: 2
 * description: LaTeX-mode, level: 1
 ** key: ,, description: master command, function: TeX-command-master, level: 1
+** key: `, description: goto next error, function: TeX-next-error, level: 1
 ** key: =, description: table of contents, function: reftex-toc, level: 1
 ** key: a, description: applications, level: 3
 *** key: d, description: latex diff, function: nbm-latex-diff, level: 3
@@ -171,11 +172,13 @@
 *** key: F, description: figure with environment, function: nbm-latex-insert-figure-with-env, level: 1
 *** key: l, description: label, function: nbm-latex-insert-label, level: 1
 ** key: j, description: jump, level: 2
+*** key: b, description: begining of environment, function: LaTeX-find-matching-begin, level: 2
+*** key: e, description: end of environment, function: LaTeX-find-matching-end, level: 2
 *** key: k, description: previous section, function: outline-previous-heading, level: 2
 *** key: j, description: next section, function: outline-next-heading, level: 2
-*** key: m, description: jump mode, function: nbm-latex-jump-section-mode, level: 2
+*** key: m, description: jump section mode, function: nbm-latex-jump-section-mode, level: 2
 *** key: l, description: label, function: nbm-reftex-goto-label, level: 2
-*** key: s, description: jump to a section, function: nbm-latex-jump-section, level: 2
+*** key: s, description: section, function: nbm-latex-jump-section, level: 2
 ** key: n, description: new item/macro/section, level: 1
 *** key: b, description: bib-item, function: nbm-latex-new-bib-item, level: 1
 *** key: m, description: macro, function: nbm-latex-new-macro, level: 1
