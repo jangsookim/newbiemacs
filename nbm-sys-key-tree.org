@@ -239,8 +239,11 @@
 *** key: t, description: tex, function: nbm-org-jump-to-tex, level: 3
 *** key: u, description: url, function: nbm-org-jump-to-url, level: 3
 ** key: h, description: HTML, level: 1
-*** key: e, description: html-export, function: nbm-org-html-export, level: 1
-*** key: t, description: html-theme, function: nbm-org-html-theme, level: 1
+*** key: h, description: html export, function: nbm-org-html-export, level: 1
+*** key: H, description: html theme, function: nbm-org-html-theme, level: 1
+*** key: r, description: presentation export, function: org-reveal-export-to-html-and-browse, level: 1
+*** key: R, description: presentation theme, function: nbm-org-reveal-theme, level: 1
+*** key: o, description: options, function: nbm-org-export-options, level: 1
 ** key: k, description: add keybinding, function: nbm-key-tree-add-keybinding, level: 3
 ** key: u, description: UI mode, function: org-roam-ui-mode, level: 1
 ** key: r, function: org-refile, level: 3

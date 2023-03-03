@@ -155,12 +155,42 @@ This does not recognize a link if it has an underscore."
 		      *nbm-home* choice choice))
     (save-excursion
       (beginning-of-buffer)
-      (when (search-forward "#+SETUPFILE:" nil t)
+      (while (re-search-forward "^#[+]SETUPFILE:\\|^#[+]REVEAL_" nil t)
 	  (beginning-of-line) (kill-line) (kill-line))
       (beginning-of-buffer)
-      (search-forward "#+title:") (next-line) (beginning-of-line)
+      (re-search-forward "^#[+]title:") (next-line) (beginning-of-line)
       (insert (format "%s\n" str)))
     (message (format "Inserted %s" str))))
+
+(defun nbm-org-reveal-theme ()
+  "Insert org-reveal-theme in the header."
+  (interactive)
+  (let (themes choice)
+    (setq themes '("league" "black" "white" "beige" "night" "serif" "simple" "solarized" "moon" "dracula" "sky" "blood"))
+    (setq choice (completing-read "Select the theme: " themes nil nil nil nil "league"))
+    (save-excursion
+      (beginning-of-buffer)
+      (while (re-search-forward "^#[+]SETUPFILE:\\|^#[+]REVEAL_" nil t)
+	  (beginning-of-line) (kill-line) (kill-line))
+      (beginning-of-buffer)
+      (re-search-forward "^#[+]title:") (next-line) (beginning-of-line)
+      (insert (format "#+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js\n#+REVEAL_TRANS: zoom\n#+REVEAL_THEME: %s\n" choice)))
+    (message (format "Inserted a presentation theme: %s" choice))))
+
+(defun nbm-org-export-options ()
+  "Add org export options."
+  (interactive)
+  (beginning-of-buffer)
+  (re-search-forward "^#[+]title:") (next-line) (beginning-of-line)
+  (insert "#+OPTIONS: title:t author:t date:nil toc:t num:t\n")
+  (message "Inserted options.
+To modify options, change \"t\" to \"nil\" or vice versa.
+
+\"t\" means the option is turned on.
+\"nil\" means the option is turned off.
+
+For example, \"toc:t\" will show the table of contents
+and \"num:nil\" will hide the section numbers."))
 
 (defun nbm-org-sage-tangle ()
   "Tangle the python blocks to a sage file.

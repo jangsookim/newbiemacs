@@ -141,6 +141,8 @@
       (setq org-download-annotate-function (lambda (link) ""))
       (setq org-download-display-inline-images nil)))
 
+  (use-package ox-reveal)
+
   (use-package winum
     :init
     (setq winum-keymap
