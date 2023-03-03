@@ -247,3 +247,14 @@ and store the org link."
       (when (search-forward ": " end t)
 	(kill-new (buffer-substring (point) end))
 	(message (concat "Copied to clipboard: " (current-kill 0)))))))
+
+(defun nbm-org-download-method (link)
+  "Download a file to the folder with the buffer-file-name for org-download-method."
+  (let ((filename
+	 (file-name-nondirectory
+	  (car (url-path-and-query
+		(url-generic-parse-url link)))))
+	(dirname (concat (file-name-sans-extension (buffer-name)) "-files")))
+    (unless (file-exists-p dirname)
+      (make-directory dirname))
+    (expand-file-name filename dirname)))
