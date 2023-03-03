@@ -32,23 +32,6 @@ If there is no checkbox, create one."
 		  (insert "[/] ")))
 	    (insert "[ ] ")))))))
 
-(defun nbm-make-permanant-note ()
-  "Delete the 15 digits in the current temporary org-roam file to make it a public note.
-For example, 20221109090747-test.org will be changed to test.org."
-  (interactive)
-  (let (old new choice pos)
-    (setq old (file-name-nondirectory (buffer-file-name)))
-    (if (string-match "[0-9]\\{14\\}-" "20221109090747-test_2.org")
-	(progn
-	  (setq new (substring old 15))
-	  (setq choice (read-char (format "Rename the file?: (Type y for yes.)\nOld name: %s\nNew name: %s" old new)))
-	  (when (equal choice ?y)
-	    (setq pos (point))
-	    (rename-file old new) (find-file new) (kill-buffer old)
-	    (goto-char pos)
-	    (message "File name changed.")))
-      (message "Invalid filename. Check if the current file is a temporary org-roam, e.g. 20221109090747-test.org."))))
-
 (defun nbm-org-consecutive-dates ()
   "Insert consecutive dates."
   (interactive)

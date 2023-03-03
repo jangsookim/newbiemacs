@@ -268,9 +268,6 @@
   (setq inhibit-startup-screen t)
 
 #+end_src
-** which-key
-#+begin_src emacs-lisp :tangle yes
-#+end_src
 
 ** tab-line-mode
 #+begin_src emacs-lisp :tangle yes
@@ -403,7 +400,7 @@
     (setq org-roam-directory (concat *nbm-home* "org/"))
     (org-roam-db-autosync-mode)
     (setq org-roam-capture-templates '(("d" "default" plain "%?"
-                                        :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                                        :target (file+head "${slug}.org"
                                                            "#+title: ${title}\n ")))))
 #+end_src
 * Sage

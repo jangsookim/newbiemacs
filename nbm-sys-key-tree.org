@@ -243,7 +243,6 @@
 *** key: t, description: html-theme, function: nbm-org-html-theme, level: 1
 ** key: k, description: add keybinding, function: nbm-key-tree-add-keybinding, level: 3
 ** key: u, description: UI mode, function: org-roam-ui-mode, level: 1
-** key: p, description: make-permanant-note, function: nbm-make-permanant-note, level: 1
 ** key: r, function: org-refile, level: 3
 ** key: t, description: Tables, level: 3
 *** key: -, description: Draw horizontal line, function: org-ctrl-c-minus, level: 3
