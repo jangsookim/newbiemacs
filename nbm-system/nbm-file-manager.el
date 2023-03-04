@@ -48,10 +48,16 @@ EXT should be pdf, tex, el, or sage."
 (defun nbm-find-misc ()
   "Find a file in the misc folder."
   (interactive)
-  (let (buf)
-    (find-file (nbm-f "misc/"))
-    (setq buf (current-buffer))
-    (helm-projectile)))
+  (let (file dir file-list)
+    (setq dir (nbm-f "misc/"))
+    (setq file-list (directory-files-recursively dir "^[^.].*[^~]$" nil
+						 (lambda (arg) (not (string-search "/." arg)))))
+    (setq file-list (mapcar (lambda (arg) (cons (substring arg (length dir) nil) arg)) file-list))
+    (helm :sources (helm-build-sync-source "find-file"
+		     :candidates file-list
+		     :action 'helm-type-file-actions)
+	  :prompt "Find files: "
+	  :buffer "*helm find files*")))
 
 (defun nbm-recent-file-with-extension (ext)
   "Find a recent file with extension EXT.
