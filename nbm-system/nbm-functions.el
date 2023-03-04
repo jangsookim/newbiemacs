@@ -56,14 +56,6 @@
   (interactive)
   (if valign-mode (valign-mode -1) (valign-mode)))
 
-(defun nbm-toggle-projectile-caching ()
-  "Toggle projectile-enable-caching."
-  (interactive)
-  (if projectile-enable-caching
-      (setq projectile-enable-caching nil)
-    (setq projectile-enable-caching t))
-  (message (format "Now projectile-enable-caching is %s." projectile-enable-caching)))
-
 (defun nbm-set-counter ()
   "Save a number to a register."
   (interactive)

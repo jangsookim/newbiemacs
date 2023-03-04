@@ -11,13 +11,6 @@
   (use-package tex :ensure auctex)
   (use-package auctex-latexmk)
 
-  (use-package projectile :diminish projectile-mode
-    :init
-    (projectile-mode)
-    (setq projectile-enable-caching nil)
-    (setq projectile-sort-order 'recentf)
-    (setq projectile-indexing-method 'native))
-
   (use-package helm :diminish helm-mode
     :init
     (global-set-key (kbd "M-x") 'helm-M-x)
@@ -26,8 +19,6 @@
     (setq helm-buffer-max-length 30)
     (helm-mode 1)
     (add-hook 'helm-minibuffer-set-up-hook 'helm-exchange-minibuffer-and-header-line))
-
-  (use-package helm-projectile)
 
   (use-package helm-bibtex
     :init
@@ -373,8 +364,6 @@
 #+begin_src emacs-lisp :tangle yes
   (global-set-key "\C-cl" 'org-store-link)
   (global-set-key "\C-cc" 'org-capture)
-  (global-set-key "\C-ca" 'org-agenda)
-  (global-set-key "\C-cb" 'org-iswitchb)
 
   (setq org-return-follows-link t)
   (evil-define-key 'normal org-mode-map (kbd "RET") 'org-open-at-point)
