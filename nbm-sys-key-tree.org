@@ -122,6 +122,7 @@
 *** key: w, description: word, function: ispell-word, level: 2
 ** key: T, description: toggle, level: 2
 *** key: F, description: Fullscreen, function: toggle-frame-fullscreen, level: 2
+*** key: w, description: show white space, function: whitespace-mode, level: 2
 ** key: N, description: Newbiemacs, level: 1
 *** key: c, description: config, function: newbie-config, level: 3
 *** key: r, description: reload, function: newbie-reload, level: 1

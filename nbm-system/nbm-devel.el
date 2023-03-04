@@ -2,15 +2,14 @@
   "Delete nbm-home.txt if it exists. If not, create one with Dropbox/newbiemacs in it."
   (interactive)
   (save-excursion
-    (if (file-exists-p (nbm-root-f "nbm-home.txt"))
+    (if (file-exists-p (nbm-root-f "nbm-home.txt.bak"))
 	(progn
 	  (delete-file (nbm-root-f "nbm-home.txt"))
-	  (message "nbm-home.txt deleted."))
+	  (rename-file (nbm-root-f "nbm-home.txt.bak") (nbm-root-f "nbm-home.txt"))
+	  (message "The original nbm-home.txt has been recovered."))
       (progn
-	(find-file (nbm-root-f "nbm-home.txt"))
-	(insert "~/Dropbox/newbiemacs/")
-	(save-buffer) (kill-buffer)
-	(message "nbm-home.txt created. (contents:~/Dropbox/newbiemacs/)")))))
+	(rename-file (nbm-root-f "nbm-home.txt") (nbm-root-f "nbm-home.txt.bak"))
+	(message "nbm-home.txt has been renamed to nbm-home.txt.bak")))))
 
 (defun nbm-update-version ()
   "Update Newbiemacs version."

@@ -264,7 +264,6 @@
   (set-face-attribute 'default nil :height 150)
   (setq ring-bell-function 'ignore)
   (setq resize-mini-windows t)
-  (setq show-trailing-whitespace t)
   (set-cursor-color "LightGreen")
 
   (setq inhibit-startup-screen t)
@@ -376,10 +375,6 @@
   (global-set-key "\C-cc" 'org-capture)
   (global-set-key "\C-ca" 'org-agenda)
   (global-set-key "\C-cb" 'org-iswitchb)
-
-  (setq org-todo-keywords '((type "TODO" "WAIT" "|" "DONE")))
-  (setq org-todo-keyword-faces '(("WAIT" . "gray")))
-  (setq org-log-done 'time)
 
   (setq org-return-follows-link t)
   (evil-define-key 'normal org-mode-map (kbd "RET") 'org-open-at-point)
