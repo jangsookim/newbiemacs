@@ -271,3 +271,25 @@ and store the org link."
     (unless (file-exists-p dirname)
       (make-directory dirname))
     (expand-file-name filename dirname)))
+
+
+(defun nbm-org-insert-file ()
+  "Insert the most recent file from *nbm-screenshots* into the directory (buffer-file-name)-files. A file link is also inserted."
+  (interactive)
+  (let (files file choice dir)
+    (setq files '())
+    (dolist (dir *nbm-screenshots*)
+      (if (file-exists-p dir)
+	  (setq files (append files (directory-files dir t "^[^.].*[^~]$")))))
+    (setq newest (nbm-newest-file files))
+    (setq choice (read-char (concat "Move this file?: (Type y for yes.)\n" newest)))
+    (when (equal choice ?y)
+      (setq dir (concat (file-name-sans-extension (buffer-file-name)) "-files"))
+      (unless (file-directory-p dir) (make-directory dir))
+      (setq file (read-string "Enter the new file name (space will be change to dash): "
+			      (file-name-nondirectory newest)))
+      (setq file (string-replace " " "-" file))
+      (copy-file newest (concat dir "/" file) t)
+      (setq choice (read-char (concat "Delete this file?: (Type y for yes.)\n" newest)))
+      (when (eq choice ?y) (delete-file newest))
+      (insert (format "[[file:%s/%s]]" (file-name-nondirectory dir) file)))))

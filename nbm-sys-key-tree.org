@@ -231,7 +231,9 @@
 *** key: s, description: schedule, function: org-schedule, level: 1
 *** key: t, description: time-stamp, function: org-time-stamp, level: 1
 *** key: T, description: time-stamp-inactive, function: org-time-stamp-inactive, level: 2
-** key: i, description: insert org-roam-node, function: org-roam-node-insert, level: 1
+** key: i, description: insert, level: 1
+*** key: f, description: newest file, function: nbm-org-insert-file, level: 1
+*** key: n, description: insert org-roam-node, function: org-roam-node-insert, level: 1
 ** key: j, description: Jump, level: 2
 *** key: a, description: archive, function: nbm-org-jump-to-archive, level: 3
 *** key: d, description: dir-link, function: nbm-org-jump-to-dir-at-point, level: 3
