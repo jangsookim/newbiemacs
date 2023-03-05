@@ -91,9 +91,11 @@
 *** key: s, description: Set counter, function: nbm-set-counter, level: 3
 *** key: a, description: Add counter, function: nbm-add-counter, level: 3
 *** key: i, description: Insert counter, function: nbm-insert-counter, level: 3
-** key: s, description: Search, level: 3
+** key: s, description: Search, level: 2
 *** key: e, description: Find el, function: nbm-find-el, level: 3
 *** key: s, description: Find sage, function: nbm-find-sage, level: 3
+*** key: g, description: google search, function: nbm-google-search, level: 2
+*** key: d, description: look up dictionary, function: nbm-look-up-dictionary, level: 2
 ** key: t, description: Find tex file, function: nbm-find-tex, level: 1
 ** key: u, function: universal-argument, level: 3
 ** key: w, description: Windows, level: 1
@@ -224,6 +226,14 @@
 *** key: i, description: in-line-math, function: nbm-org-latex-in-line-math, level: 3
 *** key: d, description: display-math, function: nbm-org-latex-display-math, level: 3
 ** key: c, function: org-ctrl-c-ctrl-c, level: 3
+** key: C, description: clock, level: 3
+*** key: c, description: cancel clock, function: org-clock-cancel, level: 3
+*** key: d, description: display time, function: org-clock-display, level: 3
+*** key: i, description: clock in, function: org-clock-in, level: 3
+*** key: j, description: jump to current clock, function: org-clock-goto, level: 3
+*** key: o, description: clock out, function: org-clock-out, level: 3
+*** key: p, description: pomodoro, function: org-pomodoro, level: 3
+*** key: r, description: report clock, function: org-clock-report, level: 3
 ** key: e, description: export-dispatch, function: org-export-dispatch, level: 1
 ** key: d, description: Dates, level: 1
 *** key: c, description: consecutive dates, function: nbm-org-consecutive-dates, level: 2

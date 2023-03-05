@@ -272,7 +272,6 @@ and store the org link."
       (make-directory dirname))
     (expand-file-name filename dirname)))
 
-
 (defun nbm-org-insert-file ()
   "Insert the most recent file from *nbm-screenshots* into the directory (buffer-file-name)-files. A file link is also inserted."
   (interactive)

@@ -133,6 +133,7 @@
       (setq org-download-display-inline-images nil)))
 
   (use-package ox-reveal)
+  (use-package org-pomodoro)
 
   (use-package winum
     :init
@@ -409,7 +410,12 @@
 * Emacs mode
 #+begin_src emacs-lisp :tangle yes
   (evil-set-initial-state 'image-mode 'emacs)
+  (evil-set-initial-state 'org-agenda-mode 'emacs)
   (evil-set-initial-state 'diff-mode 'emacs)
+  (evil-set-initial-state 'help-mode 'emacs)
+  (evil-set-initial-state 'Info-mode 'emacs)
+  (evil-set-initial-state 'special-mode 'emacs)
+  (evil-set-initial-state 'TeX-special-mode 'emacs)
 #+end_src
 
 * Welcome page
