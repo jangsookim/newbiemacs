@@ -117,3 +117,16 @@ other key) stop"))
       (delete-file file-name)
       (message (format "File deleted: %s" file-name)))
     (kill-buffer)))
+
+(defun nbm-look-up-dictionary ()
+  "Search the word at point."
+  (interactive)
+  (browse-url (format "https://www.thefreedictionary.com/%s"
+		      (read-string "Enter a word to look up: " (word-at-point)))))
+
+(defun nbm-google-search ()
+  "Google search."
+  (interactive)
+  (browse-url (format "https://www.google.com/search?q=%s"
+		      (read-string "Enter a word to google: "))))
+
