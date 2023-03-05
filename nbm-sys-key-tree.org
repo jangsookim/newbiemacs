@@ -82,8 +82,6 @@
 *** key: A, description: agenda-commands, function: org-agenda, level: 2
 *** key: c, description: capture, function: nbm-org-capture, level: 2
 *** key: r, description: org roam find, function: org-roam-node-find, level: 1
-*** key: s, description: Store link, function: org-store-link, level: 2
-*** key: i, description: Insert link, function: org-insert-link, level: 2
 *** key: S, description: Sync database, function: org-roam-db-sync, level: 3
 *** key: u, description: UI mode, function: org-roam-ui-mode, level: 1
 ** key: p, description: Find pdf, function: nbm-find-pdf, level: 1

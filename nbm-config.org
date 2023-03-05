@@ -298,6 +298,7 @@
   (spaceline-toggle-version-control-off)
   (spaceline-toggle-buffer-encoding-abbrev-off)
   (setq spaceline-org-clock-p t)
+  (setq org-clock-mode-line-total 'today)
 #+end_src
 
 * evil mode
