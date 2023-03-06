@@ -165,17 +165,29 @@ This does not recognize a link if it has an underscore."
 (defun nbm-org-reveal-theme ()
   "Insert org-reveal-theme in the header."
   (interactive)
-  (let (themes choice)
-    (setq themes '("league" "black" "white" "beige" "night" "serif" "simple" "solarized" "moon" "dracula" "sky" "blood"))
-    (setq choice (completing-read "Select the theme: " themes nil nil nil nil "league"))
+  (let (theme-list trans-list theme trans)
+    (setq theme-list '("league" "black" "white" "beige" "night" "serif" "simple" "solarized" "moon" "dracula" "sky" "blood"))
+    (setq trans-list '("default" "cube" "page" "concave" "zoom" "linear" "fade" "none"))
+    (setq theme (completing-read "Select the theme: " theme-list nil nil nil nil "league"))
+    (setq trans (completing-read "Select the transition method: " trans-list nil nil nil nil "default"))
     (save-excursion
       (beginning-of-buffer)
       (while (re-search-forward "^#[+]SETUPFILE:\\|^#[+]REVEAL_" nil t)
 	  (beginning-of-line) (kill-line) (kill-line))
       (beginning-of-buffer)
       (re-search-forward "^#[+]title:") (next-line) (beginning-of-line)
-      (insert (format "#+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js\n#+REVEAL_TRANS: zoom\n#+REVEAL_THEME: %s\n" choice)))
-    (message (format "Inserted a presentation theme: %s" choice))))
+      (insert (format "#+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js
+#+REVEAL_THEME: %s
+#+REVEAL_INIT_OPTIONS: transition: '%s'" theme trans)))
+    (message (format "Inserted a presentation theme: %s" theme))))
+
+(defun nbm-org-reveal-frag ()
+  "Insert an option for org-reveal fragment."
+  (interactive)
+  (let (frag-list frag)
+    (setq frag-list '("appear" "grow" "shrink" "roll-in" "fade-out" "highlight-red" "highlight-green" "highlight-blue" "none"))
+    (setq frag (completing-read "Select the fragment option: " frag-list nil nil nil nil "appear"))
+    (insert (format "#+ATTR_REVEAL: :frag (%s)" frag))))
 
 (defun nbm-org-export-options ()
   "Add org export options."

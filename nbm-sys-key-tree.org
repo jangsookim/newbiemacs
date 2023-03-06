@@ -250,6 +250,7 @@
 *** key: t, description: tex, function: nbm-org-jump-to-tex, level: 3
 *** key: u, description: url, function: nbm-org-jump-to-url, level: 3
 ** key: h, description: HTML, level: 1
+*** key: f, description: fragment option, function: nbm-org-reveal-frag, level: 1
 *** key: h, description: html export, function: nbm-org-html-export, level: 1
 *** key: H, description: html theme, function: nbm-org-html-theme, level: 1
 *** key: r, description: presentation export, function: org-reveal-export-to-html-and-browse, level: 1
