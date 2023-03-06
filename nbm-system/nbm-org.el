@@ -178,7 +178,7 @@ This does not recognize a link if it has an underscore."
       (re-search-forward "^#[+]title:") (next-line) (beginning-of-line)
       (insert (format "#+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js
 #+REVEAL_THEME: %s
-#+REVEAL_INIT_OPTIONS: transition: '%s'" theme trans)))
+#+REVEAL_INIT_OPTIONS: transition: '%s'\n" theme trans)))
     (message (format "Inserted a presentation theme: %s" theme))))
 
 (defun nbm-org-reveal-frag ()
