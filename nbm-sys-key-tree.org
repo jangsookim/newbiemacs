@@ -284,6 +284,8 @@
 *** key: y, description: yank code line, function: nbm-org-yank-code, level: 2
 ** key: R, function: org-roam-refile, level: 3
 ** key: T, description: Toggle, level: 1
+*** key: l, description: latex preview on, function: nbm-org-latex-preview-on, level: 2
+*** key: L, description: latex preview off, function: nbm-org-latex-preview-off, level: 2
 *** key: T, function: org-todo, level: 1
 *** key: r, description: org-roam-buffer, function: org-roam-buffer-toggle, level: 3
 *** key: v, description: valign, function: nbm-toggle-valign, level: 3

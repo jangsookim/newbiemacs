@@ -304,3 +304,14 @@ and store the org link."
       (setq choice (read-char (concat "Delete this file?: (Type y for yes.)\n" newest)))
       (when (eq choice ?y) (delete-file newest))
       (insert (format "[[file:%s/%s]]" (file-name-nondirectory dir) file)))))
+
+(defun nbm-org-latex-preview-on ()
+  "Turn on latex preview in the current file."
+  (interactive)
+  (org-latex-preview '(16)))
+
+(defun nbm-org-latex-preview-off ()
+  "Turn off latex preview in the current file."
+  (interactive)
+  (org-latex-preview '(64)))
+

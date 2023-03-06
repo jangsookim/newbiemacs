@@ -381,6 +381,7 @@
         bibtex-completion-bibliography (concat *nbm-home* "nbm-user-settings/references/ref.bib"))
 
   (eval-after-load "org" '(require 'ox-md nil t))
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 #+end_src
 ** Org-Roam
 #+begin_src emacs-lisp :tangle yes
