@@ -130,8 +130,7 @@ This does not recognize a link if it has an underscore."
       (find-file (nbm-f "nbm-user-settings"))
       (shell-command "git clone https://gitlab.com/OlMon/org-themes.git")
       (kill-buffer))
-    (setq themes '(
-		   "bigblow_inline"
+    (setq themes '("bigblow_inline"
 		   "comfy_inline"
 		   ;; "darksun"
 		   "gray"
@@ -148,8 +147,7 @@ This does not recognize a link if it has an underscore."
 		   "solarized_dark"
 		   "solarized_light"
 		   "stylish_white"
-		   "white_clean"
-		   ))
+		   "white_clean"))
     (setq choice (completing-read "Select the theme: " themes nil nil nil nil "readtheorg_inline"))
     (setq str (format "#+SETUPFILE: %snbm-user-settings/org-themes/src/%s/%s.theme"
 		      *nbm-home* choice choice))
@@ -158,8 +156,10 @@ This does not recognize a link if it has an underscore."
       (while (re-search-forward "^#[+]SETUPFILE:\\|^#[+]REVEAL_" nil t)
 	  (beginning-of-line) (kill-line) (kill-line))
       (beginning-of-buffer)
-      (re-search-forward "^#[+]title:") (next-line) (beginning-of-line)
-      (insert (format "%s\n" str)))
+      (re-search-forward "^#[+]title:.*$")
+      (re-search-forward "^#[+]author:.*$" nil t)
+      (re-search-forward "^#[+]date:.*$" nil t)
+      (insert (format "\n%s" str)))
     (message (format "Inserted %s" str))))
 
 (defun nbm-org-reveal-theme ()
@@ -175,10 +175,14 @@ This does not recognize a link if it has an underscore."
       (while (re-search-forward "^#[+]SETUPFILE:\\|^#[+]REVEAL_" nil t)
 	  (beginning-of-line) (kill-line) (kill-line))
       (beginning-of-buffer)
-      (re-search-forward "^#[+]title:") (next-line) (beginning-of-line)
-      (insert (format "#+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js
+      (re-search-forward "^#[+]title:.*$")
+      (unless (re-search-forward "^#[+]author:.*$" nil t)
+	(insert (format "\n#+author: %s" (user-full-name))))
+      (unless (re-search-forward "^#[+]date:.*$" nil t)
+	(insert (format "\n#+date: %s" (format-time-string "%B%e, %Y"))))
+      (insert (format "\n#+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js
 #+REVEAL_THEME: %s
-#+REVEAL_INIT_OPTIONS: transition: '%s'\n" theme trans)))
+#+REVEAL_INIT_OPTIONS: transition: '%s'" theme trans)))
     (message (format "Inserted a presentation theme: %s" theme))))
 
 (defun nbm-org-reveal-frag ()
@@ -194,7 +198,7 @@ This does not recognize a link if it has an underscore."
   (interactive)
   (beginning-of-buffer)
   (re-search-forward "^#[+]title:") (next-line) (beginning-of-line)
-  (insert "#+OPTIONS: title:t author:t date:nil toc:t num:t\n")
+  (insert "#+OPTIONS: title:t author:t date:t toc:t num:t timestamp:nil creator:nil\n")
   (message "Inserted options.
 To modify options, change \"t\" to \"nil\" or vice versa.
 
