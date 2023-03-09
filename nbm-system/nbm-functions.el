@@ -77,7 +77,8 @@
 
 (defun nbm-org-capture ()
   (interactive)
-  (org-capture nil "t"))
+  (org-capture nil "t")
+  (evil-append nil))
 
 (defun nbm-shell-commend ()
   (interactive)
