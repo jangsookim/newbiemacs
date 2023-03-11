@@ -17,6 +17,8 @@
 ** key: ., description: org-roam-today, function: nbm-org-roam-today, level: 2
 ** key: a, description: Applications, level: 1
 *** key: m, description: magnet, function: nbm-magnet, level: 1
+*** key: d, description: diff, function: diff, level: 2
+*** key: e, description: ediff, function: ediff, level: 2
 *** key: g, description: games, level: 1
 **** key: f, description: tofus, function: tofus, level: 1
 **** key: r, description: torus, function: torus, level: 1
