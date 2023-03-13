@@ -831,12 +831,12 @@ Delete or insert a label accordingly."
     (if (s-suffix? "*" env)
 	(progn
 	  (setq env (substring env 0 -1))
+	  (LaTeX-modify-environment env)
 	  (nbm-latex-insert-label))
       (progn
 	(setq env (concat env "*"))
-	(nbm-latex-delete-label)))
-    (LaTeX-modify-environment env)))
-
+	(LaTeX-modify-environment env)
+	(nbm-latex-delete-label)))))
 
 ;; latex fonts
 
