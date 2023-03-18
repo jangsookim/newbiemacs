@@ -425,10 +425,11 @@ to \\begin{multline}...\\end{multline} or vice versa."
   "Insert the label in the current environment."
   (interactive)
   (save-excursion
+    (reftex-access-scan-info)
     (let ((env (LaTeX-current-environment)) num)
       (cond ((equal env "document")
 	     (message "You are not in a proper environment!"))
-	    ((texmathp)
+	    ((member env '("align" "equation" "multline"))
 	     (setq label (read-string "Enter a label below. (If you type XXX, then eq:XXX will be inserted. If you type nothing, a unique numeric label will be inserted.)\n"))
 	     (if (equal label "") (setq label (reftex-label nil t))
 	       (setq label (concat "eq:" label))))
