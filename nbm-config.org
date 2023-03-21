@@ -39,7 +39,9 @@
     (unless (equal system-type 'gnu/linux)
       (setq openwith-associations '(("\\.pdf\\'" "open" (file))
                                     ("\\.hwp\\'" "open" (file))
+                                    ("\\.pptx\\'" "open" (file))
                                     ("\\.xlsx\\'" "open" (file))
+                                    ("\\.docx\\'" "open" (file))
                                     ("\\.djvu\\'" "open" (file))))))
 
   (use-package yasnippet :diminish yas-minor-mode

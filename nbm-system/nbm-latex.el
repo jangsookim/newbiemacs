@@ -981,3 +981,21 @@ Prompt for a label (with completion) and jump to the location of this label."
       (switch-to-buffer (marker-buffer where))
       (goto-char where))
     (reftex-unhighlight 0)))
+
+(setq *nbm-latex-compile-section* nil)
+(defun nbm-latex-compile ()
+  "Compile the current tex file. "
+  (interactive)
+  (if *nbm-latex-compile-section*
+      (LaTeX-command-section)
+    (call-interactively 'TeX-command-run-all)))
+
+(defun nbm-latex-toggle-compile-section ()
+  "Toggle the variable *nbm-latex-compile-section*."
+  (interactive)
+  (if *nbm-latex-compile-section*
+      (setq *nbm-latex-compile-section* nil)
+    (setq *nbm-latex-compile-section* t))
+  (message (format "*nbm-latex-compile-section* is now %s." *nbm-latex-compile-section*)))
+
+
