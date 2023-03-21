@@ -986,10 +986,11 @@ Prompt for a label (with completion) and jump to the location of this label."
 (defun nbm-latex-compile ()
   "Compile the current tex file. "
   (interactive)
-  (if *nbm-latex-compile-section*
-      (let ((TeX-command-force t))
-	(LaTeX-command-section))
-    (call-interactively 'TeX-command-run-all)))
+  (let ((TeX-command-force t))
+    (save-buffer)
+    (if *nbm-latex-compile-section*
+	(LaTeX-command-section)
+      (TeX-command-master))))
 
 (defun nbm-latex-toggle-compile-section ()
   "Toggle the variable *nbm-latex-compile-section*."
