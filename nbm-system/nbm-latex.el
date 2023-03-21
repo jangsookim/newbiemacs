@@ -987,7 +987,8 @@ Prompt for a label (with completion) and jump to the location of this label."
   "Compile the current tex file. "
   (interactive)
   (if *nbm-latex-compile-section*
-      (LaTeX-command-section)
+      (let ((TeX-command-force t))
+	(LaTeX-command-section))
     (call-interactively 'TeX-command-run-all)))
 
 (defun nbm-latex-toggle-compile-section ()
@@ -997,5 +998,4 @@ Prompt for a label (with completion) and jump to the location of this label."
       (setq *nbm-latex-compile-section* nil)
     (setq *nbm-latex-compile-section* t))
   (message (format "*nbm-latex-compile-section* is now %s." *nbm-latex-compile-section*)))
-
 
