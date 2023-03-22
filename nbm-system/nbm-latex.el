@@ -768,6 +768,8 @@ add a new bib item."
 (Note: Two lines from arxiv or a bibtex item from mathscinet must be copied first.)" pdf *nbm-pdf*)))
       (when (equal choice ?y)
 	(setq temp (current-kill 0))
+	(while (equal (substring temp 0 1) "\n")
+	  (setq temp (substring temp 1 nil)))
 	(if (equal (substring temp 0 1) "@") (setq mathscinet t))
 	(setq temp (split-string temp "\n"))
 	(setq file-name (read-string "Enter a suitable file name: "
