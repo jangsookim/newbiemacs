@@ -1003,30 +1003,42 @@ Prompt for a label (with completion) and jump to the location of this label."
   (message (format "*nbm-latex-compile-section* is now %s." *nbm-latex-compile-section*)))
 
 (setq *nbm-latex-main-tex-file* nil)
+(defun nbm-latex-find-main-tex-file ()
+  "Find the main tex file associated to _region_.tex.
+The main tex file must be opended in a buffer."
+  (interactive)
+  (let (main)
+    (dolist (file (directory-files "." t "[.]tex$"))
+      (when (and (get-file-buffer file)
+		 (not (equal (file-name-nondirectory file) "_region_.tex")))
+	(setq main (cons file main))))
+    (if (equal (length main) 1)
+	(find-file (car main))
+      (progn
+	(unless *nbm-latex-main-tex-file*
+	  (setq *nbm-latex-main-tex-file*
+		(completing-read "Choose the main tex file: " main)))
+	(find-file *nbm-latex-main-tex-file*)))))
+
 (defun nbm-latex-switch-between-main-and-region ()
   "Go to the main tex file at the position corresponding to the _region_.tex file or vice versa."
   (interactive)
   (if *nbm-latex-compile-section*
       (let (offset section beg end)
-    (save-excursion
-      (setq offset (point))
-      (search-backward "\\section{")
-      (setq beg (point))
-      (search-forward "{") (forward-sexp)
-      (setq end (point)
-	    offset (- offset (point))
-	    section (buffer-substring beg end)))
-    (if (equal (file-name-nondirectory (buffer-file-name)) "_region_.tex")
-	(progn
-	  (unless *nbm-latex-main-tex-file*
-	    (setq *nbm-latex-main-tex-file*
-		  (read-file-name "Choose the main tex file: " nil nil t nil
-				  (lambda (file) (equal (file-name-extension file) "tex")))))
-	  (find-file *nbm-latex-main-tex-file*))
-      (find-file "_region_.tex"))
-    (beginning-of-buffer)
-    (search-forward section)
-    (forward-char offset))
+	(save-excursion
+	  (setq offset (point))
+	  (search-backward "\\section{")
+	  (setq beg (point))
+	  (search-forward "{") (forward-sexp)
+	  (setq end (point)
+		offset (- offset (point))
+		section (buffer-substring beg end)))
+	(if (equal (file-name-nondirectory (buffer-file-name)) "_region_.tex")
+	    (nbm-latex-find-main-tex-file)
+	  (find-file "_region_.tex"))
+	(beginning-of-buffer)
+	(search-forward section)
+	(forward-char offset))
     (message "This is only available for the section compile mode.
 To toggle it, type \", T S\".")))
 
@@ -1042,3 +1054,4 @@ If *nbm-latex-compile-section* is t, then open the pdf associated to _region_tex
 	  (TeX-command "View" #'TeX-master-file 0)
 	  (switch-to-buffer buf))
       (TeX-view))))
+
