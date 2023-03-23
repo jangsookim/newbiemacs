@@ -1002,3 +1002,43 @@ Prompt for a label (with completion) and jump to the location of this label."
     (setq *nbm-latex-compile-section* t))
   (message (format "*nbm-latex-compile-section* is now %s." *nbm-latex-compile-section*)))
 
+(setq *nbm-latex-main-tex-file* nil)
+(defun nbm-latex-switch-between-main-and-region ()
+  "Go to the main tex file at the position corresponding to the _region_.tex file or vice versa."
+  (interactive)
+  (if *nbm-latex-compile-section*
+      (let (offset section beg end)
+    (save-excursion
+      (setq offset (point))
+      (search-backward "\\section{")
+      (setq beg (point))
+      (search-forward "{") (forward-sexp)
+      (setq end (point)
+	    offset (- offset (point))
+	    section (buffer-substring beg end)))
+    (if (equal (file-name-nondirectory (buffer-file-name)) "_region_.tex")
+	(progn
+	  (unless *nbm-latex-main-tex-file*
+	    (setq *nbm-latex-main-tex-file*
+		  (read-file-name "Choose the main tex file: " nil nil t nil
+				  (lambda (file) (equal (file-name-extension file) "tex")))))
+	  (find-file *nbm-latex-main-tex-file*))
+      (find-file "_region_.tex"))
+    (beginning-of-buffer)
+    (search-forward section)
+    (forward-char offset))
+    (message "This is only available for the section compile mode.
+To toggle it, type \", T S\".")))
+
+(defun nbm-latex-view-pdf ()
+  "View the pdf file associated to the current tex file.
+If *nbm-latex-compile-section* is t, then open the pdf associated to _region_tex."
+  (interactive)
+  (let ((buf (current-buffer)))
+    (if *nbm-latex-compile-section*
+	(progn
+	  (nbm-latex-switch-between-main-and-region)
+	  (latex-mode)
+	  (TeX-command "View" #'TeX-master-file 0)
+	  (switch-to-buffer buf))
+      (TeX-view))))
