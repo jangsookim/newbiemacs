@@ -143,7 +143,6 @@
 ** key: ,, description: master command, function: TeX-command-master, level: 1
 ** key: `, description: goto next error, function: TeX-next-error, level: 1
 ** key: =, description: table of contents, function: reftex-toc, level: 1
-** key: SPC, description: switch to main, function: nbm-latex-switch-between-main-and-region, level: 3
 ** key: a, description: applications, level: 3
 *** key: d, description: latex diff, function: nbm-latex-diff, level: 3
 ** key: b, description: build tex, function: nbm-latex-compile, level: 1
