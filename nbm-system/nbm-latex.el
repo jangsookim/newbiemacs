@@ -985,6 +985,7 @@ Prompt for a label (with completion) and jump to the location of this label."
     (reftex-unhighlight 0)))
 
 (defvar *nbm-latex-compile-section* nil)
+
 (defun nbm-latex-compile ()
   "Compile the current tex file. "
   (interactive)
@@ -997,9 +998,19 @@ Prompt for a label (with completion) and jump to the location of this label."
 (defun nbm-latex-toggle-compile-section ()
   "Toggle the variable *nbm-latex-compile-section*."
   (interactive)
-  (if *nbm-latex-compile-section*
-      (setq *nbm-latex-compile-section* nil)
-    (setq *nbm-latex-compile-section* t))
+  (let (level)
+    (if *nbm-latex-compile-section*
+	(setq *nbm-latex-compile-section* nil)
+      (progn
+	(setq level (read-char "Choose the section level: (default 2)
+1) chapter
+2) section
+3) subsection"))
+	(cond ((equal level ?1) (setq level 1))
+	      ((equal level ?3) (setq level 3))
+	      (t (setq level 2)))
+	(setq LaTeX-command-section-level level)
+	(setq *nbm-latex-compile-section* t))))
   (message (format "*nbm-latex-compile-section* is now %s." *nbm-latex-compile-section*)))
 
 (defun nbm-latex-find-main-tex-file ()
@@ -1012,7 +1023,13 @@ Prompt for a label (with completion) and jump to the location of this label."
   "Go to the main tex file at the position corresponding to the _region_.tex file or vice versa."
   (let (offset section beg end)
     (save-excursion
-      (setq offset (point)) (search-backward "\\section{")
+      (setq offset (point))
+      (cond ((equal LaTeX-command-section-level 1)
+	     (search-backward "\\chapter{"))
+	    ((equal LaTeX-command-section-level 2)
+	     (search-backward "\\section{"))
+	    ((equal LaTeX-command-section-level 3)
+	     (search-backward "\\subsection{")))
       (setq beg (point)) (search-forward "{") (forward-sexp)
       (setq end (point)
 	    offset (- offset (point))
