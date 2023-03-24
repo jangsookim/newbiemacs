@@ -1024,10 +1024,21 @@ Prompt for a label (with completion) and jump to the location of this label."
 
 (defun nbm-latex-switch-between-main-and-region-hook ()
   "Switch to the main tex file if _region_.tex file is called from an external pdf viewer."
+  (interactive)
   (when (and *nbm-latex-compile-section*
 	     (equal (file-name-nondirectory (buffer-file-name)) "_region_.tex"))
     (nbm-latex-switch-between-main-and-region)))
-(add-hook 'server-switch-hook 'nbm-latex-switch-between-main-and-region-hook)
+
+;; The following is for the inverse search from _region_.pdf.
+(if (equal system-type 'gnu/linux)
+    (setq TeX-raise-frame-function
+	  (lambda ()
+	    (call-process
+	     "wmctrl" nil nil nil "-i" "-R"
+	     (frame-parameter (selected-frame) 'outer-window-id))
+	    (delete-other-windows)
+	    (nbm-latex-switch-between-main-and-region-hook)))
+  (add-hook 'server-switch-hook 'nbm-latex-switch-between-main-and-region-hook))
 
 (defun nbm-latex-view-pdf ()
   "View the pdf file associated to the current tex file.
@@ -1040,4 +1051,3 @@ If *nbm-latex-compile-section* is t, then open the pdf associated to _region_tex
 	  (latex-mode) (TeX-command "View" #'TeX-master-file 0)
 	  (switch-to-buffer buf))
       (TeX-view))))
-
