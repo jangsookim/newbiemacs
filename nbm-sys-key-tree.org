@@ -68,6 +68,7 @@
 **** key: S, description: strong, function: password-generator-strong, level: 3
 **** key: n, description: numeric, function: password-generator-numeric, level: 3
 **** key: p, description: paranoid, function: password-generator-paranoid, level: 3
+*** key: t, description: time stamp, function: nbm-timestamp, level: 3
 ** key: j, description: jump, level: 2
 *** key: t, description: recent tex, function: nbm-recent-tex, level: 2
 *** key: o, description: recent org, function: nbm-recent-org, level: 2
