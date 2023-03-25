@@ -175,6 +175,7 @@
 *** key: i, description: item, function: LaTeX-insert-item, level: 2
 *** key: f, description: figure only, function: nbm-latex-insert-figure-only, level: 1
 *** key: F, description: figure with environment, function: nbm-latex-insert-figure-with-env, level: 1
+*** key: q, description: quick figure, function: nbm-latex-insert-figure-quick, level: 1
 *** key: l, description: label, function: nbm-latex-insert-label, level: 1
 ** key: j, description: jump, level: 2
 *** key: b, description: begining of environment, function: LaTeX-find-matching-begin, level: 2

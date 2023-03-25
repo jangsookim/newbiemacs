@@ -582,24 +582,35 @@ CHOICE 3: ChoKimLee2022"
     (kill-buffer)
     keys))
 
-(defun nbm-latex-insert-figure (env)
+(defun nbm-latex-insert-figure (env &optional quick)
   "Insert the most recent file from *nbm-screenshots* to ./figures.
-If ENV is non-nil, insert a figure environment."
-  (let (fig files ext file choice dir)
+If ENV is non-nil, insert a figure environment.
+If QUICK is non-nil, use the default options."
+  (let (fig files ext file choice dir num)
     (setq files '())
     (dolist (dir *nbm-screenshots*)
       (if (file-exists-p dir)
 	  (setq files (append files (directory-files dir t "[.]jpeg\\|[.]png\\|[.]jpg")))))
     (setq newest (nbm-newest-file files))
     (setq ext (concat "." (file-name-extension newest)))
-    (setq choice (read-char (concat "Move this file?: (Type y for yes.)\n" newest)))
+    (setq choice
+	  (if quick ?y
+	    (read-char (concat "Move this file?: (Type y for yes.)\n" newest))))
     (when (equal choice ?y)
       (unless (file-directory-p "./figures/") (make-directory "./figures/"))
-      (setq fig (read-string "Enter the figure name: "))
+      (setq num 1)
+      (while (file-exists-p (format "./figures/image%s%s" num ext))
+	(setq num (1+ num)))
+      (setq fig
+	    (if quick
+		(format "image%s" num)
+	      (read-string "Enter the figure name: " (format "image%s" num))))
       (if (file-exists-p (concat "./figures/" fig ext))
 	  (message (concat "./figures/" fig ext " already exists!"))
 	(copy-file newest (concat "./figures/" fig ext)))
-      (setq choice (read-char (concat "Delete this file?: (Type y for yes.)\n" newest)))
+      (setq choice
+	    (if quick ?y
+	      (read-char (concat "Delete this file?: (Type y for yes.)\n" newest))))
       (when (eq choice ?y) (delete-file newest))
       (end-of-line)
       (if env
@@ -625,6 +636,11 @@ If ENV is non-nil, insert a figure environment."
   "Insert the most recent file from *nbm-screenshots* to ./figures with a figure environment."
   (interactive)
   (nbm-latex-insert-figure nil))
+
+(defun nbm-latex-insert-figure-quick ()
+  "Insert the most recent file from *nbm-screenshots* to ./figures quickly with default options."
+  (interactive)
+  (nbm-latex-insert-figure nil t))
 
 ;; converting code
 
