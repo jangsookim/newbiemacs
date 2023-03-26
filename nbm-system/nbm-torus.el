@@ -11,14 +11,6 @@
     (unless (file-exists-p *torus-game-path*)
       (make-directory *torus-game-path*))))
 
-(defun torus-local-set-key (keybind)
-  (if (fboundp 'evil-local-set-key)
-      (evil-local-set-key (elt keybind 0) (elt keybind 1))
-    (local-set-key (elt keybind 0) (elt keybind 1))
-    ))
-
-
-
 (defun torus-load-theme (theme)
   (cond ((equal theme 1)
 	 (defun torus-color-x (string)
@@ -111,6 +103,34 @@
     (if (fboundp 'nbm-set-user-variable) (nbm-set-user-variable "torus" choice))
     ))
 
+
+(defun torus-local-set-key (keybind)
+  (if (fboundp 'evil-local-set-key)
+      (evil-local-set-key (elt keybind 0) (elt keybind 1))
+    (local-set-key (elt keybind 0) (elt keybind 1))
+    ))
+
+
+(defun torus-local-set-keybindings ()
+  (mapc 'torus-local-set-key 
+	(list
+	 (list [left] 'torus-move-left)
+	 (list [right] 'torus-move-right)
+	 (list [up] 'torus-move-up)
+	 (list [down] 'torus-move-down)
+	 (list (kbd "j") 'torus-move-left)
+	 (list (kbd "l") 'torus-move-right)
+	 (list (kbd "i") 'torus-move-up)
+	 (list (kbd "k") 'torus-move-down)
+	 (list (kbd "n") 'torus-start-game)
+	 (list (kbd "r") 'torus-resume-game)
+	 (list (kbd "q") 'torus-end-game)
+	 (list (kbd "c") 'torus-change-theme)
+	 (list (kbd "s") 'torus-show-score-board)
+	 (list (kbd "p") 'torus-pause-game)
+	 ))
+  )
+
 (defun torus ()
   (interactive)
   (switch-to-buffer "torus")
@@ -123,21 +143,8 @@
 	 1)
      1))
   (torus-init)
-      (torus-local-set-key (list [left] 'torus-move-left))
-      (torus-local-set-key (list [right] 'torus-move-right))
-      (torus-local-set-key (list [up] 'torus-move-up))
-      (torus-local-set-key (list [down] 'torus-move-down))
-      (torus-local-set-key (list (kbd "j") 'torus-move-left))
-      (torus-local-set-key (list (kbd "l") 'torus-move-right))
-      (torus-local-set-key (list (kbd "i") 'torus-move-up))
-      (torus-local-set-key (list (kbd "k") 'torus-move-down))
-      (torus-local-set-key (list (kbd "n") 'torus-start-game))
-      (torus-local-set-key (list (kbd "r") 'torus-resume-game))
-      (torus-local-set-key (list (kbd "q") 'torus-end-game))
-      (torus-local-set-key (list (kbd "c") 'torus-change-theme))
-      (torus-local-set-key (list (kbd "s") 'torus-show-score-board))
-      (torus-local-set-key (list (kbd "p") 'torus-pause-game))
-      )
+  (torus-local-set-keybindings)
+  )
 
 (defun torus-mode ()
   (setq major-mode 'torus-mode)
