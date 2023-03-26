@@ -329,12 +329,13 @@ q) quit" file (nbm-get-dir-name))))
   (nbm-time< file-B file-A))
 
 (defun nbm-newest-file (files)
-  "Return the newest file in the list FILES of filenames."
+  "Return the newest file in the list FILES of filenames except directories."
   (let (newest file)
     (setq newest (pop files))
     (while files
       (setq file (pop files))
-      (if (nbm-time< newest file)
+      (if (and (nbm-time< newest file)
+	       (not (file-directory-p file)))
 	  (setq newest file)))
     newest))
 
@@ -413,3 +414,14 @@ and to \"\"~/this is/an example.txt\"\" on Windows."
 (defun nbm-file-name-non-dot-p (file)
   "Return t if FILE does not start with the dot . symbol."
   (not (equal (substring (file-name-nondirectory file) 0 1) ".")))
+
+
+(defun nbm-make-unique-filename (dir file ext)
+  "Return a unique filename of the form FILE1.EXT or FILE2.EXT, etc., in DIR.
+DIR may or may not end with \"/\"."
+  (let ((num 1))
+    (when (equal (substring dir -1 nil) "/")
+      (setq dir (substring dir 0 -1)))
+    (while (file-exists-p (format "%s/%s%s.%s" dir file num ext))
+      (setq num (1+ num)))
+    (format "%s/%s%s.%s" dir file num ext)))

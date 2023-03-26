@@ -586,28 +586,25 @@ CHOICE 3: ChoKimLee2022"
   "Insert the most recent file from *nbm-screenshots* to ./figures.
 If ENV is non-nil, insert a figure environment.
 If QUICK is non-nil, use the default options."
-  (let (fig files ext file choice dir num)
+  (let (fig files ext file choice dir)
     (setq files '())
     (dolist (dir *nbm-screenshots*)
       (if (file-exists-p dir)
 	  (setq files (append files (directory-files dir t "[.]jpeg\\|[.]png\\|[.]jpg")))))
     (setq newest (nbm-newest-file files))
-    (setq ext (concat "." (file-name-extension newest)))
+    (setq ext (file-name-extension newest))
     (setq choice
 	  (if quick ?y
 	    (read-char (concat "Move this file?: (Type y for yes.)\n" newest))))
     (when (equal choice ?y)
       (unless (file-directory-p "./figures/") (make-directory "./figures/"))
-      (setq num 1)
-      (while (file-exists-p (format "./figures/image%s%s" num ext))
-	(setq num (1+ num)))
-      (setq fig
-	    (if quick
-		(format "image%s" num)
-	      (read-string "Enter the figure name: " (format "image%s" num))))
-      (if (file-exists-p (concat "./figures/" fig ext))
-	  (message (concat "./figures/" fig ext " already exists!"))
-	(copy-file newest (concat "./figures/" fig ext)))
+      (setq fig (file-name-nondirectory
+		 (file-name-sans-extension (nbm-make-unique-filename "./figures/" "image" ext))))
+      (unless quick
+	(setq fig (read-string "Enter the figure name: " fig)))
+      (if (file-exists-p (format "./figures/%s.%s" fig ext))
+	  (message (format "./figures/%s.%s already exists!" fig ext))
+	(copy-file newest (format "./figures/%s.%s" fig ext)))
       (setq choice
 	    (if quick ?y
 	      (read-char (concat "Delete this file?: (Type y for yes.)\n" newest))))
@@ -618,24 +615,19 @@ If QUICK is non-nil, use the default options."
 	    (insert (concat " See Figure~\\ref{fig:" fig "}.\n"
 			    "\n\\begin{figure}\n"
 			    "  \\centering\n"
-			    "  \\includegraphics[scale=.5]{./figures/" fig ext "}\n"
+			    "  \\includegraphics[scale=.5]{./figures/" fig "." ext "}\n"
 			    "  \\caption{}\n"
 			    "  \\label{fig:" fig "}\n"
 			    "\\end{figure}\n"))
-	    (goto-char (- (point) (+ 31 (length fig)))))
+	    (search-backward "\\caption{") (search-forward "{"))
 	(insert (concat "\n\\begin{center}\n"
-			"  \\includegraphics[scale=.5]{./figures/" fig ext "}\n"
+			"  \\includegraphics[scale=.5]{./figures/" fig "." ext "}\n"
 			"\\end{center}\n"))))))
 
 (defun nbm-latex-insert-figure-with-env ()
   "Insert the most recent file from *nbm-screenshots* to ./figures with a figure environment."
   (interactive)
   (nbm-latex-insert-figure t))
-
-(defun nbm-latex-insert-figure-only ()
-  "Insert the most recent file from *nbm-screenshots* to ./figures with a figure environment."
-  (interactive)
-  (nbm-latex-insert-figure nil))
 
 (defun nbm-latex-insert-figure-quick ()
   "Insert the most recent file from *nbm-screenshots* to ./figures quickly with default options."
@@ -1084,3 +1076,4 @@ If *nbm-latex-compile-section* is t, then open the pdf associated to _region_tex
 	  (latex-mode) (TeX-command "View" #'TeX-master-file 0)
 	  (switch-to-buffer buf))
       (TeX-view))))
+
