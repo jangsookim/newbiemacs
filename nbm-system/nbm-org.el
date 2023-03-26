@@ -291,7 +291,7 @@ and store the org link."
 (defun nbm-org-insert-file ()
   "Insert the most recent file from *nbm-screenshots* into the directory (buffer-file-name)-files. A file link is also inserted."
   (interactive)
-  (let (files file choice dir)
+  (let (files file choice dir newest)
     (setq files '())
     (dolist (dir *nbm-screenshots*)
       (if (file-exists-p dir)
@@ -308,6 +308,23 @@ and store the org link."
       (setq choice (read-char (concat "Delete this file?: (Type y for yes.)\n" newest)))
       (when (eq choice ?y) (delete-file newest))
       (insert (format "[[file:%s/%s]]" (file-name-nondirectory dir) file)))))
+
+(defun nbm-org-quick-insert-image ()
+  "Insert the most recent file from *nbm-screenshots* into the directory (buffer-file-name)-files."
+  (interactive)
+  (let (files file choice dir newest)
+    (setq files '())
+    (dolist (dir *nbm-screenshots*)
+      (if (file-exists-p dir)
+	  (setq files (append files (directory-files dir t "[.]jpeg\\|[.]png\\|[.]jpg")))))
+    (setq newest (nbm-newest-file files))
+    (setq ext (file-name-extension newest))
+    (setq dir (concat (file-name-sans-extension (buffer-file-name)) "-files"))
+    (unless (file-directory-p dir) (make-directory dir))
+    (setq file (nbm-make-unique-filename dir "image" ext))
+    (copy-file newest file t)
+    (delete-file newest)
+    (insert (format "[[file:%s/%s]]" (file-name-nondirectory dir) (file-name-nondirectory file)))))
 
 (defun nbm-org-latex-preview-on ()
   "Turn on latex preview in the current file."

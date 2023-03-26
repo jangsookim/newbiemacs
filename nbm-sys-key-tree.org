@@ -246,6 +246,7 @@
 *** key: T, description: time-stamp-inactive, function: org-time-stamp-inactive, level: 2
 ** key: i, description: insert, level: 1
 *** key: f, description: newest file, function: nbm-org-insert-file, level: 1
+*** key: q, description: quick image, function: nbm-org-quick-insert-image, level: 1
 *** key: n, description: insert org-roam-node, function: org-roam-node-insert, level: 1
 ** key: j, description: Jump, level: 2
 *** key: a, description: archive, function: nbm-org-jump-to-archive, level: 3
