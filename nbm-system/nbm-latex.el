@@ -780,9 +780,10 @@ add a new bib item."
 	  (setq temp (substring temp 1 nil)))
 	(if (equal (substring temp 0 1) "@") (setq mathscinet t))
 	(setq temp (split-string temp "\n"))
-	(setq file-name (read-string "Enter a suitable file name: "
-				     (if mathscinet (nbm-mathscinet-make-filename)
-				       (nbm-arxiv-make-filename))))
+	(setq file-name (if mathscinet (nbm-mathscinet-make-filename)
+			  (nbm-arxiv-make-filename)))
+	(setq file-name (string-replace "/" "-" file-name))
+	(setq file-name (read-string "Enter a suitable file name: " file-name))
 	(setq choice (read-char (format "Move \"%s\"\ninto \"%s\"\nunder the following name?\n%s\n\n(Type y for yes)."
 					pdf *nbm-pdf* file-name)))
 	(when (equal choice ?y)
