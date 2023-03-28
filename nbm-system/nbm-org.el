@@ -289,7 +289,8 @@ and store the org link."
     (expand-file-name filename dirname)))
 
 (defun nbm-org-insert-file ()
-  "Insert the most recent file from *nbm-screenshots* into the directory (buffer-file-name)-files. A file link is also inserted."
+  "Insert the most recent file from *nbm-screenshots* into the directory (buffer-file-name)-files. A file link is also inserted.
+If the filename has [...], change it to (...)."
   (interactive)
   (let (files file choice dir newest)
     (setq files '())
@@ -304,6 +305,8 @@ and store the org link."
       (setq file (read-string "Enter the new file name (space will be change to dash): "
 			      (file-name-nondirectory newest)))
       (setq file (string-replace " " "-" file))
+      (setq file (string-replace "[" "(" file))
+      (setq file (string-replace "]" ")" file))
       (copy-file newest (concat dir "/" file) t)
       (setq choice (read-char (concat "Delete this file?: (Type y for yes.)\n" newest)))
       (when (eq choice ?y) (delete-file newest))

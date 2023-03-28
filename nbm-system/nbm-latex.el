@@ -620,9 +620,9 @@ If QUICK is non-nil, use the default options."
 			    "  \\label{fig:" fig "}\n"
 			    "\\end{figure}\n"))
 	    (search-backward "\\caption{") (search-forward "{"))
-	(insert (concat "\n\\begin{center}\n"
+	(insert (concat "\\begin{center}\n"
 			"  \\includegraphics[scale=.5]{./figures/" fig "." ext "}\n"
-			"\\end{center}\n"))))))
+			"\\end{center}"))))))
 
 (defun nbm-latex-insert-figure-with-env ()
   "Insert the most recent file from *nbm-screenshots* to ./figures with a figure environment."
