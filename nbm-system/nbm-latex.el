@@ -1085,3 +1085,35 @@ If *nbm-latex-compile-section* is t, then open the pdf associated to _region_tex
 	  (switch-to-buffer buf))
       (TeX-view))))
 
+(defun nbm-latex-new-study ()
+  "Create a new tex file for studying a paper in the pdf folder."
+  (interactive)
+  (let (dir pdf-name tex-name temp)
+    (setq pdf-name (completing-read "Choose a file to study: "
+				    (directory-files-recursively (nbm-f "pdf/") ".*[.]pdf$\\|.*[.]djvu$")))
+    (setq pdf-name (file-name-nondirectory (file-name-sans-extension pdf-name)))
+    (setq tex-name (concat (car (split-string pdf-name "[.]")) ".tex")) ; the author names
+    (setq dir (nbm-f "tex/study/"))
+    (unless (file-exists-p dir) (make-directory dir))
+    (setq dir (concat dir pdf-name "/"))
+    (unless (file-exists-p dir) (make-directory dir))
+    (nbm-latex-new-file-from-template dir tex-name pdf-name)
+    (message "Create a tex file.")))
+
+(defun nbm-latex-start-study ()
+  "Choose a pdf file associated to one in the study directory.
+Open the pdf file and the corresponding tex file."
+  (interactive)
+  (let (topic tex-file tex-files)
+    (setq topic (completing-read "Choose what to study: "
+				 (directory-files (nbm-f "tex/study/") nil "^[^.]")))
+    (setq tex-files (directory-files (nbm-f (format "tex/study/%s/" topic)) nil "[.]tex$"))
+    (setq tex-files (remove "_region_.tex" tex-files))
+    (if (equal (length tex-files) 1)
+	(setq tex-file (car tex-files))
+      (setq tex-file (completing-read "Choose a tex file to open: " tex-files)))
+    (find-file (nbm-f (format "tex/study/%s/%s" topic tex-file)))
+    (find-file (car (directory-files-recursively (nbm-f "pdf/")
+						 (format "%s[.]pdf$\\|%s[.]djvu$"
+							 (regexp-quote topic)
+							 (regexp-quote topic)))))))

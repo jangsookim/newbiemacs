@@ -89,6 +89,9 @@
 *** key: t, description: time stamp, function: org-time-stamp-inactive, level: 2
 *** key: u, description: UI mode, function: org-roam-ui-mode, level: 1
 ** key: p, description: Find pdf, function: nbm-find-pdf, level: 1
+** key: q, description: quick menu, level: 1
+*** key: n, description: new study, function: nbm-latex-new-study, level: 1
+*** key: s, description: start study, function: nbm-latex-start-study, level: 1
 ** key: r, description: Registers, level: 3
 *** key: s, description: Set counter, function: nbm-set-counter, level: 3
 *** key: a, description: Add counter, function: nbm-add-counter, level: 3
