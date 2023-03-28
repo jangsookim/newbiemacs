@@ -80,6 +80,21 @@ If there is no title, return the filename."
 			       (nbm-get-file-name) *nbm-home* file-name))
 	(message (format "A symbolic link created: %s.tex" file-name))))))
 
+(defun nbm-latex-new-file-from-template (dir filename title)
+  "Create a new file FILE from a template file under directory DIR.
+Write TITLE for the title in the tex file.
+DIR must end with /.
+FILENAME must end with .tex."
+  (let (temp)
+    (setq temp (read-file-name "Choose the template file: (default is template.tex) "
+			       (nbm-f "nbm-user-settings/templates/")
+			       "template.tex"))
+    (copy-file temp (concat dir filename))
+    (find-file (concat dir filename)) (goto-char (point-min))
+    (when (search-forward "\\title{" nil t nil)
+      (insert title))
+    (save-buffer)))
+
 (defun nbm-latex-new-file ()
   "Create a new latex file from a template."
   (interactive)
@@ -88,22 +103,14 @@ If there is no title, return the filename."
 Current dir: %s\n
 (Type y for yes or type anything else for creating a tex file in the Newbiemacs tex directory.)"
 				     (nbm-get-dir-name))))
-      (setq dirname "."))
+      (setq dirname "./"))
     (setq title (read-string (concat "Enter a new latex filename (default: note): ")
 			     nil nil "note" nil))
     (unless dirname
-      (setq dirname (concat (nbm-f "tex/") (format-time-string "%Y-%m-%d-") title))
+      (setq dirname (concat (nbm-f "tex/") (format-time-string "%Y-%m-%d-") title "/"))
       (make-directory dirname))
-    (setq temp (read-file-name "Choose the template file: (default is template.tex) "
-			       (nbm-f "nbm-user-settings/templates/")
-			       "template.tex"))
-    (setq filename (concat dirname "/" title ".tex"))
-    (copy-file temp filename)
-    (find-file filename) (goto-char (point-min))
-    (when (search-forward "\\title{" nil t nil)
-      (insert title))
-    (search-forward "begin{document}" nil t nil)
-    (next-line) (recenter-top-bottom) (save-buffer)
+    (setq filename (concat title ".tex"))
+    (nbm-latex-new-file-from-template dirname filename title)
     (message "Created a new file.")))
 
 (defun nbm-latex-new-macro ()
