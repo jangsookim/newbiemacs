@@ -342,7 +342,9 @@
   ;; The following is helpful for recognizing ^ and _ in latex code.
   (custom-set-faces
    '(font-latex-script-char-face ((t (:foreground "#Ff9f0a"))))
+   '(font-latex-sectioning-1-face ((t (:foreground "#Ff82ab"))))
    '(font-latex-sectioning-2-face ((t (:foreground "#Ffd60a")))))
+
 
   (evil-define-key 'emacs reftex-toc-mode-map (kbd "q") 'nbm-reftex-toc-quit)
   (evil-define-key 'emacs reftex-toc-mode-map (kbd "RET") 'nbm-reftex-toc-goto-line-and-hide)
