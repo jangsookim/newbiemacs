@@ -1007,16 +1007,20 @@ Prompt for a label (with completion) and jump to the location of this label."
   (interactive)
   (let ((TeX-command-force t))
     (save-buffer)
-    (if *nbm-latex-compile-section*
+    (if (member (current-buffer) *nbm-latex-compile-section*)
 	(LaTeX-command-section)
       (TeX-command-master))))
 
 (defun nbm-latex-toggle-compile-section ()
-  "Toggle the variable *nbm-latex-compile-section*."
+  "Toggle the membership of the current buffer in the alist *nbm-latex-compile-section*."
   (interactive)
-  (let (level)
-    (if *nbm-latex-compile-section*
-	(setq *nbm-latex-compile-section* nil)
+  (let (level buf)
+    (setq buf (current-buffer))
+    (if (member buf *nbm-latex-compile-section*)
+	(progn
+	  (setq *nbm-latex-compile-section*
+		(remove buf *nbm-latex-compile-section*))
+	  (message "Section compile mode is turned off."))
       (progn
 	(setq level (read-char "Choose the section level: (default 2)
 1) chapter
@@ -1026,8 +1030,8 @@ Prompt for a label (with completion) and jump to the location of this label."
 	      ((equal level ?3) (setq level 3))
 	      (t (setq level 2)))
 	(setq LaTeX-command-section-level level)
-	(setq *nbm-latex-compile-section* t))))
-  (message (format "*nbm-latex-compile-section* is now %s." *nbm-latex-compile-section*)))
+	(add-to-list '*nbm-latex-compile-section* buf)
+	(message "Section compile mode is turned on.")))))
 
 (defun nbm-latex-find-main-tex-file ()
   "Find the main tex file associated to the current _region_.tex."
@@ -1058,8 +1062,7 @@ Prompt for a label (with completion) and jump to the location of this label."
 (defun nbm-latex-switch-between-main-and-region-hook ()
   "Switch to the main tex file if _region_.tex file is called from an external pdf viewer."
   (interactive)
-  (when (and *nbm-latex-compile-section*
-	     (equal (file-name-nondirectory (buffer-file-name)) "_region_.tex"))
+  (when (equal (file-name-nondirectory (buffer-file-name)) "_region_.tex")
     (nbm-latex-switch-between-main-and-region)))
 
 ;; The following is for the inverse search from _region_.pdf.
@@ -1075,10 +1078,10 @@ Prompt for a label (with completion) and jump to the location of this label."
 
 (defun nbm-latex-view-pdf ()
   "View the pdf file associated to the current tex file.
-If *nbm-latex-compile-section* is t, then open the pdf associated to _region_tex."
+If the current buffer is in *nbm-latex-compile-section*, then open the pdf associated to _region_tex."
   (interactive)
   (let ((buf (current-buffer)))
-    (if *nbm-latex-compile-section*
+    (if (member buf *nbm-latex-compile-section*)
 	(progn
 	  (nbm-latex-switch-between-main-and-region)
 	  (latex-mode) (TeX-command "View" #'TeX-master-file 0)
