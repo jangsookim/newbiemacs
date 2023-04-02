@@ -301,6 +301,19 @@ includes the environment macro."
 	(insert (current-kill 0))
       (message "No math mode before the cursor."))))
 
+(defun nbm-latex-paste-avy-math ()
+  "Paste the content of the math mode chosen by avy jump."
+  (interactive)
+  (let (found)
+    (save-excursion
+      (avy-goto-word-or-subword-1)
+      (when (texmathp)
+	  (nbm-latex-copy-math)
+	  (setq found t)))
+    (if found
+	(insert (current-kill 0))
+      (message "Not in math mode."))))
+
 (defun nbm-latex-toggle-inline-math ()
   "Change inline math \"(..)\" to display math \"[..]\" or vice versa."
   (interactive)
