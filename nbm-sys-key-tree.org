@@ -147,6 +147,7 @@
 * description: LaTeX-mode, level: 1
 ** key: ,, description: master command, function: TeX-command-master, level: 1
 ** key: `, description: goto next error, function: TeX-next-error, level: 1
+** key: RET, description: paste prev math, function: nbm-latex-paste-previous-math, level: 1
 ** key: =, description: table of contents, function: reftex-toc, level: 1
 ** key: a, description: applications, level: 3
 *** key: d, description: latex diff, function: nbm-latex-diff, level: 3

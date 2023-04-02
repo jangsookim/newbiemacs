@@ -288,6 +288,19 @@ includes the environment macro."
 	  (message "Copied the math content."))
       (message "You are not in math mode!"))))
 
+(defun nbm-latex-paste-previous-math ()
+  "Paste the content of the previous math mode."
+  (interactive)
+  (let (found)
+    (save-excursion
+      (while (and (not found) (re-search-backward "\\\\\\|\\$" nil t))
+	(when (texmathp)
+	  (nbm-latex-copy-math-with-env)
+	  (setq found t))))
+    (if found
+	(insert (current-kill 0))
+      (message "No math mode before the cursor."))))
+
 (defun nbm-latex-toggle-inline-math ()
   "Change inline math \"(..)\" to display math \"[..]\" or vice versa."
   (interactive)
