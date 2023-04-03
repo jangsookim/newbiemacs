@@ -301,18 +301,40 @@ includes the environment macro."
 	(insert (current-kill 0))
       (message "No math mode before the cursor."))))
 
-(defun nbm-latex-paste-avy-math ()
-  "Paste the content of the math mode chosen by avy jump."
+(defun nbm-latex-paste-avy-math (&optional env)
+  "Paste the content of the math mode chosen by avy jump.
+The candidates must have length at least 5.
+If ENV is non-nil, include the environment macro."
   (interactive)
-  (let (found)
+  (let (found math math-list (beg (window-start)) (end (window-end)))
     (save-excursion
-      (avy-goto-word-or-subword-1)
-      (when (texmathp)
-	  (nbm-latex-copy-math)
-	  (setq found t)))
+      (goto-char beg)
+      (while (re-search-forward (concat (regexp-quote "\\[") "\\|"
+					(regexp-quote "\\(") "\\|"
+					(regexp-quote "\\end"))
+				end t)
+	(when (texmathp)
+	  (setq math (nbm-latex-find-math-mode nil))
+	  (when (> (nth 2 math) (+ 5 (nth 1 math)))
+	    (setq math (nbm-latex-find-math-mode t))
+	    (setq math (buffer-substring (nth 1 math) (nth 2 math)))
+	    (when math-list (setq math-list (concat math-list "\\|")))
+	    (setq math-list (concat math-list (regexp-quote math)))))))
+    (save-excursion
+      (when (avy-jump math-list)
+	(setq found t)
+	(if env
+	    (nbm-latex-copy-math-with-env)
+	  (nbm-latex-copy-math))))
     (if found
 	(insert (current-kill 0))
-      (message "Not in math mode."))))
+      (message "Wrong a math mode."))))
+
+(defun nbm-latex-paste-avy-math-with-env ()
+  "Paste the content of the math mode chosen by avy jump with environment.
+The candidates must have length at least 10."
+  (interactive)
+  (nbm-latex-paste-avy-math t))
 
 (defun nbm-latex-toggle-inline-math ()
   "Change inline math \"(..)\" to display math \"[..]\" or vice versa."
