@@ -215,7 +215,7 @@
 *** key: l, description: label, function: reftex-change-label, level: 2
 *** key: m, description: multline, function: nbm-latex-toggle-multline, level: 2
 *** key: *, description: environment with *, function: nbm-latex-toggle-star, level: 1
-*** key: p, description: pgml to latex, function: nbm-latex-toggle-pgml, level: 3
+*** key: p, description: pgml to latex, function: nbm-latex-toggle-parenthesis, level: 3
 *** key: s, description: compile section, function: nbm-latex-toggle-compile-section, level: 1
 *** key: h, description: hwp math, function: nbm-latex-convert-to-hwp, level: 1
 *** key: v, description: change variables, function: nbm-latex-change-variables, level: 1

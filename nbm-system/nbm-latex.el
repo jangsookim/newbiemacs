@@ -530,6 +530,73 @@ to \\begin{multline}...\\end{multline} or vice versa."
 	      (insert (format "(%s)/(%s)" num den))))
 	(message "Not in a fraction environment!")))))
 
+(defun nbm-latex-toggle-parenthesis ()
+  "Toggle between (..) and \\left(..\\right)."
+  (interactive)
+  (save-excursion
+    (let (beg end choice brace)
+      (save-excursion
+	(when (looking-at "[(]\\|[[]\\|[{]")
+	  (when (looking-at "[{]") (setq brace t))
+	  (setq beg (point))
+	  (if brace (search-forward "\\}") (forward-sexp))
+	  (setq end (point)))
+	(when (looking-at ")\\|]\\|\\}")
+	  (when (looking-at "}") (setq brace t))
+	  (forward-char) (setq end (point))
+	  (if brace (search-backward "\\{") (backward-sexp))
+	  (when brace (forward-char))
+	  (setq beg (point))))
+      (setq choice (read-char "Choose the macro for the parentheses:
+0) left-right (default)
+1) big
+2) Big
+3) bigg
+4) Bigg
+n) none
+d) delete the parentheses"))
+      (when beg
+	(goto-char beg) (when brace (backward-char))
+	(when (looking-back "\\\\\\(big\\|Big\\|bigg\\|Bigg\\|left\\) *" (line-beginning-position))
+	  (zap-to-char -1 ?\\) (when brace (forward-char))
+	  (setq beg (point))
+	  (if brace (search-forward "\\}") (forward-sexp))
+	  (backward-char) (when brace (backward-char))
+	  (zap-to-char -1 ?\\)
+	  (forward-char) (when brace (forward-char))
+	  (setq end (point)))
+	(cond ((equal choice ?1)
+	       (goto-char (1- end)) (when brace (backward-char))
+	       (insert "\\big")
+	       (goto-char beg) (when brace (backward-char))
+	       (insert "\\big"))
+	      ((equal choice ?2)
+	       (goto-char (1- end)) (when brace (backward-char))
+	       (insert "\\Big")
+	       (goto-char beg) (when brace (backward-char))
+	       (insert "\\Big"))
+	      ((equal choice ?3)
+	       (goto-char (1- end)) (when brace (backward-char))
+	       (insert "\\bigg")
+	       (goto-char beg) (when brace (backward-char))
+	       (insert "\\bigg"))
+	      ((equal choice ?4)
+	       (goto-char (1- end)) (when brace (backward-char))
+	       (insert "\\Bigg")
+	       (goto-char beg) (when brace (backward-char))
+	       (insert "\\Bigg"))
+	      ((equal choice ?n))
+	      ((equal choice ?d)
+	       (goto-char end)
+	       (delete-char -1) (when brace (delete-char -1))
+	       (goto-char beg)
+	       (delete-char 1) (when brace (delete-char -1)))
+	      (t
+	       (goto-char (1- end)) (when brace (backward-char))
+	       (insert "\\right")
+	       (goto-char beg) (when brace (backward-char))
+	       (insert "\\left")))))))
+
 (defun nbm-latex-insert-label ()
   "Insert the label in the current environment."
   (interactive)
