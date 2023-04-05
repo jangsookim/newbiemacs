@@ -476,6 +476,60 @@ to \\begin{multline}...\\end{multline} or vice versa."
 	       (nbm-latex-change-env-name "multline")
 	     (nbm-latex-change-env-name "multline*"))))))
 
+(defun nbm-latex-toggle-frac ()
+  "Toggle between (a)/(b) and \\frac{a}{b} in the selected region or in the current line."
+  (interactive)
+  (save-excursion
+    (let (pos r-beg r-end beg end beg1 end1 beg2 end2 num den frac slash found)
+      (if (use-region-p)
+	  (setq r-beg (region-beginning) r-end (region-end))
+	(save-excursion
+	  (beginning-of-line) (setq r-beg (point))
+	  (end-of-line) (setq r-end (point))))
+      (setq pos (point))
+      (save-excursion
+	(when (search-forward "/" r-end t)
+	  (setq slash (point)) (search-backward ")") (setq end1 (point))
+	  (backward-sexp) (setq beg1 (point)) (setq beg (1- (point)))
+	  (when (and (<= beg pos) (<= pos slash))
+	    (setq found t) (goto-char slash)
+	    (search-forward "(") (setq beg2 (point))
+	    (backward-char) (forward-sexp) (setq end2 (1- (point)))
+	    (setq end (point)))))
+      (unless found
+	(save-excursion
+	  (when (search-backward "/" r-beg t)
+	    (setq slash (point)) (search-forward "(") (setq beg2 (point))
+	    (backward-char) (forward-sexp) (setq end2 (1- (point)))
+	    (setq end (point))
+	    (when (and (<= slash pos) (<= pos end))
+	      (setq found t) (goto-char slash)
+	      (search-backward ")") (setq end1 (point))
+	      (backward-sexp) (setq beg1 (point))
+	      (setq beg (1- (point)))))))
+      (unless found
+	(if (equal (TeX-current-macro) "frac")
+	    (progn
+	      (goto-char (TeX-find-macro-start))
+	      (setq beg (point)) (setq frac t))
+	  (when (search-backward "\\frac" r-beg t)
+	    (setq beg (point)) (setq frac t))))
+      (when frac
+	(search-forward "{") (setq beg1 (point))
+	(backward-char) (forward-sexp) (setq end1 (1- (point)))
+	(search-forward "{") (setq beg2 (point))
+	(backward-char) (forward-sexp) (setq end2 (1- (point)))
+	(setq end (point)))
+      (if (or found frac)
+	  (progn
+	    (setq num (buffer-substring beg1 end1)
+		  den (buffer-substring beg2 end2))
+	    (delete-region beg end)
+	    (if found
+		(insert (format "\\frac{%s}{%s}" num den))
+	      (insert (format "(%s)/(%s)" num den))))
+	(message "Not in a fraction environment!")))))
+
 (defun nbm-latex-insert-label ()
   "Insert the label in the current environment."
   (interactive)
