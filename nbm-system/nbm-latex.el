@@ -490,7 +490,8 @@ to \\begin{multline}...\\end{multline} or vice versa."
       (save-excursion
 	(when (search-forward "/" r-end t)
 	  (setq slash (point)) (search-backward ")") (setq end1 (point))
-	  (backward-sexp) (setq beg1 (point)) (setq beg (1- (point)))
+	  (forward-char) (backward-sexp)
+	  (setq beg (point)) (setq beg1 (1+ (point)))
 	  (when (and (<= beg pos) (<= pos slash))
 	    (setq found t) (goto-char slash)
 	    (search-forward "(") (setq beg2 (point))
@@ -505,8 +506,8 @@ to \\begin{multline}...\\end{multline} or vice versa."
 	    (when (and (<= slash pos) (<= pos end))
 	      (setq found t) (goto-char slash)
 	      (search-backward ")") (setq end1 (point))
-	      (backward-sexp) (setq beg1 (point))
-	      (setq beg (1- (point)))))))
+	      (forward-char) (backward-sexp) (setq beg (point))
+	      (setq beg1 (1+ (point)))))))
       (unless found
 	(if (equal (TeX-current-macro) "frac")
 	    (progn
