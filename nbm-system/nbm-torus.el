@@ -131,7 +131,7 @@
 	   (list (kbd "s") 'torus-show-score-board)
 	   (list (kbd "p") 'torus-pause-game)
 	   ))
-    ((equal theme 2) ;vi 
+    ((equal theme 2) ;vi-like
      (mapc 'torus-local-set-key 
 	   (list
 	    (list [left] 'torus-move-left)
@@ -149,7 +149,7 @@
 	    (list (kbd "s") 'torus-show-score-board)
 	    (list (kbd "p") 'torus-pause-game)
 	    )))
-    ((equal theme 3) ; emacs
+    ((equal theme 3) ; emacs-like
      (mapc 'torus-local-set-key 
 	   (list
 	    (list [left] 'torus-move-left)
