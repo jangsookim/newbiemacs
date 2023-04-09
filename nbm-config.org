@@ -421,11 +421,15 @@
   (unless (nbm-get-user-variable "editing-style")
     (nbm-set-user-variable "editing-style" "windows"))
 
+  (when (equal (nbm-get-user-variable "editing-style") "emacs")
+    (evil-global-set-key 'emacs (kbd "C-r") 'evil-redo))
+
   (when (equal (nbm-get-user-variable "editing-style") "vim")
     (evil-set-initial-state 'text-mode 'normal)
     (evil-set-initial-state 'org-mode 'normal)
     (evil-set-initial-state 'latex-mode 'normal)
     (evil-set-initial-state 'emacs-lisp-mode 'normal)
+    (evil-set-initial-state 'fundamental-mode 'normal)
     (evil-set-initial-state 'python-mode 'normal))
 
   (when (equal (nbm-get-user-variable "editing-style") "windows")

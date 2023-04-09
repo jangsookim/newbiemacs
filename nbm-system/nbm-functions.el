@@ -99,27 +99,14 @@
 (defun nbm-cheat-sheet ()
   "Open Newbiemacs cheat sheet."
   (interactive)
-  (if (equal (nbm-get-user-variable "editing-style") "windows")
-      (browse-url "https://jangsookim.github.io/newbiemacs/newbiemacs_cheat_sheet_windows.pdf")
-    (browse-url "https://jangsookim.github.io/newbiemacs/newbiemacs_cheat_sheet_vim.pdf")))
+  (browse-url (format "https://jangsookim.github.io/newbiemacs/newbiemacs_cheat_sheet_%s.pdf"
+		      (nbm-get-user-variable "editing-style"))))
 
 (defun nbm-change-editing-style ()
   "Change the editing style to emacs or vim."
   (interactive)
-  (let (choice prompt)
-    (if (nbm-get-user-variable "editing-style")
-	(setq prompt (format "The current editing style is \"%s\".\n"
-			     (nbm-get-user-variable "editing-style")))
-      (setq prompt ""))
-    (setq prompt (concat prompt "Choose a new editing style:
-v) vim
-e) emacs
-w) windows"))
-    (setq choice (read-char prompt))
-    (cond ((equal ?e choice)
-	   (nbm-set-user-variable "editing-style" "emacs"))
-	  ((equal ?w choice)
-	   (nbm-set-user-variable "editing-style" "windows"))
-	  ((equal ?v choice)
-	   (nbm-set-user-variable "editing-style" "vim")))
-    (message "The editing style is set to be \"%s\"." (nbm-get-user-variable "editing-style"))))
+  (let (choice)
+    (setq choice (completing-read "Choose a new editing style:"
+				  '("vim" "emacs" "windows")))
+    (nbm-set-user-variable "editing-style" choice)
+    (message "The editing style is set to be \"%s\"." choice)))
