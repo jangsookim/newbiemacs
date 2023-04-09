@@ -2,6 +2,7 @@
 -   Newbiemacs is desiged for mathematician who are new to Emacs.
 -   [Newbiemacs Homepage](https://jangsookim.github.io/newbiemacs/newbiemacs-home.html)
 -   Screenshots
-<img width="903" alt="newbiemacs-screenshot" src="https://user-images.githubusercontent.com/24665391/207585789-17c12532-e207-421f-860c-3c29870550fa.png">
-<img width="931" alt="leader-key" src="https://user-images.githubusercontent.com/24665391/207585823-bc70af8e-0f43-4f0a-9e53-3ae9154ae0a5.png">
-<img width="813" alt="torus-screenshot" src="https://user-images.githubusercontent.com/24665391/207585839-e9b1de71-25c9-4b24-940f-fb9fc84125e1.png">
+
+<img width="912" alt="newbiemacs-screenshot" src="https://user-images.githubusercontent.com/24665391/230779835-84eb598d-426d-4171-b373-02d1b03e16ef.png">
+<img width="931" alt="leader-key" src="https://user-images.githubusercontent.com/24665391/230779847-dfad9b87-2f62-478b-83b0-e564c34cbd0c.png">
+<img width="813" alt="torus-screenshot" src="https://user-images.githubusercontent.com/24665391/230779855-3b0a0301-994a-4874-9bf7-b0f12afc9ce3.png">
