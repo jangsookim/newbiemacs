@@ -127,7 +127,7 @@
 
 (defun newbie-print-menu ()
   "Start newbie."
-  (nbm-insert 9 "                         ALT+<BACKSPACE>: Newbiemacs screen                         \n\n")
+  (nbm-insert 9 "                         ALT-BACKSPACE: Newbiemacs screen                         \n\n")
   (nbm-insert 3 (format "%2s%-15s->  " "" "Find files"))
   (nbm-insert 3 (format "%2s%-17s" "" "p: pdf find"))
   (nbm-insert 3 (format "%2s%-19s" "" "t: tex find"))

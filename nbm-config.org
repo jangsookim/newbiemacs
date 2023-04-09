@@ -158,7 +158,7 @@
     (global-anzu-mode +1)
     (setq anzu-cons-mode-line-p nil)
     (custom-set-faces
-     `(lazy-highlight ((t (:foreground "Systemyellowcolor" :background "Violetred1"))))))
+     `(lazy-highlight ((t (:foreground "#Ffd60a" :background "#Ff3e96"))))))
 
   (use-package rainbow-delimiters :diminish rainbow-delimiters-mode
     :init
@@ -305,13 +305,10 @@
 
 * evil mode
 #+begin_src emacs-lisp :tangle yes
-
   (evil-set-leader '(normal visual motion) (kbd "SPC"))
   (evil-set-leader '(normal visual motion) (kbd ",") t)
   (evil-set-leader '(normal visual motion insert emacs) (kbd "M-o"))
   (evil-set-leader '(normal visual motion insert emacs) (kbd "M-RET") t)
-
-  (evil-define-key 'motion help-mode-map (kbd "TAB") 'forward-button)
 #+end_src
 
 * latex
@@ -346,7 +343,7 @@
    '(font-latex-sectioning-2-face ((t (:foreground "#Ffd60a")))))
 
   (evil-define-key '(normal visual) LaTeX-mode-map (kbd "%") 'nbm-latex-evil-jump-item)
-  
+
   (evil-define-key 'emacs reftex-toc-mode-map (kbd "q") 'nbm-reftex-toc-quit)
   (evil-define-key 'emacs reftex-toc-mode-map (kbd "RET") 'nbm-reftex-toc-goto-line-and-hide)
   (evil-define-key 'emacs reftex-toc-mode-map (kbd "j") 'reftex-toc-next)
@@ -421,8 +418,8 @@
   (evil-set-initial-state 'help-mode 'emacs)
   (evil-set-initial-state 'Info-mode 'emacs)
 
-  (while (not (nbm-get-user-variable "editing-style"))
-    (nbm-change-editing-style))
+  (unless (nbm-get-user-variable "editing-style")
+    (nbm-set-user-variable "editing-style" "windows"))
 
   (when (equal (nbm-get-user-variable "editing-style") "vim")
     (evil-set-initial-state 'text-mode 'normal)
