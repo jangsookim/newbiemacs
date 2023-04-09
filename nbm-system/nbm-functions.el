@@ -99,7 +99,9 @@
 (defun nbm-cheat-sheet ()
   "Open Newbiemacs cheat sheet."
   (interactive)
-  (find-file (nbm-root-f "newbiemacs_cheat_sheet.pdf")))
+  (if (equal (nbm-get-user-variable "editing-style") "windows")
+      (browse-url "https://jangsookim.github.io/newbiemacs/newbiemacs_cheat_sheet_windows.pdf")
+    (browse-url "https://jangsookim.github.io/newbiemacs/newbiemacs_cheat_sheet_vim.pdf")))
 
 (defun nbm-change-editing-style ()
   "Change the editing style to emacs or vim."
