@@ -80,6 +80,21 @@ If there is no title, return the filename."
 			       (nbm-get-file-name) *nbm-home* file-name))
 	(message (format "A symbolic link created: %s.tex" file-name))))))
 
+(defun nbm-latex-new-file-from-template (dir filename title)
+  "Create a new file FILE from a template file under directory DIR.
+Write TITLE for the title in the tex file.
+DIR must end with /.
+FILENAME must end with .tex."
+  (let (temp)
+    (setq temp (read-file-name "Choose the template file: (default is template.tex) "
+			       (nbm-f "nbm-user-settings/templates/")
+			       "template.tex"))
+    (copy-file temp (concat dir filename))
+    (find-file (concat dir filename)) (goto-char (point-min))
+    (when (search-forward "\\title{" nil t nil)
+      (insert title))
+    (save-buffer)))
+
 (defun nbm-latex-new-file ()
   "Create a new latex file from a template."
   (interactive)
@@ -88,22 +103,14 @@ If there is no title, return the filename."
 Current dir: %s\n
 (Type y for yes or type anything else for creating a tex file in the Newbiemacs tex directory.)"
 				     (nbm-get-dir-name))))
-      (setq dirname "."))
+      (setq dirname "./"))
     (setq title (read-string (concat "Enter a new latex filename (default: note): ")
 			     nil nil "note" nil))
     (unless dirname
-      (setq dirname (concat (nbm-f "tex/") (format-time-string "%Y-%m-%d-") title))
+      (setq dirname (concat (nbm-f "tex/") (format-time-string "%Y-%m-%d-") title "/"))
       (make-directory dirname))
-    (setq temp (read-file-name "Choose the template file: (default is template.tex) "
-			       (nbm-f "nbm-user-settings/templates/")
-			       "template.tex"))
-    (setq filename (concat dirname "/" title ".tex"))
-    (copy-file temp filename)
-    (find-file filename) (goto-char (point-min))
-    (when (search-forward "\\title{" nil t nil)
-      (insert title))
-    (search-forward "begin{document}" nil t nil)
-    (next-line) (recenter-top-bottom) (save-buffer)
+    (setq filename (concat title ".tex"))
+    (nbm-latex-new-file-from-template dirname filename title)
     (message "Created a new file.")))
 
 (defun nbm-latex-new-macro ()
@@ -281,6 +288,54 @@ includes the environment macro."
 	  (message "Copied the math content."))
       (message "You are not in math mode!"))))
 
+(defun nbm-latex-paste-previous-math ()
+  "Paste the content of the previous math mode."
+  (interactive)
+  (let (found)
+    (save-excursion
+      (while (and (not found) (re-search-backward "\\\\\\|\\$" nil t))
+	(when (texmathp)
+	  (nbm-latex-copy-math-with-env)
+	  (setq found t))))
+    (if found
+	(insert (current-kill 0))
+      (message "No math mode before the cursor."))))
+
+(defun nbm-latex-paste-avy-math (&optional env)
+  "Paste the content of the math mode chosen by avy jump.
+The candidates must have length at least 5.
+If ENV is non-nil, include the environment macro."
+  (interactive)
+  (let (found math math-list (beg (window-start)) (end (window-end)))
+    (save-excursion
+      (goto-char beg)
+      (while (re-search-forward (concat (regexp-quote "\\[") "\\|"
+					(regexp-quote "\\(") "\\|"
+					(regexp-quote "\\end"))
+				end t)
+	(when (texmathp)
+	  (setq math (nbm-latex-find-math-mode nil))
+	  (when (> (nth 2 math) (+ 5 (nth 1 math)))
+	    (setq math (nbm-latex-find-math-mode t))
+	    (setq math (buffer-substring (nth 1 math) (nth 2 math)))
+	    (when math-list (setq math-list (concat math-list "\\|")))
+	    (setq math-list (concat math-list (regexp-quote math)))))))
+    (save-excursion
+      (when (avy-jump math-list)
+	(setq found t)
+	(if env
+	    (nbm-latex-copy-math-with-env)
+	  (nbm-latex-copy-math))))
+    (if found
+	(insert (current-kill 0))
+      (message "Wrong a math mode."))))
+
+(defun nbm-latex-paste-avy-math-with-env ()
+  "Paste the content of the math mode chosen by avy jump with environment.
+The candidates must have length at least 10."
+  (interactive)
+  (nbm-latex-paste-avy-math t))
+
 (defun nbm-latex-toggle-inline-math ()
   "Change inline math \"(..)\" to display math \"[..]\" or vice versa."
   (interactive)
@@ -420,6 +475,168 @@ to \\begin{multline}...\\end{multline} or vice versa."
 	   (if (member (car math) '("equation"))
 	       (nbm-latex-change-env-name "multline")
 	     (nbm-latex-change-env-name "multline*"))))))
+
+(defun nbm-latex-toggle-frac ()
+  "Toggle between (a)/(b) and \\frac{a}{b} in the selected region or in the current line."
+  (interactive)
+  (save-excursion
+    (let (pos r-beg r-end beg end beg1 end1 beg2 end2 num den frac slash found)
+      (if (use-region-p)
+	  (setq r-beg (region-beginning) r-end (region-end))
+	(save-excursion
+	  (beginning-of-line) (setq r-beg (point))
+	  (end-of-line) (setq r-end (point))))
+      (setq pos (point))
+      (save-excursion
+	(when (search-forward "/" r-end t)
+	  (setq slash (point)) (search-backward ")") (setq end1 (point))
+	  (forward-char) (backward-sexp)
+	  (setq beg (point)) (setq beg1 (1+ (point)))
+	  (when (and (<= beg pos) (<= pos slash))
+	    (setq found t) (goto-char slash)
+	    (search-forward "(") (setq beg2 (point))
+	    (backward-char) (forward-sexp) (setq end2 (1- (point)))
+	    (setq end (point)))))
+      (unless found
+	(save-excursion
+	  (when (search-backward "/" r-beg t)
+	    (setq slash (point)) (search-forward "(") (setq beg2 (point))
+	    (backward-char) (forward-sexp) (setq end2 (1- (point)))
+	    (setq end (point))
+	    (when (and (<= slash pos) (<= pos end))
+	      (setq found t) (goto-char slash)
+	      (search-backward ")") (setq end1 (point))
+	      (forward-char) (backward-sexp) (setq beg (point))
+	      (setq beg1 (1+ (point)))))))
+      (unless found
+	(if (equal (TeX-current-macro) "frac")
+	    (progn
+	      (goto-char (TeX-find-macro-start))
+	      (setq beg (point)) (setq frac t))
+	  (when (search-backward "\\frac" r-beg t)
+	    (setq beg (point)) (setq frac t))))
+      (when frac
+	(search-forward "{") (setq beg1 (point))
+	(backward-char) (forward-sexp) (setq end1 (1- (point)))
+	(search-forward "{") (setq beg2 (point))
+	(backward-char) (forward-sexp) (setq end2 (1- (point)))
+	(setq end (point)))
+      (if (or found frac)
+	  (progn
+	    (setq num (buffer-substring beg1 end1)
+		  den (buffer-substring beg2 end2))
+	    (delete-region beg end)
+	    (if found
+		(insert (format "\\frac{%s}{%s}" num den))
+	      (insert (format "(%s)/(%s)" num den))))
+	(message "Not in a fraction environment!")))))
+
+(defun nbm-latex-toggle-parenthesis ()
+  "Toggle between (..) and \\left(..\\right)."
+  (interactive)
+  (save-excursion
+    (let (beg end choice brace)
+      (save-excursion
+	(when (looking-at "[(]\\|[[]\\|[{]")
+	  (when (looking-at "{") (setq brace t) (backward-char))
+	  (setq beg (point)))
+	(when (looking-at ")\\|]\\|\\}")
+	  (when (looking-at "}") (setq brace t) (backward-char))
+	  (forward-char)
+	  (if brace (nbm-latex-backward-sexp) (backward-sexp))
+	  (when brace (backward-char))
+	  (setq beg (point))))
+      (setq choice (read-char "Choose the macro for the parentheses:
+0) left-right (default)
+1) big
+2) Big
+3) bigg
+4) Bigg
+n) none
+d) delete the parentheses"))
+      (when beg
+	(goto-char beg)
+	(when (looking-back "\\\\\\(big\\|Big\\|bigg\\|Bigg\\|left\\) *" (line-beginning-position))
+	  (zap-to-char -1 ?\\) (setq beg (point)))
+	(if brace (nbm-latex-forward-sexp) (forward-sexp))
+	(backward-char)
+	(when (looking-back "\\\\\\(big\\|Big\\|bigg\\|Bigg\\|right\\) *" (line-beginning-position))
+	  (zap-to-char -1 ?\\))
+	(forward-char) (setq end (point))
+	(cond ((equal choice ?1)
+	       (goto-char (1- end)) (insert "\\big")
+	       (goto-char beg) (insert "\\big"))
+	      ((equal choice ?2)
+	       (goto-char (1- end)) (insert "\\Big")
+	       (goto-char beg) (insert "\\Big"))
+	      ((equal choice ?3)
+	       (goto-char (1- end)) (insert "\\bigg")
+	       (goto-char beg) (insert "\\bigg"))
+	      ((equal choice ?4)
+	       (goto-char (1- end)) (insert "\\Bigg")
+	       (goto-char beg) (insert "\\Bigg"))
+	      ((equal choice ?n))
+	      ((equal choice ?d)
+	       (goto-char end) (delete-char -1)
+	       (goto-char beg) (delete-char 1))
+	      (t
+	       (goto-char (1- end)) (insert "\\right")
+	       (goto-char beg) (insert "\\left")))))))
+
+(defun nbm-latex-forward-sexp ()
+  "Go to the closing parenthesis if the cursor is at an opening parenthesis."
+  (interactive)
+  (let (level opening closing candidates found)
+    (setq candidates (list (buffer-substring (- (point) 1) (+ (point) 1))
+			   (buffer-substring (point) (+ (point) 2))))
+    (cond ((member "\\(" candidates)
+	   (setq opening "\\(" closing "\\)"))
+	  ((member "\\[" candidates)
+	   (setq opening "\\[" closing "\\]"))
+	  ((member "\\{" candidates)
+	   (setq opening "\\{" closing "\\}")))
+    (when opening
+      (setq level 0) (forward-char)
+      (while (not found)
+	(re-search-forward (format "\\(%s\\|%s\\)" (regexp-quote opening) (regexp-quote closing)))
+	(if (equal (match-string 1) opening)
+	    (setq level (1+ level))
+	  (setq level (1- level)))
+	(when (equal level -1)
+	  (setq found t) (backward-char))))))
+
+(defun nbm-latex-backward-sexp ()
+  "Go to the opening parenthesis if the cursor is at a closing parenthesis."
+  (interactive)
+  (let (level opening closing candidates found)
+    (setq candidates (list (buffer-substring (- (point) 1) (+ (point) 1))
+			   (buffer-substring (point) (+ (point) 2))))
+    (cond ((member "\\)" candidates)
+	   (setq opening "\\(" closing "\\)"))
+	  ((member "\\]" candidates)
+	   (setq opening "\\[" closing "\\]"))
+	  ((member "\\}" candidates)
+	   (setq opening "\\{" closing "\\}")))
+    (when opening
+      (setq level 0)
+      (while (not found)
+	(re-search-backward (format "\\(%s\\|%s\\)" (regexp-quote opening) (regexp-quote closing)))
+	(if (equal (match-string 1) closing)
+	    (setq level (1+ level))
+	  (setq level (1- level)))
+	(when (equal level -1)
+	  (setq found t) (forward-char))))))
+
+(defun nbm-latex-evil-jump-item ()
+  "This function behaves like evil-jump-item also working with \\(, \\{, \\[."
+  (interactive)
+  (let (pos)
+    (setq pos (point))
+    (nbm-latex-forward-sexp)
+    (when (equal pos (point))
+      (nbm-latex-backward-sexp))
+    (when (equal pos (point))
+      (evil-jump-item))))
 
 (defun nbm-latex-insert-label ()
   "Insert the label in the current environment."
@@ -620,9 +837,9 @@ If QUICK is non-nil, use the default options."
 			    "  \\label{fig:" fig "}\n"
 			    "\\end{figure}\n"))
 	    (search-backward "\\caption{") (search-forward "{"))
-	(insert (concat "\n\\begin{center}\n"
+	(insert (concat "\\begin{center}\n"
 			"  \\includegraphics[scale=.5]{./figures/" fig "." ext "}\n"
-			"\\end{center}\n"))))))
+			"\\end{center}"))))))
 
 (defun nbm-latex-insert-figure-with-env ()
   "Insert the most recent file from *nbm-screenshots* to ./figures with a figure environment."
@@ -780,9 +997,10 @@ add a new bib item."
 	  (setq temp (substring temp 1 nil)))
 	(if (equal (substring temp 0 1) "@") (setq mathscinet t))
 	(setq temp (split-string temp "\n"))
-	(setq file-name (read-string "Enter a suitable file name: "
-				     (if mathscinet (nbm-mathscinet-make-filename)
-				       (nbm-arxiv-make-filename))))
+	(setq file-name (if mathscinet (nbm-mathscinet-make-filename)
+			  (nbm-arxiv-make-filename)))
+	(setq file-name (string-replace "/" "-" file-name))
+	(setq file-name (read-string "Enter a suitable file name: " file-name))
 	(setq choice (read-char (format "Move \"%s\"\ninto \"%s\"\nunder the following name?\n%s\n\n(Type y for yes)."
 					pdf *nbm-pdf* file-name)))
 	(when (equal choice ?y)
@@ -999,16 +1217,20 @@ Prompt for a label (with completion) and jump to the location of this label."
   (interactive)
   (let ((TeX-command-force t))
     (save-buffer)
-    (if *nbm-latex-compile-section*
+    (if (member (current-buffer) *nbm-latex-compile-section*)
 	(LaTeX-command-section)
       (TeX-command-master))))
 
 (defun nbm-latex-toggle-compile-section ()
-  "Toggle the variable *nbm-latex-compile-section*."
+  "Toggle the membership of the current buffer in the alist *nbm-latex-compile-section*."
   (interactive)
-  (let (level)
-    (if *nbm-latex-compile-section*
-	(setq *nbm-latex-compile-section* nil)
+  (let (level buf)
+    (setq buf (current-buffer))
+    (if (member buf *nbm-latex-compile-section*)
+	(progn
+	  (setq *nbm-latex-compile-section*
+		(remove buf *nbm-latex-compile-section*))
+	  (message "Section compile mode is turned off."))
       (progn
 	(setq level (read-char "Choose the section level: (default 2)
 1) chapter
@@ -1018,8 +1240,8 @@ Prompt for a label (with completion) and jump to the location of this label."
 	      ((equal level ?3) (setq level 3))
 	      (t (setq level 2)))
 	(setq LaTeX-command-section-level level)
-	(setq *nbm-latex-compile-section* t))))
-  (message (format "*nbm-latex-compile-section* is now %s." *nbm-latex-compile-section*)))
+	(add-to-list '*nbm-latex-compile-section* buf)
+	(message "Section compile mode is turned on.")))))
 
 (defun nbm-latex-find-main-tex-file ()
   "Find the main tex file associated to the current _region_.tex."
@@ -1050,8 +1272,7 @@ Prompt for a label (with completion) and jump to the location of this label."
 (defun nbm-latex-switch-between-main-and-region-hook ()
   "Switch to the main tex file if _region_.tex file is called from an external pdf viewer."
   (interactive)
-  (when (and *nbm-latex-compile-section*
-	     (equal (file-name-nondirectory (buffer-file-name)) "_region_.tex"))
+  (when (equal (file-name-nondirectory (buffer-file-name)) "_region_.tex")
     (nbm-latex-switch-between-main-and-region)))
 
 ;; The following is for the inverse search from _region_.pdf.
@@ -1067,13 +1288,45 @@ Prompt for a label (with completion) and jump to the location of this label."
 
 (defun nbm-latex-view-pdf ()
   "View the pdf file associated to the current tex file.
-If *nbm-latex-compile-section* is t, then open the pdf associated to _region_tex."
+If the current buffer is in *nbm-latex-compile-section*, then open the pdf associated to _region_tex."
   (interactive)
   (let ((buf (current-buffer)))
-    (if *nbm-latex-compile-section*
+    (if (member buf *nbm-latex-compile-section*)
 	(progn
 	  (nbm-latex-switch-between-main-and-region)
 	  (latex-mode) (TeX-command "View" #'TeX-master-file 0)
 	  (switch-to-buffer buf))
       (TeX-view))))
 
+(defun nbm-latex-new-study ()
+  "Create a new tex file for studying a paper in the pdf folder."
+  (interactive)
+  (let (dir pdf-name tex-name temp)
+    (setq pdf-name (completing-read "Choose a file to study: "
+				    (directory-files-recursively (nbm-f "pdf/") ".*[.]pdf$\\|.*[.]djvu$")))
+    (setq pdf-name (file-name-nondirectory (file-name-sans-extension pdf-name)))
+    (setq tex-name (concat (car (split-string pdf-name "[.]")) ".tex")) ; the author names
+    (setq dir (nbm-f "tex/study/"))
+    (unless (file-exists-p dir) (make-directory dir))
+    (setq dir (concat dir pdf-name "/"))
+    (unless (file-exists-p dir) (make-directory dir))
+    (nbm-latex-new-file-from-template dir tex-name pdf-name)
+    (message "Create a tex file.")))
+
+(defun nbm-latex-start-study ()
+  "Choose a pdf file associated to one in the study directory.
+Open the pdf file and the corresponding tex file."
+  (interactive)
+  (let (topic tex-file tex-files)
+    (setq topic (completing-read "Choose what to study: "
+				 (directory-files (nbm-f "tex/study/") nil "^[^.]")))
+    (setq tex-files (directory-files (nbm-f (format "tex/study/%s/" topic)) nil "[.]tex$"))
+    (setq tex-files (remove "_region_.tex" tex-files))
+    (if (equal (length tex-files) 1)
+	(setq tex-file (car tex-files))
+      (setq tex-file (completing-read "Choose a tex file to open: " tex-files)))
+    (find-file (nbm-f (format "tex/study/%s/%s" topic tex-file)))
+    (find-file (car (directory-files-recursively (nbm-f "pdf/")
+						 (format "%s[.]pdf$\\|%s[.]djvu$"
+							 (regexp-quote topic)
+							 (regexp-quote topic)))))))

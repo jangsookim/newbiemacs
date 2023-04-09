@@ -89,6 +89,9 @@
 *** key: t, description: time stamp, function: org-time-stamp-inactive, level: 2
 *** key: u, description: UI mode, function: org-roam-ui-mode, level: 1
 ** key: p, description: Find pdf, function: nbm-find-pdf, level: 1
+** key: q, description: quick menu, level: 1
+*** key: n, description: new study, function: nbm-latex-new-study, level: 1
+*** key: s, description: start study, function: nbm-latex-start-study, level: 1
 ** key: r, description: Registers, level: 3
 *** key: s, description: Set counter, function: nbm-set-counter, level: 3
 *** key: a, description: Add counter, function: nbm-add-counter, level: 3
@@ -144,6 +147,9 @@
 * description: LaTeX-mode, level: 1
 ** key: ,, description: master command, function: TeX-command-master, level: 1
 ** key: `, description: goto next error, function: TeX-next-error, level: 1
+** key: RET, description: paste prev math, function: nbm-latex-paste-previous-math, level: 1
+** key: p, description: paste avy math, function: nbm-latex-paste-avy-math, level: 1
+** key: P, description: paste avy math with env, function: nbm-latex-paste-avy-math-with-env, level: 1
 ** key: =, description: table of contents, function: reftex-toc, level: 1
 ** key: a, description: applications, level: 3
 *** key: d, description: latex diff, function: nbm-latex-diff, level: 3
@@ -204,11 +210,12 @@
 *** key: b, description: bbl-file, function: nbm-latex-toggle-bbl-file, level: 1
 *** key: e, description: equation, function: nbm-latex-toggle-equation, level: 1
 *** key: a, description: align, function: nbm-latex-toggle-align, level: 2
+*** key: f, description: frac, function: nbm-latex-toggle-frac, level: 1
 *** key: i, description: inline math, function: nbm-latex-toggle-inline-math, level: 1
 *** key: l, description: label, function: reftex-change-label, level: 2
 *** key: m, description: multline, function: nbm-latex-toggle-multline, level: 2
 *** key: *, description: environment with *, function: nbm-latex-toggle-star, level: 1
-*** key: p, description: pgml to latex, function: nbm-latex-toggle-pgml, level: 3
+*** key: p, description: parenthesis, function: nbm-latex-toggle-parenthesis, level: 3
 *** key: s, description: compile section, function: nbm-latex-toggle-compile-section, level: 1
 *** key: h, description: hwp math, function: nbm-latex-convert-to-hwp, level: 1
 *** key: v, description: change variables, function: nbm-latex-change-variables, level: 1
