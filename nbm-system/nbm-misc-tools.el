@@ -48,10 +48,10 @@ Otherwise, return the first line."
 (defun nbm-set-user-variable (var content)
   "Set CONTENT to be the content of the file nbm-VAR.txt in the folder
 newbiemacs/nbm-user-settings/nbm-variables."
-  (let (file)
+  (let (file buf)
     (setq file (concat *nbm-home* (format "nbm-user-settings/nbm-variables/nbm-%s.txt" var)))
-    (find-file file) (erase-buffer)
-    (insert content) (save-buffer) (kill-buffer)))
+    (find-file file) (setq buf (current-buffer)) (erase-buffer)
+    (insert content) (save-buffer) (kill-buffer buf)))
 
 (defun nbm-tab-line-jump ()
   "Jump to a tab in the tab line list."

@@ -34,7 +34,7 @@
   ;; (evil-local-set-key 'normal (kbd "b") ')
   ;; (evil-local-set-key 'normal (kbd "c") ')
   ;; (evil-local-set-key 'normal (kbd "d") ')
-  ;; (evil-local-set-key 'normal (kbd "e") 'nbm-find-el)
+  (evil-local-set-key 'normal (kbd "e") 'nbm-change-editing-style)
   (evil-local-set-key 'normal (kbd "f") 'newbie-latex-insert-figure)
   (evil-local-set-key 'normal (kbd "g") 'newbie-games)
   (evil-local-set-key 'normal (kbd "h") 'newbie-latex-convert-to-hwp)
@@ -127,7 +127,7 @@
 
 (defun newbie-print-menu ()
   "Start newbie."
-  (nbm-insert 9 "                           <BACKSPACE>: Newbiemacs screen                         \n\n")
+  (nbm-insert 9 "                         ALT+<BACKSPACE>: Newbiemacs screen                         \n\n")
   (nbm-insert 3 (format "%2s%-15s->  " "" "Find files"))
   (nbm-insert 3 (format "%2s%-17s" "" "p: pdf find"))
   (nbm-insert 3 (format "%2s%-19s" "" "t: tex find"))
@@ -153,7 +153,9 @@
   (nbm-insert 4 (format "%2s%-19s" "" "x: settings"))
   (nbm-insert 4 (format "%2s%-19s\n" "" "q: quit"))
   (nbm-insert 4 (format "%2s%-15s->  " "" ""))
-  (nbm-insert 4 (format "%2s%-17s" "" "l: Set User Level (This unlocks more commands.)")))
+  (nbm-insert 4 (format "%2s%-17s" "" "l: Set User Level"))
+  (nbm-insert 4 (format "%2s%-19s" "" "e: Set Editing Style"))
+  )
 
 (defun newbie-print-all ()
   "Start newbie."
@@ -187,9 +189,9 @@
 ;; key bindings
 (defvar newbie-mode-map (make-sparse-keymap))
 (evil-global-set-key 'normal (kbd "<backspace>") 'newbie)
-(when (commandp 'spacemacs/get-last-version)
-  (evil-global-set-key 'motion (kbd "<backspace>") 'newbie)
-  (evil-global-set-key 'evilified (kbd "<backspace>") 'newbie))
+(evil-global-set-key 'normal (kbd "M-<backspace>") 'newbie)
+(evil-global-set-key 'emacs (kbd "M-<backspace>") 'newbie)
+
 
 (defun newbie-finder ()
   "Open the current file in Finder."
@@ -231,8 +233,9 @@
 (defun newbie-setting ()
   (interactive)
   (with-output-to-temp-buffer "newbie-setting"
-    (let ((inhibit-read-only t) choice editor path)
+    (let ((inhibit-read-only t) choice editor path buf)
       (switch-to-buffer "newbie-setting")
+      (setq buf (current-buffer))
       (insert "\n  Current variables are shown below.\n\n")
       (newbie-print-variables)
       (insert "\n  To change a variable ")
@@ -268,7 +271,6 @@ u) Update Newbiemacs
 5) Modify the main bib file \"ref.bib\"
 6) Modify my favorite strings in \"favorites.txt\"
 q) quit"))
-      (kill-buffer)
       (setq path (concat *nbm-home* "nbm-user-settings/"))
       (cond
        ((equal choice ?1) (setq path (concat path "nbm-variables/nbm-desktop.txt")))
@@ -281,7 +283,8 @@ q) quit"))
       (when (member choice '(?1 ?2 ?3 ?6))
 	(if (equal system-type 'windows-nt) (setq editor "notepad ") (setq editor "open "))
 	(shell-command (concat editor (nbm-path-string path))))
-      (when (member choice '(?4 ?5)) (find-file path)))))
+      (when (member choice '(?4 ?5)) (find-file path))
+      (kill-buffer buf))))
 
 (defun newbie-config ()
   "Open one of the nbm configuration files."

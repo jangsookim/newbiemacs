@@ -132,6 +132,7 @@
 *** key: w, description: show white space, function: whitespace-mode, level: 2
 ** key: N, description: Newbiemacs, level: 1
 *** key: c, description: config, function: newbie-config, level: 3
+*** key: e, description: change editing style, function: nbm-change-editing-style, level: 1
 *** key: r, description: reload, function: newbie-reload, level: 1
 *** key: s, description: settings, function: newbie-setting, level: 2
 *** key: l, description: Set User Level, function: nbm-set-user-level, level: 1
