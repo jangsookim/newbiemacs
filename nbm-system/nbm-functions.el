@@ -99,4 +99,14 @@
 (defun nbm-cheat-sheet ()
   "Open Newbiemacs cheat sheet."
   (interactive)
-  (find-file (nbm-root-f "newbiemacs_cheat_sheet.pdf")))
+  (browse-url (format "https://jangsookim.github.io/newbiemacs/newbiemacs_cheat_sheet_%s.pdf"
+		      (nbm-get-user-variable "editing-style"))))
+
+(defun nbm-change-editing-style ()
+  "Change the editing style to emacs or vim."
+  (interactive)
+  (let (choice)
+    (setq choice (completing-read "Choose a new editing style:"
+				  '("vim" "emacs" "windows")))
+    (nbm-set-user-variable "editing-style" choice)
+    (message "The editing style is set to be \"%s\"." choice)))
