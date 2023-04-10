@@ -100,16 +100,12 @@
 		   (mapconcat 'torus-change-theme-prompt (list 1 2 3 4) "\n")
 		  )))
     (torus-load-theme (string-to-number (char-to-string choice)))
-    (if (fboundp 'nbm-set-user-variable) (nbm-set-user-variable "torus" choice))
-    ))
-
+    (if (fboundp 'nbm-set-user-variable) (nbm-set-user-variable "torus" choice))))
 
 (defun torus-local-set-key (keybind)
-  (if (fboundp 'evil-local-set-key)
-      (evil-local-set-key (elt keybind 0) (elt keybind 1))
-    (local-set-key (elt keybind 0) (elt keybind 1))
-    ))
-
+  (local-set-key (elt keybind 0) (elt keybind 1))
+  (when (fboundp 'evil-local-set-key)
+    (evil-local-set-key 'normal (elt keybind 0) (elt keybind 1))))
 
 (defun torus-local-set-keybindings (theme)
   (cond
@@ -129,8 +125,7 @@
 	   (list (kbd "q") 'torus-end-game)
 	   (list (kbd "c") 'torus-change-theme)
 	   (list (kbd "s") 'torus-show-score-board)
-	   (list (kbd "p") 'torus-pause-game)
-	   ))
+	   (list (kbd "p") 'torus-pause-game))))
     ((equal theme 2) ;vi-like
      (mapc 'torus-local-set-key 
 	   (list
@@ -147,8 +142,7 @@
 	    (list (kbd "q") 'torus-end-game)
 	    (list (kbd "c") 'torus-change-theme)
 	    (list (kbd "s") 'torus-show-score-board)
-	    (list (kbd "p") 'torus-pause-game)
-	    )))
+	    (list (kbd "p") 'torus-pause-game))))
     ((equal theme 3) ; emacs-like
      (mapc 'torus-local-set-key 
 	   (list
@@ -165,9 +159,7 @@
 	    (list (kbd "q") 'torus-end-game)
 	    (list (kbd "c") 'torus-change-theme)
 	    (list (kbd "s") 'torus-show-score-board)
-	    (list (kbd "z") 'torus-pause-game)
-	    )))
-    )))
+	    (list (kbd "z") 'torus-pause-game))))))
 
 (defun torus ()
   (interactive)
