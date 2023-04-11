@@ -430,6 +430,7 @@
     (evil-set-initial-state 'latex-mode 'normal)
     (evil-set-initial-state 'emacs-lisp-mode 'normal)
     (evil-set-initial-state 'fundamental-mode 'normal)
+    (evil-set-initial-state 'snippet-mode 'normal)
     (evil-set-initial-state 'python-mode 'normal))
 
   (when (equal (nbm-get-user-variable "editing-style") "windows")
