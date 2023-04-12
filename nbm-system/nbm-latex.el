@@ -663,6 +663,7 @@ In visual mode, the cursor must be placed on \\."
       (unless (equal env "document")
 	(goto-char (car (LaTeX-env-beginning-pos-col)))
 	(search-forward "\\begin" nil t) (forward-sexp)
+	(when (looking-at "[ \t\n]*\\[") (forward-sexp))
 	(insert (format "\\label{%s}" label))))))
 
 (defun nbm-latex-delete-label ()
