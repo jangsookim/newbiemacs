@@ -70,7 +70,7 @@
     (setq heading (completing-read "Choose a heading to jump: "
 				   heading-list))
     (beginning-of-buffer)
-    (re-search-forward (concat "^" heading))))
+    (re-search-forward (format "^%s[ \t]*$" (regexp-quote heading)))))
 
 (defun nbm-org-jump-to-tex ()
   "Jump to the tex file for the current org file."
