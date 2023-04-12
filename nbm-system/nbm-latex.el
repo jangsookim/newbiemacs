@@ -628,13 +628,17 @@ d) delete the parentheses"))
 	  (setq found t) (forward-char))))))
 
 (defun nbm-latex-evil-jump-item ()
-  "This function behaves like evil-jump-item also working with \\(, \\{, \\[."
+  "This function behaves like evil-jump-item also working with \\(, \\{, \\[.
+In normal mode, the cursor can be placed on either \\ or (.
+In visual mode, the cursor must be placed on \\."
   (interactive)
   (let (pos)
     (setq pos (point))
     (nbm-latex-forward-sexp)
     (when (equal pos (point))
       (nbm-latex-backward-sexp))
+    (when (and (use-region-p) (not (equal pos (point))))
+      (forward-char))
     (when (equal pos (point))
       (evil-jump-item))))
 
