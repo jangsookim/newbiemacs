@@ -9,19 +9,19 @@ v) matrix enclosed by vertical lines")))
 (defun nbm-snippet-latex-matrix-bracket (&optional bracket)
   "Insert a latex snippet for a matrix using the matrix environment with BRACKET.
 BRACKET can be a character equal to p, b or v.
-p: pmatrix (default)
-b: bmatrix
+b: bmatrix (default)
+p: pmatrix
 v: matrix enclosed by vertical lines"
   (interactive)
   (unless (texmathp)
     (insert "\\[\n\n\\]\n")
     (backward-char 4))
-  (cond ((equal bracket ?b)
-	 (insert "\\begin{bmatrix}\n"))
+  (cond ((equal bracket ?p)
+	 (insert "\\begin{pmatrix}\n"))
 	((equal bracket ?v)
 	 (insert "\\left|\\begin{matrix}\n"))
 	(t
-	 (insert "\\begin{pmatrix}\n")))
+	 (insert "\\begin{bmatrix}\n")))
   (nbm-snippet-insert-matrix-entries
    (read-from-minibuffer
     "Instructions: The matrix entries must be separated by a space.
@@ -31,12 +31,12 @@ For example, the 2x2 identity matrix is written as follows.
 (Type M-j to create a new line.)
 Enter the entries below:
 "))
-  (cond ((equal bracket ?b)
-	 (insert "\\end{bmatrix}"))
+  (cond ((equal bracket ?p)
+	 (insert "\\end{pmatrix}"))
 	((equal bracket ?v)
 	 (insert "\\end{matrix}\\right|"))
 	(t
-	 (insert "\\end{pmatrix}"))))
+	 (insert "\\end{bmatrix}"))))
 
 (defun nbm-snippet-latex-ytableau ()
   "Insert a latex snippet for a young tableau."
