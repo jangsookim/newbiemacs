@@ -232,14 +232,18 @@ q) quit" file (nbm-get-dir-name))))
 	(rename-file file (concat *nbm-desktop* new-file) 1))
     (if (equal choice ?q) (message "Aborted."))))
 
-(defun nbm-move-newest-file ()
-  "Move the newest file in the folders in *nbm-screenshots*."
-  (interactive)
+(defun nbm-files-from-screenshot ()
+  "Return the list of files in the folders in *nbm-screenshots* sorted by modified time.
+Directories and files starting with ., $, or # will be ignored."
   (let (dir file-list)
     (dolist (dir *nbm-screenshots*)
       (setq file-list (append file-list (directory-files dir t "\\`[^.$#]"))))
-    (nbm-move-to-folder (nbm-newest-file
-			 (seq-remove 'file-directory-p file-list)))))
+    (nbm-sort-files-by-modified-time (-remove 'file-directory-p file-list))))
+
+(defun nbm-move-newest-file ()
+  "Move the newest file in the folders in *nbm-screenshots*."
+  (interactive)
+  (nbm-move-to-folder (car (nbm-files-from-screenshot))))
 
 (defun nbm-get-lowest-dir-name ()
   "Return the lowest directory name of the current file."
