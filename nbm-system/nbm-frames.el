@@ -1,9 +1,10 @@
-(defun nbm-magnet()
-  "Adjust the current frame as Magnet does. Like Vim, h means left and l means right."
+(defun nbm-magnet ()
+  "Adjust the current frame as Magnet does. Like Vim, h means left and l means right.
+Use upper case to cycle through multiple monitors."
   (interactive)
   (let (choice)
     (setq choice (read-char (format
-			     "Select the position: (Like Vim, h means left and l means right.)\n
+			     "Select the position: (Like Vim, h means left and l means right. Use upper case to cycle through multiple monitors.)\n
 %36s%18s\n
 %18s%18s%18s%18s\n
 %36s%18s\n
@@ -17,42 +18,52 @@
 			     (concat (nbm-string-key "c") ": center     ")
 			     (concat (nbm-string-key "m") ": max        ")
 			     (concat (nbm-string-key "a") ": adjust height")
-			     (concat (nbm-string-key "s") ": save as startup frame")
-			     )))
+			     (concat (nbm-string-key "s") ": save as startup frame"))))
+    (when (member choice '(?U ?I ?H ?J ?K ?L ?C ?M))
+      (nbm-magnet-next-monitor)
+      (setq choice (downcase choice)))
     (cond ((equal ?a choice) (nbm-magnet-adjust-height))
 	  ((equal ?s choice) (nbm-save-frame-as-startup))
 	  (t (nbm-magnet-move-frame choice) (nbm-magnet-move-frame choice)))))
 
+(defun nbm-magnet-next-monitor ()
+  "Move the frame to the next monitor."
+  (let (k x y height width monitor)
+    (setq k (-elem-index (frame-monitor-attributes) (display-monitor-attributes-list)))
+    (setq k (% (1+ k) (length (display-monitor-attributes-list))))
+    (setq monitor (nth 1 (nth k (display-monitor-attributes-list))))
+    (setq x (nth 1 monitor) y (nth 2 monitor))
+    (set-frame-position (selected-frame) x y)))
+
 (defun nbm-magnet-move-frame (pos)
   "Move the current frame as Magnet does."
-  (let (x y height width monitor))
-  (setq monitor (nth 1 (frame-monitor-attributes))) ; workable area
-  (setq x (nth 1 monitor)    ; x-coordinate of the current monitor's upper right corner
-	y (nth 2 monitor)    ; y-coordinate of the current monitor's upper right corner
-	width (nth 3 monitor)
-	height (nth 4 monitor))
-  (if (= pos ?c)
-      (setq x (+ x (/ width 4))
-	    y (+ y (/ height 4))))
-  (if (memq pos '(?l ?i ?k))
-      (setq x (+ x (/ width 2))))
-  (if (memq pos '(?j ?k))
-      (setq y (+ y (/ height 2))))
-  (unless (= pos ?m)
-    (setq width (/ width 2)))
-  (if (memq pos '(?u ?j ?i ?k ?c))
-      (setq height (/ height 2)))
-  (setq width (- width 40))
-  (setq height (- height 40))
+  (let (x y height width monitor)
+    (setq monitor (nth 1 (frame-monitor-attributes))) ; workable area
+    (setq x (nth 1 monitor)    ; x-coordinate of the current monitor's upper right corner
+	  y (nth 2 monitor)    ; y-coordinate of the current monitor's upper right corner
+	  width (nth 3 monitor)
+	  height (nth 4 monitor))
+    (if (= pos ?c)
+	(setq x (+ x (/ width 4))
+	      y (+ y (/ height 4))))
+    (if (memq pos '(?l ?i ?k))
+	(setq x (+ x (/ width 2))))
+    (if (memq pos '(?j ?k))
+	(setq y (+ y (/ height 2))))
+    (unless (= pos ?m)
+      (setq width (/ width 2)))
+    (if (memq pos '(?u ?j ?i ?k ?c))
+	(setq height (/ height 2)))
+    (setq width (- width 40))
+    (setq height (- height 40))
 
-  (set-frame-position (selected-frame) x y)
-  (if (equal system-type 'windows-nt)
-      (set-frame-size  (selected-frame) width (+ height -60 *nbm-magnet-height-adjust*) t) ; t means pixelwise dimension
-    (set-frame-size  (selected-frame) width (+ height *nbm-magnet-height-adjust*) t)))
+    (set-frame-position (selected-frame) x y)
+    (if (equal system-type 'windows-nt)
+	(set-frame-size  (selected-frame) width (+ height -60 *nbm-magnet-height-adjust*) t) ; t means pixelwise dimension
+      (set-frame-size  (selected-frame) width (+ height *nbm-magnet-height-adjust*) t))))
 
 (defun nbm-magnet-adjust-height ()
   "Adjust the off-set of max frame height."
-  (interactive)
   (let (ht done)
     (while (not done)
       (setq *nbm-magnet-height-adjust*
@@ -70,7 +81,6 @@ Enter here: ")))
 
 (defun nbm-save-frame-as-startup ()
   "Make the current frame size as the startup frame."
-  (interactive)
   (find-file (concat *nbm-home* "nbm-user-settings/nbm-variables/nbm-startup-frame.txt"))
   (erase-buffer)
   (insert (format "%s %s %s %s"
@@ -81,7 +91,6 @@ Enter here: ")))
 
 (defun nbm-set-startup-frame ()
   "Set up the startup frame."
-  (interactive)
   (set-frame-position (selected-frame)
 		      (nth 0 *nbm-startup-frame*)
 		      (nth 1 *nbm-startup-frame*))
