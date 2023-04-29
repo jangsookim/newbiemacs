@@ -182,25 +182,27 @@ e) el"))
                                    (file-name-sans-extension
                                     (file-name-nondirectory (buffer-file-name))))))
 
-(defun nbm-show-in-finder ()
+(defun nbm-show-in-finder (&optional file-name)
   "Open Finder on the current folder."
   (interactive)
+  (unless file-name
+    (setq file-name (if (equal system-type 'windows-nt)
+			(nbm-get-dir-name)
+		      (nbm-get-file-name))))
   (cond ((equal system-type 'windows-nt)
-	 (shell-command (format "start %s" (nbm-get-dir-name))))
+	 (shell-command (format "start %s" file-name)))
 	((equal system-type 'darwin)
-	 (shell-command (format "open -R \"%s\"" (nbm-get-file-name))))
+	 (shell-command (format "open -R \"%s\"" file-name)))
 	((equal system-type 'gnu/linux)
 	 (let (process-connection-type)
-	   (start-process "" nil "nautilus" "--browser" (nbm-get-file-name))))))
+	   (start-process "" nil "nautilus" "--browser" file-name)))))
 
 (defun nbm-show-trash-bin ()
   "Open Finder on the trash bin."
   (interactive)
   (unless (file-exists-p trash-directory)
     (make-directory trash-directory))
-  (if (equal system-type 'windows-nt)
-      (shell-command (format "start %s" trash-directory))
-    (shell-command (format "open -R \"%s\"" trash-directory))))
+  (nbm-show-in-finder trash-directory))
 
 (defun nbm-move-to-folder (file)
   "Move FILE to one of the following folders.
@@ -334,7 +336,10 @@ Directories and files starting with ., $, or # will be ignored."
 (defun nbm-newest-file (files)
   "Return the newest file in the list FILES of filenames except directories."
   (let (newest file)
-    (setq newest (pop files))
+    (while (and (not newest) files)
+      (setq file (pop files))
+      (unless (file-directory-p file)
+	(setq newest file)))
     (while files
       (setq file (pop files))
       (if (and (nbm-time< newest file)
