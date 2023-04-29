@@ -196,13 +196,7 @@
 (defun newbie-finder ()
   "Open the current file in Finder."
   (interactive)
-  (cond ((equal system-type 'windows-nt)
-	 (shell-command (format "start %s" (file-name-directory *newbie-current-file*))))
-	((equal system-type 'darwin)
-	 (shell-command (format "open -R \"%s\"" *newbie-current-file*)))
-	((equal system-type 'gnu/linux)
-	 (let ((process-connection-type nil))
-	   (start-process "" nil "nautilus" "--browser" *newbie-current-file*)))))
+  (nbm-show-in-finder *newbie-current-file*))
 
 (defun newbie-add-to-symlinks ()
   (interactive) (kill-buffer)
