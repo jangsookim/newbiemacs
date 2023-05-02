@@ -117,6 +117,8 @@
 **** key: w, description: trailing whitespace, function: delete-trailing-whitespace, level: 3
 **** key: l, description: double-empty-lines, function: nbm-delete-double-empty-lines, level: 3
 *** key: j, description: join line, function: join-line, level: 2
+*** key: p, description: Paste vertically after, function: nbm-paste-vertically-after, level: 2
+*** key: P, description: Paste vertically before, function: nbm-paste-vertically-before, level: 2
 ** key: y, description: Yank, level: 2
 *** key: k, description: From kill-ring, function: helm-show-kill-ring, level: 3
 *** key: f, description: Favorite string, function: nbm-yank-favorite-string, level: 2

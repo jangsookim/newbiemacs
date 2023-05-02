@@ -130,3 +130,22 @@ other key) stop"))
   (browse-url (format "https://www.google.com/search?q=%s"
 		      (read-string "Enter a word to google: "))))
 
+(defun nbm-paste-vertically (after)
+  "Insert the current kill vertically."
+  (let (str)
+    (save-excursion
+      (when after (forward-char))
+      (setq str (split-string (current-kill 0) "\n"))
+      (while str
+	(save-excursion (insert (pop str)))
+	(next-line)))))
+
+(defun nbm-paste-vertically-after ()
+  "Insert the current kill vertically after cursor."
+  (interactive)
+  (nbm-paste-vertically t))
+
+(defun nbm-paste-vertically-before ()
+  "Insert the current kill vertically before cursor."
+  (interactive)
+  (nbm-paste-vertically nil))
