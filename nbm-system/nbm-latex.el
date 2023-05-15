@@ -1061,17 +1061,22 @@ add a new bib item."
   "Toggle the current environment between ENV with ENV*.
 Delete or insert a label accordingly."
   (interactive)
-  (let (env)
-    (setq env (LaTeX-current-environment))
-    (if (s-suffix? "*" env)
-	(progn
-	  (setq env (substring env 0 -1))
-	  (LaTeX-modify-environment env)
-	  (nbm-latex-insert-label))
-      (progn
-	(setq env (concat env "*"))
-	(LaTeX-modify-environment env)
-	(nbm-latex-delete-label)))))
+  (let (env math)
+    (save-excursion
+      (setq math (nbm-latex-find-math-mode nil))
+      (when (and math (not (s-prefix? "\\" (car math))))
+	(goto-char (nth 1 math))
+	(setq env (LaTeX-current-environment))
+	(if (s-suffix? "*" env)
+	    (progn
+	      (setq env (substring env 0 -1))
+	      (LaTeX-modify-environment env)
+	      (nbm-latex-insert-label))
+	  (progn
+	    (setq env (concat env "*"))
+	    (LaTeX-modify-environment env)
+	    (nbm-latex-delete-label))))
+      (unless env (message "You are not in a proper math environment.")))))
 
 ;; latex fonts
 
