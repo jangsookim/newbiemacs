@@ -106,7 +106,7 @@
   "Change the editing style to emacs or vim."
   (interactive)
   (let (choice)
-    (setq choice (completing-read "Choose a new editing style:"
+    (setq choice (completing-read "Choose a new editing style: "
 				  '("vim" "emacs" "windows")))
     (nbm-set-user-variable "editing-style" choice)
     (message "The editing style is set to be \"%s\"." choice)))
