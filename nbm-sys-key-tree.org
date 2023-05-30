@@ -71,6 +71,7 @@
 *** key: t, description: time stamp, function: nbm-timestamp, level: 3
 ** key: j, description: jump, level: 2
 *** key: t, description: recent tex, function: nbm-recent-tex, level: 2
+*** key: i, description: imenu, function: helm-imenu, level: 2
 *** key: o, description: recent org, function: nbm-recent-org, level: 2
 *** key: p, description: recent pdf, function: nbm-recent-pdf, level: 2
 *** key: e, description: recent el, function: nbm-recent-el, level: 2
