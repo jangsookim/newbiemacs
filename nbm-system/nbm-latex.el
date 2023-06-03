@@ -245,6 +245,14 @@ includes the environment macro."
 	      (setq end (1- end))))
 	(list type beg end)))))
 
+(defun nbm-latex-exit-math-mode ()
+  "Go to the end of the current math mode."
+  (interactive)
+  (let ((math (nbm-latex-find-math-mode t)))
+    (if (car math)
+	(goto-char (nth 2 math))
+      (message "You are not in math mode!"))))
+
 (defun nbm-latex-copy-math-with-env ()
   "Copy the content in the current math mode including the environment macro."
   (interactive)

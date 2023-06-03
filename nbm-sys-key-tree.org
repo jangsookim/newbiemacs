@@ -152,6 +152,7 @@
 ** key: ,, description: master command, function: TeX-command-master, level: 1
 ** key: `, description: goto next error, function: TeX-next-error, level: 1
 ** key: RET, description: paste prev math, function: nbm-latex-paste-previous-math, level: 1
+** key: TAB, description: exit math mode, function: nbm-latex-exit-math-mode, level: 1
 ** key: p, description: paste avy math, function: nbm-latex-paste-avy-math, level: 1
 ** key: P, description: paste avy math with env, function: nbm-latex-paste-avy-math-with-env, level: 1
 ** key: =, description: table of contents, function: reftex-toc, level: 1
