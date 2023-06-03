@@ -391,28 +391,7 @@
     (org-roam-db-autosync-mode)
     (setq org-roam-capture-templates '(("d" "default" plain "%?"
                                         :target (file+head "${slug}.org"
-                                                           "#+title: ${title}\n ")
-                                        :immediate-finish))))
-
-  (cl-defun org-roam-node-find (&optional other-window initial-input filter-fn pred &key templates)
-    "Find and open an Org-roam node by its title or alias.
-  INITIAL-INPUT is the initial input for the prompt.
-  FILTER-FN is a function to filter out nodes: it takes an `org-roam-node',
-  and when nil is returned the node will be filtered out.
-  If OTHER-WINDOW, visit the NODE in another window.
-  The TEMPLATES, if provided, override the list of capture templates (see
-  `org-roam-capture-'.)"
-    (interactive current-prefix-arg)
-    (let ((node (org-roam-node-read initial-input filter-fn pred)))
-      (if (org-roam-node-file node)
-          (org-roam-node-visit node other-window)
-        (progn
-          (org-roam-capture-
-         :node node
-         :templates templates
-         :props '(:finalize find-file))
-          (org-capture-goto-last-stored)))))
-
+                                                           "#+title: ${title}\n ")))))
 #+end_src
 * Sage
 #+begin_src emacs-lisp :tangle yes
