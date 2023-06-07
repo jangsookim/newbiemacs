@@ -1356,3 +1356,21 @@ Open the pdf file and the corresponding tex file."
 						 (format "%s[.]pdf$\\|%s[.]djvu$"
 							 (regexp-quote topic)
 							 (regexp-quote topic)))))))
+
+(defun nbm-latex-toggle-solutions ()
+  "Comment or uncomment all solutions."
+  (interactive)
+  (save-excursion
+    (let (visible invisible)
+      (setq visible 0 invisible 0)
+      (beginning-of-buffer)
+      (search-forward "\\begin{document}")
+      (while (re-search-forward "\\\\begin{proof}[ \t\n]*\\[Solution]" nil t)
+	(save-excursion
+	  (LaTeX-mark-environment)
+	  (comment-line 0)
+	  (if (looking-at "%")
+	      (setq invisible (1+ invisible))
+	    (setq visible (1+ visible)))))
+      (message (format "The number of visible solutions is %s.
+The number of invisible solutions is %s." visible invisible)))))
