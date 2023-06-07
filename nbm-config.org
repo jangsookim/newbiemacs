@@ -416,6 +416,7 @@
   (evil-set-initial-state 'diff-mode 'emacs)
   (evil-set-initial-state 'help-mode 'emacs)
   (evil-set-initial-state 'Info-mode 'emacs)
+  (evil-set-initial-state 'org-mode 'emacs)
 
   (unless (nbm-get-user-variable "editing-style")
     (nbm-set-user-variable "editing-style" "windows"))
@@ -438,7 +439,7 @@
     (evil-global-set-key 'emacs (kbd "C-x") 'kill-region)
     (evil-global-set-key 'emacs (kbd "C-a") 'mark-whole-buffer)
     (evil-global-set-key 'emacs (kbd "C-f") 'isearch-forward)
-    (evil-global-set-key 'emacs (kbd "C-F") 'query-replace)
+    (evil-global-set-key 'emacs (kbd "C-S-f") 'query-replace)
     (evil-global-set-key 'emacs (kbd "C-s") 'save-buffer)
     (evil-global-set-key 'emacs (kbd "C-w") 'kill-this-buffer)
     (evil-global-set-key 'emacs (kbd "C-1") 'delete-other-windows)

@@ -310,6 +310,8 @@
 *** key: r, description: org-roam-buffer, function: org-roam-buffer-toggle, level: 3
 *** key: v, description: valign, function: nbm-toggle-valign, level: 3
 *** key: i, description: images, function: org-toggle-inline-images, level: 3
+** key: \C-c\C-c, description: org-capture-finalize, function: org-capture-finalize, level: 1
+** key: \C-c\C-k, description: org-capture-kill, function: org-capture-kill, level: 1
 * description: emacs-lisp-mode, level: 3
 ** key: e, description: eval, level: 3
 *** key: b, function: eval-buffer, level: 3
