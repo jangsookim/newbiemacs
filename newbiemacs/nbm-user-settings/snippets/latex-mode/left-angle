@@ -2,4 +2,4 @@
 # name: left angle
 # key: la
 # --
-\\langle $1 \\rangle
+\\langle $1 \\rangle$0

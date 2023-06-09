@@ -2,4 +2,4 @@
 # name: left-parenthesis
 # key: lp
 # --
-\\left( $1 \\right)
+\\left( $1 \\right)$0

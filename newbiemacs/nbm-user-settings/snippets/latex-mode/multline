@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: multline
+# key: bmu
+# --
+\begin{multline}
+\label{eq:$1}
+$2
+\end{multline}

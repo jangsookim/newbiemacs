@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: in-line-math
+# key: im
+# type: command
+# --
+(latex-mode)
+(insert "\\(  \\)")
+(backward-char 3)
+(evil-insert 0)

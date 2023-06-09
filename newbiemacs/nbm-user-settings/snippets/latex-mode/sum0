@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: sum from 0
+# key: su0
+# --
+\sum_{${1:n}\ge 0} $0

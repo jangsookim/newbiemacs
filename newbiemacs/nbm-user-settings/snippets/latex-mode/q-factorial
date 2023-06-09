@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: q-factorial
+# key: qf
+# --
+[$1]_q!$0

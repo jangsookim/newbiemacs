@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: x1 times ... times xn
+# key: xn*
+# --
+${1:x}_1 \times \cdots \times $1_{${2:n}}

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: qbinom
+# key: qbi
+# --
+\\qbinom{$1}{$2}$0

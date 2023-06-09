@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: 1 over 2
+# key: 1/2
+# --
+\frac{1}{2}

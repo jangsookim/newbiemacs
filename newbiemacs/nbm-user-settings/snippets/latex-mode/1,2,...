@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: 1,2,...
+# key: 12,
+# --
+1,2,\\ldots

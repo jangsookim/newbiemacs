@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: x1-...-xn
+# key: xn-
+# --
+${1:x}_1 - \cdots - $1_{${2:n}}

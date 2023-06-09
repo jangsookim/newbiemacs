@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: matrix
+# key: bma
+# type: command
+# --
+(nbm-snippet-latex-matrix)

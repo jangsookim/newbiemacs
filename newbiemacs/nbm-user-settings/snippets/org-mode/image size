@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: image size
+# key: iz
+# --
+ #+ATTR_HTML: :width 500

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: src sage
+# key: sa
+# --
+#+begin_src python :tangle yes :exports none
+$0
+#+end_src

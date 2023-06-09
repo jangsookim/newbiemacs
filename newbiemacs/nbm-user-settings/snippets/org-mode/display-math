@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: display-math
+# key: dm
+# type: command
+# --
+(latex-mode)
+(insert "\\[\n  \n\\]")
+(backward-char 3)
+(evil-insert 0)

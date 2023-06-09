@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: solution
+# key: bso
+# --
+\\begin{proof}[Solution]
+$0
+\\end{proof}
