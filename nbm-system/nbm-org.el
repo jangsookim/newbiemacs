@@ -231,18 +231,6 @@ Otherwise, copy a string in the clipboard to load it."
 	(kill-new str)
 	(message (format "Copied to clipboard: %s" str))))))
 
-(defun nbm-org-latex-in-line-math ()
-  "Insert \\( \\) and open an org edit special buffer."
-  (interactive)
-  (insert "\\(  \\)")
-  (org-edit-special) (backward-char 3) (evil-append 0))
-
-(defun nbm-org-latex-display-math ()
-  "Insert \\[ \\] and open an org edit special buffer."
-  (interactive)
-  (insert "\\[  \\]")
-  (org-edit-special) (backward-char 3) (evil-append 0))
-
 (defun nbm-org-move-to-archived ()
   "Move the current file to the archived directory: newbiemacs/archived/org/
 and store the org link."
@@ -339,3 +327,13 @@ If the filename has [...], change it to (...)."
   (interactive)
   (org-latex-preview '(64)))
 
+(defun nbm-org-toggle-latex-mode ()
+  "Toggle major mode between org and latex."
+  (interactive)
+  (let ((state evil-state))
+    (cond ((equal major-mode 'latex-mode)
+	   (when (texmathp) (nbm-latex-exit-math-mode))
+	   (org-mode))
+	  ((equal major-mode 'org-mode)
+	   (LaTeX-mode)))
+    (evil-change-state state)))

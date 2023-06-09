@@ -240,8 +240,6 @@
 *** key: t, description: tangle, function: org-babel-tangle, level: 3
 *** key: e, description: edit special mode, function: org-edit-special, level: 3
 *** key: s, description: sage load, function: nbm-org-sage-tangle, level: 3
-*** key: i, description: in-line-math, function: nbm-org-latex-in-line-math, level: 3
-*** key: d, description: display-math, function: nbm-org-latex-display-math, level: 3
 ** key: c, function: org-ctrl-c-ctrl-c, level: 3
 ** key: C, description: clock, level: 3
 *** key: c, description: cancel clock, function: org-clock-cancel, level: 3

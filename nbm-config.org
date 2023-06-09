@@ -383,6 +383,9 @@
 
   (eval-after-load "org" '(require 'ox-md nil t))
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+
+  (define-key org-mode-map (kbd "M-m") 'nbm-org-toggle-latex-mode)
+  (define-key LaTeX-mode-map (kbd "M-m") 'nbm-org-toggle-latex-mode)
 #+end_src
 ** Org-Roam
 #+begin_src emacs-lisp :tangle yes
