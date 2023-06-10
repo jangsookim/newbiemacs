@@ -1368,7 +1368,8 @@ Open the pdf file and the corresponding tex file."
       (while (re-search-forward "\\\\begin{proof}[ \t\n]*\\[Solution]" nil t)
 	(save-excursion
 	  (LaTeX-mark-environment)
-	  (comment-line 0)
+	  (beginning-of-line)
+	  (comment-or-uncomment-region (region-beginning) (region-end))
 	  (if (looking-at "%")
 	      (setq invisible (1+ invisible))
 	    (setq visible (1+ visible)))))
