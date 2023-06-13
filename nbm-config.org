@@ -456,6 +456,8 @@
     (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
     (define-key key-translation-map (kbd "C-z") (kbd "C-/"))
     (evil-global-set-key 'emacs (kbd "C-y") 'evil-redo)
+    (global-set-key "\C-c\C-c" 'org-capture-finalize)
+    (global-set-key "\C-c\C-k" 'org-capture-kill)
     (setq org-support-shift-select t))
 #+end_src
 
