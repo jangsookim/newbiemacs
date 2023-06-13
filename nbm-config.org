@@ -413,7 +413,7 @@
   (evil-define-key 'emacs dired-mode-map (kbd ",") 'evil-send-localleader)
 #+end_src
 
-* Emacs vs Vim
+* Editing styles (Emacs, Vim, Windows)
 #+begin_src emacs-lisp :tangle yes
   (setq evil-default-state 'emacs)
   (evil-set-initial-state 'org-agenda-mode 'emacs)
@@ -438,9 +438,15 @@
     (evil-set-initial-state 'python-mode 'normal))
 
   (when (equal (nbm-get-user-variable "editing-style") "windows")
+    (eval-after-load 'org
+      (progn
+        (define-key org-mode-map (kbd "<S-up>") nil)
+        (define-key org-mode-map (kbd "<S-down>") nil)
+        (define-key org-mode-map (kbd "<S-right>") nil)
+        (define-key org-mode-map (kbd "<S-left>") nil)))
     (evil-global-set-key 'emacs (kbd "C-v") 'yank)
-    (evil-global-set-key 'emacs (kbd "C-c") 'kill-ring-save)
-    (evil-global-set-key 'emacs (kbd "C-x") 'kill-region)
+    (evil-global-set-key 'emacs (kbd "C-c") 'nbm-windows-ctrl-c)
+    (evil-global-set-key 'emacs (kbd "C-x") 'nbm-windows-ctrl-x)
     (evil-global-set-key 'emacs (kbd "C-a") 'mark-whole-buffer)
     (evil-global-set-key 'emacs (kbd "C-f") 'isearch-forward)
     (evil-global-set-key 'emacs (kbd "C-S-f") 'query-replace)
