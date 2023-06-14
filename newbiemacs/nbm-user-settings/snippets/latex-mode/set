@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: {1,...,n}
-# key:1n
-# --
-\{1,\dots,n\}

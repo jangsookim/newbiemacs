@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: left-left-ceil
-# key: llc
-# --
-\\left\\lceil $1 \\right\\rceil$0

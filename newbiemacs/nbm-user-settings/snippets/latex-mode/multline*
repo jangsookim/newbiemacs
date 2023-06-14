@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: multline*
-# key: bmul
-# --
-\begin{multline*}
-$2
-\end{multline*}

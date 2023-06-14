@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: sum 1 to infty
-# key: su1i
-# --
-\sum_{${1:n}=1}^{\infty} $0
