@@ -149,3 +149,23 @@ other key) stop"))
   "Insert the current kill vertically before cursor."
   (interactive)
   (nbm-paste-vertically nil))
+
+(defun nbm-list-of-buffers-with-extension (ext)
+  "Return the list of buffers with file extension EXT."
+  (let (bufs)
+    (dolist (buf (buffer-list))
+      (when (and (buffer-file-name buf)
+		 (equal (file-name-extension (buffer-file-name buf)) ext))
+	(setq bufs (cons buf bufs))))
+    bufs))
+
+(defun nbm-switch-to-buffer-with-extension (ext)
+  "Switch to a buffer with file extension EXT."
+  (let (bufs)
+    (setq bufs (mapcar #'buffer-name (nbm-list-of-buffers-with-extension ext)))
+    (switch-to-buffer (completing-read "Choose a buffer:" bufs))))
+
+(defun nbm-switch-to-buffer-with-same-extension ()
+  "Switch to a buffer with the same file extension as the current buffer."
+  (interactive)
+  (nbm-switch-to-buffer-with-extension (file-name-extension (buffer-file-name))))

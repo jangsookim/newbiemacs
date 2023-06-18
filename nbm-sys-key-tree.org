@@ -32,6 +32,7 @@
 *** key: h, description: previous buffer, function: nbm-tab-line-previous-buffer, level: 2
 *** key: l, description: next buffer, function: nbm-tab-line-next-buffer, level: 2
 *** key: w, function: kill-buffer-and-window, level: 2
+*** key: s, description: switch to same extension buffer, function: nbm-switch-to-buffer-with-same-extension, level: 1
 *** key: R, function: revert-buffer, level: 2
 ** key: c, description: Comment/Color, level: 2
 *** key: l, description: (un-)comment line, function: nbm-comment-or-uncomment-line, level: 2
