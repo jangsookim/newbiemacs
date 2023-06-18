@@ -223,6 +223,8 @@ Otherwise, copy a string in the clipboard to load it."
 	(save-excursion
 	  (setq buf (current-buffer))
 	  (switch-to-buffer "*Sage*")
+	  (end-of-buffer)
+	  (beginning-of-line) (kill-line)
 	  (insert str) (sage-shell:send-input)
 	  (switch-to-buffer buf)
 	  (other-window 1)
