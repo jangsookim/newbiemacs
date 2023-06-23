@@ -362,6 +362,7 @@
     (find-file (concat (getenv "HOME") "/.latexmkrc"))
     (insert "$pdf_mode = 1;")
     (save-buffer) (kill-buffer))
+  (require 'reftex)
 #+end_src
 
 * org-mode
@@ -436,6 +437,7 @@
     (evil-set-initial-state 'fundamental-mode 'normal)
     (evil-set-initial-state 'snippet-mode 'normal)
     (evil-set-initial-state 'python-mode 'normal))
+
 
   (when (equal (nbm-get-user-variable "editing-style") "windows")
     (eval-after-load 'org
