@@ -362,7 +362,7 @@
     (find-file (concat (getenv "HOME") "/.latexmkrc"))
     (insert "$pdf_mode = 1;")
     (save-buffer) (kill-buffer))
-  (require 'reftex)
+  (add-hook 'latex-mode-hook 'turn-on-reftex)
 #+end_src
 
 * org-mode
