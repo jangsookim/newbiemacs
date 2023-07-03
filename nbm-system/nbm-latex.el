@@ -108,9 +108,10 @@ Current dir: %s" (nbm-get-dir-name))))
     (setq title (read-string (concat "Enter a new latex filename (default: note): ")
 			     nil nil "note" nil))
     (unless dirname
-      (setq dirname (concat (nbm-f "tex/") (format-time-string "%Y-%m-%d-") title "/"))
+      (setq dirname (concat (nbm-f "tex/") (format-time-string "[%Y_%m_%d]_")
+			    (string-replace " " "_" title) "/"))
       (make-directory dirname))
-    (setq filename (concat title ".tex"))
+    (setq filename (concat (string-replace " " "_" title) ".tex"))
     (nbm-latex-new-file-from-template dirname filename title)
     (message "Created a new file.")))
 

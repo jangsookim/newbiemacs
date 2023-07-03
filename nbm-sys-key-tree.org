@@ -44,7 +44,7 @@
 *** key: r, description: recent files, function: helm-recentf, level: 1
 *** key: j, function: dired-jump, level: 2
 *** key: m, description: move newest file, function: nbm-move-newest-file, level: 3
-*** key: n, description: new-file, function: nbm-new-file, level: 2
+*** key: n, description: new-tex-file, function: nbm-latex-new-file, level: 2
 *** key: p, description: move-pdf-from-downloads, function: nbm-move-pdf-from-downloads, level: 2
 *** key: s, description: save, function: save-buffer, level: 1
 *** key: A, description: save as, function: nbm-save-as, level: 1
