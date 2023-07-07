@@ -193,6 +193,8 @@
   (with-eval-after-load 'autorevert (diminish 'auto-revert-mode))
   (with-eval-after-load 'eldoc (diminish 'eldoc-mode))
   (diminish 'visual-line-mode)
+  (diminish 'org-roam-ui-mode)
+  (diminish 'org-roam-ui-follow-mode)
 #+end_src
 
 * load files
