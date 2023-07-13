@@ -696,6 +696,39 @@ In visual mode, the cursor must be placed on \\."
 	(delete-region beg (point)) (delete-blank-lines))
       (message (format "%s label(s) deleted." count)))))
 
+(defun nbm-latex-extract-bib-file ()
+  "Create a bib file containing the current bibitems from the main bib file."
+  (interactive)
+  (save-excursion
+    (let (new-bib-str bibitem-list bibitem beg end bbl-file)
+      (beginning-of-buffer)
+      (while (search-forward "\\bibitem" nil t)
+	(setq beg (1+ (point))) (forward-sexp) (setq end (1- (point)))
+	(unless (member (buffer-substring beg end) bibitem-list)
+	  (push (buffer-substring beg end) bibitem-list)))
+      (setq bbl-file (concat (file-name-nondirectory (file-name-sans-extension (buffer-file-name))) ".bbl"))
+      (when (file-exists-p bbl-file)
+	(find-file bbl-file)
+	(beginning-of-buffer)
+	(while (search-forward "\\bibitem" nil t)
+	  (setq beg (1+ (point))) (forward-sexp) (setq end (1- (point)))
+	  (unless (member (buffer-substring beg end) bibitem-list)
+	    (push (buffer-substring beg end) bibitem-list)))
+	(kill-buffer))
+      (find-file (nbm-f "nbm-user-settings/references/ref.bib"))
+      (setq new-bib-str "")
+      (while bibitem-list
+	(setq bibitem (pop bibitem-list))
+	(beginning-of-buffer)
+	(when (search-forward (format "{%s," bibitem) nil t)
+	  (beginning-of-line) (setq beg (point))
+	  (search-forward "{") (backward-char) (forward-sexp) (setq end (point))
+	  (setq new-bib-str (concat new-bib-str (buffer-substring beg end) "\n\n"))))
+      (kill-buffer)
+      (find-file "local-ref.bib") (erase-buffer) (insert new-bib-str)
+      (save-buffer) (kill-buffer)
+      (message "Created a bib file with file name: \"local-ref.bib\""))))
+
 (defun nbm-latex-toggle-bbl-file ()
   "Insert the bib file or remove it.
 If there is a space in the path, replace it by a dash."

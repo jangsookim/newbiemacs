@@ -215,6 +215,7 @@
 *** key: y, description: Young tableau, function: nbm-snippet-latex-ytableau, level: 1
 ** key: t, description: toggle/change, level: 1
 *** key: b, description: bbl-file, function: nbm-latex-toggle-bbl-file, level: 1
+*** key: B, description: create bib file, function: nbm-latex-extract-bib-file, level: 1
 *** key: e, description: equation, function: nbm-latex-toggle-equation, level: 1
 *** key: a, description: align, function: nbm-latex-toggle-align, level: 2
 *** key: f, description: frac, function: nbm-latex-toggle-frac, level: 1
