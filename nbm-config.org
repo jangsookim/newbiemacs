@@ -435,6 +435,7 @@
     (evil-set-initial-state 'text-mode 'normal)
     (evil-set-initial-state 'org-mode 'normal)
     (evil-set-initial-state 'latex-mode 'normal)
+    (evil-set-initial-state 'bibtex-mode 'normal)
     (evil-set-initial-state 'emacs-lisp-mode 'normal)
     (evil-set-initial-state 'fundamental-mode 'normal)
     (evil-set-initial-state 'snippet-mode 'normal)
