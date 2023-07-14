@@ -806,15 +806,14 @@ CHOICE 3: ChoKimLee2022"
 	(switch-to-buffer "bib-item-temp-buffer")
 	(insert str)
 	(beginning-of-buffer)
-	;; If the bib item is @Online, change it to @misc.
-	(when (search-forward "@Online" nil t)
-	  (replace-match "@misc")
+	(when (search-forward "archivePrefix={arXiv}," nil t)
+	  (beginning-of-buffer)
 	  (search-forward "eprint" nil t) (search-forward "{" nil t)
 	  (setq arxiv (buffer-substring (point) (- (search-forward "}") 1)))
+	  (beginning-of-buffer)
 	  (setq url (concat "https://arxiv.org/abs/" arxiv))
 	  (end-of-line)
-	  (insert (concat "\n  howpublished = {{\\it Preprint}, \\href{" url "}{arXiv:"
-			  arxiv "}},")))
+	  (insert (concat "\n      howpublished = {{\\it Preprint}, \\href{" url "}{arXiv:" arxiv "}},")))
 	(beginning-of-buffer)
 	;; If title has {...} make it {{...}}.
 	(search-forward "title") (search-forward "{")
