@@ -399,6 +399,8 @@
 
   (define-key org-mode-map (kbd "M-m") 'nbm-org-toggle-latex-mode)
   (define-key LaTeX-mode-map (kbd "M-m") 'nbm-org-toggle-latex-mode)
+
+  (setq org-imenu-depth 9)
 #+end_src
 ** Org-Roam
 #+begin_src emacs-lisp :tangle yes
