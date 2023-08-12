@@ -306,25 +306,30 @@ If FRONT is non-nil, exit to the front of the math mode."
       (message "You are not in math mode!"))))
 
 (defun nbm-latex-paste-previous-math ()
-  "Paste the content of the previous math mode."
+  "Paste the content of the previous math mode.
+If the cursor is not in math mode, include the math environment."
   (interactive)
-  (let (found)
+  (let (found currently-math)
     (save-excursion
+      (when (texmathp) (setq currently-math t))
       (while (and (not found) (re-search-backward "\\\\\\|\\$" nil t))
 	(when (texmathp)
-	  (nbm-latex-copy-math-with-env)
+	  (if currently-math
+	      (nbm-latex-copy-math)
+	    (nbm-latex-copy-math-with-env))
 	  (setq found t))))
     (if found
 	(insert (current-kill 0))
       (message "No math mode before the cursor."))))
 
-(defun nbm-latex-paste-avy-math (&optional env)
+(defun nbm-latex-paste-avy-math ()
   "Paste the content of the math mode chosen by avy jump.
 The candidates must have length at least 5.
-If ENV is non-nil, include the environment macro."
+If the cursor is not in math mode, include the math environment."
   (interactive)
-  (let (found math math-list (beg (window-start)) (end (window-end)))
+  (let (found currently-math math math-list (beg (window-start)) (end (window-end)))
     (save-excursion
+      (when (texmathp) (setq currently-math t))
       (goto-char beg)
       (while (re-search-forward (concat (regexp-quote "\\[") "\\|"
 					(regexp-quote "\\(") "\\|"
@@ -340,9 +345,9 @@ If ENV is non-nil, include the environment macro."
     (save-excursion
       (when (avy-jump math-list)
 	(setq found t)
-	(if env
-	    (nbm-latex-copy-math-with-env)
-	  (nbm-latex-copy-math))))
+	(if currently-math
+	    (nbm-latex-copy-math)
+	  (nbm-latex-copy-math-with-env))))
     (if found
 	(insert (current-kill 0))
       (message "Wrong a math mode."))))
