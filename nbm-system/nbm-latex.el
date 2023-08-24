@@ -858,6 +858,18 @@ CHOICE 3: ChoKimLee2022"
     (kill-buffer)
     keys))
 
+(defun nbm-latex-find-duplicated-bib-keys ()
+  "Go to the first duplicated bib item if there is any in the main bib file."
+  (interactive)
+  (let (duplicated)
+    (setq duplicated (nbm-find-duplicated-items (nbm-latex-get-bib-key-list)))
+    (if duplicated
+	(progn
+	  (find-file (nbm-f "nbm-user-settings/references/ref.bib"))
+	  (beginning-of-buffer)
+	  (search-forward (car duplicated)))
+      (message "No duplicated items."))))
+
 (defun nbm-latex-insert-figure (env &optional quick)
   "Insert the most recent file from *nbm-screenshots* to ./figures.
 If ENV is non-nil, insert a figure environment.

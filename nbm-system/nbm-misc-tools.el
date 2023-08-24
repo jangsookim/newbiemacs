@@ -169,3 +169,9 @@ other key) stop"))
   "Switch to a buffer with the same file extension as the current buffer."
   (interactive)
   (nbm-switch-to-buffer-with-extension (file-name-extension (buffer-file-name))))
+
+(defun nbm-find-duplicated-items (list)
+  "Return the list of all duplicated items in LIST."
+  (delete-dups (seq-filter
+                (lambda (el) (member el (cdr (member el list))))
+                list)))
