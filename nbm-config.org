@@ -6,6 +6,7 @@
 * Packages
 ** Core Packages
 #+begin_src emacs-lisp :tangle yes
+  (unless (package-installed-p 'evil) (package-install 'evil))
   (use-package evil :config (evil-mode))
 
   (use-package tex :ensure auctex)
