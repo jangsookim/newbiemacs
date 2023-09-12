@@ -1425,3 +1425,27 @@ Open the pdf file and the corresponding tex file."
 	    (setq visible (1+ visible)))))
       (message (format "The number of visible solutions is %s.
 The number of invisible solutions is %s." visible invisible)))))
+
+(defun nbm-latex-toggle-dollars ()
+  "Toggle $ to \\( \\) and $$ to \\[ \\]."
+  (interactive)
+  (save-excursion
+    (let (double single)
+      (when (equal (buffer-substring (point) (+ (point) 2)) "$$")
+	(setq double t))
+      (when (equal (buffer-substring (- (point) 1) (+ (point) 1)) "$$")
+	(setq double t) (backward-char))
+      (when double
+	(delete-region (point) (+ (point) 2))
+	(insert "\\[")
+	(search-forward "$$")
+	(delete-region (- (point) 2) (point))
+	(insert "\\]"))
+      (unless double
+	(when (equal (buffer-substring (point) (+ (point) 1)) "$")
+	  (setq single t))
+	(delete-region (point) (+ (point) 1))
+	(insert "\\(")
+	(search-forward "$")
+	(delete-region (- (point) 1) (point))
+	(insert "\\)")))))

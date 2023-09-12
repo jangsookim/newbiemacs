@@ -228,6 +228,7 @@
 *** key: v, description: change variables, function: nbm-latex-change-variables, level: 1
 *** key: w, description: debug warnings, function: TeX-toggle-debug-warnings, level: 3
 *** key: S, description: Solutions, function: nbm-latex-toggle-solutions, level: 1
+*** key: $, description: dollar signs, function: nbm-latex-toggle-dollars, level: 1
 ** key: y, description: yank, level: 3
 *** key: f, description: make-and-yank-filename, function: nbm-latex-make-and-yank-filename, level: 3
 * description: org-mode, level: 1
