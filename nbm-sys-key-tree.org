@@ -187,7 +187,6 @@
 *** key: i, description: item, function: LaTeX-insert-item, level: 2
 *** key: f, description: figure from screenshots, function: nbm-latex-insert-figure-with-env, level: 1
 *** key: q, description: quick image, function: nbm-latex-insert-figure-quick, level: 1
-*** key: l, description: label, function: nbm-latex-insert-label, level: 1
 ** key: j, description: jump, level: 2
 *** key: b, description: begining of environment, function: LaTeX-find-matching-begin, level: 2
 *** key: e, description: end of environment, function: LaTeX-find-matching-end, level: 2
@@ -196,9 +195,10 @@
 *** key: m, description: jump section mode, function: nbm-latex-jump-section-mode, level: 2
 *** key: l, description: label, function: nbm-reftex-goto-label, level: 2
 *** key: s, description: section, function: nbm-latex-jump-section, level: 2
-** key: n, description: new item/macro/section, level: 1
+** key: n, description: new item/macro/etc, level: 1
 *** key: b, description: bib-item, function: nbm-latex-new-bib-item, level: 1
 *** key: m, description: macro, function: nbm-latex-new-macro, level: 1
+*** key: l, description: label, function: nbm-latex-new-label, level: 1
 *** key: s, description: section, function: nbm-latex-section, level: 1
 ** key: r, description: reference, level: 1
 *** key: c, description: cross reference, function: reftex-view-crossref, level: 2

@@ -664,8 +664,8 @@ In visual mode, the cursor must be placed on \\."
     (when (equal pos (point))
       (evil-jump-item))))
 
-(defun nbm-latex-insert-label ()
-  "Insert the label in the current environment."
+(defun nbm-latex-new-label ()
+  "Add a new label in the current environment."
   (interactive)
   (save-excursion
     (reftex-access-scan-info)
