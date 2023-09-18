@@ -31,13 +31,14 @@
     (setq k (length partition))
     (dotimes (i k)
       (setq block (split-string (nth i partition) " "))
+      (setq block (remove "" block))
       (dolist (elt block)
 	(setq code (format "%s\n\\node[draw, circle] (%s) at (%s,0) {\\( %s \\)};"
-			 code elt elt elt)))
+			   code elt elt elt)))
       (dotimes (i (1- (length block)))
 	(unless (equal elt (car (last block)))
 	  (setq code (format "%s\n\\draw[out=90,in=90] (%s) to (%s);"
-			 code (nth i block) (nth (1+ i) block))))))
+			     code (nth i block) (nth (1+ i) block))))))
     (setq code (concat code "\n\\end{scope}\n"))
     (nbm-tikz-insert-environment)
     (insert code)))
@@ -61,7 +62,7 @@
       (if (string-search "," step)
 	  (setq code (format "%s -- ++(%s)" code step))
 	(setq code (format "%s -- ++(1,%s)" code step))))
-    (setq code (concat code ";"))
+    (setq code (concat code ";\n"))
     (nbm-tikz-insert-environment)
     (insert code)))
 
