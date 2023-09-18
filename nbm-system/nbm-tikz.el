@@ -1,0 +1,72 @@
+(defun nbm-tikz-cycle ()
+  "Draw a cycle."
+  (interactive)
+  (let (cycle code elt n i)
+    (setq code "\\begin{scope}[shift={(0,0)}]")
+    (setq cycle (read-string "Enter elements in a cycle separated by spaces: "))
+    (setq cycle (split-string cycle " "))
+    (setq n (length cycle))
+    (dotimes (i n)
+      (setq code (format "%s\n\\node[draw, circle] (%s) at ({90 + (360/%s * %s)}:1) {\\( %s \\)};"
+			 code i n i (nth i cycle))))
+    (dotimes (i (1- n))
+      (setq code (format "%s\n\\draw[->,bend right] (%s) to (%s);"
+			 code i (1+ i))))
+    (if (> n 1)
+	(setq code (format "%s\n\\draw[->,bend right] (%s) to (%s);"
+			 code (1- n) 0))
+      (setq code (format "%s\n\\draw[->,out=70,in=110,looseness=8] (0) to (0);"
+			 code)))
+    (setq code (concat code "\n\\end{scope}\n"))
+    (nbm-tikz-insert-environment)
+    (insert code)))
+
+(defun nbm-tikz-set-partition ()
+  "Draw a set partition diagram."
+  (interactive)
+  (let (partition block elt n k i)
+    (setq code "\\begin{scope}[shift={(0,0)}]")
+    (setq partition (read-string "Enter a set partition (blocks are separated by commas and elements are separated by spaces).\n: "))
+    (setq partition (split-string partition ","))
+    (setq k (length partition))
+    (dotimes (i k)
+      (setq block (split-string (nth i partition) " "))
+      (dolist (elt block)
+	(setq code (format "%s\n\\node[draw, circle] (%s) at (%s,0) {\\( %s \\)};"
+			 code elt elt elt)))
+      (dotimes (i (1- (length block)))
+	(unless (equal elt (car (last block)))
+	  (setq code (format "%s\n\\draw[out=90,in=90] (%s) to (%s);"
+			 code (nth i block) (nth (1+ i) block))))))
+    (setq code (concat code "\n\\end{scope}\n"))
+    (nbm-tikz-insert-environment)
+    (insert code)))
+
+(defun nbm-tikz-lattice-path ()
+  "Draw a lattice path."
+  (interactive)
+  (let (code dimension X Y initial steps step)
+    (setq dimension (read-string "Enter dimension in the form \"X,Y\", where X is the max x-coordinate and Y is the max y-coordinate: "))
+    (setq dimension (split-string dimension ","))
+    (setq X (car dimension))
+    (setq Y (nth 1 dimension))
+    (setq code (format "\\draw[help lines] (0,0) grid (%s,%s);" X Y))
+    (setq code (format "%s\n\\foreach \\x in {0,...,%s} \\draw node at (\\x,-.5) {\\( \\x \\)};" code X))
+    (setq code (format "%s\n\\foreach \\y in {0,...,%s} \\draw node at (-.5,\\y) {\\( \\y \\)};" code Y))
+    (setq initial (read-string "Enter the initial point in the form \"a,b\": "))
+    (setq code (format "%s\n\\draw[line width = 1.5pt] (%s)" code initial))
+    (setq steps (read-string "Enter a sequence of steps separated by spaces.\nEach step must be one of the following form:\n\"x,y\" (means (x,y))\n\"y\" (means (1,y))\n: "))
+    (setq steps (split-string steps " "))
+    (dolist (step steps)
+      (if (string-search "," step)
+	  (setq code (format "%s -- ++(%s)" code step))
+	(setq code (format "%s -- ++(1,%s)" code step))))
+    (setq code (concat code ";"))
+    (nbm-tikz-insert-environment)
+    (insert code)))
+
+(defun nbm-tikz-insert-environment ()
+  "Insert a tikzpicture environment if there is no one."
+  (unless (equal (LaTeX-current-environment) "tikzpicture")
+    (insert "\\begin{tikzpicture}\n\\end{tikzpicture}\n")
+    (previous-line)))

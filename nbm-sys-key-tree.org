@@ -187,6 +187,10 @@
 *** key: i, description: item, function: LaTeX-insert-item, level: 2
 *** key: f, description: figure from screenshots, function: nbm-latex-insert-figure-with-env, level: 1
 *** key: q, description: quick image, function: nbm-latex-insert-figure-quick, level: 1
+*** key: z, description: tikz, level: 1
+**** key: c, description: tikz-cycle, function: nbm-tikz-cycle, level: 1
+**** key: s, description: tikz-set-partition, function: nbm-tikz-set-partition, level: 1
+**** key: l, description: tikz-lattice-path, function: nbm-tikz-lattice-path, level: 1
 ** key: j, description: jump, level: 2
 *** key: b, description: begining of environment, function: LaTeX-find-matching-begin, level: 2
 *** key: e, description: end of environment, function: LaTeX-find-matching-end, level: 2
