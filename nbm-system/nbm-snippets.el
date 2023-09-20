@@ -80,4 +80,4 @@ to \"\\none\"."
   (interactive)
   (insert "\\begin{equation}\n  \n\\end{equation}\n")
   (search-backward "\n\\end")
-  (nbm-latex-insert-label))
+  (nbm-latex-new-label))

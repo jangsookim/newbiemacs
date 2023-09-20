@@ -420,7 +420,7 @@ Delete or add a label accordingly."
 	     (message "You are not inside a display math mode!"))
 	    ((equal (car math) "\\[")
 	     (nbm-latex-toggle-display-math)
-	     (nbm-latex-insert-label))
+	     (nbm-latex-new-label))
 	    (t
 	     (nbm-latex-delete-label)
 	     (nbm-latex-toggle-display-math))))))
@@ -1136,7 +1136,7 @@ Delete or insert a label accordingly."
 	    (progn
 	      (setq env (substring env 0 -1))
 	      (LaTeX-modify-environment env)
-	      (nbm-latex-insert-label))
+	      (nbm-latex-new-label))
 	  (progn
 	    (setq env (concat env "*"))
 	    (LaTeX-modify-environment env)
