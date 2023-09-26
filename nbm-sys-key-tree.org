@@ -266,6 +266,7 @@
 *** key: f, description: newest file, function: nbm-org-insert-file, level: 1
 *** key: q, description: quick image, function: nbm-org-quick-insert-image, level: 1
 *** key: n, description: insert org-roam-node, function: org-roam-node-insert, level: 1
+*** key: s, description: skim page, function: org-mac-link-skim-insert-page, level: 1
 ** key: j, description: Jump, level: 2
 *** key: a, description: archive, function: nbm-org-jump-to-archive, level: 3
 *** key: d, description: dir-link, function: nbm-org-jump-to-dir-at-point, level: 3

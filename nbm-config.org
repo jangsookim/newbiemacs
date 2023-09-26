@@ -185,6 +185,8 @@
     (setq avy-keys (number-sequence ?a ?z))
     (global-set-key (kbd "M-n") 'avy-goto-word-or-subword-1)
     (setq avy-all-windows nil))
+
+  (use-package org-mac-link)
 #+end_src
 ** Diminish
 #+begin_src emacs-lisp :tangle yes
