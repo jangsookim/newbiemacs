@@ -339,3 +339,21 @@ If the filename has [...], change it to (...)."
 	  ((equal major-mode 'org-mode)
 	   (LaTeX-mode)))
     (evil-change-state state)))
+
+(defun nbm-org-mac-insert-webpage ()
+  "Insert a link to the webpage of the user's browser."
+  (interactive)
+  (when (equal system-type 'darwin)
+    (let (browser)
+      (setq browser (nbm-get-user-variable "nbm-browser"))
+      (unless browser
+	(nbm-set-user-variable "nbm-browser"
+			       (completing-read "Select your browser: "
+						'("chrome" "safari" "firefox")))
+	(setq browser (nbm-get-user-variable "nbm-browser")))
+      (cond ((equal browser "chrome")
+	     (org-mac-link-chrome-insert-frontmost-url))
+	    ((equal browser "safari")
+	     (org-mac-link-safari-insert-frontmost-url))
+	    ((equal browser "firefox")
+	     (org-mac-link-firefox-insert-frontmost-url))))))
