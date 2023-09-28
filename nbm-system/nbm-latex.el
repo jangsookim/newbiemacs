@@ -1269,9 +1269,9 @@ Prompt for a label (with completion) and jump to the location of this label."
 	 (docstruct (symbol-value reftex-docstruct-symbol))
 	 ;; If point is inside a \ref{} or \pageref{}, use that as
 	 ;; default value.
-	 (default (when (looking-back "\\\\\\(?:\\(page\\|eq\\|C\\)\\)?ref{[-a-zA-Z0-9_*.:]*"
+	 (default (when (looking-back "\\\\\\(?:\\(page\\|eq\\|C\\)\\)?ref{[-a-zA-Z0-9_*.:\\=\\+--/^() ]*"
 				      (line-beginning-position))
-		    (reftex-this-word "-a-zA-Z0-9_*.:")))
+		    (reftex-this-word "-a-zA-Z0-9_*.:\\=\\+--/^() ")))
 	 (label (completing-read (format-prompt "Label" default)
 				 docstruct
 				 (lambda (x) (stringp (car x))) t nil nil
