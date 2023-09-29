@@ -1449,3 +1449,35 @@ The number of invisible solutions is %s." visible invisible)))))
 	(search-forward "$")
 	(delete-region (- (point) 1) (point))
 	(insert "\\)")))))
+
+(defun nbm-latex-insert-webpage ()
+  "Insert a link to the webpage of the user's browser.
+This uses org-mac-link so only works in mac."
+  (interactive)
+  (when (equal system-type 'darwin)
+    (let (browser link)
+      (setq browser (nbm-get-user-variable "nbm-browser"))
+      (unless browser
+	(nbm-set-user-variable "nbm-browser"
+			       (completing-read "Select your browser: "
+						'("chrome" "safari" "firefox")))
+	(setq browser (nbm-get-user-variable "nbm-browser")))
+      (cond ((equal browser "chrome")
+	     (setq link (org-mac-link-chrome-get-frontmost-url)))
+	    ((equal browser "safari")
+	     (setq link (org-mac-link-safari-get-frontmost-url)))
+	    ((equal browser "firefox")
+	     (setq link (org-mac-link-firefox-get-frontmost-url))))
+      (insert (substring link 1 -1))
+      (backward-sexp) (nbm-replace-parentheses "{}")
+      (backward-char) (backward-sexp) (nbm-replace-parentheses "{}")
+      (backward-char) (insert "\\href"))))
+
+(defun nbm-replace-parentheses (paren)
+  "Replace the current parentheses with PAREN.
+PAREN must be a string of the form \"[]\", \"()\", etc.
+The cursor must be placed before the opening parenthesis."
+  (save-excursion
+    (forward-sexp) (delete-char -1)
+    (insert (substring paren 1 2)))
+  (delete-char 1) (insert (substring paren 0 1)))
