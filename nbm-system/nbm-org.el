@@ -357,3 +357,15 @@ If the filename has [...], change it to (...)."
 	     (org-mac-link-safari-insert-frontmost-url))
 	    ((equal browser "firefox")
 	     (org-mac-link-firefox-insert-frontmost-url))))))
+
+(defun nbm-org-mac-insert-skim ()
+  "Insert a current skim pdf link."
+  (interactive)
+  (when (equal system-type 'darwin)
+    (let (link desc)
+      (setq link (substring (org-mac-link-skim-get-page) 2 -2))
+      (setq desc (car (last (split-string link "/"))))
+      (setq desc (car (split-string desc ".pdf")))
+      (unless (looking-back " ") (insert " "))
+      (insert (format "[[%s][%s]]" link desc)))))
+
