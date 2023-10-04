@@ -130,6 +130,12 @@ other key) stop"))
   (browse-url (format "https://www.google.com/search?q=%s"
 		      (read-string "Enter a word to google: "))))
 
+(defun nbm-mathscinet-search ()
+  "MathSciNet search by title."
+  (interactive)
+  (browse-url (format "https://mathscinet.ams.org/mathscinet/publications-search?query=ti:(%s)"
+		      (read-string "Enter a title to search in MathSciNet: "))))
+
 (defun nbm-paste-vertically (after)
   "Insert the current kill vertically."
   (let (str)
