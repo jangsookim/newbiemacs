@@ -131,10 +131,24 @@ other key) stop"))
 		      (read-string "Enter a word to google: "))))
 
 (defun nbm-mathscinet-search ()
-  "MathSciNet search by title."
+  "MathSciNet search."
   (interactive)
-  (browse-url (format "https://mathscinet.ams.org/mathscinet/publications-search?query=ti:(%s)"
-		      (read-string "Enter a title to search in MathSciNet: "))))
+  (let (author authors title search)
+    (setq authors (read-string "Enter names of authors.\nNames must be separated by commas.\nYou can simply press Enter if you don't want to include this in your search.\n: "))
+    (if (equal authors "")
+	(setq authors nil)
+      (setq authors (split-string authors ",")))
+    (setq title (read-string "Enter a search term for title.\nYou can simply press Enter if you don't want to include this in your search.\n: "))
+    (setq search "")
+    (while authors
+      (setq author (pop authors))
+      (unless (equal search "") (setq search (concat search " AND ")))
+      (setq search (format "%sau:(%s)" search author)))
+    (unless (equal title "")
+      (unless (equal search "") (setq search (concat search " AND ")))
+      (setq search (format "%sti:(%s)" search title)))
+    (browse-url (format "https://mathscinet.ams.org/mathscinet/publications-search?query=%s"
+			search))))
 
 (defun nbm-paste-vertically (after)
   "Insert the current kill vertically."
