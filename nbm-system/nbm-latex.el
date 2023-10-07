@@ -1481,3 +1481,13 @@ The cursor must be placed before the opening parenthesis."
     (forward-sexp) (delete-char -1)
     (insert (substring paren 1 2)))
   (delete-char 1) (insert (substring paren 0 1)))
+
+(defun nbm-toggle-refcheck ()
+  "Comment or uncomment \\usepackage{refcheck}."
+  (interactive)
+  (save-excursion
+    (beginning-of-buffer)
+    (if (search-forward "\\usepackage{refcheck}" nil t)
+	(comment-line 1)
+      (message "There is no line containing \"\\usepackage{refcheck}\"."))))
+ 
