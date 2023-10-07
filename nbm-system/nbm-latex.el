@@ -1487,7 +1487,13 @@ The cursor must be placed before the opening parenthesis."
   (interactive)
   (save-excursion
     (beginning-of-buffer)
-    (if (search-forward "\\usepackage{refcheck}" nil t)
-	(comment-line 1)
-      (message "There is no line containing \"\\usepackage{refcheck}\"."))))
+    (let (beg end)
+      (if (search-forward "\\usepackage{refcheck}" nil t)
+	  (progn
+	    (comment-line 1) (setq end (point))
+	    (previous-line) (setq beg (point))
+	    (if (comment-only-p beg end)
+		(message "The refcheck package is disabled.")
+	      (message "The refcheck package is enabled.")))
+	(message "There is no line containing \"\\usepackage{refcheck}\".")))))
  
