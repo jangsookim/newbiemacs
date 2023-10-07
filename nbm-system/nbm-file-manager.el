@@ -18,6 +18,8 @@ EXT should be pdf, tex, el, or sage."
     (if (equal ext "pdf")
 	(setq file-list (directory-files-recursively dir "[.]pdf$\\|[.]djvu$"))
       (setq file-list (directory-files-recursively dir (format "[.]%s$" ext))))
+    (unless (equal ext "pdf")
+      (setq file-list (nbm-sort-files-by-modified-time file-list)))
     (setq file-list (mapcar (lambda (arg) (cons (substring arg (length dir) nil) arg)) file-list))
     (helm :sources (helm-build-sync-source "find-file"
 		     :candidates file-list
