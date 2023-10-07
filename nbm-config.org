@@ -365,6 +365,18 @@
 
   (evil-define-key 'emacs reftex-select-label-mode-map (kbd "k") 'reftex-select-previous)
   (evil-define-key 'emacs reftex-select-label-mode-map (kbd "j") 'reftex-select-next)
+
+  ;; The following changes the behavior of end-of-defun.
+  (defun nbm-end-of-defun ()
+    "Change the behavior of end-of-defun for latex-mode."
+    (interactive)
+    (if (equal major-mode 'latex-mode)
+        (LaTeX-find-matching-end)
+      (end-of-defun)))
+
+  (global-set-key "\C-\M-e" 'nbm-end-of-defun)
+  (define-key evil-normal-state-map (kbd "]]") 'nbm-end-of-defun)
+
 #+end_src
 
 ** auctex-latexmk

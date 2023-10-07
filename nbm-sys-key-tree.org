@@ -158,6 +158,8 @@
 ** key: TAB, description: end of math mode, function: nbm-latex-exit-math-mode, level: 1
 ** key: p, description: paste avy math, function: nbm-latex-paste-avy-math, level: 1
 ** key: =, description: table of contents, function: reftex-toc, level: 1
+** key: [, description: begining of environment, function: LaTeX-find-matching-begin, level: 2
+** key: ], description: end of environment, function: LaTeX-find-matching-end, level: 2
 ** key: a, description: applications, level: 3
 *** key: d, description: latex diff, function: nbm-latex-diff, level: 3
 ** key: b, description: build tex, function: nbm-latex-compile, level: 1
@@ -190,8 +192,6 @@
 *** key: q, description: quick image, function: nbm-latex-insert-figure-quick, level: 1
 *** key: w, description: webpage, function: nbm-latex-insert-webpage, level: 1
 ** key: j, description: jump, level: 2
-*** key: b, description: begining of environment, function: LaTeX-find-matching-begin, level: 2
-*** key: e, description: end of environment, function: LaTeX-find-matching-end, level: 2
 *** key: k, description: previous section, function: outline-previous-heading, level: 2
 *** key: j, description: next section, function: outline-next-heading, level: 2
 *** key: m, description: jump section mode, function: nbm-latex-jump-section-mode, level: 2
