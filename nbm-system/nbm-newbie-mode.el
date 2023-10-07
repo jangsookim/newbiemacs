@@ -188,7 +188,6 @@
 
 ;; key bindings
 (defvar newbie-mode-map (make-sparse-keymap))
-(evil-global-set-key 'normal (kbd "<backspace>") 'newbie)
 (evil-global-set-key 'normal (kbd "M-<backspace>") 'newbie)
 (evil-global-set-key 'emacs (kbd "M-<backspace>") 'newbie)
 
