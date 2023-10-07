@@ -315,7 +315,7 @@
   (evil-set-leader '(normal visual motion) (kbd ",") t)
   (evil-set-leader '(normal visual motion insert emacs) (kbd "M-o"))
   (evil-set-leader '(normal visual motion insert emacs) (kbd "M-RET") t)
-  
+
   (define-key evil-visual-state-map (kbd "j") 'evil-next-visual-line)
   (define-key evil-visual-state-map (kbd "k") 'evil-previous-visual-line)
   (define-key evil-visual-state-map (kbd "<down>") 'evil-next-visual-line)
@@ -324,6 +324,9 @@
   (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
   (define-key evil-normal-state-map (kbd "<down>") 'evil-next-visual-line)
   (define-key evil-normal-state-map (kbd "<up>") 'evil-previous-visual-line)
+  
+  (define-key evil-insert-state-map (kbd "C-y") 'yank)
+  (define-key evil-insert-state-map (kbd "M-y") 'helm-show-kill-ring)
 #+end_src
 
 * latex
@@ -457,6 +460,10 @@
   (when (equal (nbm-get-user-variable "editing-style") "emacs")
     (evil-global-set-key 'emacs (kbd "C-r") 'evil-redo))
 
+  (unless (equal (nbm-get-user-variable "editing-style") "emacs")
+    (define-key helm-map (kbd "C-v") 'yank)
+    (define-key helm-map (kbd "M-v") 'yank))
+
   (when (equal (nbm-get-user-variable "editing-style") "vim")
     (evil-set-initial-state 'text-mode 'normal)
     (evil-set-initial-state 'org-mode 'normal)
@@ -466,7 +473,6 @@
     (evil-set-initial-state 'fundamental-mode 'normal)
     (evil-set-initial-state 'snippet-mode 'normal)
     (evil-set-initial-state 'python-mode 'normal))
-
 
   (when (equal (nbm-get-user-variable "editing-style") "windows")
     (eval-after-load 'org
