@@ -462,7 +462,7 @@
 
   (unless (equal (nbm-get-user-variable "editing-style") "emacs")
     (define-key minibuffer-local-map (kbd "C-v") 'yank)
-    (define-key minibuffer-local-map (kbd "C-v") 'yank)
+    (define-key minibuffer-local-map (kbd "M-v") 'yank)
     (define-key helm-map (kbd "C-v") 'yank)
     (define-key helm-map (kbd "M-v") 'yank))
 
