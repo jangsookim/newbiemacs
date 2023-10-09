@@ -682,11 +682,13 @@ In visual mode, the cursor must be placed on \\."
 	     (if (equal label "")
 		 (setq label (reftex-uniquify-label env t))
 	       (setq label (concat env label)))))
-      (unless (equal env "document")
-	(goto-char (car (LaTeX-env-beginning-pos-col)))
-	(search-forward "\\begin" nil t) (forward-sexp)
-	(when (looking-at "[ \t\n]*\\[") (forward-sexp))
-	(insert (format "\\label{%s}" label))))))
+      (cond ((equal env "align")
+	     (insert (format "\\label{%s}" label)))
+	    (t
+	     (goto-char (car (LaTeX-env-beginning-pos-col)))
+	     (search-forward "\\begin" nil t) (forward-sexp)
+	     (when (looking-at "[ \t\n]*\\[") (forward-sexp))
+	     (insert (format "\\label{%s}" label)))))))
 
 (defun nbm-latex-delete-label ()
   "Delete the labels in the current environment."
