@@ -684,6 +684,7 @@ In visual mode, the cursor must be placed on \\."
 	       (setq label (concat env label)))))
       (cond ((equal env "align")
 	     (insert (format "\\label{%s}" label)))
+	    ((equal env "document"))
 	    (t
 	     (goto-char (car (LaTeX-env-beginning-pos-col)))
 	     (search-forward "\\begin" nil t) (forward-sexp)
