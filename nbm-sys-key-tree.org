@@ -142,6 +142,7 @@
 *** key: s, description: settings, function: newbie-setting, level: 2
 *** key: l, description: Set User Level, function: nbm-set-user-level, level: 1
 *** key: u, description: update Newbiemacs, function: nbm-update-newbiemacs, level: 1
+*** key: w, description: set default browser, function: nbm-set-default-browser, level: 1
 ** key: Y, description: yasnippet, level: 2
 *** key: d, description: delete snippet, function: nbm-yasnippet-delete, level: 3
 *** key: q, description: quick new snippet, function: nbm-yasnippet-quick-new, level: 3

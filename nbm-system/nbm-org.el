@@ -347,9 +347,7 @@ If the filename has [...], change it to (...)."
     (let (browser)
       (setq browser (nbm-get-user-variable "nbm-browser"))
       (unless browser
-	(nbm-set-user-variable "nbm-browser"
-			       (completing-read "Select your browser: "
-						'("chrome" "safari" "firefox")))
+	(nbm-set-default-browser)
 	(setq browser (nbm-get-user-variable "nbm-browser")))
       (cond ((equal browser "chrome")
 	     (org-mac-link-chrome-insert-frontmost-url))

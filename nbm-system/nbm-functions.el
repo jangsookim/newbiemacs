@@ -110,3 +110,10 @@
 				  '("vim" "emacs" "windows")))
     (nbm-set-user-variable "editing-style" choice)
     (message "The editing style is set to be \"%s\"." choice)))
+
+(defun nbm-set-default-browser ()
+  "Set a default browser."
+  (interactive)
+  (nbm-set-user-variable "nbm-browser"
+			       (completing-read "Select your browser: "
+						'("chrome" "safari" "firefox"))))
