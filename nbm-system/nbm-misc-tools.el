@@ -134,10 +134,10 @@ other key) stop"))
   "MathSciNet search."
   (interactive)
   (let (author authors title search)
-    (setq authors (read-string "Enter names of authors.\nNames must be separated by commas.\nYou can simply press Enter if you don't want to include this in your search.\n: "))
+    (setq authors (read-string "Enter names of authors.\nNames must be separated by semicolons \";\".\nYou can simply press Enter if you don't want to include this in your search.\n: "))
     (if (equal authors "")
 	(setq authors nil)
-      (setq authors (split-string authors ",")))
+      (setq authors (split-string authors ";")))
     (setq title (read-string "Enter a search term for title.\nYou can simply press Enter if you don't want to include this in your search.\n: "))
     (setq search "")
     (while authors
@@ -149,6 +149,15 @@ other key) stop"))
       (setq search (format "%sti:(%s)" search title)))
     (browse-url (format "https://mathscinet.ams.org/mathscinet/publications-search?query=%s"
 			search))))
+
+(defun nbm-arxiv-search ()
+  "ArXiv search."
+  (interactive)
+  (let (author authors title search)
+    (setq authors (read-string "Enter names of authors.\nNames must be separated by semicolons \";\".\nIt is recommended to write each name as \"Last name, First name\".\nYou can simply press Enter if you don't want to include this in your search.\n: "))
+    (setq title (read-string "Enter a search term for title.\nYou can simply press Enter if you don't want to include this in your search.\n: "))
+    (setq search (format "https://arxiv.org/search/advanced?advanced=&terms-0-operator=AND&terms-0-term=%s&terms-0-field=author&terms-1-operator=AND&terms-1-term=%s&terms-1-field=title&classification-physics_archives=all&classification-include_cross_list=include&date-filter_by=all_dates&date-year=&date-from_date=&date-to_date=&date-date_type=submitted_date&abstracts=show&size=50&order=-announced_date_first" authors title))
+    (browse-url search)))
 
 (defun nbm-paste-vertically (after)
   "Insert the current kill vertically."

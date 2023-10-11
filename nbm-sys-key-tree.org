@@ -104,6 +104,7 @@
 *** key: g, description: google search, function: nbm-google-search, level: 2
 *** key: d, description: look up dictionary, function: nbm-look-up-dictionary, level: 2
 *** key: m, description: MathSciNet, function: nbm-mathscinet-search, level: 1
+*** key: x, description: ArXiv, function: nbm-arxiv-search, level: 1
 ** key: t, description: Find tex file, function: nbm-find-tex, level: 1
 ** key: u, function: universal-argument, level: 3
 ** key: w, description: Windows, level: 1
