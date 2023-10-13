@@ -117,3 +117,18 @@
   (nbm-set-user-variable "nbm-browser"
 			       (completing-read "Select your browser: "
 						'("chrome" "safari" "firefox"))))
+
+;; The following changes the behavior of end-of-defun.
+(defun nbm-end-of-defun ()
+  "Change the behavior of end-of-defun for latex-mode."
+  (interactive)
+  (if (equal major-mode 'latex-mode)
+      (if (region-active-p)
+	  (let (beg)
+	    (setq beg (region-beginning))
+	    (deactivate-mark)
+	    (LaTeX-find-matching-end)
+	    (push-mark beg)
+	    (activate-mark))
+	(LaTeX-find-matching-end))
+    (end-of-defun)))

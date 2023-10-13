@@ -379,6 +379,7 @@
 
   (global-set-key "\C-\M-e" 'nbm-end-of-defun)
   (define-key evil-normal-state-map (kbd "]]") 'nbm-end-of-defun)
+  (define-key evil-visual-state-map (kbd "]]") 'nbm-end-of-defun)
 
 #+end_src
 
