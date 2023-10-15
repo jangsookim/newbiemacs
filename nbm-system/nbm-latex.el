@@ -1506,47 +1506,79 @@ The cursor must be placed before the opening parenthesis."
 		(message "The refcheck package is disabled.")
 	      (message "The refcheck package is enabled.")))
 	(message "There is no line containing \"\\usepackage{refcheck}\".")))))
- 
-(defun nbm-latex-insert-environment (env)
-  "Insert an environment ENV."
-  (insert (format "\\begin{%s}\n\n\\end{%s}\n" env env))
-  (previous-line 2))
 
-(defun nbm-latex-insert-custom-theorem (theorem)
+(defun nbm-latex-insert-environment (env &optional label auto)
+  "Insert an environment ENV.
+If LABEL is non-nil, insert a label.
+If AUTO is non-nil, insert a label automatically." 
+  (insert (format "\\begin{%s}\n\n\\end{%s}\n" env env))
+  (previous-line 2)
+  (cond ((equal env "figure")
+	 (insert "\\centering\n\n\\caption{}")
+	 (previous-line))
+	((member env '("enumerate" "itemize"))
+	 (insert "\\item "))
+	((member env '("align" "align*"))
+	 (insert " &=  \\\\\n") (insert " &=  \\\\")
+	 (previous-line) (beginning-of-line)))
+  (when label (nbm-latex-new-label auto)))
+
+(defun nbm-latex-insert-custom-theorem (theorem &optional auto)
   "Insert a theorem environment THEOREM using a macro like
-\"\\newtheorem{thm}{Theorem}\" at the beginning of the current tex file."
-  (interactive)
+\"\\newtheorem{thm}{Theorem}\" at the beginning of the current tex file.
+If AUTO is non-nil, insert a label automatically."
   (let (thm)
     (save-excursion
       (beginning-of-buffer)
       (when (re-search-forward (format "^ *\\\\newtheorem{\\([a-zA-Z]+\\)}\\([[][a-zA-Z]+[]]\\)*{%s}" theorem) nil t)
 	(setq thm (match-string 1))))
     (if thm
-	(nbm-latex-insert-environment thm)
+	(nbm-latex-insert-environment thm t auto)
       (message (format "There is no macro for theorem. Insert a line like
 \"\\newtheorem{%s}{%s}\" at the beginning of the current tex file." theorem theorem)))))
 
-(defun nbm-latex-insert-theorem ()
-  "Insert a theorem environment using a macro in the current tex file."
+(defun nbm-latex-new-environment ()
+  "Insert a new environment."
   (interactive)
-  (nbm-latex-insert-custom-theorem "Theorem"))
+  (let (prompt choice auto)
+    (setq prompt "Select an environment. (Type a capital letter for a custom label.)\n\n")
+    (setq prompt (concat prompt (concat (nbm-string-key "t") ": theorem  ")))
+    (setq prompt (concat prompt (concat (nbm-string-key "l") ": lemma  ")))
+    (setq prompt (concat prompt (concat (nbm-string-key "p") ": proposition  ")))
+    (setq prompt (concat prompt (concat (nbm-string-key "c") ": corollary  ")))
+    (setq prompt (concat prompt (concat (nbm-string-key "d") ": definition\n\n")))
+    (setq prompt (concat prompt (concat (nbm-string-key "i") ": itemize  ")))
+    (setq prompt (concat prompt (concat (nbm-string-key "n") ": enumerate\n\n")))
+    (setq prompt (concat prompt (concat (nbm-string-key "e") ": equation ")))
+    (setq prompt (concat prompt (concat (nbm-string-key "m") ": multline  ")))
+    (setq prompt (concat prompt (concat (nbm-string-key "u") ": multline*  ")))
+    (setq prompt (concat prompt (concat (nbm-string-key "a") ": align  ")))
+    (setq prompt (concat prompt (concat (nbm-string-key "g") ": align*\n\n")))
+    (setq prompt (concat prompt (concat (nbm-string-key "f") ": figure   ")))
+    (setq prompt (concat prompt (concat (nbm-string-key "z") ": tikzpicture             ")))
+    (setq prompt (concat prompt (concat (nbm-string-key "x") ": other environment\n\n")))
+    (setq prompt (concat prompt (concat (nbm-string-key "SPC") ": proof\n")))
+    (setq prompt (concat prompt (concat (nbm-string-key "RET") ": Rename the current environment")))
+    (setq choice (read-char prompt))
+    (setq auto t)
+    (when (and (>= choice ?A) (<= choice ?Z))
+      (setq auto nil)
+      (setq choice (+ choice 32)))
+    (cond ((equal choice ?t) (nbm-latex-insert-custom-theorem "Theorem" auto))
+	  ((equal choice ?l) (nbm-latex-insert-custom-theorem "Lemma" auto))
+	  ((equal choice ?p) (nbm-latex-insert-custom-theorem "Proposition" auto))
+	  ((equal choice ?c) (nbm-latex-insert-custom-theorem "Corollary" auto))
+	  ((equal choice ?d) (nbm-latex-insert-custom-theorem "Definition" auto))
+	  ((equal choice ?i) (nbm-latex-insert-environment "itemize"))
+	  ((equal choice ?n) (nbm-latex-insert-environment "enumerate"))
+	  ((equal choice ?e) (nbm-latex-insert-environment "equation" t auto))
+	  ((equal choice ?a) (nbm-latex-insert-environment "align"))
+	  ((equal choice ?g) (nbm-latex-insert-environment "align*"))
+	  ((equal choice ?m) (nbm-latex-insert-environment "multline" t auto))
+	  ((equal choice ?u) (nbm-latex-insert-environment "multline*"))
+	  ((equal choice ?f) (nbm-latex-insert-environment "figure" t auto))
+	  ((equal choice ?z) (nbm-latex-insert-environment "tikzpicture"))
+	  ((equal choice ?\^M) (nbm-latex-environment-update))
+	  ((equal choice ? ) (nbm-latex-insert-environment "proof"))
+	  ((equal choice ?x) (LaTeX-environment nil)))))
 
-(defun nbm-latex-insert-lemma ()
-  "Insert a lemma environment using a macro in the current tex file."
-  (interactive)
-  (nbm-latex-insert-custom-theorem "Lemma"))
-
-(defun nbm-latex-insert-proposition ()
-  "Insert a proposition environment using a macro in the current tex file."
-  (interactive)
-  (nbm-latex-insert-custom-theorem "Proposition"))
-
-(defun nbm-latex-insert-corollary ()
-  "Insert a corollary environment using a macro in the current tex file."
-  (interactive)
-  (nbm-latex-insert-custom-theorem "Corollary"))
-
-(defun nbm-latex-insert-definition ()
-  "Insert a definition environment using a macro in the current tex file."
-  (interactive)
-  (nbm-latex-insert-custom-theorem "Definition"))

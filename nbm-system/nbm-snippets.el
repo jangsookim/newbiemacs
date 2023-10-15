@@ -74,10 +74,3 @@ to \"\\none\"."
       (if (equal i (1- row))
 	  (insert "\n")
 	(insert "\\\\\n")))))
-
-(defun nbm-snippet-latex-equation ()
-  "Insert an equation snippet."
-  (interactive)
-  (insert "\\begin{equation}\n  \n\\end{equation}\n")
-  (search-backward "\n\\end")
-  (nbm-latex-new-label))

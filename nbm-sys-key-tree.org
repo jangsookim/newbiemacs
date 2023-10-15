@@ -170,13 +170,7 @@
 ** key: C, description: copy math with env, function: nbm-latex-copy-math-with-env, level: 1
 ** key: d, description: delete math only, function: nbm-latex-delete-math, level: 1
 ** key: D, description: delete math with env, function: nbm-latex-delete-math-with-env, level: 1
-** key: e, description: Environments, level: 1
-*** key: u, description: update-environment, function: nbm-latex-environment-update, level: 1
-*** key: t, description: theorem, function: nbm-latex-insert-theorem, level: 1
-*** key: l, description: lemma, function: nbm-latex-insert-lemma, level: 1
-*** key: c, description: corollary, function: nbm-latex-insert-corollary, level: 1
-*** key: p, description: proposition, function: nbm-latex-insert-proposition, level: 1
-*** key: d, description: definition, function: nbm-latex-insert-definition, level: 1
+** key: e, description: environments, function: nbm-latex-new-environment, level: 1
 ** key: f, description: Fonts, level: 1
 *** key: b, description: bold, function: nbm-latex-font-bold, level: 1
 *** key: e, description: emph, function: nbm-latex-font-emph, level: 1
@@ -216,7 +210,6 @@
 *** key: s, description: sec-ref, function: nbm-latex-sec-ref, level: 2
 *** key: C, description: Cref, function: nbm-latex-Cref, level: 1
 ** key: s, description: snippets, level: 1
-*** key: e, description: equation, function: nbm-snippet-latex-equation, level: 1
 *** key: m, description: matrix, function: nbm-snippet-latex-matrix, level: 1
 *** key: y, description: Young tableau, function: nbm-snippet-latex-ytableau, level: 1
 *** key: z, description: tikz, level: 1
