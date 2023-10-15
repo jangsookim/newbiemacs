@@ -664,8 +664,9 @@ In visual mode, the cursor must be placed on \\."
     (when (equal pos (point))
       (evil-jump-item))))
 
-(defun nbm-latex-new-label ()
-  "Add a new label in the current environment."
+(defun nbm-latex-new-label (&optional auto)
+  "Add a new label in the current environment.
+If AUTO is non-nil, create an automatic label."
   (interactive)
   (save-excursion
     (reftex-access-scan-info)
@@ -673,20 +674,28 @@ In visual mode, the cursor must be placed on \\."
       (cond ((equal env "document")
 	     (message "You are not in a proper environment!"))
 	    ((member env '("align" "equation" "multline"))
-	     (setq label (read-string "Enter a label below. (If you type XXX, then eq:XXX will be inserted. If you type nothing, a unique numeric label will be inserted.)\n"))
+	     (if auto
+		 (setq label "")
+	       (setq label (read-string "Enter a label below. (If you type XXX, then eq:XXX will be inserted. If you type nothing, a unique numeric label will be inserted.)\n")))
 	     (if (equal label "") (setq label (reftex-label nil t))
 	       (setq label (concat "eq:" label))))
 	    (t
 	     (setq env (concat (substring env 0 3) ":"))
-	     (setq label (read-string (format "Enter a label below. (If you type XXX, then %sXXX will be inserted. If you type nothing, a unique numeric label will be inserted.)\n" env)))
+	     (if auto
+		 (setq label "")
+	       (setq label (read-string (format "Enter a label below. (If you type XXX, then %sXXX will be inserted. If you type nothing, a unique numeric label will be inserted.)\n" env))))
 	     (if (equal label "")
 		 (setq label (reftex-uniquify-label env t))
 	       (setq label (concat env label)))))
       (cond ((equal env "align")
 	     (insert (format "\\label{%s}" label)))
 	    ((equal env "document"))
+	    ((equal env "fig:")
+	     (LaTeX-find-matching-end)
+	     (backward-char 12)
+	     (insert (format "\\label{%s}\n" label)))
 	    (t
-	     (goto-char (car (LaTeX-env-beginning-pos-col)))
+	     (LaTeX-find-matching-begin)
 	     (search-forward "\\begin" nil t) (forward-sexp)
 	     (when (looking-at "[ \t\n]*\\[") (forward-sexp))
 	     (insert (format "\\label{%s}" label)))))))
