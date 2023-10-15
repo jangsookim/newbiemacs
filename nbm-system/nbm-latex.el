@@ -1507,6 +1507,12 @@ The cursor must be placed before the opening parenthesis."
 	      (message "The refcheck package is enabled.")))
 	(message "There is no line containing \"\\usepackage{refcheck}\".")))))
 
+(defun nbm-latex-rename-environment ()
+  (interactive)
+  (if (equal (LaTeX-current-environment) "document")
+      (message "You cannot rename rename the \"document\" environment!")
+    (LaTeX-environment t)))
+
 (defun nbm-latex-insert-environment (env &optional label auto)
   "Insert an environment ENV.
 If LABEL is non-nil, insert a label.
@@ -1578,7 +1584,7 @@ If AUTO is non-nil, insert a label automatically."
 	  ((equal choice ?u) (nbm-latex-insert-environment "multline*"))
 	  ((equal choice ?f) (nbm-latex-insert-environment "figure" t auto))
 	  ((equal choice ?z) (nbm-latex-insert-environment "tikzpicture"))
-	  ((equal choice ?\^M) (nbm-latex-environment-update))
+	  ((equal choice ?\^M) (nbm-latex-rename-environment))
 	  ((equal choice ? ) (nbm-latex-insert-environment "proof"))
 	  ((equal choice ?x) (LaTeX-environment nil)))))
 

@@ -1,9 +1,5 @@
 ;; This file contains simple functions for newbiemacs.
 
-(defun nbm-latex-environment-update ()
-  (interactive)
-  (LaTeX-environment t))
-
 (defun nbm-org-roam-today ()
   "Open org-roam-today file and move the point at the end."
   (interactive)
