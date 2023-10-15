@@ -197,7 +197,6 @@
 *** key: s, description: section, function: nbm-latex-jump-section, level: 2
 ** key: n, description: new item/macro/etc, level: 1
 *** key: b, description: bib-item, function: nbm-latex-new-bib-item, level: 1
-*** key: e, description: new environment, function: LaTeX-environment, level: 1
 *** key: m, description: macro, function: nbm-latex-new-macro, level: 1
 *** key: l, description: label, function: nbm-latex-new-label, level: 1
 *** key: s, description: section, function: nbm-latex-section, level: 1
