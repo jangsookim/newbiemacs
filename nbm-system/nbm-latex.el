@@ -1510,12 +1510,12 @@ The cursor must be placed before the opening parenthesis."
   (let (thm)
     (save-excursion
       (beginning-of-buffer)
-      (when (re-search-forward (format "\\newtheorem{\\([a-zA-Z]+\\)}\\([[][a-zA-Z]+[]]\\)*{%s}" theorem) nil t)
+      (when (re-search-forward (format "^ *\\\\newtheorem{\\([a-zA-Z]+\\)}\\([[][a-zA-Z]+[]]\\)*{%s}" theorem) nil t)
 	(setq thm (match-string 1))))
     (if thm
 	(nbm-latex-insert-environment thm)
-      (message "There is no macro for theorem. Insert a line like
-\"\\newtheorem{thm}{Theorem}\" at the beginning of the current tex file."))))
+      (message (format "There is no macro for theorem. Insert a line like
+\"\\newtheorem{%s}{%s}\" at the beginning of the current tex file." theorem theorem)))))
 
 (defun nbm-latex-insert-theorem ()
   "Insert a theorem environment using a macro in the current tex file."
