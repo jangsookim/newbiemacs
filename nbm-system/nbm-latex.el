@@ -1418,7 +1418,9 @@ Open the pdf file and the corresponding tex file."
 							 (regexp-quote topic)))))))
 
 (defun nbm-latex-toggle-solutions ()
-  "Comment or uncomment all solutions."
+  "Comment or uncomment all solutions.
+When comment all solutions, copy the pdf with solutions
+to another pdf file with \"(solutions)\" added to the file name."
   (interactive)
   (save-excursion
     (let (visible invisible)
@@ -1433,6 +1435,9 @@ Open the pdf file and the corresponding tex file."
 	  (if (looking-at "%")
 	      (setq invisible (1+ invisible))
 	    (setq visible (1+ visible)))))
+      (when (and (equal visible 0) (> invisible 0))
+	(copy-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf")
+		   (concat (file-name-sans-extension (buffer-file-name)) "(solutions).pdf")))
       (message (format "The number of visible solutions is %s.
 The number of invisible solutions is %s." visible invisible)))))
 
