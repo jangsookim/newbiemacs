@@ -160,7 +160,7 @@
 ** key: TAB, description: end of math mode, function: nbm-latex-exit-math-mode, level: 1
 ** key: p, description: paste avy math, function: nbm-latex-paste-avy-math, level: 1
 ** key: =, description: table of contents, function: reftex-toc, level: 1
-** key: [, description: begining of environment, function: LaTeX-find-matching-begin, level: 2
+** key: [, description: beginning of environment, function: LaTeX-find-matching-begin, level: 2
 ** key: ], description: end of environment, function: LaTeX-find-matching-end, level: 2
 ** key: a, description: applications, level: 3
 *** key: d, description: latex diff, function: nbm-latex-diff, level: 3
@@ -171,9 +171,12 @@
 ** key: d, description: delete math only, function: nbm-latex-delete-math, level: 1
 ** key: D, description: delete math with env, function: nbm-latex-delete-math-with-env, level: 1
 ** key: e, description: Environments, level: 1
-*** key: d, description: delete labels, function: nbm-latex-delete-label, level: 2
-*** key: n, description: new environment, function: LaTeX-environment, level: 1
 *** key: u, description: update-environment, function: nbm-latex-environment-update, level: 1
+*** key: t, description: theorem, function: nbm-latex-insert-theorem, level: 1
+*** key: l, description: lemma, function: nbm-latex-insert-lemma, level: 1
+*** key: c, description: corollary, function: nbm-latex-insert-corollary, level: 1
+*** key: p, description: proposition, function: nbm-latex-insert-proposition, level: 1
+*** key: d, description: definition, function: nbm-latex-insert-definition, level: 1
 ** key: f, description: Fonts, level: 1
 *** key: b, description: bold, function: nbm-latex-font-bold, level: 1
 *** key: e, description: emph, function: nbm-latex-font-emph, level: 1
@@ -188,7 +191,6 @@
 ** key: ., description: mark-environment, function: LaTeX-mark-environment, level: 1
 ** key: *, description: mark-section, function: LaTeX-mark-section, level: 1
 ** key: i, description: Insert, level: 1
-*** key: c, description: citation, function: helm-bibtex, level: 1
 *** key: i, description: item, function: LaTeX-insert-item, level: 2
 *** key: f, description: figure from screenshots, function: nbm-latex-insert-figure-with-env, level: 1
 *** key: q, description: quick image, function: nbm-latex-insert-figure-quick, level: 1
@@ -201,11 +203,12 @@
 *** key: s, description: section, function: nbm-latex-jump-section, level: 2
 ** key: n, description: new item/macro/etc, level: 1
 *** key: b, description: bib-item, function: nbm-latex-new-bib-item, level: 1
+*** key: e, description: new environment, function: LaTeX-environment, level: 1
 *** key: m, description: macro, function: nbm-latex-new-macro, level: 1
 *** key: l, description: label, function: nbm-latex-new-label, level: 1
 *** key: s, description: section, function: nbm-latex-section, level: 1
 ** key: r, description: reference, level: 1
-*** key: c, description: cross reference, function: reftex-view-crossref, level: 2
+*** key: c, description: citation, function: helm-bibtex, level: 1
 *** key: e, description: eqref, function: nbm-latex-eqref, level: 1
 *** key: f, description: fig-ref, function: nbm-latex-fig-ref, level: 2
 *** key: i, description: insert ref, function: nbm-reftex-insert-ref, level: 2
@@ -231,7 +234,7 @@
 *** key: m, description: multline, function: nbm-latex-toggle-multline, level: 2
 *** key: *, description: environment with *, function: nbm-latex-toggle-star, level: 1
 *** key: p, description: parenthesis, function: nbm-latex-toggle-parenthesis, level: 3
-*** key: r, description: refcheck, function: nbm-toggle-refcheck, level: 1
+*** key: r, description: refcheck, function: nbm-latex-toggle-refcheck, level: 1
 *** key: s, description: compile section, function: nbm-latex-toggle-compile-section, level: 1
 *** key: h, description: hwp math, function: nbm-latex-convert-to-hwp, level: 1
 *** key: v, description: change variables, function: nbm-latex-change-variables, level: 1

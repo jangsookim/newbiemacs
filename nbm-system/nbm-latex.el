@@ -693,7 +693,6 @@ In visual mode, the cursor must be placed on \\."
 
 (defun nbm-latex-delete-label ()
   "Delete the labels in the current environment."
-  (interactive)
   (save-excursion
     (let (bound beg end (count 0))
       (setq bound (car (LaTeX-env-beginning-pos-col)))
@@ -701,8 +700,7 @@ In visual mode, the cursor must be placed on \\."
       (while (search-backward "\\label" bound t)
 	(setq count (1+ count))
 	(setq beg (point)) (forward-char 6) (forward-sexp)
-	(delete-region beg (point)) (delete-blank-lines))
-      (message (format "%s label(s) deleted." count)))))
+	(delete-region beg (point)) (delete-blank-lines)))))
 
 (defun nbm-latex-extract-bib-file ()
   "Create a bib file containing the current bibitems from the main bib file."
@@ -1485,7 +1483,7 @@ The cursor must be placed before the opening parenthesis."
     (insert (substring paren 1 2)))
   (delete-char 1) (insert (substring paren 0 1)))
 
-(defun nbm-toggle-refcheck ()
+(defun nbm-latex-toggle-refcheck ()
   "Comment or uncomment \\usepackage{refcheck}."
   (interactive)
   (save-excursion
@@ -1500,3 +1498,46 @@ The cursor must be placed before the opening parenthesis."
 	      (message "The refcheck package is enabled.")))
 	(message "There is no line containing \"\\usepackage{refcheck}\".")))))
  
+(defun nbm-latex-insert-environment (env)
+  "Insert an environment ENV."
+  (insert (format "\\begin{%s}\n\n\\end{%s}\n" env env))
+  (previous-line 2))
+
+(defun nbm-latex-insert-custom-theorem (theorem)
+  "Insert a theorem environment THEOREM using a macro like
+\"\\newtheorem{thm}{Theorem}\" at the beginning of the current tex file."
+  (interactive)
+  (let (thm)
+    (save-excursion
+      (beginning-of-buffer)
+      (when (re-search-forward (format "\\newtheorem{\\([a-zA-Z]+\\)}\\([[][a-zA-Z]+[]]\\)*{%s}" theorem) nil t)
+	(setq thm (match-string 1))))
+    (if thm
+	(nbm-latex-insert-environment thm)
+      (message "There is no macro for theorem. Insert a line like
+\"\\newtheorem{thm}{Theorem}\" at the beginning of the current tex file."))))
+
+(defun nbm-latex-insert-theorem ()
+  "Insert a theorem environment using a macro in the current tex file."
+  (interactive)
+  (nbm-latex-insert-custom-theorem "Theorem"))
+
+(defun nbm-latex-insert-lemma ()
+  "Insert a lemma environment using a macro in the current tex file."
+  (interactive)
+  (nbm-latex-insert-custom-theorem "Lemma"))
+
+(defun nbm-latex-insert-proposition ()
+  "Insert a proposition environment using a macro in the current tex file."
+  (interactive)
+  (nbm-latex-insert-custom-theorem "Proposition"))
+
+(defun nbm-latex-insert-corollary ()
+  "Insert a corollary environment using a macro in the current tex file."
+  (interactive)
+  (nbm-latex-insert-custom-theorem "Corollary"))
+
+(defun nbm-latex-insert-definition ()
+  "Insert a definition environment using a macro in the current tex file."
+  (interactive)
+  (nbm-latex-insert-custom-theorem "Definition"))
