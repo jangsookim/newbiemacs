@@ -1432,12 +1432,13 @@ to another pdf file with \"(solutions)\" added to the file name."
 	  (LaTeX-mark-environment)
 	  (beginning-of-line)
 	  (comment-or-uncomment-region (region-beginning) (region-end))
+	  (deactivate-mark)
 	  (if (looking-at "%")
 	      (setq invisible (1+ invisible))
 	    (setq visible (1+ visible)))))
       (when (and (equal visible 0) (> invisible 0))
 	(copy-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf")
-		   (concat (file-name-sans-extension (buffer-file-name)) "(solutions).pdf")))
+		   (concat (file-name-sans-extension (buffer-file-name)) "(solutions).pdf") t))
       (message (format "The number of visible solutions is %s.
 The number of invisible solutions is %s." visible invisible)))))
 
