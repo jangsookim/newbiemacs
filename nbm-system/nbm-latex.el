@@ -1533,7 +1533,11 @@ If AUTO is non-nil, insert a label automatically."
 	((member env '("align" "align*"))
 	 (insert " &=  \\\\\n") (insert " &=  \\\\")
 	 (previous-line) (beginning-of-line)))
-  (when label (nbm-latex-new-label auto)))
+  (when label (nbm-latex-new-label auto))
+  (save-excursion
+    (LaTeX-mark-environment)
+    (indent-region (region-beginning) (region-end))
+    (deactivate-mark)))
 
 (defun nbm-latex-insert-custom-theorem (theorem &optional auto)
   "Insert a theorem environment THEOREM using a macro like

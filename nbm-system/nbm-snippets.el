@@ -19,7 +19,7 @@ v: matrix enclosed by vertical lines"
   (cond ((equal bracket ?p)
 	 (insert "\\begin{pmatrix}\n"))
 	((equal bracket ?v)
-	 (insert "\\left|\\begin{matrix}\n"))
+	 (insert "\\left|\n\\begin{matrix}\n"))
 	(t
 	 (insert "\\begin{bmatrix}\n")))
   (nbm-snippet-insert-matrix-entries
@@ -34,7 +34,7 @@ Enter the entries below:
   (cond ((equal bracket ?p)
 	 (insert "\\end{pmatrix}"))
 	((equal bracket ?v)
-	 (insert "\\end{matrix}\\right|"))
+	 (insert "\\end{matrix}\n\\right|"))
 	(t
 	 (insert "\\end{bmatrix}"))))
 
