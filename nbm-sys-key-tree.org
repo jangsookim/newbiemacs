@@ -11,8 +11,10 @@
 ** key: TAB, description: Last buffer, function: evil-switch-to-windows-last-buffer, level: 2
 ** key: !, description: shell command, function: nbm-shell-commend, level: 3
 ** key: ?, description: Help, function: nbm-cheat-sheet, level: 1
+** key: ;, description: (un-)comment line, function: nbm-comment-or-uncomment-line, level: 2
 ** key: 0, description: Developer only, level: 3
 *** key: h, function: nbm-toggle-nbm-home, level: 3
+*** key: C, description: colors, function: helm-colors, level: 3
 ** key: ', description: shell, function: eshell, level: 3
 ** key: ., description: org-roam-today, function: nbm-org-roam-today, level: 2
 ** key: a, description: Applications, level: 1
@@ -34,9 +36,6 @@
 *** key: w, function: kill-buffer-and-window, level: 2
 *** key: s, description: switch to same extension buffer, function: nbm-switch-to-buffer-with-same-extension, level: 3
 *** key: R, function: revert-buffer, level: 2
-** key: c, description: Comment/Color, level: 2
-*** key: l, description: (un-)comment line, function: nbm-comment-or-uncomment-line, level: 2
-*** key: c, description: colors, function: helm-colors, level: 3
 ** key: f, description: Files, function:, level: 1
 *** key: b, function: bookmark-set, level: 2
 *** key: d, description: open dowloaded file, function: nbm-open-downloaded-file, level: 3
