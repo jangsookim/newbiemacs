@@ -6,9 +6,9 @@
 # A description or a function may be missing.
 
 * description: global
-** key: SPC, description: M-x, function: helm-M-x, level: 1
-** key: RET, description: bookmark, function: helm-filtered-bookmarks, level: 1
-** key: TAB, description: Last buffer, function: evil-switch-to-windows-last-buffer, level: 1
+** key: SPC, description: M-x, function: helm-M-x, level: 3
+** key: RET, description: bookmark, function: helm-filtered-bookmarks, level: 2
+** key: TAB, description: Last buffer, function: evil-switch-to-windows-last-buffer, level: 2
 ** key: !, description: shell command, function: nbm-shell-commend, level: 3
 ** key: ?, description: Help, function: nbm-cheat-sheet, level: 1
 ** key: 0, description: Developer only, level: 3
@@ -28,29 +28,29 @@
 ** key: b, description: Buffers, level: 1
 *** key: b, description: buffers-list, function: helm-buffers-list, level: 1
 *** key: d, function: kill-this-buffer, level: 1
-*** key: j, description: jump buffer, function: nbm-tab-line-jump, level: 2
-*** key: h, description: previous buffer, function: nbm-tab-line-previous-buffer, level: 2
-*** key: l, description: next buffer, function: nbm-tab-line-next-buffer, level: 2
+*** key: j, description: jump buffer, function: nbm-tab-line-jump, level: 3
+*** key: h, description: previous buffer, function: nbm-tab-line-previous-buffer, level: 3
+*** key: l, description: next buffer, function: nbm-tab-line-next-buffer, level: 3
 *** key: w, function: kill-buffer-and-window, level: 2
-*** key: s, description: switch to same extension buffer, function: nbm-switch-to-buffer-with-same-extension, level: 1
+*** key: s, description: switch to same extension buffer, function: nbm-switch-to-buffer-with-same-extension, level: 3
 *** key: R, function: revert-buffer, level: 2
 ** key: c, description: Comment/Color, level: 2
 *** key: l, description: (un-)comment line, function: nbm-comment-or-uncomment-line, level: 2
 *** key: c, description: colors, function: helm-colors, level: 3
 ** key: f, description: Files, function:, level: 1
-*** key: b, function: bookmark-set, level: 1
+*** key: b, function: bookmark-set, level: 2
 *** key: d, description: open dowloaded file, function: nbm-open-downloaded-file, level: 3
 *** key: f, description: find files, function: helm-find-files, level: 1
-*** key: r, description: recent files, function: helm-recentf, level: 1
+*** key: r, description: recent files, function: helm-recentf, level: 2
 *** key: j, function: dired-jump, level: 2
 *** key: m, description: move newest file, function: nbm-move-newest-file, level: 3
 *** key: n, description: new-tex-file, function: nbm-latex-new-file, level: 2
 *** key: p, description: move-pdf-from-downloads, function: nbm-move-pdf-from-downloads, level: 2
 *** key: s, description: save, function: save-buffer, level: 1
-*** key: A, description: save as, function: nbm-save-as, level: 1
+*** key: A, description: save as, function: nbm-save-as, level: 2
 *** key: D, description: copy-to-desktop, function: nbm-copy-to-desktop, level: 2
 *** key: F, description: Finder (file manager), function: nbm-show-in-finder, level: 1
-*** key: R, description: rename current file, function: nbm-rename-current-file, level: 1
+*** key: R, description: rename current file, function: nbm-rename-current-file, level: 2
 *** key: S, description: add-to-symlinks, function: nbm-add-to-symlinks, level: 2
 *** key: T, description: show-trash-bin, function: nbm-show-trash-bin, level: 3
 *** key: y, description: Yank/Copy, level: 3
@@ -81,19 +81,19 @@
 *** key: s, description: sys-key-tree, function: nbm-find-sys-key-tree, level: 3
 *** key: u, description: user-key-tree, function: nbm-find-user-key-tree, level: 3
 *** key: c, description: Check key-bindings, function: nbm-key-tree-show-repeated-keys, level: 3
-** key: m, description: find misc file, function: nbm-find-misc, level: 1
-** key: o, description: Org-mode, level: 1
-*** key: a, description: agenda, function: org-agenda-list, level: 1
+** key: m, description: find misc file, function: nbm-find-misc, level: 2
+** key: o, description: Org-mode, level: 2
+*** key: a, description: agenda, function: org-agenda-list, level: 2
 *** key: A, description: agenda-commands, function: org-agenda, level: 2
 *** key: c, description: capture, function: nbm-org-capture, level: 2
-*** key: r, description: org roam find, function: org-roam-node-find, level: 1
+*** key: r, description: org roam find, function: org-roam-node-find, level: 2
 *** key: S, description: Sync database, function: org-roam-db-sync, level: 3
 *** key: t, description: time stamp, function: org-time-stamp-inactive, level: 2
-*** key: u, description: UI mode, function: org-roam-ui-mode, level: 1
+*** key: u, description: UI mode, function: org-roam-ui-mode, level: 2
 ** key: p, description: Find pdf, function: nbm-find-pdf, level: 1
-** key: q, description: quick menu, level: 1
-*** key: n, description: new study, function: nbm-latex-new-study, level: 1
-*** key: s, description: start study, function: nbm-latex-start-study, level: 1
+** key: q, description: quick menu, level: 2
+*** key: n, description: new study, function: nbm-latex-new-study, level: 2
+*** key: s, description: start study, function: nbm-latex-start-study, level: 2
 ** key: r, description: Registers, level: 3
 *** key: s, description: Set counter, function: nbm-set-counter, level: 3
 *** key: a, description: Add counter, function: nbm-add-counter, level: 3
@@ -103,8 +103,8 @@
 *** key: s, description: Find sage, function: nbm-find-sage, level: 3
 *** key: g, description: google search, function: nbm-google-search, level: 2
 *** key: d, description: look up dictionary, function: nbm-look-up-dictionary, level: 2
-*** key: m, description: MathSciNet, function: nbm-mathscinet-search, level: 1
-*** key: x, description: ArXiv, function: nbm-arxiv-search, level: 1
+*** key: m, description: MathSciNet, function: nbm-mathscinet-search, level: 2
+*** key: x, description: ArXiv, function: nbm-arxiv-search, level: 2
 ** key: t, description: Find tex file, function: nbm-find-tex, level: 1
 ** key: u, function: universal-argument, level: 3
 ** key: w, description: Windows, level: 1
@@ -136,14 +136,14 @@
 ** key: T, description: toggle, level: 2
 *** key: F, description: Fullscreen, function: toggle-frame-fullscreen, level: 2
 *** key: w, description: show white space, function: whitespace-mode, level: 2
-** key: N, description: Newbiemacs, level: 1
+** key: N, description: Newbiemacs, level: 2
 *** key: c, description: config, function: newbie-config, level: 3
-*** key: e, description: change editing style, function: nbm-change-editing-style, level: 1
-*** key: r, description: reload, function: newbie-reload, level: 1
+*** key: e, description: change editing style, function: nbm-change-editing-style, level: 2
+*** key: r, description: reload, function: newbie-reload, level: 2
 *** key: s, description: settings, function: newbie-setting, level: 2
-*** key: l, description: Set User Level, function: nbm-set-user-level, level: 1
-*** key: u, description: update Newbiemacs, function: nbm-update-newbiemacs, level: 1
-*** key: w, description: set default browser, function: nbm-set-default-browser, level: 1
+*** key: l, description: Set User Level, function: nbm-set-user-level, level: 2
+*** key: u, description: update Newbiemacs, function: nbm-update-newbiemacs, level: 2
+*** key: w, description: set default browser, function: nbm-set-default-browser, level: 2
 ** key: Y, description: yasnippet, level: 2
 *** key: d, description: delete snippet, function: nbm-yasnippet-delete, level: 3
 *** key: q, description: quick new snippet, function: nbm-yasnippet-quick-new, level: 3
@@ -153,11 +153,11 @@
 *** key: t, description: table of snippets, function: yas-describe-tables, level: 2
 *** key: r, description: reload all, function: yas-reload-all, level: 2
 * description: LaTeX-mode, level: 1
-** key: ,, description: master command, function: TeX-command-master, level: 1
-** key: `, description: goto next error, function: TeX-next-error, level: 1
-** key: RET, description: paste prev math, function: nbm-latex-paste-previous-math, level: 1
-** key: <backtab>, description: beginning of math mode, function: nbm-latex-exit-math-mode-front, level: 1
-** key: TAB, description: end of math mode, function: nbm-latex-exit-math-mode, level: 1
+** key: ,, description: master command, function: TeX-command-master, level: 2
+** key: `, description: goto next error, function: TeX-next-error, level: 2
+** key: RET, description: paste prev math, function: nbm-latex-paste-previous-math, level: 2
+** key: <backtab>, description: beginning of math mode, function: nbm-latex-exit-math-mode-front, level: 3
+** key: TAB, description: end of math mode, function: nbm-latex-exit-math-mode, level: 3
 ** key: p, description: paste avy math, function: nbm-latex-paste-avy-math, level: 1
 ** key: =, description: table of contents, function: reftex-toc, level: 1
 ** key: [, description: beginning of environment, function: LaTeX-find-matching-begin, level: 2
@@ -166,10 +166,10 @@
 *** key: d, description: latex diff, function: nbm-latex-diff, level: 3
 ** key: b, description: build tex, function: nbm-latex-compile, level: 1
 ** key: v, description: view pdf, function: nbm-latex-view-pdf, level: 1
-** key: c, description: copy math only, function: nbm-latex-copy-math, level: 1
-** key: C, description: copy math with env, function: nbm-latex-copy-math-with-env, level: 1
-** key: d, description: delete math only, function: nbm-latex-delete-math, level: 1
-** key: D, description: delete math with env, function: nbm-latex-delete-math-with-env, level: 1
+** key: c, description: copy math only, function: nbm-latex-copy-math, level: 2
+** key: C, description: copy math with env, function: nbm-latex-copy-math-with-env, level: 2
+** key: d, description: delete math only, function: nbm-latex-delete-math, level: 2
+** key: D, description: delete math with env, function: nbm-latex-delete-math-with-env, level: 2
 ** key: e, description: environments, function: nbm-latex-new-environment, level: 1
 ** key: f, description: Fonts, level: 1
 *** key: b, description: bold, function: nbm-latex-font-bold, level: 1
@@ -182,8 +182,8 @@
 *** key: c, description: mathcal, function: nbm-latex-font-mathcal, level: 1
 *** key: f, description: mathfrak, function: nbm-latex-font-mathfrak, level: 1
 *** key: d, description: delete, function: nbm-latex-font-delete, level: 1
-** key: ., description: mark-environment, function: LaTeX-mark-environment, level: 1
-** key: *, description: mark-section, function: LaTeX-mark-section, level: 1
+** key: ., description: mark-environment, function: LaTeX-mark-environment, level: 2
+** key: *, description: mark-section, function: LaTeX-mark-section, level: 2
 ** key: i, description: Insert, level: 1
 *** key: i, description: item, function: LaTeX-insert-item, level: 2
 *** key: f, description: figure from screenshots, function: nbm-latex-insert-figure-with-env, level: 1
@@ -199,10 +199,10 @@
 *** key: b, description: bib-item, function: nbm-latex-new-bib-item, level: 1
 *** key: m, description: macro, function: nbm-latex-new-macro, level: 1
 *** key: l, description: label, function: nbm-latex-new-label, level: 1
-*** key: s, description: section, function: nbm-latex-section, level: 1
+*** key: s, description: section, function: nbm-latex-section, level: 2
 ** key: r, description: reference, level: 1
 *** key: c, description: citation, function: helm-bibtex, level: 1
-*** key: e, description: eqref, function: nbm-latex-eqref, level: 1
+*** key: e, description: eqref, function: nbm-latex-eqref, level: 2
 *** key: f, description: fig-ref, function: nbm-latex-fig-ref, level: 2
 *** key: i, description: insert ref, function: nbm-reftex-insert-ref, level: 2
 *** key: r, description: ref, function: nbm-latex-ref, level: 1
@@ -210,29 +210,29 @@
 *** key: C, description: Cref, function: nbm-latex-Cref, level: 1
 ** key: s, description: snippets, level: 1
 *** key: m, description: matrix, function: nbm-snippet-latex-matrix, level: 1
-*** key: y, description: Young tableau, function: nbm-snippet-latex-ytableau, level: 1
+*** key: y, description: Young tableau, function: nbm-snippet-latex-ytableau, level: 2
 *** key: z, description: tikz, level: 1
 **** key: c, description: tikz-cycle, function: nbm-tikz-cycle, level: 1
 **** key: s, description: tikz-set-partition, function: nbm-tikz-set-partition, level: 1
 **** key: l, description: tikz-lattice-path, function: nbm-tikz-lattice-path, level: 1
 ** key: t, description: toggle/change, level: 1
 *** key: b, description: bbl-file, function: nbm-latex-toggle-bbl-file, level: 1
-*** key: B, description: create bib file, function: nbm-latex-extract-bib-file, level: 1
+*** key: B, description: create bib file, function: nbm-latex-extract-bib-file, level: 2
 *** key: e, description: equation, function: nbm-latex-toggle-equation, level: 1
 *** key: a, description: align, function: nbm-latex-toggle-align, level: 2
-*** key: f, description: frac, function: nbm-latex-toggle-frac, level: 1
-*** key: i, description: inline math, function: nbm-latex-toggle-inline-math, level: 1
-*** key: l, description: label, function: reftex-change-label, level: 2
+*** key: f, description: frac, function: nbm-latex-toggle-frac, level: 3
+*** key: i, description: inline math, function: nbm-latex-toggle-inline-math, level: 2
+*** key: l, description: label, function: reftex-change-label, level: 3
 *** key: m, description: multline, function: nbm-latex-toggle-multline, level: 2
-*** key: *, description: environment with *, function: nbm-latex-toggle-star, level: 1
-*** key: p, description: parenthesis, function: nbm-latex-toggle-parenthesis, level: 3
-*** key: r, description: refcheck, function: nbm-latex-toggle-refcheck, level: 1
-*** key: s, description: compile section, function: nbm-latex-toggle-compile-section, level: 1
+*** key: *, description: environment with *, function: nbm-latex-toggle-star, level: 2
+*** key: p, description: parenthesis, function: nbm-latex-toggle-parenthesis, level: 2
+*** key: r, description: refcheck, function: nbm-latex-toggle-refcheck, level: 3
+*** key: s, description: compile section, function: nbm-latex-toggle-compile-section, level: 3
 *** key: h, description: hwp math, function: nbm-latex-convert-to-hwp, level: 1
 *** key: v, description: change variables, function: nbm-latex-change-variables, level: 1
 *** key: w, description: debug warnings, function: TeX-toggle-debug-warnings, level: 3
-*** key: S, description: Solutions, function: nbm-latex-toggle-solutions, level: 1
-*** key: $, description: dollar signs, function: nbm-latex-toggle-dollars, level: 1
+*** key: S, description: Solutions, function: nbm-latex-toggle-solutions, level: 3
+*** key: $, description: dollar signs, function: nbm-latex-toggle-dollars, level: 3
 ** key: y, description: yank, level: 3
 *** key: f, description: make-and-yank-filename, function: nbm-latex-make-and-yank-filename, level: 3
 * description: org-mode, level: 1
@@ -264,7 +264,7 @@
 *** key: T, description: time-stamp-inactive, function: org-time-stamp-inactive, level: 2
 ** key: i, description: insert, level: 1
 *** key: f, description: newest file, function: nbm-org-insert-file, level: 1
-*** key: q, description: quick image, function: nbm-org-quick-insert-image, level: 1
+*** key: q, description: quick image, function: nbm-org-quick-insert-image, level: 2
 *** key: n, description: insert org-roam-node, function: org-roam-node-insert, level: 1
 *** key: s, description: skim page, function: nbm-org-mac-insert-skim, level: 1
 *** key: w, description: webpage, function: nbm-org-mac-insert-webpage, level: 1

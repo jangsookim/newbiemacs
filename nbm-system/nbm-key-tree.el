@@ -193,9 +193,9 @@ to check things later if necessary."
   (interactive)
   (let (level)
     (setq level (read-char (format "Set your level (current level is %s):
-1) Beginner (Only basic commands are shown when hitting the space key.)
-2) Intermidiate (More commands are shown.)
-3) Advanced (All commands are shown.)" (nbm-get-user-level))))
+1) Beginner (Only basic commands are available.)
+2) Intermidiate (More commands are available.)
+3) Advanced (All commands are available.)" (nbm-get-user-level))))
     (when (member level '(?1 ?2 ?3))
       (nbm-set-user-variable "level" (char-to-string level)))))
 
