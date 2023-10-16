@@ -199,14 +199,15 @@ X and Y are lists of variables. Each X_i will be replace by Y_i."
   "Return t if VAR is in math mode and not part of a macro or comment."
   (save-excursion
     (let ((is-var t))
-      (if (not (texmathp)) (setq is-var nil))
-      (if (TeX-in-commented-line) (setq is-var nil))
-      (goto-char (- (point) (length var)))
-      (re-search-backward "[^a-zA-Z]")
-      (if (or (equal (buffer-substring (point) (1+ (point))) "\\")
-	      (equal (buffer-substring (- (point) 6) (1+ (point))) "\\begin{")
-	      (equal (buffer-substring (- (point) 4) (1+ (point))) "\\end{"))
-	  (setq is-var nil))
+      (when (or (not (texmathp)) (TeX-in-commented-line))
+	(setq is-var nil))
+      (unless (equal (substring var 0 1) "\\")
+	(goto-char (- (point) (length var)))
+	(re-search-backward "[^a-zA-Z]")
+	(when (or (equal (buffer-substring (point) (1+ (point))) "\\")
+		  (equal (buffer-substring (- (point) 6) (1+ (point))) "\\begin{")
+		  (equal (buffer-substring (- (point) 4) (1+ (point))) "\\end{"))
+	  (setq is-var nil)))
       is-var)))
 
 (defun nbm-latex-find-math-mode (include-env)
