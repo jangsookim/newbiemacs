@@ -359,12 +359,6 @@ The candidates must have length at least 10."
   (interactive)
   (nbm-latex-paste-avy-math t))
 
-(defun my-test ()
-  ""
-  (interactive)
-  (re-search-backward "[^ ] *\\\\)")
-  )
-
 (defun nbm-latex-toggle-inline-math ()
   "Change inline math \"(..)\" to display math \"[..]\" or vice versa."
   (interactive)
@@ -411,14 +405,14 @@ The candidates must have length at least 10."
 	       (delete-region (point) (+ (point) 2)))
 	     (insert "\\(")
 	     (setq math (nbm-latex-find-math-mode t))))
-      (if math
-	  (progn
-	    (indent-region (nth 1 math) (nth 2 math))
-	    (when (equal (car math) "\\(")
+      (when math
+	(if (equal (car math) "\\(")
+	    (progn
 	      (set-mark (nth 1 math))
 	      (goto-char (nth 2 math))
 	      (fill-paragraph t t)
-	      (deactivate-mark)))
+	      (deactivate-mark))
+	  (indent-region (nth 1 math) (nth 2 math)))
 	(message "You are not inside a proper math mode for toggling!")))))
 
 (defun nbm-latex-toggle-display-math ()
