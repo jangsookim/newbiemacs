@@ -100,7 +100,6 @@
       (evil-org-agenda-set-keys)))
 
   (use-package evil-nerd-commenter)
-  (use-package password-generator)
 
   (use-package undo-tree :diminish undo-tree-mode
     :init

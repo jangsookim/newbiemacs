@@ -62,13 +62,6 @@
 *** key: s, description: status, function: magit-status, level: 2
 *** key: m, description: merge tool, function: nbm-git-merge, level: 2
 *** key: p, description: publish to github, function: nbm-git-publish-to-github, level: 2
-** key: i, description: Insert, level: 3
-*** key: p, description: Passwords, level: 3
-**** key: s, description: simple, function: password-generator-simple, level: 3
-**** key: S, description: strong, function: password-generator-strong, level: 3
-**** key: n, description: numeric, function: password-generator-numeric, level: 3
-**** key: p, description: paranoid, function: password-generator-paranoid, level: 3
-*** key: t, description: time stamp, function: nbm-timestamp, level: 3
 ** key: j, description: jump, level: 2
 *** key: t, description: recent tex, function: nbm-recent-tex, level: 2
 *** key: i, description: imenu, function: helm-imenu, level: 2
