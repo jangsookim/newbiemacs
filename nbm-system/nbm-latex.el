@@ -359,6 +359,12 @@ The candidates must have length at least 10."
   (interactive)
   (nbm-latex-paste-avy-math t))
 
+(defun my-test ()
+  ""
+  (interactive)
+  (re-search-backward "[^ ] *\\\\)")
+  )
+
 (defun nbm-latex-toggle-inline-math ()
   "Change inline math \"(..)\" to display math \"[..]\" or vice versa."
   (interactive)
@@ -368,12 +374,10 @@ The candidates must have length at least 10."
 	     (message "You are not inside a math mode!"))
 	    ((equal (car math) "\\(")
 	     (goto-char (nth 2 math))
-	     (when (looking-at "[,.;:!?]")
-	       (setq punctuation (buffer-substring (point) (1+ (point))))
-	       (delete-region (point) (1+ (point)))
-	       (backward-char 2) (insert punctuation)
-	       (forward-char 2))
-	     (delete-region (- (point) 2) (point))
+	     (re-search-backward "[^ ] *\\\\)")
+	     (forward-char)
+	     (delete-region (point) (nth 2 math))
+	     (when (looking-at "[,.;:!?]") (forward-char))
 	     (when (looking-at " *\n") (kill-line))
 	     (if (looking-back "^ *")
 		 (insert "\\]\n")
@@ -390,7 +394,9 @@ The candidates must have length at least 10."
 	     (goto-char (nth 2 math))
 	     (if (looking-back "^ *\\\\]")
 		 (progn
-		   (previous-line) (end-of-line) (kill-line) (zap-to-char 1 ?\]))
+		   (previous-line) (end-of-line)
+		   (unless (looking-back " ") (insert " "))
+		   (kill-line) (zap-to-char 1 ?\]))
 	       (delete-region (- (point) 2) (point)))
 	     (insert "\\)")
 	     (when (looking-back "[,.;:!?] *\\\\)")
