@@ -98,7 +98,8 @@
 *** key: m, description: MathSciNet, function: nbm-mathscinet-search, level: 2
 *** key: x, description: ArXiv, function: nbm-arxiv-search, level: 2
 ** key: t, description: Find tex file, function: nbm-find-tex, level: 1
-** key: u, description: undo tree, function: undo-tree-visualize, level: 2
+** key: u, description: user key-bindings
+** key: U, description: undo tree, function: undo-tree-visualize, level: 2
 ** key: w, description: Windows, level: 1
 *** key: /, function: split-window-right, level: 2
 *** key: -, function: split-window-below, level: 2
