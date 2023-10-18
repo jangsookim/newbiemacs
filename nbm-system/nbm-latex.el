@@ -306,6 +306,18 @@ If FRONT is non-nil, exit to the front of the math mode."
 	  (message "Copied the math content."))
       (message "You are not in math mode!"))))
 
+(defun nbm-latex-modify-math ()
+  "Modify the content in the current math mode."
+  (interactive)
+  (let ((math (nbm-latex-find-math-mode t)) old new)
+    (if (car math)
+	(progn
+	  (setq old (read-string "Enter the string to modified from: "))
+	  (setq new (read-string "Enter the string to modified to: "))
+	  (replace-string old new nil (nth 1 math) (nth 2 math))
+	  (goto-char (nth 2 (nbm-latex-find-math-mode t))))
+      (message "You are not in math mode!"))))
+
 (defun nbm-latex-paste-previous-math ()
   "Paste the content of the previous math mode.
 If the cursor is not in math mode, include the math environment."
@@ -320,7 +332,9 @@ If the cursor is not in math mode, include the math environment."
 	    (nbm-latex-copy-math-with-env))
 	  (setq found t))))
     (if found
-	(insert (current-kill 0))
+	(progn
+	  (insert (current-kill 0)) (backward-char 2)
+	  (nbm-latex-modify-math))
       (message "No math mode before the cursor."))))
 
 (defun nbm-latex-paste-avy-math ()
