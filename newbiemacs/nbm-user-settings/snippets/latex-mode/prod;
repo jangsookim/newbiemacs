@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: prod_{}^{}
+# key: pr;
+# --
+\\prod_{$1}^{$2} $0
