@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: inverse
+# key: inv
+# --
+`(delete-backward-char 1)`^{-1}

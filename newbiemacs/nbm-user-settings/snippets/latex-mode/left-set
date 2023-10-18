@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: left-set
+# key: ls
+# --
+\\left\\{ $1 \\right\\}$0

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: left-bracket
+# key: lb
+# --
+\\left[ $1 \\right]$0

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: ,dots,
+# key: ,,
+# --
+`(delete-backward-char 1)`,\dots,

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: 0,1,...,n
+# key:0n
+# --
+0,1,\dots,${1:n}$0

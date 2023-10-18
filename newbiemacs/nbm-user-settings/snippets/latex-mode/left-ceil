@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: left-ceil
+# key: lc
+# --
+\\lceil $1 \\rceil$0

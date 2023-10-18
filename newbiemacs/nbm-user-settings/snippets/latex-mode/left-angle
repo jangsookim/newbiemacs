@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: left angle
+# key: la
+# --
+\\langle $1 \\rangle$0
