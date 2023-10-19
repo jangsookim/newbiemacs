@@ -337,6 +337,7 @@ If the cursor is not in math mode, include the math environment."
     (if found
 	(progn
 	  (insert (current-kill 0)) (backward-char 2)
+	  (nbm-latex-uniquify-labels)
 	  (nbm-latex-modify-math))
       (message "No math mode before the cursor."))))
 
@@ -367,14 +368,12 @@ If the cursor is not in math mode, include the math environment."
 	    (nbm-latex-copy-math)
 	  (nbm-latex-copy-math-with-env))))
     (if found
-	(insert (current-kill 0))
+	(progn
+	  (insert (current-kill 0))
+	  (backward-char 2)
+	  (nbm-latex-uniquify-labels)
+	  (forward-char 2))
       (message "Wrong a math mode."))))
-
-(defun nbm-latex-paste-avy-math-with-env ()
-  "Paste the content of the math mode chosen by avy jump with environment.
-The candidates must have length at least 10."
-  (interactive)
-  (nbm-latex-paste-avy-math t))
 
 (defun nbm-latex-toggle-inline-math ()
   "Change inline math \"(..)\" to display math \"[..]\" or vice versa."
@@ -760,6 +759,26 @@ If AUTO is non-nil, create an automatic label."
 	(setq count (1+ count))
 	(setq beg (point)) (forward-char 6) (forward-sexp)
 	(delete-region beg (point)) (delete-blank-lines)))))
+
+(defun nbm-latex-uniquify-labels ()
+  "Uniquify the labels in the current environment."
+  (interactive)
+  (save-excursion
+    (let (math beg end label)
+      (setq math (nbm-latex-find-math-mode nil))
+      (when (car math)
+	(goto-char (nth 2 math))
+	(while (search-backward "\\label{" (nth 1 math) t)
+	  (setq beg (+ (point) 7))
+	  (search-forward "}")
+	  (setq end (1- (point)))
+	  (setq label (buffer-substring beg end))
+	  (while (string-match-p "[0-9]$" label)
+	    (setq label (substring label 0 -1)))
+	  (setq label (reftex-uniquify-label label t))
+	  (delete-region beg end)
+	  (goto-char beg) (setq beg (- beg 7))
+	  (insert label) (goto-char beg))))))
 
 (defun nbm-latex-extract-bib-file ()
   "Create a bib file containing the current bibitems from the main bib file."
