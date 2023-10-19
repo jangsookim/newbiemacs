@@ -149,15 +149,16 @@ If AUTO is non-nil, replace without user confirmation."
   (let (x y prompt)
     (setq x (read-string "Write the variables to change from. If there are more than one variable write them separated by commas. For example, x,y,z
 Variables to change from: " nil nil nil))
-    (setq y (read-string "Write the variables to change to. If there are more than one variable write them separated by commas. For example, x,y,z
+    (unless (equal x "")
+      (setq y (read-string "Write the variables to change to. If there are more than one variable write them separated by commas. For example, x,y,z
 Variables to change to: " nil nil nil))
-    (setq x (split-string (string-replace " " "" x) ",")
-	  y (split-string (string-replace " " "" y) ","))
-    (setq prompt "Do you want to change variables as follows? (type y for yes)\n")
-    (dotimes (i (length x))
-      (setq prompt (concat prompt (format "%s -> %s\n" (nth i x) (nth i y)))))
-    (when (or auto (equal ?y (read-char (substring prompt 0 -1))))
-      (nbm-latex-replace-x-y x y auto))))
+      (setq x (split-string (string-replace " " "" x) ",")
+	    y (split-string (string-replace " " "" y) ","))
+      (setq prompt "Do you want to change variables as follows? (type y for yes)\n")
+      (dotimes (i (length x))
+	(setq prompt (concat prompt (format "%s -> %s\n" (nth i x) (nth i y)))))
+      (when (or auto (equal ?y (read-char (substring prompt 0 -1))))
+	(nbm-latex-replace-x-y x y auto)))))
 
 (defun nbm-latex-replace-x-y (x y &optional auto)
   "Replace X by Y in the current buffer or the selected region.
@@ -370,10 +371,23 @@ If the cursor is not in math mode, include the math environment."
     (if found
 	(progn
 	  (insert (current-kill 0))
-	  (backward-char 2)
-	  (nbm-latex-uniquify-labels)
-	  (forward-char 2))
+	  (backward-char 2) (nbm-latex-uniquify-labels)
+	  (nbm-latex-modify-math))
       (message "Wrong a math mode."))))
+
+(defun nbm-latex-paste-avy-environment ()
+  "Paste the content of the environment chosen by avy jump."
+  (interactive)
+  (let (found env env-beg env-end (beg (window-start)) (end (window-end)))
+    (save-excursion
+      (when (avy-jump "\\\\begin")
+	(setq found t)
+	(setq env-beg (point)) (forward-char)
+	(LaTeX-find-matching-end)
+	(setq env-end (point))
+	(setq env (buffer-substring env-beg env-end ))))
+    (insert env)
+    (backward-char 2) (nbm-latex-uniquify-labels) (forward-char 2)))
 
 (defun nbm-latex-toggle-inline-math ()
   "Change inline math \"(..)\" to display math \"[..]\" or vice versa."
@@ -764,21 +778,21 @@ If AUTO is non-nil, create an automatic label."
   "Uniquify the labels in the current environment."
   (interactive)
   (save-excursion
-    (let (math beg end label)
-      (setq math (nbm-latex-find-math-mode nil))
-      (when (car math)
-	(goto-char (nth 2 math))
-	(while (search-backward "\\label{" (nth 1 math) t)
-	  (setq beg (+ (point) 7))
-	  (search-forward "}")
-	  (setq end (1- (point)))
-	  (setq label (buffer-substring beg end))
-	  (while (string-match-p "[0-9]$" label)
-	    (setq label (substring label 0 -1)))
-	  (setq label (reftex-uniquify-label label t))
-	  (delete-region beg end)
-	  (goto-char beg) (setq beg (- beg 7))
-	  (insert label) (goto-char beg))))))
+    (let (beg end label bound)
+      (LaTeX-find-matching-begin)
+      (setq bound (point)) (forward-char)
+      (LaTeX-find-matching-end)
+      (while (search-backward "\\label{" bound t)
+	(setq beg (+ (point) 7))
+	(search-forward "}")
+	(setq end (1- (point)))
+	(setq label (buffer-substring beg end))
+	(while (string-match-p "[0-9]$" label)
+	  (setq label (substring label 0 -1)))
+	(setq label (reftex-uniquify-label label t))
+	(delete-region beg end)
+	(goto-char beg) (setq beg (- beg 7))
+	(insert label) (goto-char beg)))))
 
 (defun nbm-latex-extract-bib-file ()
   "Create a bib file containing the current bibitems from the main bib file."

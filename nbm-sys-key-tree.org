@@ -151,7 +151,8 @@
 ** key: RET, description: paste prev math, function: nbm-latex-paste-previous-math, level: 2
 ** key: <backtab>, description: beginning of math mode, function: nbm-latex-exit-math-mode-front, level: 3
 ** key: TAB, description: end of math mode, function: nbm-latex-exit-math-mode, level: 3
-** key: p, description: paste avy math, function: nbm-latex-paste-avy-math, level: 1
+** key: p, description: paste math, function: nbm-latex-paste-avy-math, level: 1
+** key: P, description: paste environment, function: nbm-latex-paste-avy-environment, level: 1
 ** key: =, description: table of contents, function: reftex-toc, level: 1
 ** key: [, description: beginning of environment, function: LaTeX-find-matching-begin, level: 2
 ** key: ], description: end of environment, function: LaTeX-find-matching-end, level: 2
