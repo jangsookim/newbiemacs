@@ -142,8 +142,9 @@ of the first occurence of \"\\necommand\" or \"\\begin{document}\"."
 	  (message "The following line has been added in the tex file.
 \n%s\n\nDo NOT delete or modify this line." flag)))))
 
-(defun nbm-latex-change-variables ()
-  "Replace variable x_1,x_2,...,x_k to y_1,y_2,...,y_k in a math mode in current buffer."
+(defun nbm-latex-change-variables (&optional auto)
+  "Replace variable x_1,x_2,...,x_k to y_1,y_2,...,y_k in a math mode in current buffer.
+If AUTO is non-nil, replace without user confirmation."
   (interactive)
   (let (x y prompt)
     (setq x (read-string "Write the variables to change from. If there are more than one variable write them separated by commas. For example, x,y,z
@@ -155,14 +156,16 @@ Variables to change to: " nil nil nil))
     (setq prompt "Do you want to change variables as follows? (type y for yes)\n")
     (dotimes (i (length x))
       (setq prompt (concat prompt (format "%s -> %s\n" (nth i x) (nth i y)))))
-    (when (equal ?y (read-char (substring prompt 0 -1)))
-      (nbm-latex-replace-x-y x y))))
+    (when (or auto (equal ?y (read-char (substring prompt 0 -1))))
+      (nbm-latex-replace-x-y x y auto))))
 
-(defun nbm-latex-replace-x-y (x y)
+(defun nbm-latex-replace-x-y (x y &optional auto)
   "Replace X by Y in the current buffer or the selected region.
-X and Y are lists of variables. Each X_i will be replace by Y_i."
+X and Y are lists of variables. Each X_i will be replace by Y_i.
+If AUTO is non-nil, replace without user confirmation."
   (save-excursion
     (let ((case-fold-search nil) reg-exp i temp beg end done choice replace-all custom quit)
+      (when auto (setq replace-all t))
       (if (use-region-p)
 	  (setq beg (region-beginning) end (region-end))
 	(setq beg (point-min) end (point-max)))
@@ -312,10 +315,10 @@ If FRONT is non-nil, exit to the front of the math mode."
   (let ((math (nbm-latex-find-math-mode t)) old new)
     (if (car math)
 	(progn
-	  (setq old (read-string "Enter the string to modified from: "))
-	  (setq new (read-string "Enter the string to modified to: "))
-	  (replace-string old new nil (nth 1 math) (nth 2 math))
-	  (goto-char (nth 2 (nbm-latex-find-math-mode t))))
+	  (set-mark (nth 1 math))
+	  (goto-char (nth 2 math))
+	  (nbm-latex-change-variables t)
+	  (deactivate-mark))
       (message "You are not in math mode!"))))
 
 (defun nbm-latex-paste-previous-math ()
