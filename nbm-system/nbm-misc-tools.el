@@ -160,7 +160,7 @@ other key) stop"))
 	   (while authors
 	     (setq author (pop authors))
 	     (unless (equal search "") (setq search (concat search "+%26")))
-	     (setq search (format "%sau:%s%%2C" search author)))
+	     (setq search (format "%sau:\"%s\"%%2C" search author)))
 	   (unless (equal title "")
 	     (unless (equal search "") (setq search (concat search "+%26")))
 	     (setq search (format "%sti:%s" search (string-replace " " "+" title))))
