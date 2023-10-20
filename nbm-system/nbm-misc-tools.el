@@ -130,34 +130,57 @@ other key) stop"))
   (browse-url (format "https://www.google.com/search?q=%s"
 		      (read-string "Enter a word to google: "))))
 
-(defun nbm-mathscinet-search ()
-  "MathSciNet search."
+(defun nbm-paper-search (service)
+  "Search a paper."
   (interactive)
   (let (author authors title search)
-    (setq authors (read-string "Enter names of authors.\nNames must be separated by semicolons \";\".\nYou can simply press Enter if you don't want to include this in your search.\n: "))
-    (if (equal authors "")
-	(setq authors nil)
-      (setq authors (split-string authors ";")))
-    (setq title (read-string "Enter a search term for title.\nYou can simply press Enter if you don't want to include this in your search.\n: "))
-    (setq search "")
-    (while authors
-      (setq author (pop authors))
-      (unless (equal search "") (setq search (concat search " AND ")))
-      (setq search (format "%sau:(%s)" search author)))
-    (unless (equal title "")
-      (unless (equal search "") (setq search (concat search " AND ")))
-      (setq search (format "%sti:(%s)" search title)))
-    (browse-url (format "https://mathscinet.ams.org/mathscinet/publications-search?query=%s"
-			search))))
-
-(defun nbm-arxiv-search ()
-  "ArXiv search."
-  (interactive)
-  (let (authors title search)
     (setq authors (read-string "Enter names of authors.\nNames must be separated by semicolons \";\".\nIt is recommended to write each name as \"Last name, First name\".\nYou can simply press Enter if you don't want to include this in your search.\n: "))
     (setq title (read-string "Enter a search term for title.\nYou can simply press Enter if you don't want to include this in your search.\n: "))
-    (setq search (format "https://arxiv.org/search/advanced?advanced=&terms-0-operator=AND&terms-0-term=%s&terms-0-field=author&terms-1-operator=AND&terms-1-term=%s&terms-1-field=title&classification-physics_archives=all&classification-include_cross_list=include&date-filter_by=all_dates&date-year=&date-from_date=&date-to_date=&date-date_type=submitted_date&abstracts=show&size=50&order=-announced_date_first" authors title))
+    (cond ((equal service "arxiv")
+	   (setq search (format "https://arxiv.org/search/advanced?advanced=&terms-0-operator=AND&terms-0-term=%s&terms-0-field=author&terms-1-operator=AND&terms-1-term=%s&terms-1-field=title&classification-physics_archives=all&classification-include_cross_list=include&date-filter_by=all_dates&date-year=&date-from_date=&date-to_date=&date-date_type=submitted_date&abstracts=show&size=50&order=-announced_date_first" authors title)))
+	  ((equal service "mathscinet")
+	   (setq search "")
+	   (if (equal authors "")
+	       (setq authors nil)
+	     (setq authors (split-string authors ";")))
+	   (while authors
+	     (setq author (pop authors))
+	     (unless (equal search "") (setq search (concat search " AND ")))
+	     (setq search (format "%sau:(%s)" search author)))
+	   (unless (equal title "")
+	     (unless (equal search "") (setq search (concat search " AND ")))
+	     (setq search (format "%sti:(%s)" search title)))
+	   (setq search (concat "https://mathscinet.ams.org/mathscinet/publications-search?query="
+			search)))
+	  ((equal service "zbmath")
+	   (setq search "")
+	   (if (equal authors "")
+	       (setq authors nil)
+	     (setq authors (split-string authors ";")))
+	   (while authors
+	     (setq author (pop authors))
+	     (unless (equal search "") (setq search (concat search "+%26")))
+	     (setq search (format "%sau:%s%%2C" search author)))
+	   (unless (equal title "")
+	     (unless (equal search "") (setq search (concat search "+%26")))
+	     (setq search (format "%sti:%s" search (string-replace " " "+" title))))
+	   (setq search (concat "https://zbmath.org/?q=" search))))
     (browse-url search)))
+
+(defun nbm-paper-search-arxiv ()
+  "Search a paper in arxiv."
+  (interactive)
+  (nbm-paper-search "arxiv"))
+
+(defun nbm-paper-search-mathscinet ()
+  "Search a paper in MathSciNet."
+  (interactive)
+  (nbm-paper-search "mathscinet"))
+
+(defun nbm-paper-search-zbmath ()
+  "Search a paper in zbmath."
+  (interactive)
+  (nbm-paper-search "zbmath"))
 
 (defun nbm-paste-vertically (after)
   "Insert the current kill vertically."
