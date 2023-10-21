@@ -783,7 +783,6 @@ If AUTO is non-nil, create an automatic label."
 
 (defun nbm-latex-uniquify-labels ()
   "Uniquify the labels in the current environment."
-  (interactive)
   (unless (equal (LaTeX-current-environment) "document")
     (reftex-reset-mode)
     (reftex-access-scan-info)
