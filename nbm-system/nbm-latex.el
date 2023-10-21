@@ -371,7 +371,9 @@ If the cursor is not in math mode, include the math environment."
     (if found
 	(progn
 	  (insert (current-kill 0))
-	  (backward-char 2) (nbm-latex-uniquify-labels)
+	  (backward-char 2)
+	  (unless (member (substring (current-kill 0) 0 2) '("\\(" "\\["))
+	    (nbm-latex-uniquify-labels))
 	  (nbm-latex-modify-math))
       (message "Wrong a math mode."))))
 
@@ -732,6 +734,7 @@ In visual mode, the cursor must be placed on \\."
 If AUTO is non-nil, create an automatic label."
   (interactive)
   (save-excursion
+    (reftex-reset-mode)
     (reftex-access-scan-info)
     (let ((env (LaTeX-current-environment)) num)
       (cond ((equal env "document")
@@ -778,6 +781,8 @@ If AUTO is non-nil, create an automatic label."
   "Uniquify the labels in the current environment."
   (interactive)
   (unless (equal (LaTeX-current-environment) "document")
+    (reftex-reset-mode)
+    (reftex-access-scan-info)
     (save-excursion
       (let (beg end label bound)
 	(LaTeX-find-matching-begin)
