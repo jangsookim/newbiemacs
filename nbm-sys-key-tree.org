@@ -283,6 +283,7 @@
 ** key: t, description: Tables, level: 3
 *** key: -, description: Draw horizontal line, function: org-ctrl-c-minus, level: 3
 *** key: =, description: calculate tables, function: org-table-recalculate-buffer-tables, level: 3
+*** key: ^, description: sort, function: org-sort, level: 3
 *** key: c, description: Columns, level: 3
 **** key: d, description: delete-column, function: org-table-delete-column, level: 3
 **** key: i, description: insert-column, function: org-table-insert-column, level: 3
