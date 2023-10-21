@@ -318,13 +318,17 @@ If FRONT is non-nil, exit to the front of the math mode."
   "Modify the content in the current math mode."
   (interactive)
   (let ((math (nbm-latex-find-math-mode t)) old new)
-    (if (car math)
-	(progn
-	  (set-mark (nth 1 math))
-	  (goto-char (nth 2 math))
-	  (nbm-latex-change-variables t)
-	  (deactivate-mark))
-      (message "You are not in math mode!"))))
+    (save-excursion
+      (unless (car math)
+	(backward-char)
+	(setq math (nbm-latex-find-math-mode t)))
+      (if (car math)
+	  (progn
+	    (set-mark (nth 1 math))
+	    (goto-char (nth 2 math))
+	    (nbm-latex-change-variables t)
+	    (deactivate-mark))
+	(message "You are not in math mode!")))))
 
 (defun nbm-latex-paste-previous-math ()
   "Paste the content of the previous math mode.
