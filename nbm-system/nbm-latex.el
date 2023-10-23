@@ -906,7 +906,8 @@ CHOICE 3: ChoKimLee2022"
       (while (member (format "%s%c" key a) keys) ; Attach a or b ... if the key is already used.
 	(setq a (+ a 1)))
       (setq key (format "%s%c" key a)))
-    (nbm-modify-paper-filename key)))
+    (nbm-modify-paper-filename key)
+    (string-replace " " "" key)))
 
 (defun nbm-latex-new-bib-item ()
   "Create a bib item in the main bib file using citation data from arxiv, MathSciNet, or zbMATH."
@@ -1099,13 +1100,11 @@ will be returned."
       (if (search-forward "{" end t)
 	  (progn
 	    (setq beg (point)) (backward-char)
-	    (forward-sexp) (backward-char) (setq end (point))
-	    )
+	    (forward-sexp) (backward-char) (setq end (point)))
 	(progn
 	  (goto-char beg)
 	  (re-search-forward "= *") (setq beg (point)) (backward-char)
-	  (if (search-forward "," end t) (setq end (- (point) 1)))
-	  ))
+	  (when (search-forward "," end t) (setq end (- (point) 1)))))
       (string-clean-whitespace (buffer-substring beg end)))))
 
 (defun nbm-mathscinet-make-filename ()
