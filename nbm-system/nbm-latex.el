@@ -346,7 +346,8 @@ If the cursor is not in math mode, include the math environment."
     (if found
 	(progn
 	  (insert (current-kill 0)) (backward-char 2)
-	  (nbm-latex-uniquify-labels)
+	  (unless (member (substring (current-kill 0) 0 2) '("\\(" "\\["))
+	    (nbm-latex-uniquify-labels))
 	  (nbm-latex-modify-math) (forward-char 2))
       (message "No math mode before the cursor."))))
 
