@@ -382,7 +382,7 @@ If the cursor is not in math mode, include the math environment."
 	  (backward-char 2)
 	  (unless (member (substring (current-kill 0) 0 2) '("\\(" "\\["))
 	    (nbm-latex-uniquify-labels))
-	  (nbm-latex-modify-math) (forward-char 2))
+	  (forward-char 2))
       (message "Wrong a math mode."))))
 
 (defun nbm-latex-paste-avy-environment ()
