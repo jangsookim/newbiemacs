@@ -376,9 +376,7 @@ If the cursor is not in math mode, include the math environment."
 	    (nbm-latex-copy-math)
 	  (nbm-latex-copy-math-with-env))))
     (if found
-	(progn
-	  (insert (current-kill 0))
-	  (backward-char 2))
+	(insert (current-kill 0))
       (message "Wrong a math mode."))))
 
 (defun nbm-latex-paste-avy-environment ()
