@@ -183,12 +183,12 @@
 *** key: q, description: quick image, function: nbm-latex-insert-figure-quick, level: 1
 *** key: w, description: webpage, function: nbm-latex-insert-webpage, level: 1
 ** key: j, description: jump, level: 2
-** key: m, description: modify math, function: nbm-latex-modify-math, level: 2
 *** key: k, description: previous section, function: outline-previous-heading, level: 2
 *** key: j, description: next section, function: outline-next-heading, level: 2
 *** key: m, description: jump section mode, function: nbm-latex-jump-section-mode, level: 2
 *** key: l, description: label, function: nbm-reftex-goto-label, level: 2
 *** key: s, description: section, function: nbm-latex-jump-section, level: 2
+** key: m, description: modify math, function: nbm-latex-modify-math, level: 2
 ** key: n, description: new item/macro/etc, level: 1
 *** key: b, description: bib-item, function: nbm-latex-new-bib-item, level: 1
 *** key: m, description: macro, function: nbm-latex-new-macro, level: 1
