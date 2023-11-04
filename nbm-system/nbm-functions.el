@@ -120,7 +120,9 @@
   (interactive)
   (defun temp ()
     (if (equal major-mode 'latex-mode)
-	(LaTeX-find-matching-end)
+	(progn
+	  (when (looking-at "\\\\") (forward-char))
+	  (LaTeX-find-matching-end))
       (end-of-defun)))
   (if (region-active-p)
       (let (beg)
