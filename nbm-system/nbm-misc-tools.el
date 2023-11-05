@@ -127,8 +127,9 @@ other key) stop"))
 (defun nbm-google-search ()
   "Google search."
   (interactive)
-  (browse-url (format "https://www.google.com/search?q=%s"
-		      (read-string "Enter a word to google: "))))
+  (browse-url
+   (string-replace " " "+" (format "https://www.google.com/search?q=%s"
+				   (read-string "Enter a word to google: ")))))
 
 (defun nbm-paper-search (service)
   "Search a paper."
