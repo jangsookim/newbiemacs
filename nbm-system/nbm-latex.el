@@ -866,19 +866,23 @@ If there is a space in the path, replace it by a dash."
 					  (nbm-f "nbm-user-settings/references/ref.bib"))))
 	  (message "Bibtex toggled: bibtex ON"))))))
 
-(defun nbm-bib-item-create-key (bib-str choice)
-  "Create a key for the bib item given by BIB-STR.
-CHOICE should be a char ?1, ?2, or ?3.
-CHOICE 1: Cho2022 (default)
-CHOICE 2: CKL2022
-CHOICE 3: ChoKimLee2022"
-  (interactive)
-  (let (authors year key keys a)
+(defun nbm-bib-item-create-key (bib-str)
+  "Create a key for the bib item given by BIB-STR. "
+  (let (authors year key keys a choice)
+    (setq choice (read-char "Choose the key scheme. (Suppose the authors are Hwang, Jang, Kim, Song, and Song and the year is 2023.)
+1: Hwang2023 (default)
+2: HJKSS2023
+3: HwangJangKimSongSong2023
+4: HJK+23
+5: Customized key"))
     (setq year (nbm-get-bibtex-entry "year" bib-str))
     (setq authors (nbm-get-bibtex-entry "author" bib-str))
     (setq authors (split-string authors " and "))
     (setq key "")
-    (while authors
+    (when (equal choice ?5)
+      (setq key (read-string "Enter bibkey: "))
+      (setq year nil))
+    (while (and authors (not (equal choice ?5)))
       (setq name (pop authors))
       ;; get the last name depending on whether name is written Jack Sparrow or Sparrow, Jack.
       (if (string-match "," name)
@@ -888,10 +892,17 @@ CHOICE 3: ChoKimLee2022"
 	     (setq key (concat key (substring name 0 1))))
 	    ((equal choice ?3)
 	     (setq key (concat key name)))
-	    (t (if (equal (length key) 0) (setq key (concat key name)))) ; choice 1 is default
-	    )
-      )
-    (if year (setq key (concat key year)))
+	    ((equal choice ?4)
+	     (cond ((= (length key) 3)
+		    (setq key (concat key "+")))
+		   ((> (length key) 3))
+		   (t
+		    (setq key (concat key (substring name 0 1))))))
+	    (t (if (equal (length key) 0) (setq key (concat key name)))))) ; choice 1 is default
+    (when year
+      (when (equal choice ?4)
+	(setq year (substring year 2 4)))
+      (setq key (concat key year)))
     (setq keys (nbm-latex-get-bib-key-list))
     ;; Check if the key is already used.
     (when (member key keys)
@@ -899,18 +910,18 @@ CHOICE 3: ChoKimLee2022"
       (while (member (format "%s%c" key a) keys) ; Attach a or b ... if the key is already used.
 	(setq a (+ a 1)))
       (setq key (format "%s%c" key a)))
-    (nbm-modify-paper-filename key)
+    (setq key (nbm-modify-paper-filename key))
     (string-replace " " "" key)))
 
 (defun nbm-latex-new-bib-item ()
   "Create a bib item in the main bib file using citation data from arxiv, MathSciNet, or zbMATH."
   (interactive)
   (save-excursion
-    (let (str choice beg end)
+    (let (data str beg end done choice)
       (with-output-to-temp-buffer "bib-item-temp-buffer"
-	(setq str (current-kill 0))
+	(setq data (current-kill 0))
 	(switch-to-buffer "bib-item-temp-buffer")
-	(insert str)
+	(insert data)
 	(beginning-of-buffer)
 	(when (search-forward "archivePrefix={arXiv}," nil t)
 	  (beginning-of-buffer)
@@ -930,21 +941,24 @@ CHOICE 3: ChoKimLee2022"
 	(when (search-forward "month" nil t)
 	  (beginning-of-line) (kill-line 2))
 
-	(setq choice (read-char "Choose the key scheme. (Suppose the authors are Cho, Kim, and Lee.)\n1: Cho2022 (default)\n2: CKL2022\n3: ChoKimLee2022"))
-	(setq key (nbm-bib-item-create-key str choice))
-	;; Replace the original bib key with the new key.
-	(beginning-of-buffer)
-	(search-forward "{") (setq beg (point))
-	(search-forward ",") (setq end (- (point) 1))
-	(delete-region beg end) (backward-char) (insert key)
-
-	(when (equal (read-char "Do you want to save this bib item? (Type y or n)") ?y)
-	  (setq str (buffer-string))
-	  (find-file (nbm-f "nbm-user-settings/references/ref.bib"))
-	  (end-of-buffer)
-	  (while (not (equal (buffer-substring (- (point-max) 2) (point-max)) "\n\n"))
-	    (insert "\n") (save-buffer))
-	  (insert str) (save-buffer) (kill-buffer)))
+	(while (not done)
+	  (setq key (nbm-bib-item-create-key data))
+	  ;; Replace the original bib key with the new key.
+	  (beginning-of-buffer)
+	  (search-forward "{") (setq beg (point))
+	  (search-forward ",") (setq end (- (point) 1))
+	  (delete-region beg end) (backward-char) (insert key)
+	  (setq choice (read-char "Do you want to save this bib item?\ny: yes\nn: no\nother key: retry"))
+	  (cond ((equal choice ?y)
+		 (setq done t)
+		 (setq str (buffer-string))
+		 (find-file (nbm-f "nbm-user-settings/references/ref.bib"))
+		 (end-of-buffer)
+		 (while (not (equal (buffer-substring (- (point-max) 2) (point-max)) "\n\n"))
+		   (insert "\n") (save-buffer))
+		 (insert str) (save-buffer) (kill-buffer))
+		((equal choice ?n)
+		 (setq done t)))))
       (kill-buffer "bib-item-temp-buffer"))))
 
 (defun nbm-latex-get-bib-key-list ()
