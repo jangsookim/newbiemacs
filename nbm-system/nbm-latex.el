@@ -362,7 +362,7 @@ If the cursor is not in math mode, include the math environment."
 					(regexp-quote "\\(") "\\|"
 					(regexp-quote "\\end"))
 				end t)
-	(when (texmathp)
+	(when (and (texmathp) (not (TeX-in-comment)))
 	  (setq math (nbm-latex-find-math-mode nil))
 	  (when (> (nth 2 math) (+ 5 (nth 1 math)))
 	    (setq math (nbm-latex-find-math-mode t))
