@@ -370,6 +370,9 @@
     (insert "$pdf_mode = 1;")
     (save-buffer) (kill-buffer))
   (require 'reftex-ref)
+
+  (setq LaTeX-clean-intermediate-suffixes (remove "\\.synctex\\.gz" LaTeX-clean-intermediate-suffixes))
+
 #+end_src
 
 * org-mode
