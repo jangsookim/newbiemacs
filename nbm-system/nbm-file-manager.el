@@ -222,8 +222,9 @@ q) quit" file (nbm-get-dir-name))))
 	    (delete-directory file t t)
 	  (delete-file file t)))
     (when (member choice '(?c ?i ?d ?p))
-      (setq new-file (read-string "Enter the new filename: "
-				  (file-name-nondirectory file))))
+      (setq new-file (read-string "Enter the new file name (You don't need to include the file extension.): "
+			      (file-name-sans-extension (file-name-nondirectory file))))
+      (setq new-file (concat new-file "." (file-name-extension file))))
     (when (equal choice ?i)
       (unless (file-exists-p (nbm-f "inbox/"))
 	(make-directory (nbm-f "inbox/")))
