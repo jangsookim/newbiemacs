@@ -1018,13 +1018,13 @@ If QUICK is non-nil, use the default options."
 	    (insert (concat " See Figure~\\ref{fig:" fig "}.\n"
 			    "\n\\begin{figure}\n"
 			    "  \\centering\n"
-			    "  \\includegraphics[scale=.5]{./figures/" fig "." ext "}\n"
+			    "  \\includegraphics[scale=.25]{./figures/" fig "." ext "}\n"
 			    "  \\caption{}\n"
 			    "  \\label{fig:" fig "}\n"
 			    "\\end{figure}\n"))
 	    (search-backward "\\caption{") (search-forward "{"))
 	(insert (concat "\\begin{center}\n"
-			"  \\includegraphics[scale=.5]{./figures/" fig "." ext "}\n"
+			"  \\includegraphics[scale=.25]{./figures/" fig "." ext "}\n"
 			"\\end{center}"))))))
 
 (defun nbm-latex-insert-figure-with-env ()
