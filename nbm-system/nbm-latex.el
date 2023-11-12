@@ -1009,7 +1009,7 @@ If QUICK is non-nil, use the default options."
 	  (message (format "./figures/%s.%s already exists!" fig ext))
 	(copy-file newest (format "./figures/%s.%s" fig ext)))
       (setq choice
-	    (if quick ?y
+	    (if quick ?n		; Do not delete for the quick option.
 	      (read-char (concat "Delete this file?: (Type y for yes.)\n" newest))))
       (when (eq choice ?y) (delete-file newest))
       (end-of-line)
