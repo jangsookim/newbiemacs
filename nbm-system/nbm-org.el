@@ -292,11 +292,12 @@ If the filename has [...], change it to (...)."
     (when (equal choice ?y)
       (setq dir (concat (file-name-sans-extension (buffer-file-name)) "-files"))
       (unless (file-directory-p dir) (make-directory dir))
-      (setq file (read-string "Enter the new file name (space will be change to dash): "
-			      (file-name-nondirectory newest)))
+      (setq file (read-string "Enter the new file name (You don't need to include the file extension.): "
+			      (file-name-sans-extension (file-name-nondirectory newest))))
       (setq file (string-replace " " "-" file))
       (setq file (string-replace "[" "(" file))
       (setq file (string-replace "]" ")" file))
+      (setq file (concat file "." (file-name-extension newest)))
       (copy-file newest (concat dir "/" file) t)
       (setq choice (read-char (concat "Delete this file?: (Type y for yes.)\n" newest)))
       (when (eq choice ?y) (delete-file newest))
