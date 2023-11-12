@@ -765,7 +765,7 @@ If AUTO is non-nil, create an automatic label."
 	    (t
 	     (LaTeX-find-matching-begin)
 	     (search-forward "\\begin" nil t) (forward-sexp)
-	     (when (looking-at "[ \t\n]*\\[") (forward-sexp))
+	     (when (looking-at "[ ]*\\[") (forward-sexp))
 	     (insert (format "\\label{%s}" label)))))))
 
 (defun nbm-latex-delete-label ()
