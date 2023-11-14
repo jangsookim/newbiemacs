@@ -39,7 +39,7 @@ newbiemacs/nbm-user-settings/nbm-variables."
     (when exist
       (when (equal ?y (read-char (format "The key already exists!
 Do you want to delete this item? (type y for yes)\n%s" exist)))
-	(nbm-data-delete (var key))
+	(nbm-data-delete var key)
 	(setq exist nil)))
     (unless exist
       (setq file (concat *nbm-home* (format "nbm-user-settings/nbm-variables/nbm-%s.txt" var)))
