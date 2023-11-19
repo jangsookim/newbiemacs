@@ -83,6 +83,7 @@
 *** key: S, description: Sync database, function: org-roam-db-sync, level: 3
 *** key: t, description: time stamp, function: org-time-stamp-inactive, level: 2
 *** key: u, description: UI mode, function: org-roam-ui-mode, level: 2
+*** key: x, description: search archived org, function: nbm-org-search-archived, level: 3
 ** key: p, description: Find pdf, function: nbm-find-pdf, level: 1
 ** key: q, description: quick menu, level: 2
 *** key: n, description: new study, function: nbm-latex-new-study, level: 2

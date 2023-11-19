@@ -233,6 +233,13 @@ Otherwise, copy a string in the clipboard to load it."
 	(kill-new str)
 	(message (format "Copied to clipboard: %s" str))))))
 
+(defun nbm-org-search-archived ()
+  "Search an org file in the archived directory."
+  (interactive)
+  (let (org)
+    (setq org (completing-read "Choose a file to open: " (directory-files (nbm-f "archived/org") t "[.]org$")))
+    (find-file org)))
+
 (defun nbm-org-move-to-archived ()
   "Move the current file to the archived directory: newbiemacs/archived/org/
 and store the org link."
