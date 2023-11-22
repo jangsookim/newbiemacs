@@ -237,8 +237,8 @@ Otherwise, copy a string in the clipboard to load it."
   "Search an org file in the archived directory."
   (interactive)
   (let (org)
-    (setq org (completing-read "Choose a file to open: " (directory-files (nbm-f "archived/org") t "[.]org$")))
-    (find-file org)))
+    (setq org (completing-read "Choose a file to open: " (directory-files (nbm-f "archived/org") nil "[.]org$")))
+    (find-file (format "%s/%s" (nbm-f "archived/org") org))))
 
 (defun nbm-org-move-to-archived ()
   "Move the current file to the archived directory: newbiemacs/archived/org/
