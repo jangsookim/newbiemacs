@@ -70,7 +70,7 @@ newbiemacs/nbm-user-settings/nbm-variables."
     (setq choice (char-to-string (read-char prompt)))
     (cond ((equal choice "+")
 	   (setq key (char-to-string (read-char "Enter a key to mark the current file. (+ and - must be avoided.): ")))
-	   (nbm-data-add "visit" key (buffer-file-name)))
+	   (nbm-data-add "visit" key (nbm-get-file-name)))
 	  ((equal choice "-")
 	   (setq key (char-to-string (read-char (format "Enter the key you want to delete:\n%s" file-list))))
 	   (nbm-data-delete "visit" key))
