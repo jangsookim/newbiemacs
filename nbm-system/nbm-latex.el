@@ -81,18 +81,19 @@ If there is no title, return the filename."
 	(message (format "A symbolic link created: %s.tex" file-name))))))
 
 (defun nbm-latex-new-file-from-template (dir filename title)
-  "Create a new file FILE from a template file under directory DIR.
+  "Create a new file FILENAME from a template file under directory DIR.
 Write TITLE for the title in the tex file.
 DIR must end with /.
 FILENAME must end with .tex."
   (let (temp)
     (setq temp (read-file-name "Choose the template file: (default is template.tex) "
 			       (nbm-f "nbm-user-settings/templates/")
-			       "template.tex"))
+			       "template.tex"
+			       t nil (lambda (x) (equal (substring x -3 nil) "tex"))))
     (copy-file temp (concat dir filename))
     (find-file (concat dir filename)) (goto-char (point-min))
     (when (search-forward "\\title{" nil t nil)
-      (insert title))
+      (when (looking-at "}") (insert title)))
     (save-buffer)))
 
 (defun nbm-latex-new-file ()
