@@ -90,6 +90,7 @@ FILENAME must end with .tex."
 			       (nbm-f "nbm-user-settings/templates/")
 			       "template.tex"
 			       t nil (lambda (x) (equal (substring x -3 nil) "tex"))))
+    (unless (file-exists-p dir) (make-directory dir))
     (copy-file temp (concat dir filename))
     (find-file (concat dir filename)) (goto-char (point-min))
     (when (search-forward "\\title{" nil t nil)
@@ -110,8 +111,7 @@ Current dir: %s" (nbm-get-dir-name))))
 			     nil nil "note" nil))
     (unless dirname
       (setq dirname (concat (nbm-f "tex/") (format-time-string "[%Y_%m_%d]_")
-			    (string-replace " " "_" title) "/"))
-      (make-directory dirname))
+			    (string-replace " " "_" title) "/")))
     (setq filename (concat (string-replace " " "_" title) ".tex"))
     (nbm-latex-new-file-from-template dirname filename title)
     (message "Created a new file.")))
