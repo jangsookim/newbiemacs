@@ -213,6 +213,7 @@
 **** key: s, description: tikz-set-partition, function: nbm-tikz-set-partition, level: 1
 **** key: l, description: tikz-lattice-path, function: nbm-tikz-lattice-path, level: 1
 ** key: t, description: toggle/change, level: 1
+*** key: ", description: double quotes, function: nbm-latex-toggle-double-quotes, level: 2
 *** key: b, description: bbl-file, function: nbm-latex-toggle-bbl-file, level: 1
 *** key: B, description: create bib file, function: nbm-latex-extract-bib-file, level: 2
 *** key: e, description: equation, function: nbm-latex-toggle-equation, level: 1

@@ -673,6 +673,18 @@ d) delete the parentheses"))
 	       (goto-char (1- end)) (insert "\\right")
 	       (goto-char beg) (insert "\\left")))))))
 
+(defun nbm-latex-toggle-double-quotes ()
+  "Toggle double quotes"
+  (interactive)
+  (if (looking-at "\"")
+      (progn
+	(delete-char 1)
+	(insert "``")
+	(search-forward "\"")
+	(backward-char) (delete-char 1)
+	(insert "''"))
+    (message "Place a cursor at a double quote.")))
+
 (defun nbm-latex-forward-sexp ()
   "Go to the closing parenthesis if the cursor is at an opening parenthesis."
   (interactive)
