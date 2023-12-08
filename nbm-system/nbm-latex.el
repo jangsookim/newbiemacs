@@ -998,6 +998,20 @@ If there is a space in the path, replace it by a dash."
 	  (search-forward (car duplicated)))
       (message "No duplicated items."))))
 
+(defun nbm-latex-set-includegraphics-scale ()
+  "Set the scale factor of includegraphics."
+  (interactive)
+  (let (scale)
+    (setq scale (nbm-latex-includegraphics-scale))
+    (nbm-set-user-variable "latex-includegraphics-scale"
+			   (read-string (format "Enter the scale factor (current value is %s): " scale)))))
+
+(defun nbm-latex-includegraphics-scale ()
+  "Return the scale factor of includegraphics."
+  (unless (nbm-get-user-variable "latex-includegraphics-scale")
+    (nbm-set-user-variable "latex-includegraphics-scale" ".25"))
+  (nbm-get-user-variable "latex-includegraphics-scale"))
+
 (defun nbm-latex-insert-figure (env &optional quick)
   "Insert the most recent file from *nbm-screenshots* to ./figures.
 If ENV is non-nil, insert a figure environment.
@@ -1031,13 +1045,15 @@ If QUICK is non-nil, use the default options."
 	    (insert (concat " See Figure~\\ref{fig:" fig "}.\n"
 			    "\n\\begin{figure}\n"
 			    "  \\centering\n"
-			    "  \\includegraphics[scale=.25]{./figures/" fig "." ext "}\n"
+			    "  \\includegraphics[scale=" (nbm-latex-includegraphics-scale)
+			    "]{./figures/" fig "." ext "}\n"
 			    "  \\caption{}\n"
 			    "  \\label{fig:" fig "}\n"
 			    "\\end{figure}\n"))
 	    (search-backward "\\caption{") (search-forward "{"))
 	(insert (concat "\\begin{center}\n"
-			"  \\includegraphics[scale=.25]{./figures/" fig "." ext "}\n"
+			"  \\includegraphics[scale=" (nbm-latex-includegraphics-scale)
+			"]{./figures/" fig "." ext "}\n"
 			"\\end{center}"))))))
 
 (defun nbm-latex-insert-figure-with-env ()
