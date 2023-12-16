@@ -37,6 +37,7 @@
 *** key: s, description: switch to same extension buffer, function: nbm-switch-to-buffer-with-same-extension, level: 3
 *** key: R, function: revert-buffer, level: 2
 ** key: f, description: Files, function:, level: 1
+*** key: /, description: find recursively, function: helm-find, level: 3
 *** key: b, function: bookmark-set, level: 2
 *** key: d, description: open dowloaded file, function: nbm-open-downloaded-file, level: 3
 *** key: f, description: find files, function: helm-find-files, level: 1
