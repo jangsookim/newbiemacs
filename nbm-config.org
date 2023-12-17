@@ -219,8 +219,8 @@
   (setq mac-command-modifier 'meta)
   (setq mac-option-modifier 'apple)
   (setq x-select-enable-clipboard t)
+  (setq delete-by-moving-to-trash t)
   (when (eq system-type 'darwin)
-    (setq delete-by-moving-to-trash t)
     (setq trash-directory "~/.Trash"))
 
   (setq help-window-select t)
