@@ -387,3 +387,42 @@ If the filename has [...], change it to (...)."
       (unless (looking-back " ") (insert " "))
       (insert (format "[[%s][%s]]" link desc)))))
 
+(defun nbm-org-agenda-add ()
+  "Add the current file to agenda.
+The file must be an org file in the newbiemacs/org directory."
+  (interactive)
+  (let (org-file)
+    (setq org-file (file-name-nondirectory (buffer-file-name)))
+    (if (equal (buffer-file-name) (nbm-f (concat "org/" org-file)))
+	(progn
+	  (nbm-org-agenda-remove org-file)
+	  (nbm-set-user-variable "agenda"
+			       (format "%s\n%s" org-file
+				       (nbm-get-user-variable "agenda" t))))
+      (message "The current file is not an org file in the newbiemacs/org directory!"))
+    (nbm-org-load-agenda-files)))
+
+(defun nbm-org-agenda-remove (&optional org-file)
+  "Remove an org file from agenda."
+  (interactive)
+  (let (org-files contents)
+    (setq org-files (split-string (nbm-get-user-variable "agenda" t) "\n"))
+    (setq org-files (remove "" org-files))
+    (unless org-file
+      (setq org-file (completing-read "Choose an org file to remove from agenda." org-files)))
+    (setq org-files (remove org-file org-files))
+    (setq contents "")
+    (dolist (org-file org-files)
+      (setq contents (format "%s\n%s" contents org-file)))
+    (nbm-set-user-variable "agenda" contents)
+    (nbm-org-load-agenda-files)))
+
+(defun nbm-org-load-agenda-files ()
+  "Load agenda files."
+  (let (org-files org-file)
+    (setq org-files (split-string (nbm-get-user-variable "agenda" t) "\n"))
+    (setq org-files (remove "" org-files))
+    (setq org-agenda-files (list (nbm-f "org/capture.org")))
+    (dolist (org-file org-files)
+      (add-to-list 'org-agenda-files (nbm-f (format "org/%s" org-file)) t))))
+
