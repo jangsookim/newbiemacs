@@ -199,13 +199,6 @@ e) el"))
 	 (let (process-connection-type)
 	   (start-process "" nil "nautilus" "--browser" file-name)))))
 
-(defun nbm-show-trash-bin ()
-  "Open Finder on the trash bin."
-  (interactive)
-  (unless (file-exists-p trash-directory)
-    (make-directory trash-directory))
-  (nbm-show-in-finder trash-directory))
-
 (defun nbm-move-to-folder (file)
   "Move FILE to one of the following folders.
 current folder, inbox, desktop, pdf, trash-bin"
