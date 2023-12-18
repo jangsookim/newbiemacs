@@ -420,9 +420,10 @@ The file must be an org file in the newbiemacs/org directory."
 (defun nbm-org-load-agenda-files ()
   "Load agenda files."
   (let (org-files org-file)
-    (setq org-files (split-string (nbm-get-user-variable "agenda" t) "\n"))
-    (setq org-files (remove "" org-files))
     (setq org-agenda-files (list (nbm-f "org/capture.org")))
-    (dolist (org-file org-files)
-      (add-to-list 'org-agenda-files (nbm-f (format "org/%s" org-file)) t))))
+    (when (nbm-get-user-variable "agenda")
+      (setq org-files (split-string (nbm-get-user-variable "agenda" t) "\n"))
+      (setq org-files (remove "" org-files))
+      (dolist (org-file org-files)
+	(add-to-list 'org-agenda-files (nbm-f (format "org/%s" org-file)) t)))))
 
