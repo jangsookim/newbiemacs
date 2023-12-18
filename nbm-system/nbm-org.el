@@ -406,6 +406,8 @@ The file must be an org file in the newbiemacs/org directory."
   "Remove an org file from agenda."
   (interactive)
   (let (org-files contents)
+    (unless (nbm-get-user-variable "agenda")
+      (nbm-set-user-variable "agenda" ""))
     (setq org-files (split-string (nbm-get-user-variable "agenda" t) "\n"))
     (setq org-files (remove "" org-files))
     (unless org-file
