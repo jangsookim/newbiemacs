@@ -92,7 +92,7 @@
 *** key: s, description: Set counter, function: nbm-set-counter, level: 3
 *** key: a, description: Add counter, function: nbm-add-counter, level: 3
 *** key: i, description: Insert counter, function: nbm-insert-counter, level: 3
-** key: s, description: Search, level: 2
+** key: s, description: Search, level: 1
 *** key: g, description: google search, function: nbm-google-search, level: 2
 *** key: d, description: look up dictionary, function: nbm-look-up-dictionary, level: 2
 *** key: x, description: search arxiv, function: nbm-paper-search-arxiv, level: 1
