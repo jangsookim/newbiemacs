@@ -323,7 +323,7 @@ down : k or down arrow key
 * Warning *
 Due to the heavy use of start-of-art animation,
 your computer may be slowed down while playing torus.
-In this case you are recommended to play \"torus\" instead.
+In this case you are recommended to play \"tofus\" instead.
 ")
     ))
 
