@@ -54,9 +54,10 @@ Do you want to delete this item? (type y for yes)\n%s" exist)))
 newbiemacs/nbm-user-settings/nbm-variables."
   (find-file (concat *nbm-home* (format "nbm-user-settings/nbm-variables/nbm-%s.txt" var)))
   (beginning-of-buffer)
-  (re-search-forward (format "^KEY=%s" (regexp-quote key)))
-  (beginning-of-line)
-  (kill-line) (kill-line) (save-buffer) (kill-buffer))
+  (when (re-search-forward (format "^KEY=%s" (regexp-quote key)))
+    (beginning-of-line)
+    (kill-line) (kill-line) (save-buffer))
+  (kill-buffer))
 
 (defun nbm-visit ()
   "Run nbm-visit."
