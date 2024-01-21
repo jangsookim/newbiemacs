@@ -215,9 +215,8 @@ q) quit" file (nbm-get-dir-name))))
 	    (delete-directory file t t)
 	  (delete-file file t)))
     (when (member choice '(?c ?i ?d ?p))
-      (setq new-file (read-string "Enter the new file name (You don't need to include the file extension.): "
-			      (file-name-sans-extension (file-name-nondirectory file))))
-      (setq new-file (concat new-file "." (file-name-extension file))))
+      (setq new-file (read-string "Enter the new file name : "
+				  (file-name-nondirectory file))))
     (when (equal choice ?i)
       (unless (file-exists-p (nbm-f "inbox/"))
 	(make-directory (nbm-f "inbox/")))
@@ -230,18 +229,21 @@ q) quit" file (nbm-get-dir-name))))
 	(rename-file file (concat *nbm-desktop* new-file) 1))
     (if (equal choice ?q) (message "Aborted."))))
 
-(defun nbm-files-from-screenshot ()
+(defun nbm-files-from-screenshot (&optional include-dir)
   "Return the list of files in the folders in *nbm-screenshots* sorted by modified time.
-Directories and files starting with ., $, or # will be ignored."
+Directories and files starting with ., $, or # will be ignored.
+If INCLUDE-DIR is non-nil, consider directories as well."
   (let (dir file-list)
     (dolist (dir *nbm-screenshots*)
       (setq file-list (append file-list (directory-files dir t "\\`[^.$#]"))))
-    (nbm-sort-files-by-modified-time (-remove 'file-directory-p file-list))))
+    (unless include-dir
+      (setq file-list (-remove 'file-directory-p file-list)))
+    (nbm-sort-files-by-modified-time file-list)))
 
 (defun nbm-move-newest-file ()
   "Move the newest file in the folders in *nbm-screenshots*."
   (interactive)
-  (nbm-move-to-folder (car (nbm-files-from-screenshot))))
+  (nbm-move-to-folder (car (nbm-files-from-screenshot t))))
 
 (defun nbm-get-lowest-dir-name ()
   "Return the lowest directory name of the current file."
