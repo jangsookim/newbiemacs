@@ -243,7 +243,7 @@ If INCLUDE-DIR is non-nil, consider directories as well."
 (defun nbm-move-newest-file ()
   "Move the newest file in the folders in *nbm-screenshots*."
   (interactive)
-  (nbm-move-to-folder (car (nbm-files-from-screenshot t))))
+  (nbm-move-to-folder (car (nbm-files-from-screenshot nil))))
 
 (defun nbm-get-lowest-dir-name ()
   "Return the lowest directory name of the current file."
@@ -357,7 +357,12 @@ If INCLUDE-DIR is non-nil, consider directories as well."
 
 (defun nbm-downloaded-files ()
   "Return the list of downloaded files sorted by modified time."
-  (nbm-sort-files-by-modified-time (directory-files *nbm-downloads* t)))
+  (let (file-list)
+    (setq file-list (nbm-sort-files-by-modified-time (directory-files *nbm-downloads* t)))
+    (setq file-list (-remove (lambda (file)
+			       (equal "." (substring (file-name-nondirectory file) 0 1)))
+			     file-list))
+    file-list))
 
 (defun nbm-exclude-file-extensions (file-list ext-list)
   "Remove the directories or files in FILE-LIST with extension in EXT-LIST."
