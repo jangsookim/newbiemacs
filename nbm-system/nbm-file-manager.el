@@ -436,3 +436,17 @@ DIR may or may not end with \"/\"."
     (while (file-exists-p (format "%s/%s%s.%s" dir file num ext))
       (setq num (1+ num)))
     (format "%s/%s%s.%s" dir file num ext)))
+
+(defun nbm-kill-all-buffers-with-extension ()
+  "Kill all unmodified buffers with a selected extension."
+  (interactive)
+  (let (ext file)
+    (when (buffer-file-name)
+      (setq ext (file-name-extension (buffer-file-name))))
+    (setq ext (read-string "Choose an extension to kill buffers: " ext))
+    (dolist (buf (buffer-list))
+      (setq file (buffer-file-name buf))
+      (when (and file
+		 (equal (file-name-extension file) ext)
+		 (not (buffer-modified-p buf)))
+	(kill-buffer buf)))))
