@@ -951,8 +951,6 @@ If there is a space in the path, replace it by a dash."
 	  (insert "{") (search-forward "}") (insert "}"))
 	;; If the bibitem contains month, remove it.
 	(beginning-of-buffer)
-	(when (search-forward "month" nil t)
-	  (beginning-of-line) (kill-line 2))
 
 	(while (not done)
 	  (setq key (nbm-bib-item-create-key data))
