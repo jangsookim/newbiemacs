@@ -19,7 +19,6 @@ Return nil if no file is opened in Skim."
 (defun nbm-skim-data-add (key value)
   "Add a cons cell (KEY . VALUE) to *nbm-skim-data*.
 This variable is then saved in newbiemacs/nbm-user-settings/nbm-variables/nbm-skim-data.el."
-  (nbm-skim-data-init)
   (let (prompt)
     (when (nbm-skim-data-get key)
       (setq prompt (format "(%s . %s) is already in *nbm-skim-data*!\nProceed anyway? (Type y for yes.): "
@@ -37,7 +36,6 @@ This variable is then saved in newbiemacs/nbm-user-settings/nbm-variables/nbm-sk
 (defun nbm-skim-data-get (key)
   "Get the value such that (KEY . VALUE) is in *nbm-skim-data*."
   (unless (boundp '*nbm-skim-data*)
-    (nbm-skim-data-init)
     (find-file (nbm-f "nbm-user-settings/nbm-variables/nbm-skim-data.el"))
     (save-buffer) (eval-buffer) (kill-buffer))
   (cdr (assoc key *nbm-skim-data*)))
@@ -58,6 +56,7 @@ This variable is then saved in newbiemacs/nbm-user-settings/nbm-variables/nbm-sk
 (defun nbm-skim-goto-page ()
   "Go to a specific page of the pdf current opened in skim."
   (interactive)
+  (nbm-skim-data-init)
   (let (offset page str)
     (setq str (nbm-skim-get-filename))
     (unless str
