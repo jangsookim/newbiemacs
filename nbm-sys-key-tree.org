@@ -22,6 +22,7 @@
 *** key: d, description: diff, function: diff, level: 2
 *** key: e, description: ediff, function: ediff, level: 2
 *** key: g, description: games, level: 1
+*** key: j, description: jump to skim, function: nbm-skim-goto-page, level: 2
 **** key: f, description: tofus, function: tofus, level: 1
 **** key: r, description: torus, function: torus, level: 1
 **** key: t, description: tetris, function: tetris, level: 1
