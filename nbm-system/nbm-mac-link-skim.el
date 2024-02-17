@@ -2,7 +2,8 @@
   "Get the filename of the pdf currently opened in Skim.
 Return nil if no file is opened in Skim."
   (let (str)
-    (unless (string-match "Skim got an error" (org-mac-link-skim-get-page))
+    (unless (and (string-match "Skim" (org-mac-link-skim-get-page))
+		 (string-match "error" (org-mac-link-skim-get-page)))
       (setq str (substring (org-mac-link-skim-get-page) 9 -2))
       (setq str (string-replace "\\" "" str))
       (setq str (car (split-string str "::"))))))
@@ -126,7 +127,6 @@ PAGE must be a string of the form +num, -num, or num. For example, +12, -4, or 1
 (defun nbm-skim-open-bookmark-file ()
   "Open a bookmark file listed in the following directory.
 newbiemacs/nbm-user-settings/nbm-variables/nbm-skim-bookmarks"
-  (interactive)
   (let (files file txt beg end path)
     (dolist (file (directory-files (nbm-f "nbm-user-settings/nbm-variables/nbm-skim-bookmarks")))
       (unless (or (equal (substring file 0 1) ".") (equal (substring file -1 nil) "~"))
