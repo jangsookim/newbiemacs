@@ -2,8 +2,7 @@
   "Get the filename of the pdf currently opened in Skim.
 Return nil if no file is opened in Skim."
   (let (str)
-    (unless (and (string-match "Skim" (org-mac-link-skim-get-page))
-		 (string-match "error" (org-mac-link-skim-get-page)))
+    (when (equal "[[skim:" (substring (org-mac-link-skim-get-page) 0 7))
       (setq str (substring (org-mac-link-skim-get-page) 9 -2))
       (setq str (string-replace "\\" "" str))
       (setq str (car (split-string str "::"))))))
