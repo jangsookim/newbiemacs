@@ -676,14 +676,29 @@ d) delete the parentheses"))
 (defun nbm-latex-toggle-double-quotes ()
   "Toggle double quotes"
   (interactive)
-  (if (looking-at "\"")
+  (let (beg end)
+    (if (region-active-p)
+	(progn
+	  (setq beg (region-beginning))
+	  (setq end (region-end))
+	  (goto-char beg)
+	  (while (search-forward "\"" end t)
+	    (nbm-latex-toggle-double-quotes-at-point end)
+	    (setq end (+ end 3))))
       (progn
-	(delete-char 1)
-	(insert "``")
-	(search-forward "\"")
-	(backward-char) (delete-char 1)
-	(insert "''"))
-    (message "Place a cursor at a double quote.")))
+	(forward-char 1)
+	(nbm-latex-toggle-double-quotes-at-point)))))
+
+(defun nbm-latex-toggle-double-quotes-at-point (&optional end)
+  "Toggle double quotes at the current position if there is a matching double quote before END."
+  (let (left)
+    (setq left (1- (point)))
+    (if (search-forward "\"" end t)
+	(progn
+	  (goto-char left) (delete-char 1) (insert "``")
+	  (search-forward "\"")
+	  (backward-char) (delete-char 1) (insert "''"))
+      (message "No matching double quotes!"))))
 
 (defun nbm-latex-forward-sexp ()
   "Go to the closing parenthesis if the cursor is at an opening parenthesis."
