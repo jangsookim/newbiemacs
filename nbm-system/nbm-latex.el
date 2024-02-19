@@ -1244,7 +1244,7 @@ Return the string \"Author1, Author2. Year. Title.pdf\"."
 Then ask if the user wants to add a new bib item.
 The URL of an arXiv abstract page or a bibtex code must be copied first."
   (interactive)
-  (let (file choice temp file-name mathscinet url)
+  (let (file choice temp file-name mathscinet)
     (setq pdf (nbm-newest-file (directory-files *nbm-downloads* t
 						"\\`[^.$#].*\\([.]pdf\\|[.]djvu\\)$")))
     (if (not pdf)
