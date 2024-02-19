@@ -55,6 +55,7 @@
 *** key: F, description: Finder (file manager), function: nbm-show-in-finder, level: 1
 *** key: R, description: rename current file, function: nbm-rename-current-file, level: 2
 *** key: S, description: add-to-symlinks, function: nbm-add-to-symlinks, level: 2
+*** key: x, description: arXiv add pdf bibtex, function: nbm-arxiv-add-pdf-bibtex, level: 1
 *** key: y, description: Yank/Copy, level: 3
 **** key: d, description: copy-directory-path, function: nbm-copy-directory-path, level: 3
 **** key: n, description: copy-file-name, function: nbm-copy-file-name, level: 3

@@ -30,6 +30,7 @@
       (setq bibtex-completion-cite-prompt-for-optional-arguments nil)
       (setq bibtex-completion-display-formats (quote ((t . "${year:4} ${author:26} ${title:**} "))))))
 
+  (use-package org-ref)
   (use-package org-roam)
   (use-package org-roam-ui)
 

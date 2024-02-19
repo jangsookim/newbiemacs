@@ -951,7 +951,9 @@ If there is a space in the path, replace it by a dash."
 	(switch-to-buffer "bib-item-temp-buffer")
 	(insert data)
 	(beginning-of-buffer)
-	(when (search-forward "archivePrefix={arXiv}," nil t)
+	(when (re-search-forward "archivePrefix *= *{arXiv}," nil t)
+	  (when (re-search-backward "@article")
+	    (replace-match "@misc"))
 	  (beginning-of-buffer)
 	  (search-forward "eprint" nil t) (search-forward "{" nil t)
 	  (setq arxiv (buffer-substring (point) (- (search-forward "}") 1)))
@@ -1239,19 +1241,17 @@ Return the string \"Author1, Author2. Year. Title.pdf\"."
 
 (defun nbm-move-pdf-from-downloads ()
   "Move the most recent PDF from the downloads folder to the pdf folder.
-Two lines from arxiv or a bibtex code from mathscinet must be copied first.
-If a string is copied from mathscinet, then ask if the user wants to
-add a new bib item."
+Then ask if the user wants to add a new bib item.
+The URL of an arXiv abstract page or a bibtex code must be copied first."
   (interactive)
-  (let (file choice temp file-name mathscinet)
+  (let (file choice temp file-name mathscinet url)
     (setq pdf (nbm-newest-file (directory-files *nbm-downloads* t
 						"\\`[^.$#].*\\([.]pdf\\|[.]djvu\\)$")))
     (if (not pdf)
 	(message (format "There is no pdf file in %s." *nbm-downloads*)))
     (when pdf
-      (setq choice (read-char (format "Move %s into the following folder?\n%s\n\ny: yes\nq: quit
-
-(Note: Two lines from arxiv or a bibtex item from mathscinet must be copied first.)" pdf *nbm-pdf*)))
+      (setq choice (read-char (format "Move %s into the following folder?\n%s\n\ny: yes\nq: quit\n
+(Note: The URL of an arXiv abstract page or a bibtex code must be copied first.)" pdf *nbm-pdf*)))
       (when (equal choice ?y)
 	(setq temp (current-kill 0))
 	(while (equal (substring temp 0 1) "\n")
