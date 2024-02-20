@@ -26,7 +26,7 @@
 **** key: r, description: torus, function: torus, level: 1
 **** key: t, description: tetris, function: tetris, level: 1
 *** key: j, description: jump to skim, function: nbm-skim-goto-page-run, level: 2
-*** key: J, description: jump to skim, function: nbm-skim-bookmark-jump, level: 2
+*** key: J, description: jump to skim bookmark, function: nbm-skim-bookmark-jump, level: 2
 *** key: c, function: calc, level: 2
 *** key: q, function: quick-calc, level: 2
 ** key: b, description: Buffers, level: 1
