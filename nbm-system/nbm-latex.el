@@ -1631,6 +1631,21 @@ The number of invisible solutions is %s." visible invisible)))))
 (defun nbm-latex-toggle-dollars ()
   "Toggle $ to \\( \\) and $$ to \\[ \\]."
   (interactive)
+  (if (region-active-p)
+      (let (str)
+	(setq str (buffer-substring (region-beginning) (region-end)))
+	(delete-region (region-beginning) (region-end))
+	(with-temp-buffer
+	  (insert str) (beginning-of-buffer)
+	  (while (search-forward "$" nil t)
+	    (backward-char)
+	    (nbm-latex-toggle-dollars-once))
+	  (setq str (buffer-substring (point-min) (point-max))))
+	(insert str))
+    (nbm-latex-toggle-dollars-once)))
+
+(defun nbm-latex-toggle-dollars-once ()
+  "Toggle $ to \\( \\) and $$ to \\[ \\]."
   (save-excursion
     (let (double single)
       (when (equal (buffer-substring (point) (+ (point) 2)) "$$")
