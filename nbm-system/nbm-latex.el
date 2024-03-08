@@ -1242,11 +1242,16 @@ Return the string \"Author1, Author2. Year. Title.pdf\"."
 (defun nbm-move-pdf-from-downloads ()
   "Move the most recent PDF from the downloads folder to the pdf folder.
 Then ask if the user wants to add a new bib item.
-The URL of an arXiv abstract page or a bibtex code must be copied first."
+The URL of an arXiv abstract page or a bibtex code must be copied first.
+If there is a pdf in the directory newbiemacs/pdf-temp/, then this pdf will be chosen."
   (interactive)
   (let (file choice temp file-name mathscinet)
-    (setq pdf (nbm-newest-file (directory-files *nbm-downloads* t
-						"\\`[^.$#].*\\([.]pdf\\|[.]djvu\\)$")))
+    (when (file-exists-p (nbm-f "pdf-temp"))
+      (setq pdf (nbm-newest-file (directory-files (nbm-f "pdf-temp") t
+						  "\\`[^.$#].*\\([.]pdf\\|[.]djvu\\)$"))))
+    (unless pdf
+      (setq pdf (nbm-newest-file (directory-files *nbm-downloads* t
+						  "\\`[^.$#].*\\([.]pdf\\|[.]djvu\\)$"))))
     (if (not pdf)
 	(message (format "There is no pdf file in %s." *nbm-downloads*)))
     (when pdf
