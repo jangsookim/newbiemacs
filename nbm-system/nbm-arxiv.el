@@ -31,8 +31,7 @@ The URL of an arxiv abstract page must be copied or
 	(progn
 	  (setq id (biblio-arxiv--extract-id url))
 	  (setq pdf (biblio-arxiv--pdf-url id))
-	  ;; (url-copy-file pdf (format "%s/%s.pdf" *nbm-downloads* id))
 	  (nbm-arxiv-download-pdf url)
 	  (kill-new (nbm-arxiv-get-bibtex url))
-	  (nbm-move-pdf-from-downloads))
+	  (nbm-move-pdf-from-downloads t))
       (message "You must copy the URL of an arXiv abstract page first!"))))

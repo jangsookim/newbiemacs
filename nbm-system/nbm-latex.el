@@ -1239,16 +1239,21 @@ Return the string \"Author1, Author2. Year. Title.pdf\"."
       (setq authors (cdr authors)))
     (setq filename (nbm-modify-paper-filename (concat filename ". " title ".pdf")))))
 
-(defun nbm-move-pdf-from-downloads ()
+(defun nbm-move-pdf-from-downloads (&optional newest)
   "Move a PDF from the downloads directory to the pdf directory.
 Then ask if the user wants to add a new bib item.
-The URL of an arXiv abstract page or a bibtex code must be copied first."
+The URL of an arXiv abstract page or a bibtex code must be copied first.
+If NEWEST is non-nil, automatically choose the newest pdf."
   (interactive)
   (let (file choice temp file-name mathscinet)
-    (setq pdf (completing-read "Choose a file to move: "
-			       (nbm-sort-files-by-modified-time
-				(directory-files *nbm-downloads* t
-						 "\\`[^.$#].*\\([.]pdf\\|[.]djvu\\)$"))))
+    (if newest
+	(setq pdf (nbm-newest-file (directory-files *nbm-downloads* t
+						    "\\`[^.$#].*\\([.]pdf\\|[.]djvu\\)$")))
+      (setq pdf (completing-read "Choose a file to move: "
+				 (nbm-sort-files-by-modified-time
+				  (directory-files *nbm-downloads* t
+						   "\\`[^.$#].*\\([.]pdf\\|[.]djvu\\)$")))))
+    
     (setq choice (read-char (format "Move %s into the following folder?\n%s\n\ny: yes\nq: quit\n
 (Note: The URL of an arXiv abstract page or a bibtex code must be copied first.)" pdf *nbm-pdf*)))
     (when (equal choice ?y)
