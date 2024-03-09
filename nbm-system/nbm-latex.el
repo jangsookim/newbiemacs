@@ -1240,42 +1240,36 @@ Return the string \"Author1, Author2. Year. Title.pdf\"."
     (setq filename (nbm-modify-paper-filename (concat filename ". " title ".pdf")))))
 
 (defun nbm-move-pdf-from-downloads ()
-  "Move the most recent PDF from the downloads folder to the pdf folder.
+  "Move a PDF from the downloads directory to the pdf directory.
 Then ask if the user wants to add a new bib item.
-The URL of an arXiv abstract page or a bibtex code must be copied first.
-If there is a pdf in the directory newbiemacs/pdf-temp/, then this pdf will be chosen."
+The URL of an arXiv abstract page or a bibtex code must be copied first."
   (interactive)
   (let (file choice temp file-name mathscinet)
-    (when (file-exists-p (nbm-f "pdf-temp"))
-      (setq pdf (nbm-newest-file (directory-files (nbm-f "pdf-temp") t
-						  "\\`[^.$#].*\\([.]pdf\\|[.]djvu\\)$"))))
-    (unless pdf
-      (setq pdf (nbm-newest-file (directory-files *nbm-downloads* t
-						  "\\`[^.$#].*\\([.]pdf\\|[.]djvu\\)$"))))
-    (if (not pdf)
-	(message (format "There is no pdf file in %s." *nbm-downloads*)))
-    (when pdf
-      (setq choice (read-char (format "Move %s into the following folder?\n%s\n\ny: yes\nq: quit\n
+    (setq pdf (completing-read "Choose a file to move: "
+			       (nbm-sort-files-by-modified-time
+				(directory-files *nbm-downloads* t
+						 "\\`[^.$#].*\\([.]pdf\\|[.]djvu\\)$"))))
+    (setq choice (read-char (format "Move %s into the following folder?\n%s\n\ny: yes\nq: quit\n
 (Note: The URL of an arXiv abstract page or a bibtex code must be copied first.)" pdf *nbm-pdf*)))
+    (when (equal choice ?y)
+      (setq temp (current-kill 0))
+      (while (equal (substring temp 0 1) "\n")
+	(setq temp (substring temp 1 nil)))
+      (if (equal (substring temp 0 1) "@") (setq mathscinet t))
+      (setq temp (split-string temp "\n"))
+      (setq file-name (if mathscinet (nbm-mathscinet-make-filename)
+			(nbm-arxiv-make-filename)))
+      (setq file-name (string-replace "/" "-" file-name))
+      (setq file-name (read-string "Enter a suitable file name: " file-name))
+      (setq choice (read-char (format "Move \"%s\"\ninto \"%s\"\nunder the following name?\n%s\n\n(Type y for yes)."
+				      pdf *nbm-pdf* file-name)))
       (when (equal choice ?y)
-	(setq temp (current-kill 0))
-	(while (equal (substring temp 0 1) "\n")
-	  (setq temp (substring temp 1 nil)))
-	(if (equal (substring temp 0 1) "@") (setq mathscinet t))
-	(setq temp (split-string temp "\n"))
-	(setq file-name (if mathscinet (nbm-mathscinet-make-filename)
-			  (nbm-arxiv-make-filename)))
-	(setq file-name (string-replace "/" "-" file-name))
-	(setq file-name (read-string "Enter a suitable file name: " file-name))
-	(setq choice (read-char (format "Move \"%s\"\ninto \"%s\"\nunder the following name?\n%s\n\n(Type y for yes)."
-					pdf *nbm-pdf* file-name)))
-	(when (equal choice ?y)
-	  (rename-file pdf (concat *nbm-pdf* file-name) 1)
-	  (message "File moved!")
-	  (when (and mathscinet
-		     (equal ?y (read-char "Do you want to add a bib item? (Type y for yes.): ")))
-	    (nbm-latex-new-bib-item)))
-	(if (equal choice ?q) (message "Aborted."))))))
+	(rename-file pdf (concat *nbm-pdf* file-name) 1)
+	(message "File moved!")
+	(when (and mathscinet
+		   (equal ?y (read-char "Do you want to add a bib item? (Type y for yes.): ")))
+	  (nbm-latex-new-bib-item)))
+      (if (equal choice ?q) (message "Aborted.")))))
 
 (defun nbm-latex-ref ()
   "Reftex with ref."
