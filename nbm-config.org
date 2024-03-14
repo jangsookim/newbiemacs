@@ -115,14 +115,6 @@
     :init
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
-  (use-package org-download
-    :ensure t :defer t :init
-    (with-eval-after-load 'org
-      (org-download-enable)
-      (setq org-download-method 'nbm-org-download-method)
-      (setq org-download-annotate-function (lambda (link) ""))
-      (setq org-download-display-inline-images nil)))
-
   (use-package ox-reveal)
   (use-package org-pomodoro)
 
