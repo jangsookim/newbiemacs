@@ -392,6 +392,7 @@
 
   (define-key org-mode-map (kbd "M-m") 'nbm-org-toggle-latex-mode)
   (define-key LaTeX-mode-map (kbd "M-m") 'nbm-org-toggle-latex-mode)
+  (define-key org-mode-map (kbd "<drag-n-drop>") 'nbm-org-drag-n-drop)
 
   (setq org-imenu-depth 9)
   (nbm-org-load-agenda-files)

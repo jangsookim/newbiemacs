@@ -287,6 +287,13 @@ and store the org link."
 	(kill-new (buffer-substring (point) end))
 	(message (concat "Copied to clipboard: " (current-kill 0)))))))
 
+(defun nbm-org-drag-n-drop (event)
+  "Add a link to the drag-n-dropped file."
+  (interactive "e")
+  (let (fname)
+    (setq fname (car (last (car (last event)))))
+    (insert (format "[[file:%s]]" fname))))
+
 (defun nbm-org-insert-file ()
   "Insert the most recent file from *nbm-screenshots* into the directory (buffer-file-name)-files. A file link is also inserted.
 If the filename has [...], change it to (...)."
