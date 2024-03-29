@@ -425,3 +425,40 @@ The file must be an org file in the newbiemacs/org directory."
       (dolist (org-file org-files)
 	(add-to-list 'org-agenda-files (nbm-f (format "org/%s" org-file)) t)))))
 
+(defun nbm-org-reveal-export ()
+  "Export org-reveal-export-to-html-and-browse if no region is selected.
+If a region is seleted, do nbm-org-reveal-region instead."
+  (interactive)
+  (if (region-active-p)
+      (nbm-org-reveal-region)
+    (org-reveal-export-to-html-and-browse)))
+
+(defun nbm-org-reveal-region ()
+  "Create an org file for the current region and export to org-reveal html."
+  (interactive)
+  (let (template-file file-name title reveal-file-name contents level)
+    (setq contents (buffer-substring (region-beginning) (region-end)))
+    (setq file-name (file-name-nondirectory (file-name-sans-extension (buffer-file-name))))
+    (setq reveal-file-name (format "%s-presentation-%s.org" file-name (format-time-string "%Y-%m-%d")))
+    (setq title (string-replace "_" " " file-name))
+    (find-file reveal-file-name)
+    (erase-buffer)
+    (insert (format "#+title: %s\n" title))
+    (insert (format "#+date: %s\n" (format-time-string "%B %d, %Y")))
+    (insert "#+REVEAL_INIT_OPTIONS: transition: 'default'
+#+REVEAL_TRANS: zoom
+#+REVEAL_THEME: league
+#+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js
+#+OPTIONS: toc:nil author:nil num:nil timestamp:nil\n\n")
+    (insert contents)
+    (beginning-of-buffer)
+    (re-search-forward "^[*]+ " nil t)
+    (beginning-of-buffer)
+    (setq level (1- (length (match-string 0))))
+    (while (re-search-forward "^[*]+ " nil t)
+      (dotimes (n (1- level)) (org-metaleft))
+      (end-of-line)
+      (insert "\n#+ATTR_REVEAL: :frag (roll-in)"))
+    (save-buffer)
+    (org-reveal-export-to-html-and-browse)))
+

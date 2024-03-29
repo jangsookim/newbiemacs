@@ -284,7 +284,7 @@
 *** key: f, description: fragment option, function: nbm-org-reveal-frag, level: 1
 *** key: h, description: html export, function: nbm-org-html-export, level: 1
 *** key: H, description: html theme, function: nbm-org-html-theme, level: 1
-*** key: r, description: presentation export, function: org-reveal-export-to-html-and-browse, level: 1
+*** key: r, description: presentation export, function: nbm-org-reveal-export, level: 1
 *** key: R, description: presentation theme, function: nbm-org-reveal-theme, level: 1
 *** key: o, description: options, function: nbm-org-export-options, level: 1
 ** key: k, description: add keybinding, function: nbm-key-tree-add-keybinding, level: 3
