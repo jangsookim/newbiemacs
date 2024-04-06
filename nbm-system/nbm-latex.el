@@ -1483,13 +1483,18 @@ Prompt for a label (with completion) and jump to the location of this label."
 (defvar *nbm-latex-compile-section* nil)
 
 (defun nbm-latex-compile ()
-  "Compile the current tex file. "
+  "Compile the current tex file."
   (interactive)
   (let ((TeX-command-force t))
     (save-buffer)
     (if (member (current-buffer) *nbm-latex-compile-section*)
 	(LaTeX-command-section)
       (TeX-command-master))))
+
+(defun nbm-latex-force-compile ()
+  "Compile the current tex file even without modifying the texfile."
+  (interactive)
+  (TeX-command "LaTeX" 'TeX-master-file))
 
 (defun nbm-latex-toggle-compile-section ()
   "Toggle the membership of the current buffer in the alist *nbm-latex-compile-section*."
