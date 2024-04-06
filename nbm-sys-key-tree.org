@@ -166,7 +166,7 @@
 ** key: a, description: applications, level: 3
 *** key: d, description: latex diff, function: nbm-latex-diff, level: 3
 ** key: b, description: build tex, function: nbm-latex-compile, level: 1
-** key: B, description: build tex, function: nbm-latex-force-compile, level: 1
+** key: B, description: build tex forced, function: nbm-latex-force-compile, level: 1
 ** key: v, description: view pdf, function: nbm-latex-view-pdf, level: 1
 ** key: c, description: copy math only, function: nbm-latex-copy-math, level: 2
 ** key: C, description: copy math with env, function: nbm-latex-copy-math-with-env, level: 2
