@@ -1487,14 +1487,12 @@ Prompt for a label (with completion) and jump to the location of this label."
   (interactive)
   (let ((TeX-command-force t))
     (save-buffer)
-    (if (member (current-buffer) *nbm-latex-compile-section*)
-	(LaTeX-command-section)
-      (TeX-command-master))))
-
-(defun nbm-latex-force-compile ()
-  "Compile the current tex file even without modifying the texfile."
-  (interactive)
-  (TeX-command "LaTeX" 'TeX-master-file))
+    (cond ((member (current-buffer) *nbm-latex-compile-section*)
+	   (LaTeX-command-section))
+	  ((equal (TeX-command-default 'TeX-master-file) "View")
+	   (TeX-command "LaTeX" 'TeX-master-file))
+	  (t
+	   (TeX-command "LatexMk" 'TeX-master-file)))))
 
 (defun nbm-latex-toggle-compile-section ()
   "Toggle the membership of the current buffer in the alist *nbm-latex-compile-section*."
