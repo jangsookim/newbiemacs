@@ -8,7 +8,8 @@
 	(\"+ (add a note)\" . nil)
 	(\"- (delete a note)\" . nil)
 	))")
-    (save-buffer) (eval-buffer) (kill-buffer)))
+    (save-buffer) (eval-buffer) (kill-buffer))
+  (load-file (nbm-f "nbm-user-settings/nbm-variables/nbm-goodnotes-data.el")))
 
 (defun nbm-goodnotes-data-add (note-name url)
   "Add a cons cell (note-name . url) to *nbm-goodnotes-data*.
@@ -47,6 +48,7 @@ This variable is then saved in newbiemacs/nbm-user-settings/nbm-variables/nbm-go
 (defun nbm-goodnotes-goto-note ()
   "Go to a note."
   (interactive)
+  (nbm-goodnotes-data-init)
   (let (note-name page choice url)
     (setq note-name (completing-read "Choose a note (+ for adding a note, - for deleting a note): " *nbm-goodnotes-data*))
     (cond 
@@ -65,7 +67,6 @@ This variable is then saved in newbiemacs/nbm-user-settings/nbm-variables/nbm-go
 
 (defun nbm-goodnotes-goto-page (note-name &optional page)
   "Go to a goodnote url."
-  (nbm-goodnotes-data-init)
   (let (url)
     (unless page (setq page 1))
     (setq url (format "%s#page-%s" (nbm-goodnotes-data-get note-name) page))
