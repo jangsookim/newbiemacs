@@ -74,6 +74,7 @@
 *** key: p, description: recent pdf, function: nbm-recent-pdf, level: 2
 *** key: e, description: recent el, function: nbm-recent-el, level: 2
 *** key: s, description: recent sage, function: nbm-recent-sage, level: 2
+*** key: g, description: goodnotes, function: nbm-goodnotes-goto-note, level: 2
 ** key: k, description: key bindings, level: 3
 *** key: s, description: sys-key-tree, function: nbm-find-sys-key-tree, level: 3
 *** key: u, description: user-key-tree, function: nbm-find-user-key-tree, level: 3
