@@ -417,6 +417,9 @@
 * Dired
 #+begin_src emacs-lisp :tangle yes
   (setq dired-dwim-target t)
+  (evil-define-key 'normal dired-mode-map (kbd "M-<backspace>") 'newbie)
+  (evil-define-key 'normal dired-mode-map (kbd "SPC") 'evil-send-leader)
+  (evil-define-key 'normal dired-mode-map (kbd ",") 'evil-send-localleader)
   (evil-define-key 'emacs dired-mode-map (kbd "M-<backspace>") 'newbie)
   (evil-define-key 'emacs dired-mode-map (kbd "SPC") 'evil-send-leader)
   (evil-define-key 'emacs dired-mode-map (kbd ",") 'evil-send-localleader)
