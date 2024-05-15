@@ -68,6 +68,8 @@ This variable is then saved in newbiemacs/nbm-user-settings/nbm-variables/nbm-go
 (defun nbm-goodnotes-goto-page (note-name &optional page)
   "Go to a goodnote url."
   (let (url)
-    (unless page (setq page 1))
-    (setq url (format "%s#page-%s" (nbm-goodnotes-data-get note-name) page))
+    (if page
+	(setq page (format "#page-%s" page))
+      (setq page ""))
+    (setq url (format "%s" (nbm-goodnotes-data-get note-name) page))
     (browse-url url)))
