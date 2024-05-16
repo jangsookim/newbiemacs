@@ -109,7 +109,7 @@
 
 (defun newbie-print-version ()
   "Start newbie."
-    (nbm-insert 1 (format "%83s" "Newbiemacs 1.58")))
+    (nbm-insert 1 (format "%83s" "Newbiemacs 1.59")))
 
 (defun newbie-print-logo ()
   "Start newbie."
