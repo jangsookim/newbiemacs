@@ -35,17 +35,25 @@
   (use-package org-roam-ui)
 
   (use-package openwith :init (openwith-mode t)
-    (when (equal system-type 'gnu/linux)
-      (setq process-connection-type nil)
-      (setq openwith-associations '(("\\.pdf\\'" "xdg-open" (file)))))
-    (unless (equal system-type 'gnu/linux)
-      (setq openwith-associations '(("\\.pdf\\'" "open" (file))
+    (cond ((equal system-type 'gnu/linux)
+           (setq process-connection-type nil)
+           (setq openwith-associations '(("\\.pdf\\'" "xdg-open" (file)))))
+          ((equal system-type 'darwin)
+           (setq openwith-associations '(("\\.pdf\\'" "open -a Skim.app" (file))
                                     ("\\.hwp\\'" "open" (file))
                                     ("\\.hwpx\\'" "open" (file))
                                     ("\\.pptx\\'" "open" (file))
                                     ("\\.xlsx\\'" "open" (file))
                                     ("\\.docx\\'" "open" (file))
-                                    ("\\.djvu\\'" "open" (file))))))
+                                    ("\\.djvu\\'" "open" (file)))))
+          (t
+           (setq openwith-associations '(("\\.pdf\\'" "open" (file))
+                                    ("\\.hwp\\'" "open" (file))
+                                    ("\\.hwpx\\'" "open" (file))
+                                    ("\\.pptx\\'" "open" (file))
+                                    ("\\.xlsx\\'" "open" (file))
+                                    ("\\.docx\\'" "open" (file))
+                                    ("\\.djvu\\'" "open" (file)))))))
 
   (use-package yasnippet :diminish yas-minor-mode
     :init
