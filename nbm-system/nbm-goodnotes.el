@@ -26,6 +26,7 @@ This variable is then saved in newbiemacs/nbm-user-settings/nbm-variables/nbm-go
       (beginning-of-buffer)
       (search-forward "'(")
       (setq url (car (split-string url "#page")))
+      (setq url (string-replace "share.goodnotes.com" "web.goodnotes.com" url))
       (insert (format "\n\t(\"%s\" . \"%s\")" note-name url))
       (save-buffer) (eval-buffer) (kill-buffer))))
 
