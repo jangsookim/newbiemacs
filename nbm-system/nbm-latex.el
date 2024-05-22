@@ -952,7 +952,7 @@ If there is a space in the path, replace it by a dash."
 	(insert data)
 	(beginning-of-buffer)
 	(when (re-search-forward "archivePrefix *= *{arXiv}," nil t)
-	  (when (re-search-backward "@article")
+	  (when (re-search-backward "@article" nil t)
 	    (replace-match "@misc"))
 	  (beginning-of-buffer)
 	  (search-forward "eprint" nil t) (search-forward "{" nil t)
