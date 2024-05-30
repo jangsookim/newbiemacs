@@ -86,10 +86,10 @@ Write TITLE for the title in the tex file.
 DIR must end with /.
 FILENAME must end with .tex."
   (let (temp)
-    (setq temp (read-file-name "Choose the template file: (default is template.tex) "
+    (setq temp (read-file-name "Choose the template file: "
 			       (nbm-f "nbm-user-settings/templates/")
 			       "template.tex"
-			       t nil (lambda (x) (equal (substring x -3 nil) "tex"))))
+			       t nil (lambda (x) (equal (substring x -4 nil) ".tex"))))
     (unless (file-exists-p dir) (make-directory dir))
     (copy-file temp (concat dir filename))
     (find-file (concat dir filename)) (goto-char (point-min))
