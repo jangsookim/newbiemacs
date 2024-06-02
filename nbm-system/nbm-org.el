@@ -332,6 +332,8 @@ If the filename has [...], change it to (...)."
     (setq dir (concat (file-name-sans-extension (buffer-file-name)) "-files"))
     (unless (file-directory-p dir) (make-directory dir))
     (setq file (string-replace " " "-" (file-name-nondirectory newest)))
+    (setq file (string-replace "[" "(" file))
+    (setq file (string-replace "]" ")" file))
     (copy-file newest (concat dir "/" file))
     (insert (format "[[file:%s/%s]]" (file-name-nondirectory dir) (file-name-nondirectory file)))))
 
