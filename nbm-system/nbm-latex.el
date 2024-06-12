@@ -1160,6 +1160,8 @@ If QUICK is non-nil, use the default options."
   (setq str (string-replace " qquad" "````````````````````````" str))
   (setq str (string-replace " quad" "`````````````" str))
   (setq str (string-replace " dots" " cdots" str))
+  (setq str (replace-regexp-in-string "_\\([^{]\\)" "_\\1 " str))
+  (setq str (replace-regexp-in-string "\\^\\([^{]\\)" "^\\1 " str))
   (setq str (replace-regexp-in-string "\\([0-9]+\\)" "\\1 " str))
   (with-temp-buffer
     (insert str)
