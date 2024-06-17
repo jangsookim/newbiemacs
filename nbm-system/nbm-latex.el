@@ -1812,7 +1812,7 @@ If AUTO is non-nil, insert a label automatically."
 	  ((equal choice ?u) (nbm-latex-insert-environment "multline*"))
 	  ((equal choice ?f) (nbm-latex-insert-environment "figure" t auto))
 	  ((equal choice ?z) (nbm-latex-insert-environment "tikzpicture"))
-	  ((equal choice ?o) (nbm-latex-rename-environment))
+	  ((equal choice ?\^M) (nbm-latex-rename-environment))
 	  ((equal choice ? ) (nbm-latex-insert-environment "proof"))
-	  ((equal choice ?x) (LaTeX-environment nil)))))
+	  ((equal choice ?o) (LaTeX-environment nil)))))
 
