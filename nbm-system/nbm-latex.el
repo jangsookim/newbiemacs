@@ -1628,7 +1628,7 @@ to another pdf file with \"(solutions)\" added to the file name."
 	  (beginning-of-line)
 	  (comment-or-uncomment-region (region-beginning) (region-end))
 	  (deactivate-mark)
-	  (if (looking-at "%")
+	  (if (looking-at "[ \t\n]*%")
 	      (setq invisible (1+ invisible))
 	    (setq visible (1+ visible)))))
       (when (and (equal visible 0) (> invisible 0))
