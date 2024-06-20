@@ -431,6 +431,7 @@
   (evil-define-key 'emacs dired-mode-map (kbd "M-<backspace>") 'newbie)
   (evil-define-key 'emacs dired-mode-map (kbd "SPC") 'evil-send-leader)
   (evil-define-key 'emacs dired-mode-map (kbd ",") 'evil-send-localleader)
+  (evil-define-key 'emacs dired-mode-map (kbd "q") 'kill-this-buffer)
 #+end_src
 
 * Editing styles (Emacs, Vim, Windows)
