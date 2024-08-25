@@ -30,10 +30,10 @@
   (read-only-mode)
   (newbie-init)
   (evil-local-set-key 'normal (kbd "?") 'nbm-cheat-sheet)
-  ;; (evil-local-set-key 'normal (kbd "a") ')
+  (evil-local-set-key 'normal (kbd "a") 'nbm-arxiv-add-pdf-bibtex)
   ;; (evil-local-set-key 'normal (kbd "b") ')
   ;; (evil-local-set-key 'normal (kbd "c") ')
-  ;; (evil-local-set-key 'normal (kbd "d") ')
+  (evil-local-set-key 'normal (kbd "d") 'nbm-org-gtd)
   (evil-local-set-key 'normal (kbd "e") 'nbm-change-editing-style)
   ;; (evil-local-set-key 'normal (kbd "f") 'newbie-latex-insert-figure)
   (evil-local-set-key 'normal (kbd "g") 'newbie-games)
@@ -48,7 +48,7 @@
   (evil-local-set-key 'normal (kbd "p") 'nbm-find-pdf)
   (evil-local-set-key 'normal (kbd "q") 'newbie-quit)
   ;; (evil-local-set-key 'normal (kbd "r") 'org-roam-node-find)
-  ;; (evil-local-set-key 'normal (kbd "s") 'nbm-find-misc)
+  (evil-local-set-key 'normal (kbd "s") 'newbie-search)
   (evil-local-set-key 'normal (kbd "t") 'nbm-find-tex)
   ;; (evil-local-set-key 'normal (kbd "u") 'org-roam-ui-mode)
   ;; (evil-local-set-key 'normal (kbd "v") 'newbie-latex-change-variables)
@@ -138,6 +138,9 @@
   (nbm-insert 6 (format "%5s%-19s" "" "m: move pdf"))
   (nbm-insert 6 (format "%5s%-19s" "" "n: new tex file"))
   (nbm-insert 6 (format "%5s%-33s\n" "" "g: games"))
+  (nbm-insert 4 (format "%5s%-19s" "" "a: arxiv paper"))
+  (nbm-insert 4 (format "%5s%-19s" "" "d: GTD"))
+  (nbm-insert 4 (format "%5s%-33s\n" "" "s: search"))
   (nbm-insert 7 (format "%5s%-19s" "" "?: Cheat sheet"))
   (nbm-insert 7 (format "%5s%-19s" "" "x: settings"))
   (nbm-insert 7 (format "%5s%-33s\n" "" "U: Update Newbiemacs"))
@@ -179,7 +182,6 @@
 (defvar newbie-mode-map (make-sparse-keymap))
 (evil-global-set-key 'normal (kbd "M-<backspace>") 'newbie)
 (evil-global-set-key 'emacs (kbd "M-<backspace>") 'newbie)
-
 
 (defun newbie-finder ()
   "Open the current file in Finder."
@@ -311,3 +313,14 @@ u) user-init.el"))
     (cond ((equal choice ?1) (torus))
 	  ((equal choice ?2) (tofus))
 	  ((equal choice ?3) (tetris)))))
+
+(defun newbie-search ()
+  (interactive)
+  (let (choice)
+    (setq choice (read-char "Choose the search page.
+a) arxiv
+m) mathscinet
+z) zbmath"))
+    (cond ((equal choice ?a) (nbm-paper-search-arxiv))
+	  ((equal choice ?m) (nbm-paper-search-mathscinet))
+	  ((equal choice ?z) (nbm-paper-search-zbmath)))))
