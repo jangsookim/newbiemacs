@@ -18,6 +18,7 @@
 ** key: ', description: shell, function: eshell, level: 3
 ** key: ., description: org-roam-today, function: nbm-org-roam-today, level: 2
 ** key: a, description: Applications, level: 1
+*** key: a, description: google-calendar, function: nbm-google-calendar-add-event, level: 1
 *** key: m, description: magnet, function: nbm-magnet, level: 1
 *** key: d, description: diff, function: diff, level: 2
 *** key: e, description: ediff, function: ediff, level: 2
