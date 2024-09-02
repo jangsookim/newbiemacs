@@ -15,6 +15,8 @@
     (nbm-add-event-to-calendar title time-from time-to details)
     (nbm-google-calendar-add-event-run title time-from time-to details)))
 
+(setq *nbm-google-calendar-user* "0")
+
 (defun nbm-google-calendar-add-event-run (title time-from time-to details)
   "Open browser to add an event in google calendar.
 TIME-FROM and TIME-TO must be in org time format."
@@ -36,7 +38,8 @@ TIME-FROM and TIME-TO must be in org time format."
       (setq time-to (nbm-time-convert (nbm-time-encode-time time-to t) 4))
       (setq time-to (substring time-to 0 8)))
     (browse-url (string-replace " " "+"
-				(format "https://calendar.google.com/calendar/u/1/r/eventedit?text=%s&dates=%s/%s&details=%s"
+				(format "https://calendar.google.com/calendar/u/%s/r/eventedit?text=%s&dates=%s/%s&details=%s"
+					*nbm-google-calendar-user*
 					title time-from time-to details)))))
 
 (defun nbm-add-event-to-calendar (title time-from time-to details)
