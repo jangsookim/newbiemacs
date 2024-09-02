@@ -395,8 +395,8 @@ The file must be an org file in the newbiemacs/org directory."
 	(progn
 	  (nbm-org-agenda-remove org-file)
 	  (nbm-set-user-variable "agenda"
-			       (format "%s\n%s" org-file
-				       (nbm-get-user-variable "agenda" t))))
+				 (format "%s\n%s" org-file
+					 (nbm-get-user-variable "agenda" t))))
       (message "The current file is not an org file in the newbiemacs/org directory!"))
     (nbm-org-load-agenda-files)))
 
