@@ -1789,7 +1789,8 @@ If AUTO is non-nil, insert a label automatically."
     (setq prompt (concat prompt (concat (nbm-string-key "z") ": tikzpicture             ")))
     (setq prompt (concat prompt (concat (nbm-string-key "o") ": other environment\n\n")))
     (setq prompt (concat prompt (concat (nbm-string-key "SPC") ": proof\n")))
-    (setq prompt (concat prompt (concat (nbm-string-key "RET") ": Rename the current environment")))
+    (setq prompt (concat prompt (concat (nbm-string-key "RET") ": Rename the current environment\n")))
+    (setq prompt (concat prompt (concat (nbm-string-key "!") ": Delete the current environment macro, keeping the content")))
     (setq choice (read-char prompt))
     (setq auto t)
     (when (and (>= choice ?A) (<= choice ?Z))
@@ -1812,7 +1813,65 @@ If AUTO is non-nil, insert a label automatically."
 	  ((equal choice ?u) (nbm-latex-insert-environment "multline*"))
 	  ((equal choice ?f) (nbm-latex-insert-environment "figure" t auto))
 	  ((equal choice ?z) (nbm-latex-insert-environment "tikzpicture"))
+	  ((equal choice ?!) (nbm-latex-delete-environment-macros))
 	  ((equal choice ?\^M) (nbm-latex-rename-environment))
 	  ((equal choice ? ) (nbm-latex-insert-environment "proof"))
 	  ((equal choice ?o) (LaTeX-environment nil)))))
 
+(defun nbm-latex-delete-environment-macros ()
+  "Delete \\begin{env}, \\end{env}, \\item (if applicable), and \\label if the environment contains any,
+keeping the content. Only deletes the specific environment the cursor is in, detected by LaTeX-current-environment.
+
+Assisted by ChatGPT."
+  (let* ((env-name (LaTeX-current-environment)) ;; Use LaTeX-current-environment to get the environment
+         (begin-pos nil)
+         (end-pos nil)
+         (content nil))
+    
+    ;; Ensure we have a valid environment
+    (when env-name
+      ;; Search for the positions of \begin{env} and \end{env}
+      (save-excursion
+        ;; Go to the beginning of the \begin{env}
+        (when (re-search-backward (concat "\\\\begin{" env-name "}") nil t)
+          (setq begin-pos (match-beginning 0))
+          (setq content-start (match-end 0)))
+        ;; Go to the corresponding \end{env}
+        (when (re-search-forward (concat "\\\\end{" env-name "}") nil t)
+          (setq end-pos (match-end 0))
+          ;; Copy the content between \begin{env} and \end{env}
+          (setq content (buffer-substring-no-properties begin-pos end-pos)))))
+
+    ;; Process in a temporary buffer
+    (when content
+      (with-temp-buffer
+        (insert content)
+        ;; Remove \item if the environment is itemize or enumerate
+        (when (member env-name '("itemize" "enumerate"))
+          (goto-char (point-min))
+          (while (re-search-forward "\\\\item" nil t)
+            (replace-match "")))
+
+        ;; Explicitly remove \begin{env} and \end{env} for the detected environment
+        (goto-char (point-min))
+        (when (re-search-forward (concat "\\\\begin{" env-name "}") nil t)
+          (replace-match ""))
+        (goto-char (point-min))
+        (when (re-search-forward (concat "\\\\end{" env-name "}") nil t)
+          (replace-match ""))
+
+        ;; Remove any \label{...}
+        (goto-char (point-min))
+        (while (re-search-forward "\\\\label{[^}]+}" nil t)
+          (replace-match ""))
+
+        ;; Get the modified content
+        (setq content (buffer-string))))
+
+    ;; Replace the original content with the modified content
+    (when (and content begin-pos end-pos)
+      (save-excursion
+        (goto-char begin-pos)
+        (delete-region begin-pos end-pos)
+        (insert content)))))
+  
