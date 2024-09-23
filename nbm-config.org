@@ -404,6 +404,7 @@
 
   (setq org-imenu-depth 9)
   (nbm-org-load-agenda-files)
+  (add-to-list 'auto-mode-alist '("\\.org_archive\\'" . org-mode))
 #+end_src
 ** Org-Roam
 #+begin_src emacs-lisp :tangle yes
