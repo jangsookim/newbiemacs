@@ -1874,4 +1874,9 @@ Assisted by ChatGPT."
         (goto-char begin-pos)
         (delete-region begin-pos end-pos)
         (insert content)))))
-  
+
+(defun nbm-reftex-toc ()
+  "Do reftex-toc with rescan."
+  (interactive)
+  (let ((current-prefix-arg 1)) ; Simulate C-u 1
+    (call-interactively 'reftex-toc)))
