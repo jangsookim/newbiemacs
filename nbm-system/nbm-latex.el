@@ -862,6 +862,32 @@ If AUTO is non-nil, create an automatic label."
       (save-buffer) (kill-buffer)
       (message "Created a bib file with file name: \"local-ref.bib\""))))
 
+(defun nbm-latex-copy-bib-item-to-local ()
+  "Copy the bibitem whose key is at the cursor from the main bib file to the local bib file."
+  (interactive)
+  (save-excursion
+    (let (key beg end item local)
+      (search-backward "{") (setq beg (1+ (point)))
+      (search-forward "}") (setq end (1- (point)))
+      (setq key (buffer-substring beg end))
+      (find-file (nbm-f "nbm-user-settings/references/ref.bib"))
+      (beginning-of-buffer)
+      (search-forward (format "{%s," key))
+      (beginning-of-line)
+      (setq beg (point))
+      (search-forward "{") (backward-char) (forward-sexp)
+      (setq end (point))
+      (setq item (buffer-substring beg end))
+      (kill-buffer)
+      (setq local (car (directory-files "." t "[.]bib$")))
+      (when (equal ?y (read-char (format "Do you want to insert the following bib item to %s?\n\n%s"
+					 local item)))
+	(find-file local)
+	(end-of-buffer)
+	(insert (format "\n%s" item))
+	(save-buffer) (kill-buffer)
+	(message (format "Add the bib item to %s." local))))))
+
 (defun nbm-latex-toggle-bbl-file ()
   "Insert the bib file or remove it.
 If there is a space in the path, replace it by a dash."
