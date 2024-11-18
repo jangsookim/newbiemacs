@@ -866,7 +866,7 @@ If AUTO is non-nil, create an automatic label."
   "Copy the bibitem whose key is at the cursor from the main bib file to the local bib file."
   (interactive)
   (save-excursion
-    (let (key beg end item local)
+    (let (key beg end item local bib-files)
       (search-backward "{") (setq beg (1+ (point)))
       (search-forward "}") (setq end (1- (point)))
       (setq key (buffer-substring beg end))
@@ -879,7 +879,10 @@ If AUTO is non-nil, create an automatic label."
       (setq end (point))
       (setq item (buffer-substring beg end))
       (kill-buffer)
-      (setq local (car (directory-files "." t "[.]bib$")))
+      (setq bib-files (directory-files "." t "[.]bib$"))
+      (if (equal (length bib-files) 1)
+	  (setq local (car bib-files))
+	(setq local (completing-read "Choose the bib file." bib-files)))
       (when (equal ?y (read-char (format "Do you want to insert the following bib item to %s?\n\n%s"
 					 local item)))
 	(find-file local)
