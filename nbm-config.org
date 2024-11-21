@@ -320,7 +320,9 @@
 #+begin_src emacs-lisp :tangle yes
   (server-start)                        ; This is needed for Skim to inverse search
   (setq TeX-source-correlate-mode 1)
-  (setq reftex-default-bibliography (concat *nbm-home* "nbm-user-settings/references/ref.bib"))
+  (setq *nbm-latex-bib-file* (concat *nbm-home* "nbm-user-settings/references/ref.bib"))
+  (setq reftex-default-bibliography *nbm-latex-bib-file*)
+  (setq *nbm-latex-use-local-bib-file* nil)
 
   (setq TeX-save-query nil)
   (setq TeX-auto-save t)

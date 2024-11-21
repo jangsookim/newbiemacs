@@ -208,12 +208,13 @@
 *** key: l, description: label, function: nbm-latex-new-label, level: 1
 *** key: s, description: section, function: nbm-latex-section, level: 2
 ** key: r, description: reference, level: 1
-*** key: c, description: citation, function: helm-bibtex, level: 1
+*** key: c, description: citation, function: nbm-latex-bibtex, level: 1
 *** key: e, description: eqref, function: nbm-latex-eqref, level: 2
 *** key: f, description: fig-ref, function: nbm-latex-fig-ref, level: 2
 *** key: i, description: insert ref, function: nbm-reftex-insert-ref, level: 2
 *** key: r, description: ref, function: nbm-latex-ref, level: 1
 *** key: s, description: sec-ref, function: nbm-latex-sec-ref, level: 2
+*** key: t, description: toggle-bib-file, function: nbm-latex-toggle-bib-file, level: 2
 *** key: C, description: Cref, function: nbm-latex-Cref, level: 1
 ** key: s, description: snippets, level: 1
 *** key: m, description: matrix, function: nbm-snippet-latex-matrix, level: 1

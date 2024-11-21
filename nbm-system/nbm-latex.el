@@ -1042,6 +1042,24 @@ If there is a space in the path, replace it by a dash."
 	  (search-forward (car duplicated)))
       (message "No duplicated items."))))
 
+(defun nbm-latex-toggle-bib-file ()
+  "Toggle the bib file between the default one and the local one."
+  (interactive)
+  (if *nbm-latex-use-local-bib-file*
+      (progn
+	(setq *nbm-latex-use-local-bib-file* nil)
+	(message "Now use the default bib file."))
+    (progn
+      (setq *nbm-latex-use-local-bib-file* t)
+      (message "Now use the local bib file."))))
+
+(defun nbm-latex-bibtex ()
+  "Run helm-bibtex."
+  (interactive)
+  (if *nbm-latex-use-local-bib-file*
+      (helm-bibtex-with-local-bibliography)
+    (helm-bibtex)))
+
 (defun nbm-latex-set-includegraphics-scale ()
   "Set the scale factor of includegraphics."
   (interactive)
