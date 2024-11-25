@@ -362,6 +362,25 @@
   (define-key evil-normal-state-map (kbd "]]") 'nbm-end-of-defun)
   (define-key evil-visual-state-map (kbd "]]") 'nbm-end-of-defun)
 
+  ; Modify the behavior of TeX-insert-dollar.
+  (setq *nbm-latex-dollar-korean* nil)
+
+  (defun TeX-insert-dollar ()
+    "Customized version."
+    (interactive)
+    (toggle-input-method)
+    (if (texmathp)
+        (progn
+          (if (looking-back "\\\\( ")
+              (progn
+                (nbm-latex-toggle-inline-math)
+                (next-line) (insert "  \n") (backward-char))
+            (nbm-latex-exit-math-mode)))
+      (progn
+        (insert "\\(  \\)")
+        (backward-char 3))))
+
+
 #+end_src
 
 ** auctex-latexmk

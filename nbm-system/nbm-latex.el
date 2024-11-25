@@ -1927,3 +1927,13 @@ Assisted by ChatGPT."
   (interactive)
   (let ((current-prefix-arg 1)) ; Simulate C-u 1
     (call-interactively 'reftex-toc)))
+
+(defun nbm-latex-toggle-dollar-korean ()
+  "Toggle *nbm-latex-dollar-korean*."
+  (interactive)
+  (if *nbm-latex-dollar-korean*
+      (setq *nbm-latex-dollar-korean* nil)
+    (setq *nbm-latex-dollar-korean* t))
+  (if *nbm-latex-dollar-korean*
+      (message (format "Now toggle input-korean when $ is typed."))
+    (message (format "Now do not toggle input-korean when $ is typed."))))

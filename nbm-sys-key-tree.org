@@ -243,6 +243,7 @@
 *** key: w, description: debug warnings, function: TeX-toggle-debug-warnings, level: 3
 *** key: S, description: Solutions, function: nbm-latex-toggle-solutions, level: 3
 *** key: $, description: dollar signs, function: nbm-latex-toggle-dollars, level: 3
+*** key: K, description: toggle-dollar-korean, function: nbm-latex-toggle-dollar-korean, level: 3
 ** key: y, description: yank, level: 3
 *** key: f, description: make-and-yank-filename, function: nbm-latex-make-and-yank-filename, level: 3
 * description: org-mode, level: 1
