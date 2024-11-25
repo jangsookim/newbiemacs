@@ -381,6 +381,8 @@
         (insert "\\(  \\)")
         (backward-char 3))))
 
+  (setq default-input-method "korean-hangul")
+  (global-set-key "\M-i" 'toggle-input-method)
 
 #+end_src
 
