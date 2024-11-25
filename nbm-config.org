@@ -368,7 +368,8 @@
   (defun TeX-insert-dollar ()
     "Customized version."
     (interactive)
-    (toggle-input-method)
+    (when *nbm-latex-dollar-korean*
+      (toggle-input-method))
     (if (texmathp)
         (progn
           (if (looking-back "\\\\( ")
