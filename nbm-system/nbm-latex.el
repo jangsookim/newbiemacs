@@ -1928,12 +1928,25 @@ Assisted by ChatGPT."
   (let ((current-prefix-arg 1)) ; Simulate C-u 1
     (call-interactively 'reftex-toc)))
 
-(defun nbm-latex-toggle-dollar-korean ()
-  "Toggle *nbm-latex-dollar-korean*."
+(defun nbm-TeX-insert-dollar ()
+  "Customized version."
   (interactive)
-  (if *nbm-latex-dollar-korean*
-      (setq *nbm-latex-dollar-korean* nil)
-    (setq *nbm-latex-dollar-korean* t))
-  (if *nbm-latex-dollar-korean*
-      (message (format "Now toggle input-korean when $ is typed."))
-    (message (format "Now do not toggle input-korean when $ is typed."))))
+  (if (texmathp)
+      (progn
+        (if (and (looking-back "\\\\( ") (looking-at " \\\\)"))
+            (progn
+              (nbm-latex-toggle-inline-math)
+              (next-line) (insert "  \n") (backward-char))
+          (progn
+	    (when (and *nbm-latex-dollar-korean* (not evil-input-method))
+		  (toggle-input-method))
+	    (setq *nbm-latex-dollar-korean* nil)
+	    (nbm-latex-exit-math-mode))))
+    (progn
+      (if (equal evil-input-method "korean-hangul")
+	  (progn
+	    (toggle-input-method)
+	    (setq *nbm-latex-dollar-korean* t))
+	(setq *nbm-latex-dollar-korean* nil))
+      (insert "\\(  \\)")
+      (backward-char 3))))

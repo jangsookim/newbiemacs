@@ -296,6 +296,12 @@
   (setq org-clock-mode-line-total 'today)
 #+end_src
 
+** language
+#+begin_src emacs-lisp :tangle yes
+  (setq default-input-method "korean-hangul")
+  (global-set-key "\M-i" 'toggle-input-method)
+#+end_src
+
 * evil mode
 #+begin_src emacs-lisp :tangle yes
   (evil-set-leader '(normal visual motion) (kbd "SPC"))
@@ -363,26 +369,11 @@
   (define-key evil-visual-state-map (kbd "]]") 'nbm-end-of-defun)
 
   ; Modify the behavior of TeX-insert-dollar.
-  (setq *nbm-latex-dollar-korean* nil)
 
   (defun TeX-insert-dollar ()
     "Customized version."
     (interactive)
-    (when *nbm-latex-dollar-korean* (toggle-input-method))
-    (if (texmathp)
-        (progn
-          (if (and (looking-back "\\\\( ") (looking-at " \\\\)"))
-              (progn
-                (when *nbm-latex-dollar-korean* (toggle-input-method))
-                (nbm-latex-toggle-inline-math)
-                (next-line) (insert "  \n") (backward-char))
-            (nbm-latex-exit-math-mode)))
-      (progn
-        (insert "\\(  \\)")
-        (backward-char 3))))
-
-  (setq default-input-method "korean-hangul")
-  (global-set-key "\M-i" 'toggle-input-method)
+    (nbm-TeX-insert-dollar))
 
 #+end_src
 
