@@ -1311,11 +1311,12 @@ If NEWEST is non-nil, automatically choose the newest pdf."
 	(setq temp (substring temp 1 nil)))
       (if (equal (substring temp 0 1) "@") (setq mathscinet t))
       (setq temp (split-string temp "\n"))
-      (when mathscinet
-	(setq file-name (nbm-mathscinet-make-filename)))
-      (if (> (length temp) 1)
-	  (setq file-name (nbm-arxiv-make-filename))
-	(setq file-name (file-name-nondirectory pdf)))
+      (cond (mathscinet
+	     (setq file-name (nbm-mathscinet-make-filename)))
+	    ((> (length temp) 1)
+	     (setq file-name (nbm-arxiv-make-filename)))
+	    (t
+	     (setq file-name (file-name-nondirectory pdf))))
       (setq file-name (string-replace "/" "-" file-name))
       (setq file-name (read-string "Enter a suitable file name: " file-name))
       (setq choice (read-char (format "Move \"%s\"\ninto \"%s\"\nunder the following name?\n%s\n\n(Type y for yes)."
