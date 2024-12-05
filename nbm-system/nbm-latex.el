@@ -1941,8 +1941,9 @@ Assisted by ChatGPT."
       (progn
         (if (and (looking-back "\\\\( ") (looking-at " \\\\)"))
             (progn
-              (nbm-latex-toggle-inline-math)
-              (next-line) (insert "  \n") (backward-char)
+              (undo)
+              (insert "\\[\n\n\\]\n") (previous-line) (indent-for-tab-command)
+              (previous-line) (indent-for-tab-command)
 	      (texmathp) (setq *nbm-latex-dollar-beginning* texmathp-why))
           (progn
 	    (texmathp)
