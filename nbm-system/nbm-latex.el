@@ -1942,6 +1942,7 @@ Assisted by ChatGPT."
         (if (and (looking-back "\\\\( ") (looking-at " \\\\)"))
             (progn
               (undo)
+	      (unless (looking-back "^[ \t]*") (insert "\n") (indent-for-tab-command))
               (insert "\\[\n\n\\]\n") (previous-line) (indent-for-tab-command)
               (previous-line) (indent-for-tab-command)
 	      (texmathp) (setq *nbm-latex-dollar-beginning* texmathp-why))
