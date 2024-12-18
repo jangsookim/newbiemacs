@@ -300,6 +300,8 @@
 #+begin_src emacs-lisp :tangle yes
   (setq default-input-method "korean-hangul")
   (global-set-key "\M-i" 'toggle-input-method)
+  (define-key isearch-mode-map "\M-i" 'isearch-toggle-input-method)
+
 #+end_src
 
 * evil mode
@@ -374,6 +376,11 @@
     "Customized version."
     (interactive)
     (nbm-TeX-insert-dollar))
+
+  (eval-after-load "tex"
+    '(add-to-list 'TeX-command-list
+                  '("XeLaTeX" "xelatex -shell-escape -interaction nonstopmode %s"
+                    TeX-run-command nil t :help "Run XeLaTeX")))
 
 #+end_src
 
