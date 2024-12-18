@@ -302,6 +302,15 @@
   (global-set-key "\M-i" 'toggle-input-method)
   (define-key isearch-mode-map "\M-i" 'isearch-toggle-input-method)
 
+  (defun nbm-isearch-edit-string ()
+    "Automatically use the minibuffer for entering the search string."
+    (interactive)
+    (isearch-mode t) ;; Start isearch
+    (isearch-edit-string)) ;; Immediately enter edit mode
+
+  (global-set-key (kbd "C-s") 'nbm-isearch-edit-string)
+  (global-set-key (kbd "C-r") 'nbm-isearch-edit-string)
+
 #+end_src
 
 * evil mode
