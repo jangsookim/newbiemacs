@@ -300,16 +300,13 @@
 #+begin_src emacs-lisp :tangle yes
   (setq default-input-method "korean-hangul")
   (global-set-key "\M-i" 'toggle-input-method)
-  (define-key isearch-mode-map "\M-i" 'isearch-toggle-input-method)
+  (define-key isearch-mode-map "\M-i" 'nbm-isearch-toggle-input-method)
 
-  (defun nbm-isearch-edit-string ()
-    "Automatically use the minibuffer for entering the search string."
+  (defun nbm-isearch-toggle-input-method ()
+    "Toggle-input-method in isearch."
     (interactive)
-    (isearch-mode t) ;; Start isearch
-    (isearch-edit-string)) ;; Immediately enter edit mode
-
-  (global-set-key (kbd "C-s") 'nbm-isearch-edit-string)
-  (global-set-key (kbd "C-r") 'nbm-isearch-edit-string)
+    (isearch-edit-string)
+    (isearch-toggle-input-method))
 
 #+end_src
 
