@@ -872,7 +872,7 @@ If AUTO is non-nil, create an automatic label."
       (setq key (buffer-substring beg end))
       (find-file (nbm-f "nbm-user-settings/references/ref.bib"))
       (beginning-of-buffer)
-      (search-forward (format "{%s," key))
+      (re-search-forward (format "@[a-z]+{%s," key))
       (beginning-of-line)
       (setq beg (point))
       (search-forward "{") (backward-char) (forward-sexp)
