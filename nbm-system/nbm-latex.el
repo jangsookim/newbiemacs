@@ -872,10 +872,10 @@ If AUTO is non-nil, create an automatic label."
       (setq key (buffer-substring beg end))
       (find-file (nbm-f "nbm-user-settings/references/ref.bib"))
       (beginning-of-buffer)
-      (re-search-forward (format "@[a-z]+{%s," key))
+      (re-search-forward (format "@[a-z ]+{%s," key) nil t)
       (beginning-of-line)
       (setq beg (point))
-      (search-forward "{") (backward-char) (forward-sexp)
+      (search-forward "{" nil t) (backward-char) (forward-sexp)
       (setq end (point))
       (setq item (buffer-substring beg end))
       (kill-buffer)
@@ -890,6 +890,40 @@ If AUTO is non-nil, create an automatic label."
 	(insert (format "\n%s" item))
 	(save-buffer) (kill-buffer)
 	(message (format "Add the bib item to %s." local))))))
+
+(defun nbm-latex-bibtex ()
+  "Run helm-bibtex."
+  (interactive)
+  (let (main-bib)
+    (save-excursion
+      (beginning-of-buffer)
+      (when (search-forward "nbm-user-settings/references/ref.bib" nil t)
+	(setq main-bib t)))
+    (if main-bib
+	(helm-bibtex t)
+      (helm-bibtex-with-local-bibliography))))
+
+(defun nbm-latex-toggle-bib-file ()
+  "Toggle the bib file between the default one and the local one."
+  (interactive)
+  (let (bib-file bib-files local)
+    (save-excursion
+      (beginning-of-buffer)
+      (if (search-forward "nbm-user-settings/references/ref.bib" nil t)
+	  (progn
+	    (setq bib-files (directory-files "." t "[.]bib$"))
+	    (if (equal (length bib-files) 1)
+		(setq local (car bib-files))
+	      (setq local (completing-read "Choose the bib file." bib-files)))
+	    (setq bib-file (file-name-nondirectory local)))
+	(setq bib-file *nbm-latex-bib-file*))
+      (end-of-buffer)
+      (search-backward "\\bibliography{" nil t)
+      (zap-to-char 1 ?\})
+      (insert (format "\\bibliography{%s}" (string-replace " " "-" bib-file)))
+      (if local
+	  (message "Now use the local bib file.")
+	(message "Now use the default bib file.")))))
 
 (defun nbm-latex-toggle-bbl-file ()
   "Insert the bib file or remove it.
@@ -1041,24 +1075,6 @@ If there is a space in the path, replace it by a dash."
 	  (beginning-of-buffer)
 	  (search-forward (car duplicated)))
       (message "No duplicated items."))))
-
-(defun nbm-latex-toggle-bib-file ()
-  "Toggle the bib file between the default one and the local one."
-  (interactive)
-  (if *nbm-latex-use-local-bib-file*
-      (progn
-	(setq *nbm-latex-use-local-bib-file* nil)
-	(message "Now use the default bib file."))
-    (progn
-      (setq *nbm-latex-use-local-bib-file* t)
-      (message "Now use the local bib file."))))
-
-(defun nbm-latex-bibtex ()
-  "Run helm-bibtex."
-  (interactive)
-  (if *nbm-latex-use-local-bib-file*
-      (helm-bibtex-with-local-bibliography)
-    (helm-bibtex)))
 
 (defun nbm-latex-set-includegraphics-scale ()
   "Set the scale factor of includegraphics."
