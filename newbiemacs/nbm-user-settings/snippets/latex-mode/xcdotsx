@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: x cdots x
+# key: **
+# --
+\\times \\cdots \\times 

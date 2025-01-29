@@ -853,7 +853,7 @@ If AUTO is non-nil, create an automatic label."
       (while bibitem-list
 	(setq bibitem (pop bibitem-list))
 	(beginning-of-buffer)
-	(when (search-forward (format "{%s," bibitem) nil t)
+	(when (re-search-forward (format "@[a-z ]+{%s," bibitem) nil t)
 	  (beginning-of-line) (setq beg (point))
 	  (search-forward "{") (backward-char) (forward-sexp) (setq end (point))
 	  (setq new-bib-str (concat new-bib-str (buffer-substring beg end) "\n\n"))))
