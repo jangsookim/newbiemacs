@@ -1144,6 +1144,20 @@ If QUICK is non-nil, use the default options."
   (interactive)
   (nbm-latex-insert-figure nil t))
 
+(defun nbm-latex-jump-to-figure-directory ()
+  "Jump to the directory of the current figure file."
+  (interactive)
+  (save-excursion
+    (let (file dir beg end)
+      (search-backward "{")
+      (setq beg (1+ (point)))
+      (search-forward "}")
+      (setq end (1- (point)))
+      (setq file (buffer-substring beg end))
+      (setq dir (file-name-directory file))
+      (find-file dir) (revert-buffer) (goto-char (point-min)) 
+      (search-forward (file-name-nondirectory file)))))
+
 ;; converting code
 
 (defun nbm-latex-toggle-pgml ()
