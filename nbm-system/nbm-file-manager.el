@@ -21,6 +21,8 @@ EXT should be pdf, tex, el, or sage."
     (unless (equal ext "pdf")
       (setq file-list (nbm-sort-files-by-modified-time file-list)))
     (setq file-list (mapcar (lambda (arg) (cons (substring arg (length dir) nil) arg)) file-list))
+    (when (member ext '("tex" "pdf"))
+      (setq file-list (cons (nbm-f ext) file-list)))
     (helm :sources (helm-build-sync-source "find-file"
 		     :candidates file-list
 		     :action 'helm-type-file-actions)
