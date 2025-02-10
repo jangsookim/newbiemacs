@@ -228,6 +228,7 @@
 **** key: s, description: tikz-set-partition, function: nbm-tikz-set-partition, level: 1
 **** key: l, description: tikz-lattice-path, function: nbm-tikz-lattice-path, level: 1
 ** key: t, description: toggle/change, level: 1
+*** key: =, description: LHS and RHS, function:nbm-latex-toggle-LHS-RHS, level: 2
 *** key: ", description: double quotes, function: nbm-latex-toggle-double-quotes, level: 2
 *** key: e, description: equation, function: nbm-latex-toggle-equation, level: 1
 *** key: a, description: align, function: nbm-latex-toggle-align, level: 2
