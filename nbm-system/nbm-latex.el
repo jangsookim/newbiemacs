@@ -248,7 +248,9 @@ includes the environment macro."
 	  (if (member type '("\\(" "\\["))
 	      (setq beg (+ beg 2) end (- end 2))
 	    (progn
-	      (goto-char beg) (search-forward "}") (setq beg (point))
+	      (goto-char beg) (search-forward "}")
+	      (when (search-forward "\\label" end t) (search-forward "}"))
+	      (setq beg (point))
 	      (goto-char end) (search-backward "\\") (setq end (point))))
 	  (if (member (buffer-substring beg (1+ beg)) '("\n" " "))
 	      (setq beg (1+ beg)))
@@ -707,10 +709,10 @@ There must be exactly one equality = or an inequality, e.g., >,< \\le, \\ge, etc
   (save-excursion
     (let (LHS RHS LHS-beg LHS-end RHS-beg RHS-end beg end num center)
       (when (texmathp)
-	(setq beg (nth 1 (nbm-latex-find-math-mode t)))
-	(setq end (nth 2 (nbm-latex-find-math-mode t)))
+	(setq beg (nth 1 (nbm-latex-find-math-mode nil)))
+	(setq end (nth 2 (nbm-latex-find-math-mode nil)))
 	(setq num 0)
-	(goto-char (+ beg 2))
+	(goto-char beg)
 	(while (re-search-forward "(\\|{\\|=\\|<\\|>\\|\\\\le\\|\\\\ge" end t)
 	  (if (looking-back "(\\|{")
 	      (progn
@@ -723,7 +725,7 @@ There must be exactly one equality = or an inequality, e.g., >,< \\le, \\ge, etc
 	      (setq center (1- (point))))))
 	(if (equal num 1)
 	    (progn
-	      (goto-char (+ beg 2))
+	      (goto-char beg)
 	      (re-search-forward "[^ \t\n]") (backward-char)
 	      (setq LHS-beg (point))
 	      (goto-char center)
@@ -737,7 +739,7 @@ There must be exactly one equality = or an inequality, e.g., >,< \\le, \\ge, etc
 	      (forward-char)
 	      (re-search-forward "[^ \t\n]") (backward-char)
 	      (setq RHS-beg (point))
-	      (goto-char (- end 2))
+	      (goto-char end)
 	      (re-search-backward "[^ \t\n,.]")
 	      (setq RHS-end (1+ (point)))
 	      (setq LHS (buffer-substring LHS-beg LHS-end))
