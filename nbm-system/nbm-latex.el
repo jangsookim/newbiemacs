@@ -716,12 +716,11 @@ There must be exactly one equality = or an inequality, e.g., >,< \\le, \\ge, etc
 	(while (re-search-forward "(\\|{\\|=\\|<\\|>\\|\\\\le\\|\\\\ge" end t)
 	  (if (looking-back "(\\|{")
 	      (progn
-		(backward-char) (forward-sexp))
+		(backward-char) (nbm-latex-evil-jump-item))
 	    (progn
 	      (setq num (1+ num))
 	      (unless (looking-back "=\\|>\\|<")
-		(search-backward "\\")
-		(forward-char))
+		(search-backward "\\") (forward-char))
 	      (setq center (1- (point))))))
 	(if (equal num 1)
 	    (progn
