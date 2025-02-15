@@ -1614,6 +1614,30 @@ Prompt for a label (with completion) and jump to the location of this label."
       (goto-char where))
     (reftex-unhighlight 0)))
 
+(defun nbm-latex-find-first-unresolved-reference ()
+  "Search the TeX log for the first unresolved reference and jump to it."
+  (interactive)
+  (let (line beg end label log-file)
+    (setq log-file (concat (file-name-sans-extension (buffer-file-name)) ".log"))
+    (if (file-exists-p log-file)
+        (progn
+          (find-file log-file)
+          (beginning-of-buffer)
+          (when (re-search-forward "undefined on input line \\([0-9]+\\)" nil t)
+	    (setq line (string-to-number (match-string 1)))
+            (search-backward "'") (setq end (point))
+            (beginning-of-line)
+            (search-forward "`") (setq beg (point))
+            (setq label (buffer-substring beg end)))
+          (kill-this-buffer)
+	  (message "No unresolved references found.")
+          (if line
+	      (progn
+		(goto-line line) (beginning-of-line)
+		(search-forward (format "{%s}" label)))
+	    (message "No unresolved references found.")))
+      (message "Log file not found. Compile the document first."))))
+
 (defvar *nbm-latex-compile-section* nil)
 
 (defun nbm-latex-compile ()
