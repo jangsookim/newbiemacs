@@ -253,6 +253,7 @@
 ** key: [, description: add to agenda, function: nbm-org-agenda-add, level: 1
 ** key: ], description: remove from agenda, function: nbm-org-agenda-remove, level: 1
 ** key: /, function: org-sparse-tree, level: 1
+** key: #, description: set-tags, function: org-set-tags-command, level: 2
 ** key: a, description: org-archive, level: 3
 *** key: t, description: subtree, function: org-archive-subtree, level: 3
 *** key: s, description: sibling, function: org-archive-to-archive-sibling, level: 3
