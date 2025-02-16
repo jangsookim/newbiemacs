@@ -1,10 +1,11 @@
 (defun nbm-theme-change ()
   "Change theme"
   (interactive)
-  (let (theme)
+  (let (theme themes)
+    (setq themes (remove 'spacemacs (custom-available-themes)))
     (setq theme (completing-read (format "Choose theme (current theme is %s): "
 					 (nbm-get-user-variable "theme"))
-				 (custom-available-themes) nil t))
+				 themes nil t))
     (nbm-set-user-variable "theme" theme)
     (load-theme (intern theme) t)))
 
