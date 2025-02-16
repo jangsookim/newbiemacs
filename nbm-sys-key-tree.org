@@ -145,6 +145,9 @@
 *** key: r, description: reload, function: newbie-reload, level: 2
 *** key: s, description: settings, function: newbie-setting, level: 2
 *** key: l, description: Set User Level, function: nbm-set-user-level, level: 2
+*** key: T, description: Themes, level: 2
+**** key: c, description: Change theme, function: nbm-theme-change, level: 2
+**** key: ?, description: Help, function: nbm-theme-help, level: 2
 *** key: u, description: update Newbiemacs, function: nbm-update-newbiemacs, level: 2
 *** key: w, description: set default browser, function: nbm-set-default-browser, level: 2
 ** key: Y, description: yasnippet, level: 2

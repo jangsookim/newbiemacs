@@ -215,17 +215,23 @@
 #+end_src
 ** appearance
 #+begin_src emacs-lisp :tangle yes
-  (use-package spacemacs-theme :defer t
-    :init (load-theme 'spacemacs-dark t))
+  ;; (use-package spacemacs-theme :defer t
+  ;;   :init (load-theme 'spacemacs-dark t))
 
-  (use-package spaceline)
+  ;; (use-package spaceline)
+
+  (unless (nbm-get-user-variable "theme")
+    (nbm-set-user-variable "theme" "spacemacs-dark"))
+
+  (load-theme (intern (nbm-get-user-variable "theme")) t)
 
   (use-package anzu :diminish anzu-mode
     :init
     (global-anzu-mode +1)
-    (setq anzu-cons-mode-line-p nil)
-    (custom-set-faces
-     `(lazy-highlight ((t (:foreground "#Ffd60a" :background "#Ff3e96"))))))
+    (setq anzu-cons-mode-line-p t)
+    ;; (custom-set-faces
+    ;;  `(lazy-highlight ((t (:foreground "#Ffd60a" :background "#Ff3e96")))))
+    )
 
   ;; (use-package rainbow-delimiters :diminish rainbow-delimiters-mode
   ;;   :init
@@ -247,7 +253,7 @@
   (set-face-attribute 'default nil :height 150)
   (setq ring-bell-function 'ignore)
   (setq resize-mini-windows t)
-  (set-cursor-color "LightGreen")
+  ;; (set-cursor-color "LightGreen")
 
   (setq inhibit-startup-screen t)
 
@@ -255,20 +261,20 @@
 
 ** mode line
 #+begin_src emacs-lisp :tangle yes
-  (spaceline-spacemacs-theme)
-  (spaceline-helm-mode)
-  (spaceline-info-mode)
-  (setq winum-auto-setup-mode-line nil)
+  ;; (spaceline-spacemacs-theme)
+  ;; (spaceline-helm-mode)
+  ;; (spaceline-info-mode)
+  ;; (setq winum-auto-setup-mode-line nil)
 
-  (setq mode-line-position (list "(%l,%c)"))
-  (setq display-time-mode t)
-  (setq size-indication-mode t)
-  (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
-  (spaceline-toggle-input-method-on)
-  (spaceline-toggle-version-control-off)
-  (spaceline-toggle-buffer-encoding-abbrev-off)
-  (setq spaceline-org-clock-p t)
-  (setq org-clock-mode-line-total 'today)
+  ;; (setq mode-line-position (list "(%l,%c)"))
+  ;; (setq display-time-mode t)
+  ;; (setq size-indication-mode t)
+  ;; (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
+  ;; (spaceline-toggle-input-method-on)
+  ;; (spaceline-toggle-version-control-off)
+  ;; (spaceline-toggle-buffer-encoding-abbrev-off)
+  ;; (setq spaceline-org-clock-p t)
+  ;; (setq org-clock-mode-line-total 'today)
 #+end_src
 
 ** tab-line-mode
