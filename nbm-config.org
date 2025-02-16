@@ -259,24 +259,6 @@
 
 #+end_src
 
-** mode line
-#+begin_src emacs-lisp :tangle yes
-  ;; (spaceline-spacemacs-theme)
-  ;; (spaceline-helm-mode)
-  ;; (spaceline-info-mode)
-  ;; (setq winum-auto-setup-mode-line nil)
-
-  ;; (setq mode-line-position (list "(%l,%c)"))
-  ;; (setq display-time-mode t)
-  ;; (setq size-indication-mode t)
-  ;; (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
-  ;; (spaceline-toggle-input-method-on)
-  ;; (spaceline-toggle-version-control-off)
-  ;; (spaceline-toggle-buffer-encoding-abbrev-off)
-  ;; (setq spaceline-org-clock-p t)
-  ;; (setq org-clock-mode-line-total 'today)
-#+end_src
-
 ** tab-line-mode
 #+begin_src emacs-lisp :tangle yes
   (global-tab-line-mode)
