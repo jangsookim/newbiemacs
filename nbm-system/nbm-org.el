@@ -488,3 +488,26 @@ If a region is seleted, do nbm-org-reveal-region instead."
       (text-mode))
     (org-mode)
     (when buf (switch-to-buffer buf))))
+
+(defun nbm-org-roam-get-filetags ()
+  "Get Org-roam file tags for the current buffer."
+  (let (tags)
+    (setq tags (substring (cadar (org-collect-keywords '("filetags"))) 1 -1))
+    (when tags
+      (split-string tags ":"))))
+
+(defun nbm-org-roam-tag-add ()
+  "Add a tag in the current org file."
+  (interactive)
+  (save-excursion
+    (let (tag)
+      (setq tag (completing-read "Enter a tag to add: " (org-roam-tag-completions)))
+      (org-roam-tag-add (list tag)))))
+
+(defun nbm-org-roam-tag-remove ()
+  "Remove a tag in the current org file."
+  (interactive)
+  (save-excursion
+    (let (tag)
+      (setq tag (completing-read "Choose a tag to remove: " (nbm-org-roam-get-filetags)))
+      (org-roam-tag-remove (list tag)))))

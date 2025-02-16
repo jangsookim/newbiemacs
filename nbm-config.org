@@ -438,6 +438,7 @@
 #+begin_src emacs-lisp :tangle yes
   (when (package-installed-p 'org-roam)
     (setq org-roam-directory (concat *nbm-home* "org/"))
+    (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:15}" 'face 'org-tag)))
     (org-roam-db-autosync-mode)
     (setq org-roam-capture-templates '(("d" "default" plain "%?"
                                         :target (file+head "${slug}.org"
