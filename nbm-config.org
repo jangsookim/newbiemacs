@@ -63,11 +63,6 @@
     (add-to-list 'warning-suppress-types '(yasnippet backquote-change))
     (yas-global-mode 1) (yas-reload-all))
 
-  (use-package spacemacs-theme :defer t
-    :init (load-theme 'spacemacs-dark t))
-
-  (use-package spaceline)
-
   (use-package which-key :diminish which-key-mode
     :init
     (setq which-key-sort-order 'which-key-key-order-alpha)
@@ -83,7 +78,8 @@
     (set-face-attribute 'which-key-group-description-face nil
                         :foreground "Deepskyblue1")
     (set-face-attribute 'which-key-note-face nil
-                        :foreground "Mediumpurple1"))
+                        :foreground "Mediumpurple1")
+    )
 #+end_src
 
 ** Additional Package
@@ -111,11 +107,6 @@
 
   (use-package evil-nerd-commenter)
 
-  (use-package undo-tree :diminish undo-tree-mode
-    :init
-    (evil-set-undo-system 'undo-tree)
-    (global-undo-tree-mode 1))
-
   (use-package company :diminish company-mode
     :init (global-company-mode))
 
@@ -142,19 +133,6 @@
             map))
     (winum-mode))
 
-  (use-package anzu :diminish anzu-mode
-    :init
-    (global-anzu-mode +1)
-    (setq anzu-cons-mode-line-p nil)
-    (custom-set-faces
-     `(lazy-highlight ((t (:foreground "#Ffd60a" :background "#Ff3e96"))))))
-
-  (use-package rainbow-delimiters :diminish rainbow-delimiters-mode
-    :init
-    (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode) ; coloring nested parentheses
-    (add-hook 'python-mode-hook #'rainbow-delimiters-mode)
-    (add-hook 'LaTeX-mode-hook #'rainbow-delimiters-mode))
-
   (use-package smartparens :diminish smartparens-mode
     :init
     (require 'smartparens-config)
@@ -162,9 +140,6 @@
 
   (use-package valign :diminish valign-mode
     :init (add-hook 'org-mode-hook #'valign-mode))
-
-  (use-package beacon :diminish beacon-mode
-    :init (beacon-mode 1))
 
   (use-package avy
     :init
@@ -240,8 +215,29 @@
 #+end_src
 ** appearance
 #+begin_src emacs-lisp :tangle yes
-  (global-visual-line-mode)
-  (global-hl-line-mode)
+  (use-package spacemacs-theme :defer t
+    :init (load-theme 'spacemacs-dark t))
+
+  (use-package spaceline)
+
+  (use-package anzu :diminish anzu-mode
+    :init
+    (global-anzu-mode +1)
+    (setq anzu-cons-mode-line-p nil)
+    (custom-set-faces
+     `(lazy-highlight ((t (:foreground "#Ffd60a" :background "#Ff3e96"))))))
+
+  ;; (use-package rainbow-delimiters :diminish rainbow-delimiters-mode
+  ;;   :init
+  ;;   (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode) ; coloring nested parentheses
+  ;;   (add-hook 'python-mode-hook #'rainbow-delimiters-mode)
+  ;;   (add-hook 'LaTeX-mode-hook #'rainbow-delimiters-mode))
+
+  ;; (use-package beacon :diminish beacon-mode
+  ;;   :init (beacon-mode 1))
+
+  ;; (global-visual-line-mode)
+  ;; (global-hl-line-mode)
 
   (setq max-mini-window-height 0.8)
 
@@ -255,6 +251,24 @@
 
   (setq inhibit-startup-screen t)
 
+#+end_src
+
+** mode line
+#+begin_src emacs-lisp :tangle yes
+  (spaceline-spacemacs-theme)
+  (spaceline-helm-mode)
+  (spaceline-info-mode)
+  (setq winum-auto-setup-mode-line nil)
+
+  (setq mode-line-position (list "(%l,%c)"))
+  (setq display-time-mode t)
+  (setq size-indication-mode t)
+  (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
+  (spaceline-toggle-input-method-on)
+  (spaceline-toggle-version-control-off)
+  (spaceline-toggle-buffer-encoding-abbrev-off)
+  (setq spaceline-org-clock-p t)
+  (setq org-clock-mode-line-total 'today)
 #+end_src
 
 ** tab-line-mode
@@ -278,22 +292,12 @@
   (setq tab-line-tab-name-truncated-max 15)
 #+end_src
 
-** mode line
+** undo-tree
 #+begin_src emacs-lisp :tangle yes
-  (spaceline-spacemacs-theme)
-  (spaceline-helm-mode)
-  (spaceline-info-mode)
-  (setq winum-auto-setup-mode-line nil)
-
-  (setq mode-line-position (list "(%l,%c)"))
-  (setq display-time-mode t)
-  (setq size-indication-mode t)
-  (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
-  (spaceline-toggle-input-method-on)
-  (spaceline-toggle-version-control-off)
-  (spaceline-toggle-buffer-encoding-abbrev-off)
-  (setq spaceline-org-clock-p t)
-  (setq org-clock-mode-line-total 'today)
+  (use-package undo-tree :diminish undo-tree-mode
+    :init
+    (evil-set-undo-system 'undo-tree)
+    (global-undo-tree-mode 1))
 #+end_src
 
 ** language
