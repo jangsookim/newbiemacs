@@ -205,7 +205,7 @@
 ** appearance
 #+begin_src emacs-lisp :tangle yes
   (use-package doom-themes)
-  (use-package spacemacs-theme)
+  ;; (use-package spacemacs-theme)
   (unless (nbm-get-user-variable "theme")
     (nbm-set-user-variable "theme" "doom-one"))
 
