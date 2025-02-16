@@ -351,12 +351,13 @@ If the filename has [...], change it to (...)."
   "Toggle major mode between org and latex."
   (interactive)
   (let ((state evil-state))
-    (cond ((equal major-mode 'latex-mode)
-	   (when (texmathp) (nbm-latex-exit-math-mode))
-	   (org-mode))
-	  ((equal major-mode 'org-mode)
-	   (LaTeX-mode)))
-    (evil-change-state state)))
+    (when (equal (file-name-extension (buffer-file-name)) "org")
+      (cond ((equal major-mode 'LaTeX-mode)
+	     (when (texmathp) (nbm-latex-exit-math-mode))
+	     (org-mode))
+	    ((equal major-mode 'org-mode)
+	     (LaTeX-mode)))
+      (evil-change-state state))))
 
 (defun nbm-org-mac-insert-webpage ()
   "Insert a link to the webpage of the user's browser."
