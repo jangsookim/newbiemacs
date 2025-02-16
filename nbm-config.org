@@ -215,11 +215,6 @@
 #+end_src
 ** appearance
 #+begin_src emacs-lisp :tangle yes
-  ;; (use-package spacemacs-theme :defer t
-  ;;   :init (load-theme 'spacemacs-dark t))
-
-  ;; (use-package spaceline)
-
   (unless (nbm-get-user-variable "theme")
     (nbm-set-user-variable "theme" "spacemacs-dark"))
 
@@ -228,22 +223,7 @@
   (use-package anzu :diminish anzu-mode
     :init
     (global-anzu-mode +1)
-    (setq anzu-cons-mode-line-p t)
-    ;; (custom-set-faces
-    ;;  `(lazy-highlight ((t (:foreground "#Ffd60a" :background "#Ff3e96")))))
-    )
-
-  ;; (use-package rainbow-delimiters :diminish rainbow-delimiters-mode
-  ;;   :init
-  ;;   (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode) ; coloring nested parentheses
-  ;;   (add-hook 'python-mode-hook #'rainbow-delimiters-mode)
-  ;;   (add-hook 'LaTeX-mode-hook #'rainbow-delimiters-mode))
-
-  ;; (use-package beacon :diminish beacon-mode
-  ;;   :init (beacon-mode 1))
-
-  ;; (global-visual-line-mode)
-  ;; (global-hl-line-mode)
+    (setq anzu-cons-mode-line-p t))
 
   (setq max-mini-window-height 0.8)
 
