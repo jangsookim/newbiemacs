@@ -68,18 +68,7 @@
     (setq which-key-sort-order 'which-key-key-order-alpha)
     (setq which-key-idle-delay 0.1)
     (setq which-key-prefix-prefix nil)
-    (which-key-mode 1)
-    (set-face-attribute 'which-key-key-face nil
-                        :foreground "MediumSpringGreen" :weight 'bold)
-    (set-face-attribute 'which-key-separator-face nil
-                        :foreground "Antiquewhite1")
-    (set-face-attribute 'which-key-command-description-face nil
-                        :foreground "SandyBrown")
-    (set-face-attribute 'which-key-group-description-face nil
-                        :foreground "Deepskyblue1")
-    (set-face-attribute 'which-key-note-face nil
-                        :foreground "Mediumpurple1")
-    )
+    (which-key-mode 1))
 #+end_src
 
 ** Additional Package
@@ -215,8 +204,9 @@
 #+end_src
 ** appearance
 #+begin_src emacs-lisp :tangle yes
+  (use-package doom-themes)
   (unless (nbm-get-user-variable "theme")
-    (nbm-set-user-variable "theme" "spacemacs-dark"))
+    (nbm-set-user-variable "theme" "doom-one"))
 
   (load-theme (intern (nbm-get-user-variable "theme")) t)
 

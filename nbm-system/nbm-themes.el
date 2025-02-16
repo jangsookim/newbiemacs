@@ -11,24 +11,13 @@
 (defun nbm-theme-help ()
   "Show help on themes."
   (interactive)
-  (browse-url "https://emacsthemes.com/")
+  (browse-url "https://github.com/doomemacs/themes/tree/screenshots")
   (read-char "How to change themes.
-
-You can find many themes in the link below, which will be launched automatically.
-https://emacsthemes.com/
-
-First, see if your favorite theme is available by doing the following.
 
 1. Type SPC N T c
 2. Choose your favorite theme. (This will change theme for the future session.)
 3. Restart Emacs. (This is needed to avoid conflict with the current theme.)
 
-If you found your favorite theme, it's done.
-Otherwise, you first need to install it as follows.
-
-1. Type M-x package-install
-2. Enter the theme name, such as spacemacs-dark
-
-Note that some themes may not be installed in this way.
-
+You can find many themes in the link below, which will be launched automatically.
+https://github.com/doomemacs/themes/tree/screenshots
 Type any key to exit."))
