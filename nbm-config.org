@@ -216,11 +216,12 @@
     (global-anzu-mode +1)
     (setq anzu-cons-mode-line-p t))
 
-  (setq-default mode-line-format
-                (append mode-line-format
-                        '(" " (:eval (if evil-input-method
-                                         (format "[%.3s]" (upcase evil-input-method))
-                                       "")))))
+  (unless (string-match-p "evil-input-method" (format "%s" mode-line-format))
+    (setq-default mode-line-format
+                  (append mode-line-format
+                          '(" " (:eval (if evil-input-method
+                                           (format "[%.3s]" (upcase evil-input-method))
+                                         ""))))))
 
   (setq max-mini-window-height 0.8)
 
