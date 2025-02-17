@@ -90,11 +90,21 @@
     (setq buf (current-buffer))
     (kill-buffer buf)))
 
-(defun nbm-cheat-sheet ()
-  "Open Newbiemacs cheat sheet."
+(defun nbm-newbiemacs-help ()
+  "Show Newbiemacs help."
   (interactive)
-  (browse-url (format "https://jangsookim.github.io/newbiemacs/newbiemacs_cheat_sheet_%s.pdf"
-		      (nbm-get-user-variable "editing-style"))))
+  (let (choice)
+    (setq choice (read-char "Choose what you want to see:
+c) Cheat sheet
+h) Newbiemacs homepage
+m) Newbiemacs manual"))
+    (cond ((equal ?c choice)
+	   (browse-url (format "https://jangsookim.github.io/newbiemacs/newbiemacs_cheat_sheet_%s.pdf"
+			       (nbm-get-user-variable "editing-style"))))
+	  ((equal ?h choice)
+	   (browse-url "https://jangsookim.github.io/newbiemacs/newbiemacs-home.html"))
+	  ((equal ?m choice)
+	   (browse-url "https://jangsookim.github.io/newbiemacs/newbiemacs-manual.html")))))
 
 (defun nbm-change-editing-style ()
   "Change the editing style to emacs or vim."

@@ -10,7 +10,7 @@
 ** key: RET, description: bookmark, function: helm-filtered-bookmarks, level: 2
 ** key: TAB, description: Last buffer, function: evil-switch-to-windows-last-buffer, level: 2
 ** key: !, description: shell command, function: nbm-shell-commend, level: 3
-** key: ?, description: Help, function: nbm-cheat-sheet, level: 1
+** key: ?, description: Help, function: nbm-newbiemacs-help, level: 1
 ** key: ;, description: (un-)comment line, function: nbm-comment-or-uncomment-line, level: 2
 ** key: 0, description: Developer only, level: 3
 *** key: c, function: nbm-devel-config, level: 3
