@@ -215,6 +215,11 @@
     (global-anzu-mode +1)
     (setq anzu-cons-mode-line-p t))
 
+  (set-face-attribute 'isearch nil
+                      :background "Seagreen1"
+                      :foreground "black"
+                      :weight 'bold)
+
   (setq max-mini-window-height 0.8)
 
   (tool-bar-mode -1)
