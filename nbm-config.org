@@ -215,13 +215,6 @@
     (global-anzu-mode +1)
     (setq anzu-cons-mode-line-p t))
 
-  (unless (string-match-p "evil-input-method" (format "%s" mode-line-format))
-    (setq-default mode-line-format
-                  (append mode-line-format
-                          '(" " (:eval (if evil-input-method
-                                           (format "[%.3s]" (upcase evil-input-method))
-                                         ""))))))
-
   (setq max-mini-window-height 0.8)
 
   (tool-bar-mode -1)
@@ -233,6 +226,55 @@
 
   (setq inhibit-startup-screen t)
 
+#+end_src
+** mode-line
+#+begin_src emacs-lisp :tangle yes
+  (setq-default mode-line-format
+                '((:eval (format winum-format (winum-get-number-string)))
+                  (:eval (cond
+                          ((evil-insert-state-p) (propertize " I " 'face '(:foreground "black" :background "green" :weight bold)
+                                                             'help-echo "Insert mode: Editing text"))
+                          ((evil-normal-state-p) (propertize " N " 'face '(:foreground "black" :background "orange" :weight bold)
+                                                             'help-echo "Normal mode: Navigate and manipulate text"))
+                          ((evil-operator-state-p) (propertize " N " 'face '(:foreground "black" :background "orange" :weight bold)
+                                                               'help-echo "Visual mode: Select text regions"))
+                          ((evil-visual-state-p) (propertize " V " 'face '(:foreground "black" :background "grey" :weight bold)
+                                                             'help-echo "Visual mode: Select text regions"))
+                          ((evil-replace-state-p) (propertize " R " 'face '(:foreground "black" :background "red" :weight bold)
+                                                              'help-echo "Replace mode: Overwrite text"))
+                          ((evil-motion-state-p) (propertize " M " 'face '(:foreground "black" :background "purple" :weight bold)
+                                                             'help-echo "Motion mode: Read-only navigation"))
+                          ((evil-emacs-state-p) (propertize " E " 'face '(:foreground "black" :background "cyan" :weight bold)
+                                                            'help-echo "Emacs mode: Vanilla Emacs behavior"))))
+                  " "
+                  (:propertize ("" mode-line-client mode-line-modified mode-line-remote))
+                  (:eval (if defining-kbd-macro
+                             (propertize " [DEF]" 'face '(:foreground "red" :weight bold))
+                           ""))
+                  " "
+                  mode-line-buffer-identification
+                  " "
+                  mode-line-misc-info
+                  (:propertize " " display (space :align-to (- right 14)))
+                  (:eval (if evil-input-method
+                             (propertize (format "[%.2s]" (upcase evil-input-method)) 'face '(:foreground "orange" :weight bold))
+                           ""))
+                  (:propertize " " display (space :align-to (- right 10)))
+                  " %l "
+                  (:propertize " " display (space :align-to (- right 3)))
+                  (:eval
+                   (let ((pos (format-mode-line "%p")))
+                     (when (string= pos "Bottom")
+                       (setq pos "Bot"))
+                     (replace-regexp-in-string "%" "%%" (format "[%s] " pos)))) 
+                  " "))
+
+  (setq-default mode-line-buffer-identification
+                '(:eval (let ((name (buffer-name))
+                              (limit (- (frame-width) 32)))
+                          (if (> (length name) limit)
+                              (concat (substring name 0 (- limit 3)) "...")
+                            name))))
 #+end_src
 
 ** tab-line-mode
