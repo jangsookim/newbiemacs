@@ -13,8 +13,10 @@
 ** key: ?, description: Help, function: nbm-cheat-sheet, level: 1
 ** key: ;, description: (un-)comment line, function: nbm-comment-or-uncomment-line, level: 2
 ** key: 0, description: Developer only, level: 3
+*** key: c, function: nbm-devel-config, level: 3
 *** key: h, function: nbm-toggle-nbm-home, level: 3
 *** key: C, description: colors, function: helm-colors, level: 3
+*** key: K, description: Check key-bindings, function: nbm-key-tree-show-repeated-keys, level: 3
 ** key: ', description: shell, function: eshell, level: 3
 ** key: ., description: org-roam-today, function: nbm-org-roam-today, level: 2
 ** key: a, description: Applications, level: 1
@@ -76,10 +78,6 @@
 *** key: e, description: recent el, function: nbm-recent-el, level: 2
 *** key: s, description: recent sage, function: nbm-recent-sage, level: 2
 *** key: g, description: goodnotes, function: nbm-goodnotes-goto-note, level: 2
-** key: k, description: key bindings, level: 3
-*** key: s, description: sys-key-tree, function: nbm-find-sys-key-tree, level: 3
-*** key: u, description: user-key-tree, function: nbm-find-user-key-tree, level: 3
-*** key: c, description: Check key-bindings, function: nbm-key-tree-show-repeated-keys, level: 3
 ** key: m, description: find misc file, function: nbm-find-misc, level: 2
 ** key: o, description: Org-mode, level: 2
 *** key: a, description: agenda, function: org-agenda-list, level: 2

@@ -270,24 +270,12 @@ q) quit"))
       (kill-buffer buf))))
 
 (defun newbie-config ()
-  "Open one of the nbm configuration files."
+  "Open one of the user configuration files."
   (interactive)
   (let (choice)
     (setq choice (read-char "Which file do you want to open?
-e) .emacs
-i) nbm-init.el
-c) nbm-config.org
-K) nbm-sys-key-tree.org
 k) nbm-user-key-tree.org
 u) user-init.el"))
-    (if (equal choice ?e)
-	(find-file (concat (getenv "HOME") "/.emacs")))
-    (if (equal choice ?i)
-	(find-file (nbm-root-f "nbm-init.el")))
-    (if (equal choice ?K)
-	(find-file (nbm-root-f "nbm-sys-key-tree.org")))
-    (if (equal choice ?c)
-	(find-file (nbm-root-f "nbm-config.org")))
     (if (equal choice ?k)
 	(find-file (nbm-f "nbm-user-settings/user-key-tree.org")))
     (if (equal choice ?u)
