@@ -55,7 +55,7 @@ Use upper case to cycle through multiple monitors."
     (if (memq pos '(?u ?j ?i ?k ?c))
 	(setq height (/ height 2)))
     (setq width (- width 40))
-    (setq height (- height 40))
+    (setq height (- height 60))
 
     (set-frame-position (selected-frame) x y)
     (if (equal system-type 'windows-nt)

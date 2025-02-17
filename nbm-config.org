@@ -222,7 +222,6 @@
 
   (setq max-mini-window-height 0.8)
 
-  (tool-bar-mode -1)
   (setq scroll-step 1) ;; keyboard scroll one line at a time
 
   (set-face-attribute 'default nil :height 150)
@@ -280,6 +279,39 @@
                           (if (> (length name) limit)
                               (concat (substring name 0 (- limit 3)) "...")
                             name))))
+#+end_src
+** tool-bar
+#+begin_src emacs-lisp :tangle yes
+  (setq LaTeX-enable-toolbar nil)
+  (setq tool-bar-map (make-sparse-keymap))
+  (define-key tool-bar-map [font-down]
+              `(menu-item "Font size down" text-scale-decrease
+                          :image (image :type png :file ,(nbm-root-f "icons/font-down.png"))
+                          :help "Decrease fontsize"))
+  (define-key tool-bar-map [font-up]
+              `(menu-item "Font size up" text-scale-increase
+                          :image (image :type png :file ,(nbm-root-f "icons/font-up.png"))
+                          :help "Increase fontsize"))
+  (define-key tool-bar-map [torus]
+              `(menu-item "Torus" torus
+                          :image (image :type png :file ,(nbm-root-f "icons/torus.png"))
+                          :help "Torus Game!"))
+  (define-key tool-bar-map [open-foler]
+              `(menu-item "Folder" nbm-show-in-finder
+                          :image (image :type png :file ,(nbm-root-f "icons/folder.png"))
+                          :help "Open the current folder"))
+  (define-key tool-bar-map [max-window]
+              `(menu-item "maximize" delete-other-windows
+                          :image (image :type png :file ,(nbm-root-f "icons/max-win.png"))
+                          :help "Maximize window"))
+  (define-key tool-bar-map [kill]
+              `(menu-item "kill" kill-this-buffer
+                          :image (image :type png :file ,(nbm-root-f "icons/kill-win.png"))
+                          :help "Kill this buffer"))
+  (define-key tool-bar-map [newbie]
+              `(menu-item "newbie" newbie
+                          :image (image :type png :file ,(nbm-root-f "icons/newbie.png"))
+                          :help "Newbiemacs main page"))
 #+end_src
 
 ** tab-line-mode
