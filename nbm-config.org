@@ -296,7 +296,7 @@
               `(menu-item "Torus" torus
                           :image (image :type png :file ,(nbm-root-f "icons/torus.png"))
                           :help "Torus Game!"))
-  (define-key tool-bar-map [open-foler]
+  (define-key tool-bar-map [open-folder]
               `(menu-item "Folder" nbm-show-in-finder
                           :image (image :type png :file ,(nbm-root-f "icons/folder.png"))
                           :help "Open the current folder"))
@@ -304,7 +304,7 @@
               `(menu-item "maximize" delete-other-windows
                           :image (image :type png :file ,(nbm-root-f "icons/max-win.png"))
                           :help "Maximize window"))
-  (define-key tool-bar-map [kill]
+  (define-key tool-bar-map [kill-this-buffer]
               `(menu-item "kill" kill-this-buffer
                           :image (image :type png :file ,(nbm-root-f "icons/kill-win.png"))
                           :help "Kill this buffer"))
