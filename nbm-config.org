@@ -259,13 +259,12 @@
                   mode-line-buffer-identification
                   " "
                   mode-line-misc-info
-                  (:propertize " " display (space :align-to (- right 14)))
+                  (:propertize " " display (space :align-to (- right 15)))
                   (:eval (if evil-input-method
                              (propertize (format "[%.2s]" (upcase evil-input-method)) 'face '(:foreground "orange" :weight bold))
-                           ""))
-                  (:propertize " " display (space :align-to (- right 10)))
+                           "    "))
+                  (:eval (make-string (- 6 (length (format-mode-line "%l"))) ?\s))
                   " %l "
-                  (:propertize " " display (space :align-to (- right 3)))
                   (:eval
                    (let ((pos (format-mode-line "%p")))
                      (when (string= pos "Bottom")
@@ -275,7 +274,9 @@
 
   (setq-default mode-line-buffer-identification
                 '(:eval (let ((name (buffer-name))
-                              (limit (- (frame-width) 32)))
+                              (limit (- (frame-width) 26)))
+                          (when defining-kbd-macro
+                            (setq limit (- limit 6)))
                           (if (> (length name) limit)
                               (concat (substring name 0 (- limit 3)) "...")
                             name))))
