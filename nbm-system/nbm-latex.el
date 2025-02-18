@@ -908,7 +908,7 @@ If AUTO is non-nil, create an automatic label."
 	(kill-buffer)
 	(when (file-exists-p "local-ref.bib")
 	  (setq choice (read-char "There is already local-ref.bib. Do you want to replace it? (Type y for yes.)")))
-	(when (or (equal choice ?y) (not (file-exists-p "local-ref.bib")))
+	(when (or (and choice (equal choice ?y)) (not (file-exists-p "local-ref.bib")))
 	  (find-file "local-ref.bib") (erase-buffer) (insert new-bib-str)
 	  (save-buffer) (kill-buffer)
 	  (message "Created a bib file with file name: \"local-ref.bib\""))))))
