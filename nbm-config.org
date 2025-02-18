@@ -285,6 +285,10 @@
 #+begin_src emacs-lisp :tangle yes
   (setq LaTeX-enable-toolbar nil)
   (setq tool-bar-map (make-sparse-keymap))
+  (define-key tool-bar-map [help]
+              `(menu-item "help" nbm-newbiemacs-help
+                          :image (image :type png :file ,(nbm-root-f "icons/help.png"))
+                          :help "Newbiemacs help"))
   (define-key tool-bar-map [font-down]
               `(menu-item "Font size down" text-scale-decrease
                           :image (image :type png :file ,(nbm-root-f "icons/font-down.png"))
@@ -313,6 +317,22 @@
               `(menu-item "cancel" keyboard-quit
                           :image (image :type png :file ,(nbm-root-f "icons/cancel.png"))
                           :help "Cancel"))
+  (define-key tool-bar-map [gtd]
+              `(menu-item "gtd" nbm-org-gtd
+                          :image (image :type png :file ,(nbm-root-f "icons/gtd.png"))
+                          :help "Getting Things Done!"))
+  (define-key tool-bar-map [find-tex]
+              `(menu-item "tex" nbm-find-tex
+                          :image (image :type png :file ,(nbm-root-f "icons/tex.png"))
+                          :help "Find tex"))
+  (define-key tool-bar-map [find-pdf]
+              `(menu-item "pdf" nbm-find-pdf
+                          :image (image :type png :file ,(nbm-root-f "icons/pdf.png"))
+                          :help "Find pdf"))
+  (define-key tool-bar-map [arxiv]
+              `(menu-item "pdf" nbm-arxiv-add-pdf-bibtex
+                          :image (image :type png :file ,(nbm-root-f "icons/arxiv.png"))
+                          :help "Add arxiv paper to pdf folder"))
   (define-key tool-bar-map [newbie]
               `(menu-item "newbie" newbie
                           :image (image :type png :file ,(nbm-root-f "icons/newbie.png"))
