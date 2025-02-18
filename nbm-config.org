@@ -287,11 +287,11 @@
   (define-key tool-bar-map [font-down]
               `(menu-item "Font size down" text-scale-decrease
                           :image (image :type png :file ,(nbm-root-f "icons/font-down.png"))
-                          :help "Decrease fontsize"))
+                          :help "Decrease fontsize (C-x C--)"))
   (define-key tool-bar-map [font-up]
               `(menu-item "Font size up" text-scale-increase
                           :image (image :type png :file ,(nbm-root-f "icons/font-up.png"))
-                          :help "Increase fontsize"))
+                          :help "Increase fontsize (C-x C-=)"))
   (define-key tool-bar-map [torus]
               `(menu-item "Torus" torus
                           :image (image :type png :file ,(nbm-root-f "icons/torus.png"))
@@ -303,7 +303,7 @@
   (define-key tool-bar-map [max-window]
               `(menu-item "maximize" delete-other-windows
                           :image (image :type png :file ,(nbm-root-f "icons/max-win.png"))
-                          :help "Maximize window"))
+                          :help "Maximize window (<leader> w m)"))
   (define-key tool-bar-map [kill-this-buffer]
               `(menu-item "kill" kill-this-buffer
                           :image (image :type png :file ,(nbm-root-f "icons/kill-win.png"))
