@@ -4,6 +4,9 @@
 ;;  @   @ @  @ / @ @   \
 ;;  @   \@/  @ \ \@/  @@/
 
+(require 'json)
+(require 'url)
+
 (if (fboundp 'nbm-f)
     (defconst *torus-game-path* (nbm-f "nbm-user-settings/"))
   (progn
@@ -831,9 +834,7 @@ In this case you are recommended to play \"tofus\" instead.
   (let (user-name)
     (setq user-name (read-string "Game Over!\nEnter your name: " nil nil nil nil))
     (unless (equal user-name "")
-      (setq user-name (concat "\"" user-name "\""))
-      (torus-update-user-score user-name)
-      (torus-show-score-board)
+      (torus-submit-score user-name)
       )
     )
   )
@@ -842,41 +843,13 @@ In this case you are recommended to play \"tofus\" instead.
   (interactive)
   (when (string-equal major-mode "torus-mode")
     (erase-buffer)
-    (insert-file-contents (concat *torus-game-path* "torus-data/scores") nil 0 10000)
+    (torus-get-high-scores)
     (message "n: New game
 r: Restart game
 p: Pause game
 s: Score board
 c: Change color theme
 q: Quit game")))
-
-(defun torus-update-user-score (user-name)
-  "Update the score of user-name in the score file."
-  (let (update score buf)
-    (unless (file-exists-p (concat *torus-game-path* "torus-data/"))
-      (make-directory (concat *torus-game-path* "torus-data/")))
-    (find-file (format "%s/torus-data/scores" *torus-game-path*))
-    (setq buf (current-buffer))
-    (goto-char (point-min))
-    (setq update nil)
-    (while (not update)
-      (if (equal (point) (point-max))
-          (progn
-            (torus-insert-score)
-            (setq update t))
-        (progn
-          (if (and (torus-read-score) (< *torus-score* (torus-read-score)))
-              (progn
-                (next-logical-line)
-                (beginning-of-line))
-            (progn
-              (beginning-of-line)
-              (torus-insert-score)
-              (setq update t))))
-          )
-      )
-    (save-buffer) (kill-buffer buf)
-    ))
 
 (defun torus-insert-score ()
   (insert (format "%20s: Score %10d, Level: %3d, Date: %s"
@@ -893,6 +866,60 @@ q: Quit game")))
 	)
       )))
 
+(defun torus-submit-score (user-name)
+  "Submit the current user's score to the remote server."
+  (let ((url-request-method "POST")
+        (url-request-extra-headers '(("Content-Type" . "application/json")))
+        (url-request-data (json-encode `(("user" . ,user-name)
+                                         ("score" . ,*torus-score*)
+                                         ("level" . ,*torus-level*)))))
+    (url-retrieve
+      "http://localhost:5001/submit-score"
+      (lambda (status)
+        (goto-char url-http-end-of-headers)
+       (let ((response (json-read)))
+         (if (assoc 'error response)
+             (message "Failed to submit score: %s" (cdr (assoc 'error response)))
+           (message "Score submitted successfully! Fetching updated scoreboard...")
+           (torus-get-high-scores))))))
+  )
+
+(defun torus-get-user-score (user-name)
+  "Retrieve the user's higest score from the server."
+  (url-retrieve
+    (format "http://localhost:5001/user-score/%s" user-name)
+    (lambda (status)
+      (goto-char url-http-end-of-headers)
+      (let ((response (json-read)))
+        (if (assoc 'error response)
+          (message "User not found!")
+          (message "User : %s, Score : %d, Level : %d"
+                   user-name
+                   (cdr (assoc 'score response))
+                   (cdr (assoc 'level response))))))))
+
+(defun torus-get-high-scores ()
+  (url-retrieve
+   "http://localhost:5001/high-scores"
+   (lambda (_status)
+     (goto-char url-http-end-of-headers)
+     (let ((json-array-type 'list)
+           (json-object-type 'alist)
+           (json-key-type 'symbol))
+       (let ((response (json-read)))
+         (with-current-buffer (get-buffer-create "torus")
+           (let ((inhibit-read-only t))
+             (erase-buffer)
+             (insert "=== Top 10 Scores ===\n\n")
+             (if (not (listp response))
+                 (insert "Failed to fetch scores.\n")
+               (dolist (entry response)
+                 (let ((user (car entry))
+                       (alist (cadr entry)))
+                   (let ((level (cdr (assoc 'level alist)))
+                         (score (cdr (assoc 'score alist))))
+                     (insert (format "%-20s : Score %8d  |  Level %3d\n" user score level)))))
+             (pop-to-buffer (current-buffer))))))))))
 
 ;; update game
 
@@ -994,3 +1021,4 @@ q: Quit game")))
   (interactive)
   (when *torus-timer* (cancel-timer *torus-timer*))
   (kill-buffer))
+
