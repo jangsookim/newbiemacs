@@ -285,10 +285,6 @@
 #+begin_src emacs-lisp :tangle yes
   (setq LaTeX-enable-toolbar nil)
   (setq tool-bar-map (make-sparse-keymap))
-  (define-key tool-bar-map [help]
-              `(menu-item "help" nbm-newbiemacs-help
-                          :image (image :type png :file ,(nbm-root-f "icons/help.png"))
-                          :help "Newbiemacs help"))
   (define-key tool-bar-map [font-down]
               `(menu-item "Font size down" text-scale-decrease
                           :image (image :type png :file ,(nbm-root-f "icons/font-down.png"))
@@ -313,10 +309,6 @@
               `(menu-item "kill" kill-this-buffer
                           :image (image :type png :file ,(nbm-root-f "icons/kill-win.png"))
                           :help "Kill this buffer"))
-  (define-key tool-bar-map [cancel]
-              `(menu-item "cancel" keyboard-quit
-                          :image (image :type png :file ,(nbm-root-f "icons/cancel.png"))
-                          :help "Cancel"))
   (define-key tool-bar-map [find-org]
               `(menu-item "gtd" org-roam-node-find
                           :image (image :type png :file ,(nbm-root-f "icons/org.png"))
