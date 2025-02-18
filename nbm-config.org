@@ -308,6 +308,10 @@
               `(menu-item "kill" kill-this-buffer
                           :image (image :type png :file ,(nbm-root-f "icons/kill-win.png"))
                           :help "Kill this buffer"))
+  (define-key tool-bar-map [cancel]
+              `(menu-item "cancel" keyboard-quit
+                          :image (image :type png :file ,(nbm-root-f "icons/cancel.png"))
+                          :help "Cancel"))
   (define-key tool-bar-map [newbie]
               `(menu-item "newbie" newbie
                           :image (image :type png :file ,(nbm-root-f "icons/newbie.png"))
