@@ -318,7 +318,7 @@
                           :image (image :type png :file ,(nbm-root-f "icons/cancel.png"))
                           :help "Cancel"))
   (define-key tool-bar-map [find-org]
-              `(menu-item "gtd" nbm-org-roam-search
+              `(menu-item "gtd" org-roam-node-find
                           :image (image :type png :file ,(nbm-root-f "icons/org.png"))
                           :help "Find org!"))
   (define-key tool-bar-map [gtd]
