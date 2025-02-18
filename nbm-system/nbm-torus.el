@@ -164,6 +164,7 @@
 (defun torus ()
   (interactive)
   (switch-to-buffer "torus")
+  (face-remap-add-relative 'default :background "black")
   (torus-mode)
   ;; (torus-load-theme 1)
   (torus-load-theme
