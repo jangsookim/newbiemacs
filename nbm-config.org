@@ -365,8 +365,7 @@
   (defun nbm-isearch-toggle-input-method ()
     "Toggle-input-method in isearch."
     (interactive)
-    (isearch-edit-string)
-    (isearch-toggle-input-method))
+    (isearch-edit-string))
 
 #+end_src
 
