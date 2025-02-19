@@ -96,24 +96,33 @@
 
 (defun nbm-insert (color string)
   "Insert STRING with foreground color COLOR."
+  ;; (cond
+  ;;  ((equal color 1) (insert (propertize string 'font-lock-face '(:foreground "#98989d"))))
+  ;;  ((equal color 2) (insert (propertize string 'font-lock-face '(:foreground "#Ff9f0a"))))
+  ;;  ((equal color 3) (insert (propertize string 'font-lock-face '(:foreground "#Ffd60a"))))
+  ;;  ((equal color 4) (insert (propertize string 'font-lock-face '(:foreground "#Bf5af2"))))
+  ;;  ((equal color 6) (insert (propertize string 'font-lock-face '(:foreground "#32d74b"))))
+  ;;  ((equal color 7) (insert (propertize string 'font-lock-face '(:foreground "#Ff453a"))))
+  ;;  ((equal color 8) (insert (propertize string 'font-lock-face '(:foreground "#0a84ff"))))
+  ;;  ((equal color 9) (insert (propertize string 'font-lock-face '(:foreground "#Ac8e68"))))
+  ;;  ((equal color 5) (insert (propertize string 'font-lock-face '(:foreground "#Ff375f")))))
   (cond
-   ((equal color 1) (insert (propertize string 'font-lock-face '(:foreground "#98989d"))))
-   ((equal color 2) (insert (propertize string 'font-lock-face '(:foreground "#Ff9f0a"))))
-   ((equal color 3) (insert (propertize string 'font-lock-face '(:foreground "#Ffd60a"))))
-   ((equal color 4) (insert (propertize string 'font-lock-face '(:foreground "#Bf5af2"))))
-   ((equal color 6) (insert (propertize string 'font-lock-face '(:foreground "#32d74b"))))
-   ((equal color 7) (insert (propertize string 'font-lock-face '(:foreground "#Ff453a"))))
-   ((equal color 8) (insert (propertize string 'font-lock-face '(:foreground "#0a84ff"))))
-   ((equal color 9) (insert (propertize string 'font-lock-face '(:foreground "#Ac8e68"))))
-   ((equal color 5) (insert (propertize string 'font-lock-face '(:foreground "#Ff375f"))))))
+   ((equal color 1) (insert (propertize string 'font-lock-face 'diary)))
+   ((equal color 2) (insert (propertize string 'font-lock-face 'font-lock-builtin-face)))
+   ((equal color 3) (insert (propertize string 'font-lock-face 'font-lock-constant-face)))
+   ((equal color 4) (insert (propertize string 'font-lock-face 'font-lock-number-face)))
+   ((equal color 5) (insert (propertize string 'font-lock-face 'font-lock-variable-use-face)))
+   ((equal color 6) (insert (propertize string 'font-lock-face 'font-lock-regexp-face)))
+   ((equal color 7) (insert (propertize string 'font-lock-face 'font-lock-type-face)))
+   ))
 
 (defun newbie-print-version ()
   "Start newbie."
-    (nbm-insert 1 (format "%83s" "Newbiemacs 1.76")))
+    (insert (format "%83s" "Newbiemacs 1.76")))
 
 (defun newbie-print-logo ()
   "Start newbie."
-  (nbm-insert 6 "
+  (nbm-insert 7 "
   +-+    +-+ +----; +-+    +-+ +----,  +-+ +----; +-+    +-+   ,--,   +----; +----;
   |  \\   | | | +--' | |    | | | ,_, \\ | | | +--' |  \\  /  |  / __ \\  | +--' | +--'
   | . \\  | | | |    | |    | | | | | | | | | |    | . \\/ . | / /  \\ \\ | |    | |
@@ -123,30 +132,29 @@
   | |   \\  | | +--; |  /  \\  | | '-' / | | | +--; | |    | | | |  | | | +--; ;--+ |
   +-+    +-+ +----' +-+    +-+ +----'  +-+ +----' +-+    +-+ +-+  +-+ +----' '----+
 ")
-  (nbm-insert 1 "          Newbiemacs is designed for mathematicians who are new to Emacs.          \n\n"))
+  (insert "          Newbiemacs is designed for mathematicians who are new to Emacs.          \n\n"))
 
 (setq nbm-meta-key (if (equal system-type 'darwin) "Command" "Alt"))
 
 (defun newbie-print-menu ()
   "Start newbie."
-  ;; (nbm-insert 9 (format "%24s%s-Backspace : Newbiemacs screen                         \n" "" nbm-meta-key))
-  (nbm-insert 9 (format "%20s%s-o    : <leader> key (Global command)                            \n" "" nbm-meta-key))
-  (nbm-insert 9 (format "%20s%s-Enter: <localleader> key (Local command)                             \n\n" "" nbm-meta-key))
+  (insert (format "%20s%s-o    : <leader> key (Global command)                            \n" "" nbm-meta-key))
+  (insert (format "%20s%s-Enter: <localleader> key (Local command)                             \n\n" "" nbm-meta-key))
   ;; (nbm-insert 3 (format "%5s%-19s" "" "p: pdf find"))
   ;; (nbm-insert 3 (format "%5s%-19s" "" "t: tex find"))
   ;; (nbm-insert 3 (format "%5s%-33s\n" "" "F: File manager"))
-  (nbm-insert 3 (format "%5s%-19s" "" "a: arxiv paper"))
-  (nbm-insert 3 (format "%5s%-19s" "" "G: GTD"))
-  (nbm-insert 3 (format "%5s%-33s\n" "" "s: search"))
+  (nbm-insert 6 (format "%5s%-19s" "" "a: arxiv paper"))
+  (nbm-insert 6 (format "%5s%-19s" "" "G: GTD"))
+  (nbm-insert 6 (format "%5s%-33s\n" "" "s: search"))
   (nbm-insert 6 (format "%5s%-19s" "" "m: move pdf"))
   (nbm-insert 6 (format "%5s%-19s" "" "n: new tex file"))
   (nbm-insert 6 (format "%5s%-33s\n" "" "g: games"))
-  (nbm-insert 7 (format "%5s%-19s" "" "?: Help"))
-  (nbm-insert 7 (format "%5s%-19s" "" "x: settings"))
-  (nbm-insert 7 (format "%5s%-33s\n" "" "U: Update Newbiemacs"))
-  (nbm-insert 2 (format "%5s%-19s" "" "l: Set User Level"))
-  (nbm-insert 2 (format "%5s%-19s" "" "e: Set Editing Style"))
-  (nbm-insert 2 (format "%4s%-33s\n" "" "q: quit"))
+  (nbm-insert 6 (format "%5s%-19s" "" "?: Help"))
+  (nbm-insert 6 (format "%5s%-19s" "" "x: settings"))
+  (nbm-insert 6 (format "%5s%-33s\n" "" "U: Update Newbiemacs"))
+  (nbm-insert 6 (format "%5s%-19s" "" "l: Set User Level"))
+  (nbm-insert 6 (format "%5s%-19s" "" "e: Set Editing Style"))
+  (nbm-insert 6 (format "%4s%-33s\n" "" "q: quit"))
   )
 
 (defun newbie-print-all ()
@@ -176,7 +184,7 @@
   (nbm-insert 9 (format "  %-17s: %s\n" "*nbm-screenshots*" *nbm-screenshots*)))
 
 (defun newbie-print-current-file ()
-  (nbm-insert 1 (format "\n  The current file is:\n  %s" *newbie-current-file*)))
+  (insert (format "\n  The current file is:\n  %s" *newbie-current-file*)))
 
 ;; key bindings
 (defvar newbie-mode-map (make-sparse-keymap))
