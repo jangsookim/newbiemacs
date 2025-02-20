@@ -293,14 +293,6 @@
               `(menu-item "Font size up" text-scale-increase
                           :image (image :type png :file ,(nbm-root-f "icons/font-up.png"))
                           :help "Increase fontsize (C-x C-=)"))
-  (define-key tool-bar-map [torus]
-              `(menu-item "Torus" torus
-                          :image (image :type png :file ,(nbm-root-f "icons/torus.png"))
-                          :help "Torus Game!"))
-  (define-key tool-bar-map [open-folder]
-              `(menu-item "Folder" nbm-show-in-finder
-                          :image (image :type png :file ,(nbm-root-f "icons/folder.png"))
-                          :help "Open the current folder"))
   (define-key tool-bar-map [max-window]
               `(menu-item "maximize" delete-other-windows
                           :image (image :type png :file ,(nbm-root-f "icons/max-win.png"))
@@ -309,14 +301,18 @@
               `(menu-item "kill" kill-this-buffer
                           :image (image :type png :file ,(nbm-root-f "icons/kill-win.png"))
                           :help "Kill this buffer"))
+  (define-key tool-bar-map [torus]
+              `(menu-item "Torus" torus
+                          :image (image :type png :file ,(nbm-root-f "icons/torus.png"))
+                          :help "Torus Game!"))
+  (define-key tool-bar-map [open-folder]
+              `(menu-item "Folder" nbm-show-in-finder
+                          :image (image :type png :file ,(nbm-root-f "icons/folder.png"))
+                          :help "Open the current folder"))
   (define-key tool-bar-map [find-org]
               `(menu-item "gtd" org-roam-node-find
                           :image (image :type png :file ,(nbm-root-f "icons/org.png"))
-                          :help "Find org!"))
-  (define-key tool-bar-map [gtd]
-              `(menu-item "gtd" nbm-org-gtd
-                          :image (image :type png :file ,(nbm-root-f "icons/gtd.png"))
-                          :help "Getting Things Done!"))
+                          :help "Find org"))
   (define-key tool-bar-map [find-tex]
               `(menu-item "tex" nbm-find-tex
                           :image (image :type png :file ,(nbm-root-f "icons/tex.png"))
@@ -325,10 +321,6 @@
               `(menu-item "pdf" nbm-find-pdf
                           :image (image :type png :file ,(nbm-root-f "icons/pdf.png"))
                           :help "Find pdf"))
-  (define-key tool-bar-map [arxiv]
-              `(menu-item "pdf" nbm-arxiv-add-pdf-bibtex
-                          :image (image :type png :file ,(nbm-root-f "icons/arxiv.png"))
-                          :help "Add arxiv paper to pdf folder"))
   (define-key tool-bar-map [newbie]
               `(menu-item "newbie" newbie
                           :image (image :type png :file ,(nbm-root-f "icons/newbie.png"))
@@ -373,8 +365,7 @@
   (defun nbm-isearch-toggle-input-method ()
     "Toggle-input-method in isearch."
     (interactive)
-    (isearch-edit-string)
-    (isearch-toggle-input-method))
+    (isearch-edit-string))
 
 #+end_src
 
