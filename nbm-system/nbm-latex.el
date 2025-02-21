@@ -943,16 +943,11 @@ If AUTO is non-nil, create an automatic label."
 	(save-buffer) (kill-buffer)
 	(message (format "Add the bib item to %s." local))))))
 
-(defun nbm-latex-bibtex ()
-  "Run helm-bibtex."
+(defun nbm-latex-insert-citation-and-copy-from-main-to-local ()
+  "Insert a citation and copy the bib-item from the main bib file to the local one."
   (interactive)
-  (save-excursion
-    (beginning-of-buffer)
-    (if (search-forward "nbm-user-settings/references/ref.bib" nil t)
-	(helm-bibtex t)
-      (let* ((local-bib (bibtex-completion-find-local-bibliography))
-             (bibtex-completion-bibliography local-bib))
-	(helm-bibtex t local-bib)))))
+  (nbm-latex-bibtex t)
+  (nbm-latex-copy-bib-item-to-local))
 
 (defun nbm-latex-get-bib-file ()
   "Return the bibtex file for the current tex file."
