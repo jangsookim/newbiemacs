@@ -352,7 +352,7 @@ If the filename has [...], change it to (...)."
   (interactive)
   (let ((state evil-state))
     (when (equal (file-name-extension (buffer-file-name)) "org")
-      (cond ((equal major-mode 'LaTeX-mode)
+      (cond ((member major-mode (list 'LaTeX-mode 'latex-mode))
 	     (when (texmathp) (nbm-latex-exit-math-mode))
 	     (org-mode))
 	    ((equal major-mode 'org-mode)
