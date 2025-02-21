@@ -175,8 +175,7 @@
 *** key: t, description: toggle-bib-file, function: nbm-latex-toggle-bib-file, level: 2
 *** key: n, description: new bibitem, function: nbm-latex-new-bib-item, level: 1
 *** key: c, description: create bib file, function: nbm-latex-extract-bib-file, level: 2
-*** key: l, description: current bibitem to local, function: nbm-latex-copy-bib-item-to-local, level: 2
-*** key: m, description: add from main to local, function: nbm-latex-insert-citation-and-copy-from-main-to-local, level: 2
+*** key: m, description: add bibitem from main to local, function: nbm-latex-insert-citation-and-copy-from-main-to-local, level: 2
 ** key: v, description: view pdf, function: nbm-latex-view-pdf, level: 1
 ** key: c, description: copy math only, function: nbm-latex-copy-math, level: 2
 ** key: C, description: copy math with env, function: nbm-latex-copy-math-with-env, level: 2
