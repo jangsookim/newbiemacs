@@ -946,14 +946,36 @@ If AUTO is non-nil, create an automatic label."
 (defun nbm-latex-bibtex ()
   "Run helm-bibtex."
   (interactive)
-  (let (main-bib)
-    (save-excursion
-      (beginning-of-buffer)
-      (when (search-forward "nbm-user-settings/references/ref.bib" nil t)
-	(setq main-bib t)))
-    (if main-bib
+  (save-excursion
+    (beginning-of-buffer)
+    (if (search-forward "nbm-user-settings/references/ref.bib" nil t)
 	(helm-bibtex t)
-      (helm-bibtex-with-local-bibliography))))
+      (let* ((local-bib (bibtex-completion-find-local-bibliography))
+             (bibtex-completion-bibliography local-bib))
+	(helm-bibtex t local-bib)))))
+
+(defun nbm-latex-get-bib-file ()
+  "Return the bibtex file for the current tex file."
+  (save-excursion
+    (let (bib-file beg end)
+      (beginning-of-buffer)
+      (when (re-search-forward "^[^%]*\\\\bibliography{" nil t)
+	(setq beg (point))
+	(backward-char) (forward-sexp) (backward-char)
+	(setq end (point))
+	(setq bib-file (buffer-substring beg end))
+	(unless (string-search "nbm-user-settings/references/ref.bib" bib-file)
+	  (setq bib-file (concat (file-name-directory (buffer-file-name)) bib-file)))
+	bib-file))))
+
+(defun nbm-latex-bibtex (&optional main)
+  "Run helm-bibtex."
+  (interactive)
+  (let (bib-file bibtex-completion-bibliography)
+    (unless main
+      (setq bib-file (nbm-latex-get-bib-file))
+      (setq bibtex-completion-bibliography bib-file))
+    (helm-bibtex)))
 
 (defun nbm-latex-toggle-bib-file ()
   "Toggle the bib file between the default one and the local one."
