@@ -62,7 +62,7 @@
 (defvar *nbm-screenshots*)
 (defvar *newbie-current-file*)
 
-(setq *nbm-home* (with-temp-buffer (insert-file-contents (concat (getenv "HOME") "/nbm-root/nbm-home.txt"))
+(defvar *nbm-home* (with-temp-buffer (insert-file-contents (concat (getenv "HOME") "/nbm-root/nbm-home.txt"))
 					 (beginning-of-buffer) (end-of-line)
 					 (buffer-substring (point-min) (point))))
 
@@ -70,9 +70,9 @@
 
 (setq *nbm-home* (replace-regexp-in-string "\\\\" "/" *nbm-home*))
 
-(setq *nbm-pdf* (concat *nbm-home* "pdf/"))
+(defvar *nbm-pdf* (concat *nbm-home* "pdf/"))
 
-(setq *nbm-desktop*
+(defvar *nbm-desktop*
   (with-temp-buffer
     (insert-file-contents (concat *nbm-home* "nbm-user-settings/nbm-variables/nbm-desktop.txt"))
     (beginning-of-buffer) (end-of-line)
@@ -83,7 +83,7 @@
   (find-file (concat *nbm-home* "nbm-user-settings/nbm-variables/nbm-desktop.txt"))
   (end-of-line) (insert "/") (save-buffer) (kill-buffer))
 
-(setq *nbm-downloads*
+(defvar *nbm-downloads*
   (with-temp-buffer
     (insert-file-contents (concat *nbm-home* "nbm-user-settings/nbm-variables/nbm-downloads.txt"))
     (beginning-of-buffer) (end-of-line)
@@ -94,7 +94,7 @@
   (find-file (concat *nbm-home* "nbm-user-settings/nbm-variables/nbm-downloads.txt"))
   (end-of-line) (insert "/") (save-buffer) (kill-buffer))
 
-(setq *nbm-screenshots*
+(defvar *nbm-screenshots*
   (let (temp line dirs)
     (setq temp (split-string
 		(with-temp-buffer
@@ -103,7 +103,7 @@
     (dolist (line temp dirs)
       (if (> (length line) 0) (setq dirs (cons line dirs))))))
 
-(setq *newbie-current-file* *nbm-home*)
+(defvar *newbie-current-file* *nbm-home*)
 
 (defvar *nbm-magnet-height-adjust* 0)
 (when (file-exists-p (concat *nbm-home* "nbm-user-settings/nbm-variables/nbm-magnet.txt"))

@@ -2056,7 +2056,7 @@ Assisted by ChatGPT."
   (let ((current-prefix-arg 1)) ; Simulate C-u 1
     (call-interactively 'reftex-toc)))
 
-(setq *nbm-latex-dollar-beginning* nil)
+(defvar *nbm-latex-dollar-beginning* nil)
 
 (defun nbm-TeX-insert-dollar ()
   "Customized version."
