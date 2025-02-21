@@ -972,9 +972,10 @@ If AUTO is non-nil, create an automatic label."
   "Run helm-bibtex."
   (interactive)
   (let (bib-file bibtex-completion-bibliography)
-    (unless main
-      (setq bib-file (nbm-latex-get-bib-file))
-      (setq bibtex-completion-bibliography bib-file))
+    (if main
+	(setq bib-file *nbm-latex-bib-file*)
+      (setq bib-file (nbm-latex-get-bib-file)))
+    (setq bibtex-completion-bibliography bib-file)
     (helm-bibtex)))
 
 (defun nbm-latex-toggle-bib-file ()
