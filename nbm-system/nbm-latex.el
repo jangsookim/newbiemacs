@@ -884,35 +884,36 @@ If AUTO is non-nil, create an automatic label."
   "Create a bib file containing the current bibitems from the main bib file."
   (interactive)
   (save-excursion
-    (let (new-bib-str bibitem-list bibitem beg end bbl-file)
-      (setq bbl-file (concat (file-name-nondirectory (file-name-sans-extension (buffer-file-name))) ".bbl"))
-      (unless (file-exists-p bbl-file)
-	(message "You must compile bibtex once."))
-      (when (file-exists-p bbl-file)
-	(find-file bbl-file)
-	(beginning-of-buffer)
-	(while (search-forward "\\bibitem" nil t)
-	  (setq beg (1+ (point))) (forward-sexp) (setq end (1- (point)))
-	  (unless (member (buffer-substring beg end) bibitem-list)
-	    (push (buffer-substring beg end) bibitem-list)))
-	(kill-buffer)
-	(find-file (nbm-f "nbm-user-settings/references/ref.bib"))
-	(setq new-bib-str "")
-	(while bibitem-list
-	  (setq bibitem (pop bibitem-list))
+    (when (equal ?y (read-char "Create a new local bib file? (Type y for yes.)"))
+      (let (new-bib-str bibitem-list bibitem beg end bbl-file)
+	(setq bbl-file (concat (file-name-nondirectory (file-name-sans-extension (buffer-file-name))) ".bbl"))
+	(unless (file-exists-p bbl-file)
+	  (message "You must compile bibtex once."))
+	(when (file-exists-p bbl-file)
+	  (find-file bbl-file)
 	  (beginning-of-buffer)
-	  (when (re-search-forward (format "@[a-z ]+{%s," bibitem) nil t)
-	    (beginning-of-line) (setq beg (point))
-	    (search-forward "{") (backward-char) (forward-sexp) (setq end (point))
-	    (setq new-bib-str (concat new-bib-str (buffer-substring beg end) "\n\n"))))
-	(kill-buffer)
-	(if (file-exists-p "local-ref.bib")
-	    (setq choice (read-char "There is already local-ref.bib. Do you want to replace it? (Type y for yes.)"))
-	  (setq choice ?n))
-	(when (or (equal choice ?y) (not (file-exists-p "local-ref.bib")))
-	  (find-file "local-ref.bib") (erase-buffer) (insert new-bib-str)
-	  (save-buffer) (kill-buffer)
-	  (message "Created a bib file with file name: \"local-ref.bib\""))))))
+	  (while (search-forward "\\bibitem" nil t)
+	    (setq beg (1+ (point))) (forward-sexp) (setq end (1- (point)))
+	    (unless (member (buffer-substring beg end) bibitem-list)
+	      (push (buffer-substring beg end) bibitem-list)))
+	  (kill-buffer)
+	  (find-file (nbm-f "nbm-user-settings/references/ref.bib"))
+	  (setq new-bib-str "")
+	  (while bibitem-list
+	    (setq bibitem (pop bibitem-list))
+	    (beginning-of-buffer)
+	    (when (re-search-forward (format "@[a-z ]+{%s," bibitem) nil t)
+	      (beginning-of-line) (setq beg (point))
+	      (search-forward "{") (backward-char) (forward-sexp) (setq end (point))
+	      (setq new-bib-str (concat new-bib-str (buffer-substring beg end) "\n\n"))))
+	  (kill-buffer)
+	  (if (file-exists-p "local.bib")
+	      (setq choice (read-char "There is already local.bib. Do you want to replace it? (Type y for yes.)"))
+	    (setq choice ?n))
+	  (when (or (equal choice ?y) (not (file-exists-p "local.bib")))
+	    (find-file "local.bib") (erase-buffer) (insert new-bib-str)
+	    (save-buffer) (kill-buffer)
+	    (message "Created a bib file with file name: \"local.bib\"")))))))
 
 (defun nbm-latex-copy-bib-item-to-local ()
   "Copy the bibitem whose key is at the cursor from the main bib file to the local bib file."
@@ -974,7 +975,7 @@ If AUTO is non-nil, create an automatic label."
     (helm-bibtex)))
 
 (defun nbm-latex-toggle-bib-file ()
-  "Toggle the bib file between the default one and the local one."
+  "Toggle the bib file between the main one and the local one."
   (interactive)
   (let (bib-file bib-files local)
     (save-excursion
@@ -993,7 +994,7 @@ If AUTO is non-nil, create an automatic label."
       (insert (format "\\bibliography{%s}" (string-replace " " "-" bib-file)))
       (if local
 	  (message "Now use the local bib file.")
-	(message "Now use the default bib file.")))))
+	(message "Now use the main bib file.")))))
 
 (defun nbm-latex-toggle-bbl-file ()
   "Insert the bib file or remove it.
