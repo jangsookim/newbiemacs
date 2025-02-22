@@ -15,6 +15,7 @@
   (use-package helm :diminish helm-mode
     :init
     (global-set-key (kbd "M-x") 'helm-M-x)
+    (setq helm-move-to-line-cycle-in-source nil)
     (setq helm-autoresize-mode t)
     (setq helm-display-header-line nil)
     (setq helm-buffer-max-length 30)
