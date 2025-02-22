@@ -12,7 +12,7 @@
   (use-package tex :ensure auctex)
   (use-package auctex-latexmk)
 
-  (use-package helm :diminish helm-mode
+  (use-package helm
     :init
     (global-set-key (kbd "M-x") 'helm-M-x)
     (setq helm-move-to-line-cycle-in-source nil)
@@ -56,7 +56,7 @@
                                     ("\\.docx\\'" "open" (file))
                                     ("\\.djvu\\'" "open" (file)))))))
 
-  (use-package yasnippet :diminish yas-minor-mode
+  (use-package yasnippet
     :init
     (setq yas-snippet-dirs (list (concat *nbm-home* "nbm-user-settings/snippets/")
                                  (concat "~/nbm-root/newbiemacs/nbm-user-settings/snippets")))
@@ -64,7 +64,7 @@
     (add-to-list 'warning-suppress-types '(yasnippet backquote-change))
     (yas-global-mode 1) (yas-reload-all))
 
-  (use-package which-key :diminish which-key-mode
+  (use-package which-key
     :init
     (setq which-key-sort-order 'which-key-key-order-alpha)
     (setq which-key-idle-delay 0.1)
@@ -84,7 +84,7 @@
                 ("s" . evil-surround-region))
     :init (global-evil-surround-mode 1))
 
-  (use-package evil-org :diminish evil-org-mode
+  (use-package evil-org
     :init
     (with-eval-after-load 'evil-org
       (add-to-list 'load-path (concat (getenv "HOME") "/.emacs.d/plugins/evil-org-mode"))
@@ -97,7 +97,7 @@
 
   (use-package evil-nerd-commenter)
 
-  (use-package company :diminish company-mode
+  (use-package company
     :init (global-company-mode))
 
   (use-package org-bullets
@@ -123,12 +123,12 @@
             map))
     (winum-mode))
 
-  (use-package smartparens :diminish smartparens-mode
+  (use-package smartparens
     :init
     (require 'smartparens-config)
     (smartparens-global-mode))
 
-  (use-package valign :diminish valign-mode
+  (use-package valign
     :init (add-hook 'org-mode-hook #'valign-mode))
 
   (use-package avy
@@ -139,17 +139,6 @@
     (setq avy-all-windows nil))
 
   (use-package org-mac-link)
-#+end_src
-** Diminish
-#+begin_src emacs-lisp :tangle yes
-  (use-package diminish)
-  (with-eval-after-load 'org-indent (diminish 'org-indent-mode))
-  (with-eval-after-load 'reftex (diminish 'reftex-mode))
-  (with-eval-after-load 'autorevert (diminish 'auto-revert-mode))
-  (with-eval-after-load 'eldoc (diminish 'eldoc-mode))
-  (diminish 'visual-line-mode)
-  (diminish 'org-roam-ui-mode)
-  (diminish 'org-roam-ui-follow-mode)
 #+end_src
 
 * load files
@@ -208,10 +197,9 @@
   (use-package doom-themes)
   (unless (nbm-get-user-variable "theme")
     (nbm-set-user-variable "theme" "doom-one"))
-
   (load-theme (intern (nbm-get-user-variable "theme")) t)
 
-  (use-package anzu :diminish anzu-mode
+  (use-package anzu
     :init
     (global-anzu-mode +1)
     (setq anzu-cons-mode-line-p t))
@@ -351,7 +339,7 @@
 
 ** undo-tree
 #+begin_src emacs-lisp :tangle yes
-  (use-package undo-tree :diminish undo-tree-mode
+  (use-package undo-tree
     :init
     (evil-set-undo-system 'undo-tree)
     (global-undo-tree-mode 1))
