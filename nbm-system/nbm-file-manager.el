@@ -228,7 +228,7 @@ q) quit" file (nbm-get-dir-name))))
     (if (equal choice ?c)
 	(rename-file file (concat (nbm-get-dir-name) new-file) 1))
     (if (equal choice ?d)
-	(rename-file file (concat *nbm-desktop* new-file) 1))
+	(rename-file file (format "%s/%s" *nbm-desktop* new-file) 1))
     (if (equal choice ?q) (message "Aborted."))))
 
 (defun nbm-files-from-screenshot (&optional include-dir)
