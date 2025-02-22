@@ -96,16 +96,6 @@
 
 (defun nbm-insert (color string)
   "Insert STRING with foreground color COLOR."
-  ;; (cond
-  ;;  ((equal color 1) (insert (propertize string 'font-lock-face '(:foreground "#98989d"))))
-  ;;  ((equal color 2) (insert (propertize string 'font-lock-face '(:foreground "#Ff9f0a"))))
-  ;;  ((equal color 3) (insert (propertize string 'font-lock-face '(:foreground "#Ffd60a"))))
-  ;;  ((equal color 4) (insert (propertize string 'font-lock-face '(:foreground "#Bf5af2"))))
-  ;;  ((equal color 6) (insert (propertize string 'font-lock-face '(:foreground "#32d74b"))))
-  ;;  ((equal color 7) (insert (propertize string 'font-lock-face '(:foreground "#Ff453a"))))
-  ;;  ((equal color 8) (insert (propertize string 'font-lock-face '(:foreground "#0a84ff"))))
-  ;;  ((equal color 9) (insert (propertize string 'font-lock-face '(:foreground "#Ac8e68"))))
-  ;;  ((equal color 5) (insert (propertize string 'font-lock-face '(:foreground "#Ff375f")))))
   (cond
    ((equal color 1) (insert (propertize string 'font-lock-face 'diary)))
    ((equal color 2) (insert (propertize string 'font-lock-face 'font-lock-builtin-face)))
@@ -113,26 +103,30 @@
    ((equal color 4) (insert (propertize string 'font-lock-face 'font-lock-number-face)))
    ((equal color 5) (insert (propertize string 'font-lock-face 'font-lock-variable-use-face)))
    ((equal color 6) (insert (propertize string 'font-lock-face 'font-lock-regexp-face)))
-   ((equal color 7) (insert (propertize string 'font-lock-face 'font-lock-type-face)))
-   ))
-
-(defun newbie-print-version ()
-  "Start newbie."
-    (insert (format "%83s" "Newbiemacs 1.80")))
+   ((equal color 7) (insert (propertize string 'font-lock-face 'font-lock-type-face)))))
 
 (defun newbie-print-logo ()
   "Start newbie."
-  (nbm-insert 7 "
-  +-+    +-+ +----; +-+    +-+ +----,  +-+ +----; +-+    +-+   ,--,   +----; +----;
-  |  \\   | | | +--' | |    | | | ,_, \\ | | | +--' |  \\  /  |  / __ \\  | +--' | +--'
-  | . \\  | | | |    | |    | | | | | | | | | |    | . \\/ . | / /  \\ \\ | |    | |
-  | |\\ \\ | | | +--; | | /\\ | | | '-' / | | | +--; | |\\  /| | | |__| | | |    | +--+
-  | | \\ \\| | | +--' | |/  \\| | | ,-, \\ | | | +--' | | \\/ | | | ,__, | | |    +--+ |
-  | |  \\ ' | | |    | ' /\\ ' | | | | | | | | |    | |    | | | |  | | | |       | |
-  | |   \\  | | +--; |  /  \\  | | '-' / | | | +--; | |    | | | |  | | | +--; ;--+ |
-  +-+    +-+ +----' +-+    +-+ +----'  +-+ +----' +-+    +-+ +-+  +-+ +----' '----+
-")
-  (insert "          Newbiemacs is designed for mathematicians who are new to Emacs.          \n\n"))
+  (nbm-insert 7 "                                       +-+                        ")
+  (insert (format " %s \n" "Newbiemacs 1.80"))
+  (nbm-insert 7 "                                       | | +----;                                  
+                               +----,  | | | +--' +-+    +-+                       
+  +-+    +-+                   | ,_, \\ | | | |    |  \\  /  |                       
+  |  \\   | |        +-+    +-+ | | | | | | | +--; | . \\/ . |   ,--,          +----;
+  | . \\  | |        | |    | | | '-' / | | | +--' | |\\  /| |  / __ \\         | +--'
+  | |\\ \\ | | +----; | |    | | | ,-, \\ | | | |    | | \\/ | | / /  \\ \\ +----; | |
+  | | \\ \\| | | +--' | | /\\ | | | | | | +-+ | +--; | |    | | | |__| | | +--' | +--+
+  | |  \\ ' | | |    | |/  \\| | | '-' /     +----' | |    | | | ,__, | | |    +--+ |
+  | |   \\  | | +--; | ' /\\ ' | +----'             +-+    +-+ | |  | | | |       | |
+  +-+    +-+ | +--' |  /  \\  |                               | |  | | | |    ;--+ |
+             | |    +-+    +-+    ")
+  (nbm-insert 4 "Newbiemacs is designed")
+  (nbm-insert 7 "     +-+  +-+ | |    '----+
+             | +--;                 ")
+  (nbm-insert 4 "for mathematicians")
+  (nbm-insert 7 "                | +--;       
+             +----'                                                   +----'       
+"))
 
 (setq nbm-meta-key (if (equal system-type 'darwin) "Command" "Alt"))
 
@@ -140,9 +134,6 @@
   "Start newbie."
   (insert (format "%20s%s-o    : <leader> key (Global command)               \n" "" nbm-meta-key))
   (insert (format "%20s%s-Enter: <localleader> key (Local command)           \n\n" "" nbm-meta-key))
-  ;; (nbm-insert 3 (format "%5s%-19s" "" "p: pdf find"))
-  ;; (nbm-insert 3 (format "%5s%-19s" "" "t: tex find"))
-  ;; (nbm-insert 3 (format "%5s%-33s\n" "" "F: File manager"))
   (nbm-insert 3 (format "%5s%-19s" "" "a: arxiv paper"))
   (nbm-insert 3 (format "%5s%-19s" "" "G: GTD"))
   (nbm-insert 3 (format "%5s%-30s\n" "" "s: search"))
@@ -154,20 +145,17 @@
   (nbm-insert 3 (format "%5s%-30s\n" "" "U: Update Newbiemacs"))
   (nbm-insert 3 (format "%5s%-19s" "" "l: Set User Level"))
   (nbm-insert 3 (format "%5s%-19s" "" "e: Set Editing Style"))
-  (nbm-insert 3 (format "%4s%-30s\n" "" "q: quit"))
-  )
+  (nbm-insert 3 (format "%4s%-30s\n" "" "q: quit")))
 
 (defun newbie-print-all ()
   "Start newbie."
   (let ((inhibit-read-only t))
     (setq tab-width 30)
-    (newbie-print-version)
     (newbie-print-logo)
     (insert "\t")
-    (insert-image (create-image (nbm-root-f "nbm-logo.jpeg") nil nil :width 180))
+    (insert-image (create-image (nbm-root-f "nbm-logo.jpeg") nil nil :width 120))
     (insert "\n\n")
     (newbie-print-menu)
-    ;; (newbie-print-variables)
     (newbie-print-current-file)
     (beginning-of-buffer)))
 
