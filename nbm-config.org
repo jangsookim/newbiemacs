@@ -415,12 +415,6 @@
   (when (equal system-type 'windows-nt)
     (load-file (concat (getenv "HOME") "/nbm-root/nbm-windows-config.el")))
 
-  ;; The following is helpful for recognizing ^ and _ in latex code.
-  (custom-set-faces
-   '(font-latex-script-char-face ((t (:foreground "#Ff9f0a"))))
-   '(font-latex-sectioning-1-face ((t (:foreground "#Ff82ab"))))
-   '(font-latex-sectioning-2-face ((t (:foreground "#Ffd60a")))))
-
   (evil-define-key '(normal visual) LaTeX-mode-map (kbd "%") 'nbm-latex-evil-jump-item)
 
   (evil-define-key 'emacs reftex-toc-mode-map (kbd "q") 'nbm-reftex-toc-quit)
@@ -435,8 +429,7 @@
   (define-key evil-normal-state-map (kbd "]]") 'nbm-end-of-defun)
   (define-key evil-visual-state-map (kbd "]]") 'nbm-end-of-defun)
 
-  ; Modify the behavior of TeX-insert-dollar.
-
+  ;; Modify the behavior of TeX-insert-dollar.
   (defun TeX-insert-dollar ()
     "A customized version of TeX-insert-dollar."
     (interactive)
@@ -461,6 +454,12 @@
   (require 'reftex-ref)
 
   (setq LaTeX-clean-intermediate-suffixes (remove "\\.synctex\\.gz" LaTeX-clean-intermediate-suffixes))
+
+  ;; The following is helpful for recognizing ^ and _ in latex code.
+  (with-eval-after-load 'font-latex
+    (let ((math-fg (face-attribute 'font-latex-math-face :foreground nil 'default)))
+      (custom-set-faces
+       `(font-latex-script-char-face ((t (:foreground ,math-fg)))))))
 
 #+end_src
 
@@ -501,13 +500,6 @@
     (setq org-roam-capture-templates '(("d" "default" plain "%?"
                                         :target (file+head "${slug}.org"
                                                            "#+title: ${title}\n ")))))
-#+end_src
-* Sage
-#+begin_src emacs-lisp :tangle yes
-  (font-lock-add-keywords 'python-mode
-                          '(("<\\|>\\|=" . 'anzu-replace-to)
-                            ("+\\|-\\|\\^\\|/\\|*" . 'compilation-info)
-                            ("\\b[0-9]+\\b" . 'org-document-info)))
 #+end_src
 
 * Dired
