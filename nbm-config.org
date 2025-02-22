@@ -355,7 +355,6 @@
     "Toggle-input-method in isearch."
     (interactive)
     (isearch-edit-string))
-
 #+end_src
 
 * evil mode
@@ -427,7 +426,6 @@
     '(add-to-list 'TeX-command-list
                   '("XeLaTeX" "xelatex -shell-escape -interaction nonstopmode %s"
                     TeX-run-command nil t :help "Run XeLaTeX")))
-
 #+end_src
 
 ** auctex-latexmk
@@ -448,7 +446,6 @@
     (let ((math-fg (face-attribute 'font-latex-math-face :foreground nil 'default)))
       (custom-set-faces
        `(font-latex-script-char-face ((t (:foreground ,math-fg)))))))
-
 #+end_src
 
 * org-mode
@@ -479,6 +476,7 @@
   (nbm-org-load-agenda-files)
   (add-to-list 'auto-mode-alist '("\\.org_archive\\'" . org-mode))
 #+end_src
+
 ** Org-Roam
 #+begin_src emacs-lisp :tangle yes
   (when (package-installed-p 'org-roam)
