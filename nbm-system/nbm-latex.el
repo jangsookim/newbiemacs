@@ -2062,7 +2062,7 @@ Assisted by ChatGPT."
 (defun nbm-TeX-insert-dollar ()
   "A customized version of TeX-insert-dollar."
   (interactive)
-  (if (texmathp)
+  (if (and (not (looking-back "$")) (texmathp))
       (progn
         (if (and (looking-back "\\\\( ") (looking-at " \\\\)"))
             (progn

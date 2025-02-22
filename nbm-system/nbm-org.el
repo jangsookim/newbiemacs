@@ -359,11 +359,25 @@ If the filename has [...], change it to (...)."
 	     (LaTeX-mode)))
       (evil-change-state state))))
 
-(defun nbm-org-TeX-insert-dollar ()
-  "Customized version."
+(defun nbm-org-toggle-dollar ()
+  "Toggle user variable \"org-dollar-toggle\"."
   (interactive)
-  (nbm-org-toggle-latex-mode)
-  (nbm-TeX-insert-dollar))
+  (if (equal "nil" (format "%s" (nbm-get-user-variable "org-dollar-toggle")))
+      (progn
+	(nbm-set-user-variable "org-dollar-toggle" "t")
+	(message "From now on, typing $ will change to latex mode."))
+    (progn
+      (nbm-set-user-variable "org-dollar-toggle" "nil")
+      (message "From now on, typing $ will simply insert the dollar sign $."))))
+
+(defun nbm-org-TeX-insert-dollar ()
+  "Change to latex-mode and run nbm-TeX-insert-dollar if user variable \"org-dollar-toggle\" is t."
+  (interactive)
+  (if (equal "t" (nbm-get-user-variable "org-dollar-toggle"))
+      (progn
+	(nbm-org-toggle-latex-mode)
+	(nbm-TeX-insert-dollar))
+    (insert "$")))
 
 (defun nbm-org-mac-insert-webpage ()
   "Insert a link to the webpage of the user's browser."
