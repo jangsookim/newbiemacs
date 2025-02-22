@@ -77,22 +77,12 @@
     (insert-file-contents (concat *nbm-home* "nbm-user-settings/nbm-variables/nbm-desktop.txt"))
     (beginning-of-buffer) (end-of-line)
     (buffer-substring (point-min) (point))))
-; the following patch should be removed later
-(unless (equal (substring *nbm-desktop* -1 nil) "/")
-  (setq *nbm-desktop* (concat *nbm-desktop* "/"))
-  (find-file (concat *nbm-home* "nbm-user-settings/nbm-variables/nbm-desktop.txt"))
-  (end-of-line) (insert "/") (save-buffer) (kill-buffer))
 
 (defvar *nbm-downloads*
   (with-temp-buffer
     (insert-file-contents (concat *nbm-home* "nbm-user-settings/nbm-variables/nbm-downloads.txt"))
     (beginning-of-buffer) (end-of-line)
     (buffer-substring (point-min) (point))))
-; the following patch should be removed later
-(unless (equal (substring *nbm-downloads* -1 nil) "/")
-  (setq *nbm-downloads* (concat *nbm-downloads* "/"))
-  (find-file (concat *nbm-home* "nbm-user-settings/nbm-variables/nbm-downloads.txt"))
-  (end-of-line) (insert "/") (save-buffer) (kill-buffer))
 
 (defvar *nbm-screenshots*
   (let (temp line dirs)
