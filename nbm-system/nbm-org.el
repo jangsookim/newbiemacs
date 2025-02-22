@@ -365,7 +365,10 @@ If the filename has [...], change it to (...)."
   (if (equal "nil" (format "%s" (nbm-get-user-variable "org-dollar-toggle")))
       (progn
 	(nbm-set-user-variable "org-dollar-toggle" "t")
-	(message "From now on, typing $ will change to latex mode."))
+	(message "From now on, typing $ will change to latex mode.
+
+WARNING: The org file must not contain the dollar sign \"$\" to work properly.
+If necessary, revise the org file using things like \"USD\" instead of the dollar sign."))
     (progn
       (nbm-set-user-variable "org-dollar-toggle" "nil")
       (message "From now on, typing $ will simply insert the dollar sign $."))))
