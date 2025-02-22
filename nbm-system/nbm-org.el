@@ -359,6 +359,12 @@ If the filename has [...], change it to (...)."
 	     (LaTeX-mode)))
       (evil-change-state state))))
 
+(defun nbm-org-TeX-insert-dollar ()
+  "Customized version."
+  (interactive)
+  (nbm-org-toggle-latex-mode)
+  (nbm-TeX-insert-dollar))
+
 (defun nbm-org-mac-insert-webpage ()
   "Insert a link to the webpage of the user's browser."
   (interactive)

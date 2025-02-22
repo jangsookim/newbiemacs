@@ -2060,7 +2060,7 @@ Assisted by ChatGPT."
 (defvar *nbm-latex-dollar-beginning* nil)
 
 (defun nbm-TeX-insert-dollar ()
-  "Customized version."
+  "A customized version of TeX-insert-dollar."
   (interactive)
   (if (texmathp)
       (progn
@@ -2078,7 +2078,9 @@ Assisted by ChatGPT."
 		       (equal *nbm-latex-dollar-beginning* texmathp-why))
 	      (toggle-input-method))
 	    (setq *nbm-latex-dollar-korean* nil)
-	    (nbm-latex-exit-math-mode))))
+	    (nbm-latex-exit-math-mode)
+	    (when (equal (file-name-extension (buffer-file-name)) "org")
+	      (nbm-org-toggle-latex-mode)))))
     (progn
       (if (equal evil-input-method "korean-hangul")
 	  (progn
