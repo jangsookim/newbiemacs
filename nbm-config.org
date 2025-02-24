@@ -176,6 +176,7 @@
   (setq x-select-enable-clipboard t)
   (setq delete-by-moving-to-trash t)
   (when (eq system-type 'darwin)
+    (global-set-key "\M-R" 'query-replace)
     (setq trash-directory "~/.Trash"))
 
   (setq help-window-select t)
