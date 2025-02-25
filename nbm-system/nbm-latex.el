@@ -2090,3 +2090,17 @@ Assisted by ChatGPT."
       (insert "\\(  \\)")
       (backward-char 3)
       (texmathp) (setq *nbm-latex-dollar-beginning* texmathp-why))))
+
+;; skim link
+(defun nbm-latex-mac-insert-skim ()
+  "Insert a current skim pdf link."
+  (interactive)
+  (when (equal system-type 'darwin)
+    (let (link desc)
+      (setq link (substring (org-mac-link-skim-get-page) 2 -2))
+      (setq link (car (split-string link "::")))
+      (setq desc (car (last (split-string link "/"))))
+      (setq desc (car (split-string desc ".pdf")))
+      (setq desc (string-replace "_" "\\_" desc))
+      (unless (looking-back " ") (insert " "))
+      (insert (format "\\href{%s}{%s}" link desc)))))

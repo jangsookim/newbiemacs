@@ -201,6 +201,7 @@
 *** key: q, description: quick image, function: nbm-latex-insert-figure-quick, level: 1
 *** key: w, description: webpage, function: nbm-latex-insert-webpage, level: 1
 *** key: S, description: set scale factor, function: nbm-latex-set-includegraphics-scale, level: 2
+*** key: s, description: skim page, function: nbm-latex-mac-insert-skim, level: 1
 ** key: j, description: jump, level: 2
 *** key: k, description: previous section, function: outline-previous-heading, level: 2
 *** key: j, description: next section, function: outline-next-heading, level: 2
