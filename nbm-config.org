@@ -450,6 +450,35 @@
        `(font-latex-script-char-face ((t (:foreground ,math-fg)))))))
 #+end_src
 
+** bibtex
+#+begin_src emacs-lisp :tangle yes
+  (defun bibtex-completion-format-citation-cite (keys)
+    "Modified bibtex-completion-format-citation-cite to make cite-command to be \"cite\"."
+    (let (macro)
+      (cond
+       ((and (require 'reftex-parse nil t)
+             (setq macro (reftex-what-macro 1))
+             (stringp (car macro))
+             (string-match "\\`\\\\cite\\|cite\\'" (car macro)))
+        (delete-horizontal-space)
+        (concat (pcase (preceding-char) (?\{ "") (?, " ") (_ ", ")) (s-join ", " keys)
+                (if (member (following-char) '(?\} ?,)) "" ", ")))
+       ((and (equal (preceding-char) ?\})
+             (require 'reftex-parse nil t)
+             (save-excursion
+               (forward-char -1)
+               (setq macro (reftex-what-macro 1)))
+             (stringp (car macro))
+             (string-match "\\`\\\\cite\\|cite\\'" (car macro)))
+        (delete-char -1)
+        (delete-horizontal-space t)
+        (concat (pcase (preceding-char) (?\{ "") (?, " ") (_ ", ")) (s-join ", " keys) "}"))
+       (t
+        (let* ((cite-command "cite"))
+          (format "\\%s{%s}" cite-command (s-join ", " keys)))))))
+#+end_src
+
+
 * org-mode
 #+begin_src emacs-lisp :tangle yes
   (global-set-key "\C-cl" 'org-store-link)
