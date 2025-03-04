@@ -45,7 +45,7 @@
   (evil-local-set-key 'normal (kbd "m") 'nbm-move-pdf-from-downloads)
   (evil-local-set-key 'normal (kbd "n") 'nbm-latex-new-file)
   ;; (evil-local-set-key 'normal (kbd "o") ')
-  ;; (evil-local-set-key 'normal (kbd "p") 'nbm-find-pdf)
+  (evil-local-set-key 'normal (kbd "p") 'nbm-find-pdf)
   (evil-local-set-key 'normal (kbd "q") 'newbie-quit)
   ;; (evil-local-set-key 'normal (kbd "r") 'org-roam-node-find)
   (evil-local-set-key 'normal (kbd "s") 'newbie-search)
