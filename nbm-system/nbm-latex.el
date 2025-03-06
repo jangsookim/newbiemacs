@@ -2063,24 +2063,26 @@ Assisted by ChatGPT."
   "A customized version of TeX-insert-dollar."
   (interactive)
   (if (texmathp)
-      (progn
-        (if (and (looking-back "\\\\( ") (looking-at " \\\\)"))
+      (if (member (car texmathp-why) '("$" "$$"))
+	  (insert "$")
+	(progn
+          (if (and (looking-back "\\\\( ") (looking-at " \\\\)"))
+              (progn
+		(undo)
+		(unless (looking-back "^[ \t]*") (insert "\n") (indent-for-tab-command))
+		(insert "\\[\n\n\\]") (indent-for-tab-command)
+		(previous-line) (indent-for-tab-command)
+		(texmathp) (setq *nbm-latex-dollar-beginning* texmathp-why))
             (progn
-              (undo)
-	      (unless (looking-back "^[ \t]*") (insert "\n") (indent-for-tab-command))
-              (insert "\\[\n\n\\]") (indent-for-tab-command)
-              (previous-line) (indent-for-tab-command)
-	      (texmathp) (setq *nbm-latex-dollar-beginning* texmathp-why))
-          (progn
-	    (texmathp)
-	    (when (and *nbm-latex-dollar-korean*
-		       (not evil-input-method)
-		       (equal *nbm-latex-dollar-beginning* texmathp-why))
-	      (toggle-input-method))
-	    (setq *nbm-latex-dollar-korean* nil)
-	    (nbm-latex-exit-math-mode)
-	    (when (equal (file-name-extension (buffer-file-name)) "org")
-	      (nbm-org-toggle-latex-mode)))))
+	      (texmathp)
+	      (when (and *nbm-latex-dollar-korean*
+			 (not evil-input-method)
+			 (equal *nbm-latex-dollar-beginning* texmathp-why))
+		(toggle-input-method))
+	      (setq *nbm-latex-dollar-korean* nil)
+	      (nbm-latex-exit-math-mode)
+	      (when (equal (file-name-extension (buffer-file-name)) "org")
+		(nbm-org-toggle-latex-mode))))))
     (progn
       (if (equal evil-input-method "korean-hangul")
 	  (progn
