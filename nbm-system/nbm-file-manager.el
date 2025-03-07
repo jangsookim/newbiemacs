@@ -203,12 +203,13 @@ e) el"))
 
 (defun nbm-move-to-folder (file)
   "Move FILE to one of the following folders.
-current folder, inbox, desktop, pdf, trash-bin"
+current folder, inbox, desktop, downloads, pdf, trash-bin"
   (let (choice)
     (setq choice (read-char (format "Move %s to:
 c) current folder: %s
 i) inbox
 d) desktop
+l) downloads
 p) pdf
 x) trash-bin
 q) quit" file (nbm-get-dir-name))))
@@ -216,7 +217,7 @@ q) quit" file (nbm-get-dir-name))))
 	(if (file-directory-p file)
 	    (delete-directory file t t)
 	  (delete-file file t)))
-    (when (member choice '(?c ?i ?d ?p))
+    (when (member choice '(?c ?i ?d ?p ?l))
       (setq new-file (read-string "Enter the new file name : "
 				  (file-name-nondirectory file))))
     (when (equal choice ?i)
@@ -229,6 +230,8 @@ q) quit" file (nbm-get-dir-name))))
 	(rename-file file (concat (nbm-get-dir-name) new-file) 1))
     (if (equal choice ?d)
 	(rename-file file (format "%s/%s" *nbm-desktop* new-file) 1))
+    (if (equal choice ?l)
+	(rename-file file (format "%s/%s" *nbm-downloads* new-file) 1))
     (if (equal choice ?q) (message "Aborted."))))
 
 (defun nbm-files-from-screenshot (&optional include-dir)
