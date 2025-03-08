@@ -2063,12 +2063,10 @@ Assisted by ChatGPT."
   "A customized version of TeX-insert-dollar."
   (interactive)
   (if (texmathp)
-      (if (member (car texmathp-why) '("$" "$$"))
-	  (insert "$")
-	(progn
-          (if (and (looking-back "\\\\( ") (looking-at " \\\\)"))
+      (if (member (car texmathp-why) '("\\(" "\\["))
+	  (if (and (looking-back "\\\\( ") (looking-at " \\\\)"))
               (progn
-		(undo)
+		(delete-region (- (point) 3) (+ (point) 3))
 		(unless (looking-back "^[ \t]*") (insert "\n") (indent-for-tab-command))
 		(insert "\\[\n\n\\]") (indent-for-tab-command)
 		(previous-line) (indent-for-tab-command)
@@ -2082,7 +2080,10 @@ Assisted by ChatGPT."
 	      (setq *nbm-latex-dollar-korean* nil)
 	      (nbm-latex-exit-math-mode)
 	      (when (equal (file-name-extension (buffer-file-name)) "org")
-		(nbm-org-toggle-latex-mode))))))
+		(nbm-org-toggle-latex-mode))))
+	(progn
+	  (insert "\\(  \\)")
+	  (backward-char 3)))
     (progn
       (if (equal evil-input-method "korean-hangul")
 	  (progn
@@ -2092,7 +2093,7 @@ Assisted by ChatGPT."
       (insert "\\(  \\)")
       (backward-char 3)
       (texmathp) (setq *nbm-latex-dollar-beginning* texmathp-why))))
-
+  
 ;; skim link
 (defun nbm-latex-mac-insert-skim ()
   "Insert a current skim pdf link."
