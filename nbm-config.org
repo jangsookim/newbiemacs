@@ -220,6 +220,7 @@
   (setq resize-mini-windows t)
 
   (setq inhibit-startup-screen t)
+  (global-visual-line-mode)
 
 #+end_src
 ** mode-line
