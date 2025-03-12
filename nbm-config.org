@@ -251,6 +251,8 @@
                   mode-line-buffer-identification
                   " "
                   mode-line-misc-info
+                  (:eval (when (region-active-p)
+                           (propertize (format "(%s lines)" (count-lines (region-beginning) (region-end))))))
                   (:propertize " " display (space :align-to (- right 15)))
                   (:eval (if evil-input-method
                              (propertize (format "[%.2s]" (upcase evil-input-method)) 'face '(:foreground "orange" :weight bold))
