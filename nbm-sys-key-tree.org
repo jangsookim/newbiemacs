@@ -100,6 +100,7 @@
 *** key: i, description: Insert counter, function: nbm-insert-counter, level: 3
 ** key: s, description: Search, level: 1
 *** key: g, description: google search, function: nbm-google-search, level: 2
+*** key: c, description: chatGPT, function: nbm-chatgpt, level: 1
 *** key: d, description: look up dictionary, function: nbm-look-up-dictionary, level: 2
 *** key: x, description: search arxiv, function: nbm-paper-search-arxiv, level: 1
 *** key: m, description: search mathscinet, function: nbm-paper-search-mathscinet, level: 1

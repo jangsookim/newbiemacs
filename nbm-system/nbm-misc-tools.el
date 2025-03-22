@@ -233,3 +233,26 @@ other key) stop"))
                 (lambda (el) (member el (cdr (member el list))))
                 list)))
 
+(defun nbm-chatgpt ()
+  "Open chatgpt."
+  (interactive)
+  (let (query url)
+    (setq url (do-applescript "tell application \"Google Chrome\"
+                    set currentURL to URL of active tab of front window
+                  end tell"))
+    (unless (string-match-p (regexp-quote "https://chatgpt.com") url)
+      (nbm-open-browser-and-return-to-emacs "https://chatgpt.com"))
+    (when (region-active-p)
+      (setq query (buffer-substring (region-beginning) (region-end)))
+      (setq query (format "Is this correct grammatically? Highlight changes.\n%s" query))
+      (deactivate-mark))
+    (unless query (setq query (read-string "Ask ChatGPT: ")))
+    (kill-new query)
+    (start-process-shell-command
+     "osascript" nil
+     (concat
+      "osascript -e 'tell application \"Google Chrome\" to activate' "
+      " -e 'tell application \"System Events\" to keystroke \"v\" using {command down}' "
+      " -e 'delay 0.5' "
+      " -e 'tell application \"System Events\" to key code 36' "
+      " -e 'tell application \"Emacs\" to activate'"))))
