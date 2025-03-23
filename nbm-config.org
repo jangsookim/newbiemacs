@@ -564,26 +564,20 @@
     (evil-set-initial-state 'python-mode 'normal))
 
   (when (equal (nbm-get-user-variable "editing-style") "windows")
+    (cua-mode t)
     (eval-after-load 'org
       (progn
         (define-key org-mode-map (kbd "<S-up>") nil)
         (define-key org-mode-map (kbd "<S-down>") nil)
         (define-key org-mode-map (kbd "<S-right>") nil)
         (define-key org-mode-map (kbd "<S-left>") nil)))
-    (evil-global-set-key 'emacs (kbd "C-v") 'yank)
-    (evil-global-set-key 'emacs (kbd "C-c") 'nbm-windows-ctrl-c)
-    (evil-global-set-key 'emacs (kbd "C-x") 'nbm-windows-ctrl-x)
     (evil-global-set-key 'emacs (kbd "C-a") 'mark-whole-buffer)
     (evil-global-set-key 'emacs (kbd "C-f") 'isearch-forward)
     (evil-global-set-key 'emacs (kbd "C-S-f") 'query-replace)
     (evil-global-set-key 'emacs (kbd "C-s") 'save-buffer)
-    (evil-global-set-key 'emacs (kbd "C-w") 'kill-this-buffer)
-    (evil-global-set-key 'emacs (kbd "C-1") 'delete-other-windows)
     (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
     (define-key key-translation-map (kbd "C-z") (kbd "C-/"))
     (evil-global-set-key 'emacs (kbd "C-y") 'evil-redo)
-    (global-set-key "\C-c\C-c" 'org-capture-finalize)
-    (global-set-key "\C-c\C-k" 'org-capture-kill)
     (setq org-support-shift-select t))
 #+end_src
 
