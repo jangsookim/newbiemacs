@@ -964,6 +964,11 @@ If AUTO is non-nil, create an automatic label."
 	  (setq bib-file (concat (file-name-directory (buffer-file-name)) bib-file)))
 	bib-file))))
 
+(defun nbm-latex-find-main-bib-file ()
+  "Open the main bib file."
+  (interactive)
+  (find-file *nbm-latex-bib-file*))
+
 (defun nbm-latex-bibtex (&optional main)
   "Run helm-bibtex."
   (interactive)
