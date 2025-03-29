@@ -77,6 +77,7 @@
 #+begin_src emacs-lisp :tangle yes
   (use-package magit
     :init
+    (setq magit-diff-refine-hunk 'all)
     (setq transient-values
           '((magit-log:magit-log-mode "-n256" "--graph" "--color" "--decorate"))))
 
