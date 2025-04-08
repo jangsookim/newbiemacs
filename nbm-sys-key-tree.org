@@ -218,6 +218,7 @@
 *** key: s, description: section, function: nbm-latex-section, level: 2
 ** key: r, description: reference, level: 1
 *** key: ?, description: unresolved-reference, function: nbm-latex-find-first-unresolved-reference, level: 2
+*** key: !, description: duplicated label, function: nbm-latex-find-first-duplicated-label, level: 1
 *** key: c, description: citation, function: nbm-latex-bibtex, level: 1
 *** key: e, description: eqref, function: nbm-latex-eqref, level: 2
 *** key: f, description: fig-ref, function: nbm-latex-fig-ref, level: 2

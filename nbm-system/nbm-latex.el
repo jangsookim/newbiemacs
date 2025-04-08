@@ -1655,12 +1655,33 @@ Prompt for a label (with completion) and jump to the location of this label."
             (search-forward "`") (setq beg (point))
             (setq label (buffer-substring beg end)))
           (kill-this-buffer)
-	  (message "No unresolved references found.")
           (if line
 	      (progn
 		(goto-line line) (beginning-of-line)
 		(search-forward (format "{%s}" label)))
 	    (message "No unresolved references found.")))
+      (message "Log file not found. Compile the document first."))))
+
+(defun nbm-latex-find-first-duplicated-label ()
+  "Search the TeX log for the first duplicated label and jump to it."
+  (interactive)
+  (let (beg end label log-file)
+    (setq log-file (concat (file-name-sans-extension (buffer-file-name)) ".log"))
+    (if (file-exists-p log-file)
+        (progn
+          (find-file log-file)
+          (beginning-of-buffer)
+          (when (re-search-forward "multiply defined." nil t)
+            (search-backward "'") (setq end (point))
+            (beginning-of-line)
+            (search-forward "`") (setq beg (point))
+            (setq label (buffer-substring beg end)))
+          (kill-this-buffer)
+          (if label
+	      (progn
+		(beginning-of-buffer)
+		(search-forward (format "\\label{%s}" label)))
+	    (message "No duplicated labels found.")))
       (message "Log file not found. Compile the document first."))))
 
 (defvar *nbm-latex-compile-section* nil)
