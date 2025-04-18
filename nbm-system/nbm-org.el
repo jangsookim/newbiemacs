@@ -335,6 +335,7 @@ If the filename has [...], change it to (...)."
     (setq file (string-replace "[" "(" file))
     (setq file (string-replace "]" ")" file))
     (copy-file newest (concat dir "/" file))
+    (unless (looking-back " ") (insert " "))
     (insert (format "[[file:%s/%s]]" (file-name-nondirectory dir) (file-name-nondirectory file)))))
 
 (defun nbm-org-latex-preview-on ()
@@ -391,6 +392,7 @@ If necessary, revise the org file using things like \"USD\" instead of the dolla
       (unless browser
 	(nbm-set-default-browser)
 	(setq browser (nbm-get-user-variable "nbm-browser")))
+      (unless (looking-back " ") (insert " "))
       (cond ((equal browser "chrome")
 	     (org-mac-link-chrome-insert-frontmost-url))
 	    ((equal browser "safari")
