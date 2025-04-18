@@ -256,3 +256,13 @@ other key) stop"))
       " -e 'delay 0.5' "
       " -e 'tell application \"System Events\" to key code 36' "
       " -e 'tell application \"Emacs\" to activate'"))))
+
+(defun nbm-open-browser-and-return-to-emacs (url)
+  "Open URL in the default browser and return focus to Emacs."
+  (browse-url url)
+  (when (eq system-type 'gnu/linux)
+    (shell-command "wmctrl -a emacs"))
+  (when (eq system-type 'darwin)
+    (shell-command "osascript -e 'tell application \"Emacs\" to activate'"))
+  (when (eq system-type 'windows-nt)
+    (shell-command "nircmd win activate process emacs.exe")))
