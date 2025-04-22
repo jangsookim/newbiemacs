@@ -19,13 +19,14 @@
 The URL of an arxiv abstract page must be copied or
 (on MacOS only) the current browser must be visiting an arxiv abstract page."
   (interactive)
-  (let (id pdf url)
+  (let (id pdf url bed end)
     (if (equal system-type 'darwin)
 	(with-temp-buffer
 	  (nbm-org-mac-insert-webpage)
 	  (beginning-of-buffer)
-	  (search-forward "]")
-	  (setq url (buffer-substring 3 (1- (point)))))
+	  (search-forward "]") (setq end (1- (point)))
+	  (search-backward "[") (setq beg (1+ (point)))
+	  (setq url (buffer-substring beg end)))
       (setq url (current-kill 0)))
     (if (string-match "arXiv" url)
 	(progn
