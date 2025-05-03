@@ -346,7 +346,8 @@
   (use-package undo-tree
     :init
     (evil-set-undo-system 'undo-tree)
-    (global-undo-tree-mode 1))
+    (global-undo-tree-mode 1)
+    (setq undo-tree-auto-save-history nil))
 #+end_src
 
 ** language
