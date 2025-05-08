@@ -21,12 +21,7 @@ The URL of an arxiv abstract page must be copied or
   (interactive)
   (let (id pdf url bed end)
     (if (equal system-type 'darwin)
-	(with-temp-buffer
-	  (nbm-org-mac-insert-webpage)
-	  (beginning-of-buffer)
-	  (search-forward "]") (setq end (1- (point)))
-	  (search-backward "[") (setq beg (1+ (point)))
-	  (setq url (buffer-substring beg end)))
+	(nbm-get-url)
       (setq url (current-kill 0)))
     (if (string-match "arXiv" url)
 	(progn
@@ -36,3 +31,4 @@ The URL of an arxiv abstract page must be copied or
 	  (kill-new (nbm-arxiv-get-bibtex url))
 	  (nbm-move-pdf-from-downloads t))
       (message "You must copy the URL of an arXiv abstract page first!"))))
+

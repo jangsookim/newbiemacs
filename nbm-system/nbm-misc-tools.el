@@ -233,13 +233,20 @@ other key) stop"))
                 (lambda (el) (member el (cdr (member el list))))
                 list)))
 
+(defun nbm-get-url ()
+  "Return the url from the current browser."
+  (with-temp-buffer
+    (nbm-org-mac-insert-webpage)
+    (beginning-of-buffer)
+    (search-forward "]") (setq end (1- (point)))
+    (search-backward "[") (setq beg (1+ (point)))
+    (setq url (buffer-substring beg end))))
+
 (defun nbm-chatgpt ()
   "Open chatgpt."
   (interactive)
   (let (query url)
-    (setq url (do-applescript "tell application \"Google Chrome\"
-                    set currentURL to URL of active tab of front window
-                  end tell"))
+    (setq url (nbm-get-url))
     (unless (string-match-p (regexp-quote "https://chatgpt.com") url)
       (nbm-open-browser-and-return-to-emacs "https://chatgpt.com"))
     (when (region-active-p)
@@ -251,7 +258,10 @@ other key) stop"))
     (start-process-shell-command
      "osascript" nil
      (concat
-      "osascript -e 'tell application \"Google Chrome\" to activate' "
+      (cond ((equal (nbm-get-user-variable "nbm-browser") "chrome")
+	     "osascript -e 'tell application \"Google Chrome\" to activate' ")
+	    ((equal (nbm-get-user-variable "nbm-browser") "safari")
+	     "osascript -e 'tell application \"Safari\" to activate' "))
       " -e 'tell application \"System Events\" to keystroke \"v\" using {command down}' "
       " -e 'delay 0.5' "
       " -e 'tell application \"System Events\" to key code 36' "
