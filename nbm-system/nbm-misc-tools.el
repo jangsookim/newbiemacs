@@ -234,7 +234,7 @@ other key) stop"))
                 list)))
 
 (defun nbm-get-url ()
-  "Return the url from the current browser."
+  "Return the url from the current browser. It only works in mac."
   (with-temp-buffer
     (nbm-org-mac-insert-webpage)
     (beginning-of-buffer)
