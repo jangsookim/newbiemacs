@@ -1654,7 +1654,7 @@ Prompt for a label (with completion) and jump to the location of this label."
             (beginning-of-line)
             (search-forward "`") (setq beg (point))
             (setq label (buffer-substring beg end)))
-          (kill-this-buffer)
+          (kill-current-buffer)
           (if line
 	      (progn
 		(goto-line line) (beginning-of-line)
@@ -1676,7 +1676,7 @@ Prompt for a label (with completion) and jump to the location of this label."
             (beginning-of-line)
             (search-forward "`") (setq beg (point))
             (setq label (buffer-substring beg end)))
-          (kill-this-buffer)
+          (kill-current-buffer)
           (if label
 	      (progn
 		(beginning-of-buffer)

@@ -290,8 +290,8 @@
               `(menu-item "maximize" delete-other-windows
                           :image (image :type png :file ,(nbm-root-f "icons/max-win.png"))
                           :help "Maximize window (<leader> w m)"))
-  (define-key tool-bar-map [kill-this-buffer]
-              `(menu-item "kill" kill-this-buffer
+  (define-key tool-bar-map [kill-current-buffer]
+              `(menu-item "kill" kill-current-buffer
                           :image (image :type png :file ,(nbm-root-f "icons/kill-win.png"))
                           :help "Kill this buffer"))
   (define-key tool-bar-map [torus]
@@ -531,7 +531,7 @@
   (evil-define-key 'emacs dired-mode-map (kbd "M-<backspace>") 'newbie)
   (evil-define-key 'emacs dired-mode-map (kbd "SPC") 'evil-send-leader)
   (evil-define-key 'emacs dired-mode-map (kbd ",") 'evil-send-localleader)
-  (evil-define-key 'emacs dired-mode-map (kbd "q") 'kill-this-buffer)
+  (evil-define-key 'emacs dired-mode-map (kbd "q") 'kill-current-buffer)
 #+end_src
 
 * Editing styles (Emacs, Vim, Windows)

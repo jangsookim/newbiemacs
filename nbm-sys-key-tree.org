@@ -34,7 +34,7 @@
 *** key: q, function: quick-calc, level: 2
 ** key: b, description: Buffers, level: 1
 *** key: b, description: buffers-list, function: helm-buffers-list, level: 1
-*** key: d, function: kill-this-buffer, level: 1
+*** key: d, function: kill-current-buffer, level: 1
 *** key: D, description: kill-buffers-with-extension, function: nbm-kill-all-buffers-with-extension, level: 3
 *** key: j, description: jump buffer, function: nbm-tab-line-jump, level: 3
 *** key: h, description: previous buffer, function: nbm-tab-line-previous-buffer, level: 3
