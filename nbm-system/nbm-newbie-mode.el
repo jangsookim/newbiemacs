@@ -49,7 +49,7 @@
   (evil-local-set-key 'normal (kbd "q") 'newbie-quit)
   ;; (evil-local-set-key 'normal (kbd "r") 'org-roam-node-find)
   (evil-local-set-key 'normal (kbd "s") 'newbie-search)
-  ;; (evil-local-set-key 'normal (kbd "t") 'nbm-find-tex)
+  (evil-local-set-key 'normal (kbd "t") 'nbm-find-tex)
   ;; (evil-local-set-key 'normal (kbd "u") 'org-roam-ui-mode)
   ;; (evil-local-set-key 'normal (kbd "v") 'newbie-latex-change-variables)
   ;; (evil-local-set-key 'normal (kbd "w") ')
@@ -108,7 +108,7 @@
 (defun newbie-print-logo ()
   "Start newbie."
   (nbm-insert 7 "                                       +-+                        ")
-  (insert (format " %s \n" "Newbiemacs 1.89"))
+  (insert (format " %s \n" "Newbiemacs 1.90"))
   (nbm-insert 7 "                                       | | +----;                                  
                                +----,  | | | +--' +-+    +-+                       
   +-+    +-+                   | ,_, \\ | | | |    |  \\  /  |                       
@@ -137,6 +137,9 @@
   (nbm-insert 3 (format "%5s%-19s" "" "a: arxiv paper"))
   (nbm-insert 3 (format "%5s%-19s" "" "m: move pdf"))
   (nbm-insert 3 (format "%5s%-30s\n" "" "U: Update Newbiemacs"))
+  (nbm-insert 3 (format "%5s%-19s" "" "p: pdf find"))
+  (nbm-insert 3 (format "%5s%-19s" "" "t: tex find"))
+  (nbm-insert 3 (format "%5s%-30s\n" "" "n: new tex file"))
   (nbm-insert 3 (format "%5s%-19s" "" "G: GTD"))
   (nbm-insert 3 (format "%5s%-19s" "" "s: search"))
   (nbm-insert 3 (format "%5s%-30s\n" "" "g: games"))
