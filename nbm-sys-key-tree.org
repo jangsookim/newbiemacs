@@ -233,6 +233,13 @@
 **** key: c, description: tikz-cycle, function: nbm-tikz-cycle, level: 1
 **** key: s, description: tikz-set-partition, function: nbm-tikz-set-partition, level: 1
 **** key: l, description: tikz-lattice-path, function: nbm-tikz-lattice-path, level: 1
+*** key: d, description: delete snippet, function: nbm-yasnippet-delete, level: 3
+*** key: q, description: quick new snippet, function: nbm-yasnippet-quick-new, level: 3
+*** key: i, description: insert-snippet, function: yas-insert-snippet, level: 2
+*** key: n, description: new-snippet, function: yas-new-snippet, level: 2
+*** key: f, description: visit-snippet-file, function: yas-visit-snippet-file, level: 2
+*** key: t, description: table of snippets, function: yas-describe-tables, level: 2
+*** key: r, description: reload all, function: yas-reload-all, level: 2
 ** key: t, description: toggle/change, level: 1
 *** key: =, description: LHS and RHS, function:nbm-latex-toggle-LHS-RHS, level: 2
 *** key: ", description: double quotes, function: nbm-latex-toggle-double-quotes, level: 2
