@@ -514,6 +514,7 @@
 ** Org-Roam
 #+begin_src emacs-lisp :tangle yes
   (when (package-installed-p 'org-roam)
+    (setq org-roam-db-location (concat (getenv "HOME") "/.emacs.d/org-roam.db"))
     (setq org-roam-directory (concat *nbm-home* "org/"))
     (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:15}" 'face 'org-tag)))
     (org-roam-db-autosync-mode)
