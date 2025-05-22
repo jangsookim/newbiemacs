@@ -43,7 +43,6 @@
            (setq openwith-associations '(("\\.pdf\\'" "open -a Skim.app" (file))
                                     ("\\.jpg\\'" "open" (file))
                                     ("\\.jpeg\\'" "open" (file))
-                                    ("\\.png\\'" "open" (file))
                                     ("\\.zip\\'" "open" (file))
                                     ("\\.hwp\\'" "open" (file))
                                     ("\\.hwpx\\'" "open" (file))
