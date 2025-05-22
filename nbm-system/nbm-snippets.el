@@ -59,7 +59,7 @@ Enter the entries below:
 (defun nbm-snippet-insert-matrix-entries (str)
   "Parse STR and insert the result in the current buffer.
 To support the ytableau package, a dot \".\" is converted
-to \"\\none\"."
+to \"{}\"."
   (let (row col this-row)
     (setq str (split-string str "\n"))
     (setq row (length str))
@@ -69,7 +69,7 @@ to \"\\none\"."
       (dotimes (j (length this-row))
 	(unless (equal j 0) (insert " & "))
 	(if (equal (nth j this-row) ".")
-	    (insert "\\none")
+	    (insert "{}")
 	  (insert (nth j this-row))))
       (if (equal i (1- row))
 	  (insert "\n")
