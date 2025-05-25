@@ -184,6 +184,7 @@
 ** key: d, description: delete math only, function: nbm-latex-delete-math, level: 2
 ** key: D, description: delete math with env, function: nbm-latex-delete-math-with-env, level: 2
 ** key: e, description: environments, function: nbm-latex-new-environment, level: 1
+** key: k, description: home, function: newbie, level: 1
 ** key: f, description: Fonts, level: 1
 *** key: b, description: bold, function: nbm-latex-font-bold, level: 1
 *** key: e, description: emph, function: nbm-latex-font-emph, level: 1
