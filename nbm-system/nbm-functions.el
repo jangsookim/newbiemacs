@@ -14,8 +14,6 @@
 (defun nbm-get-dir-name ()
   (cond ((equal major-mode 'dired-mode)
 	 (dired-current-directory))
-	((not buffer-file-name)
-	 (file-name-directory *newbie-current-file*))
 	(t (file-name-directory (buffer-file-name)))))
 
 (defun nbm-copy-file-name ()

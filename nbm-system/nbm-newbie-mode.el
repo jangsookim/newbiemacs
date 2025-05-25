@@ -2,11 +2,6 @@
 
 (defun newbie-key ()
   (interactive)
-  (if (buffer-file-name)
-      (setq *newbie-current-file* (buffer-file-name))
-    (setq *newbie-current-file* *nbm-home*))
-  (if (equal major-mode 'dired-mode)
-      (setq *newbie-current-file* (dired-current-directory)))
   (if (get-buffer "newbie") (kill-buffer "newbie"))
   (split-window-below)
   (other-window -1)
@@ -18,11 +13,6 @@
 
 (defun newbie ()
   (interactive)
-  (if (buffer-file-name)
-      (setq *newbie-current-file* (buffer-file-name))
-    (setq *newbie-current-file* *nbm-home*))
-  (if (equal major-mode 'dired-mode)
-      (setq *newbie-current-file* (dired-current-directory)))
   (if (get-buffer "newbie") (kill-buffer "newbie"))
   (switch-to-buffer "newbie")
   (erase-buffer)
@@ -159,7 +149,6 @@
     (insert-image (create-image (nbm-root-f "newbie-logo.png") nil nil :width 120))
     (insert "\n\n")
     (newbie-print-menu)
-    (newbie-print-current-file)
     (beginning-of-buffer)))
 
 (defun newbie-quit ()
@@ -174,18 +163,10 @@
   (nbm-insert 9 (format "  %-17s: %s\n" "*nbm-desktop*" *nbm-desktop*))
   (nbm-insert 9 (format "  %-17s: %s\n" "*nbm-screenshots*" *nbm-screenshots*)))
 
-(defun newbie-print-current-file ()
-  (insert (format "\n  The current file is:\n  %s" *newbie-current-file*)))
-
 ;; key bindings
 (defvar newbie-mode-map (make-sparse-keymap))
 (evil-global-set-key 'normal (kbd "M-<backspace>") 'newbie)
 (evil-global-set-key 'emacs (kbd "M-<backspace>") 'newbie)
-
-(defun newbie-finder ()
-  "Open the current file in Finder."
-  (interactive)
-  (nbm-show-in-finder *newbie-current-file*))
 
 (defun newbie-add-to-symlinks ()
   (interactive) (kill-buffer)
@@ -202,12 +183,6 @@
 (defun newbie-latex-change-variables ()
   (interactive) (kill-buffer)
   (nbm-latex-change-variables))
-
-(defun newbie-yank-file-name ()
-  (interactive)
-  (kill-new *newbie-current-file*)
-  (message (concat "The following string is copied to the clipboard.\n"
-                   *newbie-current-file*)))
 
 (defun newbie-org-roam-node-insert ()
   (interactive) (kill-buffer)

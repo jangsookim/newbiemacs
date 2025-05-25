@@ -60,7 +60,6 @@
 (defvar *nbm-desktop*)
 (defvar *nbm-downloads*)
 (defvar *nbm-screenshots*)
-(defvar *newbie-current-file*)
 
 (defvar *nbm-home* (with-temp-buffer (insert-file-contents (concat (getenv "HOME") "/nbm-root/nbm-home.txt"))
 					 (beginning-of-buffer) (end-of-line)
@@ -92,8 +91,6 @@
 		  (buffer-string)) "\n"))
     (dolist (line temp dirs)
       (if (> (length line) 0) (setq dirs (cons line dirs))))))
-
-(defvar *newbie-current-file* *nbm-home*)
 
 (defvar *nbm-magnet-height-adjust* 0)
 (when (file-exists-p (concat *nbm-home* "nbm-user-settings/nbm-variables/nbm-magnet.txt"))
