@@ -101,12 +101,13 @@ FILENAME must end with .tex."
   "Create a new latex file from a template."
   (interactive)
   (let (dirname choice title filename temp)
-    (when (equal ?n (read-char (format "Create a tex file in the Newbiemacs tex directory?
+    (when (nbm-get-dir-name)
+      (when (equal ?n (read-char (format "Create a tex file in the Newbiemacs tex directory?
 y: yes (default)
 n: no (create a tex file in the current directory)
 
 Current dir: %s" (nbm-get-dir-name))))
-      (setq dirname "./"))
+      (setq dirname "./")))
     (setq title (read-string (concat "Enter a new latex filename (default: note): ")
 			     nil nil "note" nil))
     (unless dirname
