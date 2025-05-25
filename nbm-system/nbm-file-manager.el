@@ -193,6 +193,8 @@ e) el"))
     (setq file-name (if (equal system-type 'windows-nt)
 			(nbm-get-dir-name)
 		      (nbm-get-file-name))))
+  (unless file-name
+    (setq file-name *nbm-home*))
   (cond ((equal system-type 'windows-nt)
 	 (shell-command (format "start %s" file-name)))
 	((equal system-type 'darwin)
