@@ -195,6 +195,7 @@ e) el"))
 		      (nbm-get-file-name))))
   (unless file-name
     (setq file-name *nbm-home*))
+  (setq file-name (string-replace "~" (getenv "HOME") file-name))
   (cond ((equal system-type 'windows-nt)
 	 (shell-command (format "start %s" file-name)))
 	((equal system-type 'darwin)
