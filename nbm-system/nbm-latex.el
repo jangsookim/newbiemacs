@@ -1613,15 +1613,18 @@ other key) stop"))
       (beginning-of-buffer)
       (when (re-search-forward "^[ \t]*\\\\usepackage\\(\\[[^]]*\\]\\)?{[^}]*cleveref[^}]*}" nil t)
 	(setq Cref t)))
-    (cond ((equal (substring label 0 3) "eq:")
-	   (insert (format "\\eqref{%s}" label)))
-	  (Cref
-	   (if (looking-back "\\Cref\\|\\cref{[^}]*}")
+    (cond (Cref
+	   (if (looking-back "\\\\Cref\\|\\\\cref{[^}]*}")
 	       (progn
 		 (backward-char)
 		 (insert (format ",%s" label))
 		 (forward-char))
-	     (insert (format "\\Cref{%s}" label))))
+	     (progn
+	       (if (equal (substring label 0 3) "eq:")
+		   (insert (format "\\eqref{%s}" label))
+		 (insert (format "\\Cref{%s}" label))))))
+	  ((equal (substring label 0 3) "eq:")
+	   (insert (format "\\eqref{%s}" label)))
 	  (t
 	   (insert (format "\\ref{%s}" label))))))
 
