@@ -1611,9 +1611,8 @@ other key) stop"))
 	 Cref)
     (save-excursion
       (beginning-of-buffer)
-      (if (re-search-forward "^[ \t]*\\\\usepackage\\(\\[[^]]*\\]\\)?{[^}]*cleveref[^}]*}" nil t)
-	  (setq Cref t)
-	(setq Cref nil)))
+      (when (re-search-forward "^[ \t]*\\\\usepackage\\(\\[[^]]*\\]\\)?{[^}]*cleveref[^}]*}" nil t)
+	(setq Cref t)))
     (cond ((equal (substring label 0 3) "eq:")
 	   (insert (format "\\eqref{%s}" label)))
 	  (Cref
@@ -1624,7 +1623,7 @@ other key) stop"))
 		 (forward-char))
 	     (insert (format "\\Cref{%s}" label))))
 	  (t
-	   (format "\\ref{%s}" label)))))
+	   (insert (format "\\ref{%s}" label))))))
 
 (defun nbm-reftex-goto-label (&optional other-window)
   "Modified from reftex-goto-label so that Cref and eqref work as default.
