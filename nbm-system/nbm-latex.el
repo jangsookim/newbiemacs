@@ -1939,7 +1939,18 @@ The cursor must be placed before the opening parenthesis."
 	    (if (comment-only-p beg end)
 		(message "The refcheck package is disabled.")
 	      (message "The refcheck package is enabled.")))
-	(message "There is no line containing \"\\usepackage{refcheck}\".")))))
+	(progn
+	  (beginning-of-buffer)
+	  (if (search-forward "\\usepackage" nil t)
+	      (progn
+		(beginning-of-line)
+		(insert "\\usepackage{refcheck}\n"))
+	    (progn
+	      (beginning-of-buffer)
+	      (search-forward "\\documentclass")
+	      (end-of-line)
+	      (insert "\n\n\\usepackage{refcheck}\n")))
+	  (message "Added \"\\usepackage{refcheck}\"."))))))
 
 (defun nbm-latex-rename-environment ()
   (interactive)
