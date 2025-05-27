@@ -1607,11 +1607,24 @@ other key) stop"))
   (let* ((docstruct (symbol-value reftex-docstruct-symbol))
 	 (label (completing-read "Choose a reference to insert: "
 				 docstruct
-				 (lambda (x) (stringp (car x))) t)))
-    (if (equal (substring label 0 3) "eq:")
-	(insert "\\eqref")
-      (insert "\\Cref"))
-    (insert (format "{%s}" label))))
+				 (lambda (x) (stringp (car x))) t))
+	 Cref)
+    (save-excursion
+      (beginning-of-buffer)
+      (if (re-search-forward "^[ \t]*\\\\usepackage\\(\\[[^]]*\\]\\)?{[^}]*cleveref[^}]*}" nil t)
+	  (setq Cref t)
+	(setq Cref nil)))
+    (cond ((equal (substring label 0 3) "eq:")
+	   (insert (format "\\eqref{%s}" label)))
+	  (Cref
+	   (if (looking-back "\\Cref\\|\\cref{[^}]*}")
+	       (progn
+		 (backward-char)
+		 (insert (format ",%s" label))
+		 (forward-char))
+	     (insert (format "\\Cref{%s}" label))))
+	  (t
+	   (format "\\ref{%s}" label)))))
 
 (defun nbm-reftex-goto-label (&optional other-window)
   "Modified from reftex-goto-label so that Cref and eqref work as default.
