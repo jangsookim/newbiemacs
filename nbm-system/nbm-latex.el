@@ -820,7 +820,7 @@ If AUTO is non-nil, create an automatic label."
     (reftex-access-scan-info)
     (let ((env (LaTeX-current-environment)) num)
       (cond ((equal env "document")
-	     (message "You are not in a proper environment!"))
+	     (reftex-label))
 	    ((member env '("align" "equation" "multline"))
 	     (if auto
 		 (setq label "")
