@@ -1859,16 +1859,20 @@ The number of invisible solutions is %s." visible invisible)))))
   "Toggle $ to \\( \\) and $$ to \\[ \\]."
   (interactive)
   (if (region-active-p)
-      (let (str)
+      (let (str dollar-exist)
 	(setq str (buffer-substring (region-beginning) (region-end)))
 	(delete-region (region-beginning) (region-end))
 	(with-temp-buffer
 	  (insert str) (beginning-of-buffer)
 	  (while (search-forward "$" nil t)
+	    (setq dollar-exist t)
 	    (backward-char)
 	    (nbm-latex-toggle-dollars-once))
 	  (setq str (buffer-substring (point-min) (point-max))))
-	(insert str))
+	(insert str)
+	(unless dollar-exist
+	  (when (equal ?y (read-char "Change \\( \\) and \\[ \\] to $ and $$?"))
+	    (nbm-latex-toggle-to-dollars))))
     (nbm-latex-toggle-dollars-once)))
 
 (defun nbm-latex-toggle-dollars-once ()
@@ -1893,6 +1897,17 @@ The number of invisible solutions is %s." visible invisible)))))
 	(search-forward "$")
 	(delete-region (- (point) 1) (point))
 	(insert "\\)")))))
+
+(defun nbm-latex-toggle-to-dollars ()
+  "Toggle \\( \\) and \\[ \\] to $ and $$."
+  (let (str)
+    (setq str (buffer-substring (region-beginning) (region-end)))
+    (delete-region (region-beginning) (region-end))
+    (setq str (string-replace "\\(" "$" str))
+    (setq str (string-replace "\\)" "$" str))
+    (setq str (string-replace "\\[" "$$" str))
+    (setq str (string-replace "\\]" "$$" str))
+    (insert str)))
 
 (defun nbm-latex-insert-webpage ()
   "Insert a link to the webpage of the user's browser.
