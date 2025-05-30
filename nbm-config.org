@@ -419,6 +419,8 @@
   (evil-define-key 'emacs reftex-select-label-mode-map (kbd "j") 'reftex-select-next)
 
   (global-set-key "\C-\M-e" 'nbm-end-of-defun)
+  (define-key evil-normal-state-map (kbd "[[") 'nbm-beginning-of-defun)
+  (define-key evil-visual-state-map (kbd "[[") 'nbm-beginning-of-defun)
   (define-key evil-normal-state-map (kbd "]]") 'nbm-end-of-defun)
   (define-key evil-visual-state-map (kbd "]]") 'nbm-end-of-defun)
 
