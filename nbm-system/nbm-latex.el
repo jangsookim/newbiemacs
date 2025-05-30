@@ -1620,7 +1620,7 @@ other key) stop"))
 		 (insert (format ",%s" label))
 		 (forward-char))
 	     (progn
-	       (if (equal (substring label 0 3) "eq:")
+	       (if (equal (substring label 0 2) "eq")
 		   (insert (format "\\eqref{%s}" label))
 		 (insert (format "\\Cref{%s}" label))))))
 	  ((equal (substring label 0 3) "eq:")
