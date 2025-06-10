@@ -267,7 +267,10 @@ If FRONT is non-nil, exit to the front of the math mode."
     (if (car math)
 	(if front
 	    (goto-char (nth 1 math))
-	  (goto-char (nth 2 math)))
+	  (progn
+	    (goto-char (nth 2 math))
+	    (when (equal (car math) "\\[")
+	      (next-line) (beginning-of-line))))
       (message "You are not in math mode!"))))
 
 (defun nbm-latex-exit-math-mode-front ()
