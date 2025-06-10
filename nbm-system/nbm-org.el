@@ -292,7 +292,20 @@ and store the org link."
   (interactive "e")
   (let (fname)
     (setq fname (car (last (car (last event)))))
+    (when (equal (nbm-get-user-variable "nbm-org-relative-path") "t")
+      (setq fname (file-relative-name fname (file-name-directory (buffer-file-name)))))
     (insert (format "[[file:%s]]" fname))))
+
+(defun nbm-org-toggle-relative-path ()
+  "Toggle the user variable nbm-org-relative-path."
+  (interactive)
+  (if (equal (nbm-get-user-variable "nbm-org-relative-path") "t")
+      (progn
+	(nbm-set-user-variable "nbm-org-relative-path" "nil")
+	(message "Org-mode now uses the absolute path for a file link."))
+    (progn
+      (nbm-set-user-variable "nbm-org-relative-path" "t")
+      (message "Org-mode now uses the relative path for a file link."))))
 
 (defun nbm-org-insert-file ()
   "Insert the most recent file from *nbm-screenshots* into the directory (buffer-file-name)-files. A file link is also inserted.

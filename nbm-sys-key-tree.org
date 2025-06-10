@@ -345,6 +345,7 @@
 *** key: l, description: latex preview on, function: nbm-org-latex-preview-on, level: 2
 *** key: L, description: latex preview off, function: nbm-org-latex-preview-off, level: 2
 *** key: T, function: org-todo, level: 1
+*** key: R, description: relative-path, function: nbm-org-toggle-relative-path, level: 3
 *** key: r, description: org-roam-buffer, function: org-roam-buffer-toggle, level: 3
 *** key: v, description: valign, function: nbm-toggle-valign, level: 3
 *** key: i, description: images, function: org-toggle-inline-images, level: 3
