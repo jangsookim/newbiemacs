@@ -5,15 +5,12 @@ Use upper case to cycle through multiple monitors."
   (let (choice)
     (setq choice (read-char (format
 			     "Select the position: (Like Vim, h means left and l means right. Use upper case to cycle through multiple monitors.)\n
-%36s%18s\n
 %18s%18s%18s%18s\n
 %36s%18s\n
 %20s%26s"
-			     (concat (nbm-string-key "u") ": upper-left ")
-			     (concat (nbm-string-key "i") ": upper-right")
 			     (concat (nbm-string-key "h") ": left       ")
-			     (concat (nbm-string-key "j") ": lower-left ")
-			     (concat (nbm-string-key "k") ": lower-right")
+			     (concat (nbm-string-key "j") ": lower      ")
+			     (concat (nbm-string-key "k") ": lower      ")
 			     (concat (nbm-string-key "l") ": right      ")
 			     (concat (nbm-string-key "c") ": center     ")
 			     (concat (nbm-string-key "m") ": max        ")
@@ -46,13 +43,13 @@ Use upper case to cycle through multiple monitors."
     (if (= pos ?c)
 	(setq x (+ x (/ width 4))
 	      y (+ y (/ height 4))))
-    (if (memq pos '(?l ?i ?k))
+    (if (memq pos '(?l ?i))
 	(setq x (+ x (/ width 2))))
-    (if (memq pos '(?j ?k))
+    (if (memq pos '(?j))
 	(setq y (+ y (/ height 2))))
-    (unless (= pos ?m)
+    (unless (memq pos '(?j ?k ?m))
       (setq width (/ width 2)))
-    (if (memq pos '(?u ?j ?i ?k ?c))
+    (if (memq pos '(?u ?j ?i ?c ?k))
 	(setq height (/ height 2)))
     (setq width (- width 40))
     (setq height (- height (if tool-bar-mode 70 40)))
