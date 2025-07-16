@@ -23,7 +23,7 @@ The URL of an arxiv abstract page must be copied or
     (if (equal system-type 'darwin)
 	(nbm-get-url)
       (setq url (current-kill 0)))
-    (if (string-match "arXiv" url)
+    (if (string-match "arxiv" url)
 	(progn
 	  (setq id (biblio-arxiv--extract-id url))
 	  (setq pdf (biblio-arxiv--pdf-url id))
