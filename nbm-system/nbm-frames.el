@@ -3,20 +3,19 @@
 Use upper case to cycle through multiple monitors."
   (interactive)
   (let (choice)
-    (setq choice (read-char (format
-			     "Select the position: (Like Vim, h means left and l means right. Use upper case to cycle through multiple monitors.)\n
-%18s%18s%18s%18s\n
-%36s%18s\n
-%20s%26s"
-			     (concat (nbm-string-key "h") ": left       ")
-			     (concat (nbm-string-key "j") ": lower      ")
-			     (concat (nbm-string-key "k") ": lower      ")
-			     (concat (nbm-string-key "l") ": right      ")
-			     (concat (nbm-string-key "c") ": center     ")
-			     (concat (nbm-string-key "m") ": max        ")
-			     (concat (nbm-string-key "a") ": adjust height")
-			     (concat (nbm-string-key "s") ": save as startup frame"))))
-    (when (member choice '(?U ?I ?H ?J ?K ?L ?C ?M))
+    (setq choice (read-char "Select the position: (Like Vim, h means left and l means right. Use upper case to cycle through multiple monitors.)
+
+h: left
+j: lower
+k: upper
+l: right
+d: left third
+e: center third  
+f: right third
+m: max
+a: adjust height
+s: save as startup frame"))
+    (when (and (<= ?A choice) (<= choice ?Z))
       (nbm-magnet-next-monitor)
       (setq choice (downcase choice)))
     (cond ((equal ?a choice) (nbm-magnet-adjust-height))
@@ -34,30 +33,43 @@ Use upper case to cycle through multiple monitors."
 
 (defun nbm-magnet-move-frame (pos)
   "Move the current frame as Magnet does."
-  (let (x y height width monitor)
+  (let (x y height width monitor wrong-key)
     (setq monitor (nth 1 (frame-monitor-attributes))) ; workable area
     (setq x (nth 1 monitor)    ; x-coordinate of the current monitor's upper right corner
 	  y (nth 2 monitor)    ; y-coordinate of the current monitor's upper right corner
 	  width (nth 3 monitor)
 	  height (nth 4 monitor))
-    (if (= pos ?c)
-	(setq x (+ x (/ width 4))
-	      y (+ y (/ height 4))))
-    (if (memq pos '(?l ?i))
-	(setq x (+ x (/ width 2))))
-    (if (memq pos '(?j))
-	(setq y (+ y (/ height 2))))
-    (unless (memq pos '(?j ?k ?m))
-      (setq width (/ width 2)))
-    (if (memq pos '(?u ?j ?i ?c ?k))
-	(setq height (/ height 2)))
-    (setq width (- width 40))
-    (setq height (- height (if tool-bar-mode 70 40)))
+    (cond ((= pos ?h)
+	   (setq width (/ width 2)))
+	  ((= pos ?j)
+	   (setq y (+ y (/ height 2)))
+	   (setq height (/ height 2)))
+	  ((= pos ?k)
+	   (setq height (/ height 2)))
+	  ((= pos ?l)
+	   (setq x (+ x (/ width 2)))
+	   (setq width (/ width 2)))
+	  ((= pos ?d)
+	   (setq width (/ width 3)))
+	  ((= pos ?f)
+	   (setq x (+ x (/ width 3)))
+	   (setq width (/ width 3)))
+	  ((= pos ?g)
+	   (setq x (+ x (* (/ width 3) 2)))
+	   (setq width (/ width 3)))
+	  ((= pos ?m)) 			; nothing to setup for maximize window
+	  (t
+	   (setq wrong-key t)))
+    (if wrong-key
+	(message "You typed a wrong key.")
+      (progn
+	(setq width (- width 40))
+	(setq height (- height (if tool-bar-mode 70 40)))
 
-    (set-frame-position (selected-frame) x y)
-    (if (equal system-type 'windows-nt)
-	(set-frame-size  (selected-frame) width (+ height -60 *nbm-magnet-height-adjust*) t) ; t means pixelwise dimension
-      (set-frame-size  (selected-frame) width (+ height *nbm-magnet-height-adjust*) t))))
+	(set-frame-position (selected-frame) x y)
+	(if (equal system-type 'windows-nt)
+	    (set-frame-size  (selected-frame) width (+ height -60 *nbm-magnet-height-adjust*) t) ; t means pixelwise dimension
+	  (set-frame-size  (selected-frame) width (+ height *nbm-magnet-height-adjust*) t))))))
 
 (defun nbm-magnet-adjust-height ()
   "Adjust the off-set of max frame height."
