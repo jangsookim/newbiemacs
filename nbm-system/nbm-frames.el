@@ -10,8 +10,8 @@ j: lower
 k: upper
 l: right
 d: left third
-e: center third  
-f: right third
+f: center third  
+g: right third
 m: max
 a: adjust height
 s: save as startup frame"))
