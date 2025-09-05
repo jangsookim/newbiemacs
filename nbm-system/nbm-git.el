@@ -28,7 +28,7 @@ Current directory: %s" (nbm-get-dir-name))))
 Make sure that you have installed GitHub CLI and run the following command in a terminal.
 gh auth login"))
 	(when username
-	  (setq repo-name (read-string (concat "Enter a name for the new GitHub repository: ")
+	  (setq repo-name (read-string (concat "Enter a name for the new GitHub repository. (You must only use alpabets, numbers, and dashes.)\n: ")
 				       (file-name-nondirectory (directory-file-name (nbm-get-dir-name)))))
 	  (setq repo-name (string-replace " " "-" repo-name))
 	  (setq access (completing-read "Choose the accessibility: " '("private" "public")))
