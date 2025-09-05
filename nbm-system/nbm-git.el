@@ -15,16 +15,14 @@ Current directory: %s" (nbm-get-dir-name))))
 (defun nbm-git-publish-to-github ()
   "Publish the current git repository to github."
   (interactive)
-  (let (remote repo-name access username gh status)
+  (let (remote repo-name access username gh)
     (setq remote (shell-command-to-string "git remote -v"))
     (if (not (equal remote ""))
 	(message (format "There is an existing remote repository.\n%s" remote))
       (progn
 	(if (file-exists-p "/opt/homebrew/bin/gh")
 	    (setq gh "/opt/homebrew/bin/gh") (setq gh "gh"))
-	(setq status (shell-command-to-string (format "%s auth status" gh)))
-	(string-match "Logged in to github.com as \\([^ ]+\\) " status)
-	(setq username (match-string 1 status))
+	(setq username (shell-command-to-string (format "%s api user --jq .login" gh)))
 	(unless username 
 	  (message "Failed to connect to GitHub.
 Make sure that you have installed GitHub CLI and run the following command in a terminal.
