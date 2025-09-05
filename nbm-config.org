@@ -47,6 +47,8 @@
                                     ("\\.hwp\\'" "open" (file))
                                     ("\\.hwpx\\'" "open" (file))
                                     ("\\.pptx\\'" "open" (file))
+                                    ("\\.mov\\'" "open" (file))
+                                    ("\\.mp4\\'" "open" (file))
                                     ("\\.xlsx\\'" "open" (file))
                                     ("\\.docx\\'" "open" (file))
                                     ("\\.djvu\\'" "open" (file)))))
