@@ -98,7 +98,7 @@
 (defun newbie-print-logo ()
   "Start newbie."
   (nbm-insert 7 "                                       +-+                        ")
-  (insert (format " %s \n" "Newbiemacs 2.08"))
+  (insert (format " %s \n" "Newbiemacs 2.09"))
   (nbm-insert 7 "                                       | | +----;                                  
                                +----,  | | | +--' +-+    +-+                       
   +-+    +-+                   | ,_, \\ | | | |    |  \\  /  |                       
