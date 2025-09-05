@@ -22,7 +22,7 @@ Current directory: %s" (nbm-get-dir-name))))
       (progn
 	(if (file-exists-p "/opt/homebrew/bin/gh")
 	    (setq gh "/opt/homebrew/bin/gh") (setq gh "gh"))
-	(setq username (shell-command-to-string (format "%s api user --jq .login" gh)))
+	(setq username (substring (shell-command-to-string (format "%s api user --jq .login" gh)) 0 -1))
 	(unless username 
 	  (message "Failed to connect to GitHub.
 Make sure that you have installed GitHub CLI and run the following command in a terminal.
