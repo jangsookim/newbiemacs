@@ -983,6 +983,16 @@ If AUTO is non-nil, create an automatic label."
     (setq bibtex-completion-bibliography bib-file)
     (helm-bibtex)))
 
+(defun nbm-latex-bibtex-theorem (&optional main)
+  "Run helm-bibtex with a theorem added."
+  (interactive)
+  (let (thm)
+    (nbm-latex-bibtex)
+    (setq thm (read-string "Enter a theorem number etc.: "))
+    (backward-sexp)
+    (insert (format "[%s]" thm))
+    (forward-sexp)))
+
 (defun nbm-latex-toggle-bib-file ()
   "Toggle the bib file between the main one and the local one."
   (interactive)
