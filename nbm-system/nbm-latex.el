@@ -976,12 +976,16 @@ If AUTO is non-nil, create an automatic label."
 (defun nbm-latex-bibtex (&optional main)
   "Run helm-bibtex."
   (interactive)
-  (let (bib-file bibtex-completion-bibliography)
-    (if main
-	(setq bib-file *nbm-latex-bib-file*)
-      (setq bib-file (nbm-latex-get-bib-file)))
-    (setq bibtex-completion-bibliography bib-file)
-    (helm-bibtex)))
+  (if (reftex-locate-bibliography-files "..")
+      (let (bib-file bibtex-completion-bibliography)
+	(if main
+	    (setq bib-file *nbm-latex-bib-file*)
+	  (setq bib-file (nbm-latex-get-bib-file)))
+	(setq bibtex-completion-bibliography bib-file)
+	(helm-bibtex))
+    (progn
+      (TeX-normal-mode)
+      (reftex-citation))))
 
 (defun nbm-latex-bibtex-theorem (&optional main)
   "Run helm-bibtex with a theorem added."
