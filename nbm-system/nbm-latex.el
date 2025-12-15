@@ -1353,7 +1353,7 @@ will be returned."
     (with-temp-buffer
       (insert str)
       (beginning-of-buffer)
-      (search-forward property)
+      (re-search-forward (format "%s[ ]*=" property))
       (setq beg (point)) (end-of-line) (setq end (point))
       (goto-char beg)
       (if (search-forward "{" end t)
