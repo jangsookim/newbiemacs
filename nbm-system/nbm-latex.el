@@ -1200,8 +1200,7 @@ If QUICK is non-nil, use the default options."
 	    (read-char (concat "Move this file?: (Type y for yes.)\n" newest))))
     (when (equal choice ?y)
       (unless (file-directory-p "./figures/") (make-directory "./figures/"))
-      (setq fig (file-name-nondirectory
-		 (file-name-sans-extension (nbm-make-unique-filename "./figures/" "image" ext))))
+      (setq fig (format-time-string "image-%Y-%m-%d-%H-%M-%S"))
       (unless quick
 	(setq fig (read-string "Enter the figure name: " fig)))
       (if (file-exists-p (format "./figures/%s.%s" fig ext))
