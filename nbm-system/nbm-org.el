@@ -218,7 +218,7 @@ Otherwise, copy a string in the clipboard to load it."
     (setq sage (concat (file-name-sans-extension (buffer-file-name)) ".sage"))
     (org-babel-tangle)
     (rename-file python sage t)
-    (setq str (format "load(\"%s\")" sage))
+    (setq str (format "attach(\"%s\")" sage))
     (if (gnus-buffer-exists-p "*Sage*")
 	(save-excursion
 	  (setq buf (current-buffer))
