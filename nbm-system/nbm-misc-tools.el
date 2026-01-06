@@ -28,7 +28,7 @@
 (defun nbm-load-sage ()
   "Copy a command to load the current file in sage notebook."
   (interactive)
-  (kill-new (format "load(\"%s\")" (buffer-file-name)))
+  (kill-new (format "attach(\"%s\")" (buffer-file-name)))
   (message (format "Copied to clipboard: %s" (current-kill 0))))
 
 (defun nbm-get-user-variable (var &optional all)
