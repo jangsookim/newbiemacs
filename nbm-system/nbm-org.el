@@ -428,9 +428,10 @@ If necessary, revise the org file using things like \"USD\" instead of the dolla
   "Add the current file to agenda.
 The file must be an org file in the newbiemacs/org directory."
   (interactive)
-  (let (org-file)
+  (let (org-file temp)
     (setq org-file (file-name-nondirectory (buffer-file-name)))
-    (if (equal (buffer-file-name) (nbm-f (concat "org/" org-file)))
+    (setq temp (split-string (buffer-file-name) "/newbiemacs/org/"))
+    (if (and (equal (length temp) 2) (equal (nth 1 temp) org-file))
 	(progn
 	  (nbm-org-agenda-remove org-file)
 	  (nbm-set-user-variable "agenda"
