@@ -47,7 +47,7 @@ https://github.com/%s/%s.git" username repo-name))))))))
 (defun nbm-git-merge ()
   "Run a simple git merge tool in the current file."
   (interactive)
-  (beginning-of-buffer) (re-search-forward "^<<<<<<< HEAD$") (beginning-of-line)
+  (beginning-of-buffer) (re-search-forward "^<<<<<<< HEAD") (beginning-of-line)
   (let (choice quit)
     (while (< (point) (point-max))
       (setq choice (read-char "a) keep all\nu) keep upper\nl) keep lower\ns) skip\nother key) quit"))
