@@ -50,6 +50,7 @@
                                     ("\\.mov\\'" "open" (file))
                                     ("\\.mp4\\'" "open" (file))
                                     ("\\.xlsx\\'" "open" (file))
+                                    ("\\.xls\\'" "open" (file))
                                     ("\\.docx\\'" "open" (file))
                                     ("\\.djvu\\'" "open" (file)))))
           (t
