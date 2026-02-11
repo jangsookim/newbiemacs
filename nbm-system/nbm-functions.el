@@ -44,7 +44,12 @@
 (defun nbm-toggle-valign ()
   "Toggle valign mode."
   (interactive)
-  (if valign-mode (valign-mode -1) (valign-mode)))
+  (if (equal (face-attribute 'default :family) "D2Coding")
+      (set-face-attribute 'default nil :family "Menlo" :height 150)
+    (progn
+      (set-fontset-font t 'hangul (font-spec :family "D2Coding"))
+      (set-face-attribute 'default nil :family "D2Coding" :height 160)))
+  (org-table-align))
 
 (defun nbm-set-counter ()
   "Save a number to a register."
