@@ -134,9 +134,6 @@
     (require 'smartparens-config)
     (smartparens-global-mode))
 
-  (use-package valign
-    :init (add-hook 'org-mode-hook #'valign-mode))
-
   (use-package avy
     :init
     (setq avy-background t)
