@@ -233,6 +233,40 @@ Otherwise, copy a string in the clipboard to load it."
 	(kill-new str)
 	(message (format "Copied to clipboard: %s" str))))))
 
+(defun nbm-org-sage-single ()
+  "Write the current source block to a temp sage file and load it in the sage shell.
+If there is a sage shell, then load the sage file in the sage shell.
+Otherwise, copy a string in the clipboard to load it."
+  (interactive)
+  (let* ((info (org-babel-get-src-block-info))
+         (body (nth 1 info)) ; Extracts the text content of the current block
+         ;; Create a temporary file so we don't clutter your directory
+         (sage (make-temp-file "sage_block_" nil ".sage"))
+         (str (format "attach(\"%s\")" sage))
+         buf)
+    
+    (if (not info)
+        (message "Cursor is not inside a source block!")
+      
+      ;; Write the block's body to the temporary .sage file
+      (with-temp-file sage
+        (insert body))
+      
+      ;; Load it into the Sage buffer or copy to clipboard
+      (if (get-buffer "*Sage*") ; Swapped gnus-buffer-exists-p for the standard get-buffer
+          (save-excursion
+            (setq buf (current-buffer))
+            (switch-to-buffer "*Sage*")
+            (goto-char (point-max)) (beginning-of-line) ; Replaced end-of-buffer (better practice in Elisp)
+            (unless (eobp) (kill-line))
+            (insert str) (sage-shell:send-input)
+            (switch-to-buffer buf)
+            (other-window 1)
+            (goto-char (point-max)))
+        (progn
+          (kill-new str)
+          (message (format "Copied to clipboard: %s" str)))))))
+
 (defun nbm-org-search-archived ()
   "Search an org file in the archived directory."
   (interactive)
