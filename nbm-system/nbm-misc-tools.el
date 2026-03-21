@@ -243,29 +243,46 @@ other key) stop"))
     (setq url (buffer-substring beg end))))
 
 (defun nbm-chatgpt ()
-  "Open chatgpt."
+  "Open ChatGPT with a selection of prompt templates for the active region."
   (interactive)
-  (let (query url)
-    ;; (setq url (nbm-get-url))
-    ;; (unless (string-match-p (regexp-quote "https://chatgpt.com") url)
-    ;;   (nbm-open-browser-and-return-to-emacs "https://chatgpt.com"))
-    (when (region-active-p)
-      (setq query (buffer-substring (region-beginning) (region-end)))
-      (setq query (format "Is this correct grammatically? Highlight changes.\n%s" query))
-      (deactivate-mark))
-    (unless query (setq query (read-string "Ask ChatGPT: ")))
+  (let* ((prompts '(("Grammar" . "Is this correct grammatically? Highlight changes.\n%s")
+                    ("Error" . "Find errors or typos:\n%s")
+                    ("Sage code" . "Write sage cdoe for this:\n%s")
+                    ("Summarize" . "Please summarize the following text concisely:\n%s")
+                    ))
+         (browser (nbm-get-user-variable "nbm-browser"))
+         query)
+
+    ;; Logic for getting the query
+    (if (region-active-p)
+        (let* ((text (buffer-substring (region-beginning) (region-end)))
+               ;; Prompt the user to choose an action from the alist
+               (choice (completing-read "Choose prompt action: " prompts nil t))
+               ;; Retrieve the string template based on the choice
+               (template (cdr (assoc choice prompts))))
+          (setq query (format template text))
+          (deactivate-mark))
+      ;; If no region is active, just ask for a custom string
+      (setq query (read-string "Ask ChatGPT: ")))
+
+    ;; Copy the final query to the clipboard
     (kill-new query)
+
+    ;; Execute the browser automation
     (start-process-shell-command
-     "osascript" nil
+     "osascript-chat" nil
      (concat
-      (cond ((equal (nbm-get-user-variable "nbm-browser") "chrome")
-	     "osascript -e 'tell application \"Google Chrome\" to activate' ")
-	    ((equal (nbm-get-user-variable "nbm-browser") "safari")
-	     "osascript -e 'tell application \"Safari\" to activate' "))
+      (cond ((equal browser "chrome")
+             "osascript -e 'tell application \"Google Chrome\" to activate' ")
+            ((equal browser "safari")
+             "osascript -e 'tell application \"Safari\" to activate' ")
+            ;; Fallback just in case a browser isn't recognized
+            (t "osascript -e 'tell application \"System Events\" to activate' ")) 
       " -e 'tell application \"System Events\" to keystroke \"v\" using {command down}' "
       " -e 'delay 0.5' "
       " -e 'tell application \"System Events\" to key code 36' "
       " -e 'tell application \"Emacs\" to activate'"))))
+
 
 (defun nbm-open-browser-and-return-to-emacs (url)
   "Open URL in the default browser and return focus to Emacs."
