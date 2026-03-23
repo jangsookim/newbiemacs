@@ -1556,18 +1556,47 @@ Delete or insert a label accordingly."
   (TeX-font nil 4))
 
 ;; latex diff
-
 (defun nbm-latex-diff ()
-  "Compare the current file with its previous version."
+  "Compare the current file or git revision buffer with its older/base version."
   (interactive)
-  (let (old new)
-    (setq old (read-file-name "Choose an older version to compare: "))
-    (setq new (file-name-nondirectory (buffer-file-name)))
-    (shell-command (format "latexdiff \"%s\" \"%s\" > diff.tex" old new))
-    (find-file "diff.tex")))
+  (let* ((buf-name (buffer-name))
+         (diff-file "diff.tex"))
+    
+    ;; Check if the buffer name matches the git revision format
+    (if (string-match "\\(.*\\)\\.~[^~]+~\\'" buf-name)
+        
+        ;; ==========================================
+        ;; PATH 1: It is a Git Revision Buffer
+        ;; ==========================================
+        (let* ((base-file (match-string 1 buf-name))
+               (old-file (concat (file-name-sans-extension base-file)
+                                 "-old"
+                                 (file-name-extension base-file t))))
+          
+          ;; 1. Create the name-old.tex file
+          (write-region (point-min) (point-max) old-file)
+          
+          ;; 2. Run latexdiff and open
+          (message "Running latexdiff on revision...")
+          (shell-command (format "latexdiff \"%s\" \"%s\" > \"%s\"" old-file base-file diff-file))
+          (find-file diff-file))
+
+      ;; ==========================================
+      ;; PATH 2: It is a Standard File
+      ;; ==========================================
+      (if (buffer-file-name) ; Ensure the buffer is actually visiting a file
+          (let ((old (read-file-name "Choose an older version to compare: "))
+                (new (file-name-nondirectory (buffer-file-name))))
+            
+            (message "Running latexdiff...")
+            (shell-command (format "latexdiff \"%s\" \"%s\" > \"%s\"" old new diff-file))
+            (find-file diff-file))
+        
+        ;; Error fallback if it's neither a git revision nor a saved file (like *scratch*)
+        (error "Current buffer is neither a git revision nor visiting a file")))))
+
 
 ;; changing reftex toc behavior for tabline
-
 (defun nbm-reftex-toc-quit ()
   "Quit the toc buffer with keeping the tabline buffer list."
   (interactive)
