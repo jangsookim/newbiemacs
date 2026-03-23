@@ -1557,7 +1557,8 @@ Delete or insert a label accordingly."
 
 ;; latex diff
 (defun nbm-latex-diff ()
-  "Compare the current file or git revision buffer with its older/base version."
+  "Compare the current file or git revision buffer with its base version.
+Creates a uniquely time-stamped temporary file to prevent accidental overwrites."
   (interactive)
   (let* ((buf-name (buffer-name))
          (diff-file "diff.tex"))
@@ -1569,22 +1570,33 @@ Delete or insert a label accordingly."
         ;; PATH 1: It is a Git Revision Buffer
         ;; ==========================================
         (let* ((base-file (match-string 1 buf-name))
+               ;; Generate a unique timestamp string
+               (time-stamp (format-time-string "%Y%m%d_%H%M%S"))
+               ;; Construct "name-old-YYYYMMDD_HHMMSS.tex"
                (old-file (concat (file-name-sans-extension base-file)
-                                 "-old"
+                                 "-old-" time-stamp
                                  (file-name-extension base-file t))))
           
-          ;; 1. Create the name-old.tex file
-          (write-region (point-min) (point-max) old-file)
-          
-          ;; 2. Run latexdiff and open
-          (message "Running latexdiff on revision...")
-          (shell-command (format "latexdiff \"%s\" \"%s\" > \"%s\"" old-file base-file diff-file))
-          (find-file diff-file))
+          ;; unwind-protect guarantees the cleanup code runs
+          (unwind-protect
+              (progn
+                ;; 1. Create the unique old file
+                (write-region (point-min) (point-max) old-file nil 'silent)
+                
+                ;; 2. Run latexdiff and open the diff file
+                (message "Running latexdiff on revision...")
+                (shell-command (format "latexdiff \"%s\" \"%s\" > \"%s\"" old-file base-file diff-file))
+                (find-file diff-file))
+            
+            ;; 3. Cleanup: Delete ONLY the uniquely named old file
+            (when (file-exists-p old-file)
+              (delete-file old-file)
+              (message "latexdiff complete! Cleaned up %s" old-file))))
 
       ;; ==========================================
       ;; PATH 2: It is a Standard File
       ;; ==========================================
-      (if (buffer-file-name) ; Ensure the buffer is actually visiting a file
+      (if (buffer-file-name) 
           (let ((old (read-file-name "Choose an older version to compare: "))
                 (new (file-name-nondirectory (buffer-file-name))))
             
@@ -1592,9 +1604,8 @@ Delete or insert a label accordingly."
             (shell-command (format "latexdiff \"%s\" \"%s\" > \"%s\"" old new diff-file))
             (find-file diff-file))
         
-        ;; Error fallback if it's neither a git revision nor a saved file (like *scratch*)
+        ;; Error fallback
         (error "Current buffer is neither a git revision nor visiting a file")))))
-
 
 ;; changing reftex toc behavior for tabline
 (defun nbm-reftex-toc-quit ()
