@@ -458,3 +458,33 @@ DIR may or may not end with \"/\"."
 		 (equal (file-name-extension file) ext)
 		 (not (buffer-modified-p buf)))
 	(kill-buffer buf)))))
+
+(defun nbm-find-by-extension (ext)
+  "Find and open a file with extension EXT in the current or subdirectories.
+Defaults to the extension of the current buffer's file."
+  (interactive
+   (let* ((current-file (buffer-file-name))
+          (default-ext (and current-file (file-name-extension current-file)))
+          (prompt (if default-ext
+                      (format "Extension (default %s): " default-ext)
+                    "Extension (e.g. tex, org): ")))
+     ;; read-string takes: PROMPT, INITIAL-INPUT, HISTORY, DEFAULT
+     (list (read-string prompt nil nil default-ext))))
+  
+  ;; Safety check in case the user provides an empty string
+  (when (or (null ext) (string-empty-p ext))
+    (user-error "No extension provided"))
+
+  ;; Strip the leading period if the user included one
+  (let* ((clean-ext (if (string-prefix-p "." ext) (substring ext 1) ext))
+         ;; Create a regular expression matching the extension at the end
+         (regexp (format "\\.%s\\'" (regexp-quote clean-ext)))
+         ;; Find all matching files recursively from the current directory
+         (files (directory-files-recursively default-directory regexp)))
+    (if (not files)
+        (message "No files found with extension '.%s'" clean-ext)
+      ;; If only one file is found, skip the prompt. Otherwise, let the user choose.
+      (let ((selected-file (if (= (length files) 1)
+                               (car files)
+                             (completing-read (format "Open .%s file: " clean-ext) files nil t))))
+        (find-file selected-file)))))

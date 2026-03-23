@@ -46,6 +46,7 @@
 *** key: /, description: find recursively, function: helm-find, level: 3
 *** key: b, function: bookmark-set, level: 2
 *** key: d, description: open dowloaded file, function: nbm-open-downloaded-file, level: 3
+*** key: e, description: find-by-extension, function: nbm-find-by-extension, level: 2
 *** key: f, description: find files, function: helm-find-files, level: 1
 *** key: r, description: recent files, function: helm-recentf, level: 2
 *** key: j, function: dired-jump, level: 2
