@@ -1570,22 +1570,31 @@ Creates a uniquely time-stamped temporary file to prevent accidental overwrites.
         ;; PATH 1: It is a Git Revision Buffer
         ;; ==========================================
         (let* ((base-file (match-string 1 buf-name))
+               ;; 1. Extract pure filename to prevent subdir duplication errors
+               (base-name (file-name-nondirectory base-file))
+               
+               ;; 2. Ensure we find the base file regardless of our current working directory
+               (actual-base (if (file-exists-p base-file) 
+                                base-file 
+                              base-name))
+               
                ;; Generate a unique timestamp string
                (time-stamp (format-time-string "%Y%m%d_%H%M%S"))
-               ;; Construct "name-old-YYYYMMDD_HHMMSS.tex"
-               (old-file (concat (file-name-sans-extension base-file)
+               
+               ;; 3. Construct "name-old-YYYYMMDD_HHMMSS.tex" safely without the subdir path
+               (old-file (concat (file-name-sans-extension base-name)
                                  "-old-" time-stamp
-                                 (file-name-extension base-file t))))
+                                 (file-name-extension base-name t))))
           
           ;; unwind-protect guarantees the cleanup code runs
           (unwind-protect
               (progn
-                ;; 1. Create the unique old file
+                ;; 1. Create the unique old file in the current directory
                 (write-region (point-min) (point-max) old-file nil 'silent)
                 
                 ;; 2. Run latexdiff and open the diff file
                 (message "Running latexdiff on revision...")
-                (shell-command (format "latexdiff \"%s\" \"%s\" > \"%s\"" old-file base-file diff-file))
+                (shell-command (format "latexdiff \"%s\" \"%s\" > \"%s\"" old-file actual-base diff-file))
                 (find-file diff-file))
             
             ;; 3. Cleanup: Delete ONLY the uniquely named old file
