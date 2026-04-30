@@ -260,8 +260,11 @@ If INCLUDE-DIR is non-nil, consider directories as well."
     (file-name-directory (buffer-file-name)))))
 
 (defun nbm-timestamp ()
+  "Prompt for a date using the org-mode calendar and insert it."
   (interactive)
-  (insert (format-time-string " %Y-%m-%d")))
+  (let* ((time-val (org-read-date nil t nil "Select date: "))
+         (formatted-date (format-time-string "%B %-d, %Y" time-val)))
+    (insert formatted-date)))
 
 (defun nbm-query-replace-in-dir (dir from-string to-string)
   "Replace FROM-STRING by TO-STRING in all files in DIR."
