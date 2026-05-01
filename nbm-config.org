@@ -201,6 +201,8 @@
 
   (setq sentence-end-double-space nil)
   (add-to-list 'auto-mode-alist '("\\.sage\\'" . python-mode))
+
+  (setq make-backup-files nil)
 #+end_src
 ** appearance
 #+begin_src emacs-lisp :tangle yes
