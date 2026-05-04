@@ -98,12 +98,17 @@ and insert its relative path at the current cursor position."
     (find-file final-name)))
 
 (defun nbm-claude-find-most-recent-file ()
-  "Find and open the most recently modified file in the current directory.
-If the file is already open, it forcefully closes it and reopens it fresh from disk."
+  "Find and open the most recently modified file in the current directory,
+ignoring the '.claude' folder. If the file is already open, it forcefully 
+closes it and reopens it fresh from disk."
   (interactive)
+  (require 'seq) ;; Ensure seq-remove is available
   (let* ((all-files (directory-files-recursively default-directory ""))
-         ;; Sort the files by modification time (newest first)
-         (sorted-files (sort all-files
+         ;; Filter out any files that reside inside a .claude folder
+         (filtered-files (seq-remove (lambda (f) (string-match-p "/\\.claude/" f))
+                                     all-files))
+         ;; Sort the filtered files by modification time (newest first)
+         (sorted-files (sort filtered-files
                              (lambda (f1 f2)
                                (time-less-p
                                 (file-attribute-modification-time (file-attributes f2))
@@ -128,4 +133,4 @@ If the file is already open, it forcefully closes it and reopens it fresh from d
           (setq-local auto-revert-verbose nil)
           
           (message "Closed and re-opened %s" (file-name-nondirectory file-to-open)))
-      (message "No files found in %s" default-directory))))
+      (message "No files found in %s (excluding .claude)" default-directory))))
