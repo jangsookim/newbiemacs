@@ -92,6 +92,7 @@
 *** key: z, description: reload org buffers, function: org-revert-all-org-buffers, level: 3
 ** key: p, description: Find pdf, function: nbm-find-pdf, level: 1
 ** key: q, description: quick menu, level: 2
+*** key: c, function: nbm-claude-open-vterm, level: 2
 *** key: n, description: new study, function: nbm-latex-new-study, level: 2
 *** key: s, description: start study, function: nbm-latex-start-study, level: 2
 *** key: g, description: GTD, function: nbm-org-gtd, level: 2
@@ -359,3 +360,12 @@
 *** key: f, function: nbm-nil-function, level: 3
 * description: python-mode, level: 3
 ** key: l, description: load-sage, function: nbm-load-sage, level: 3
+
+* description: vterm-mode, level: 3
+** key: c, function: nbm-vterm-copy-mode-toggle, level: 3
+** key: f, function: nbm-claude-insert-newest-file, level: 3
+** key: m, function: nbm-claude-model, level: 3
+** key: u, function: nbm-claude-usage, level: 3
+** key: i, function: nbm-claude-insert-file-name, level: 3
+** key: o, function: nbm-claude-find-org, level: 3
+** key: r, description: recent file, function: nbm-claude-find-most-recent-file, level: 1
