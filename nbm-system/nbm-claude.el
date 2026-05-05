@@ -99,14 +99,32 @@ and insert its relative path at the current cursor position."
 
 (defun nbm-claude-find-most-recent-file ()
   "Find and open the most recently modified file in the current directory,
-ignoring the '.claude' folder. If the file is already open, it forcefully 
-closes it and reopens it fresh from disk."
+ignoring the '.claude' folder and files created by LaTeX compilation
+(e.g. .aux, .log, .pdf, .synctex.gz, the AUCTeX `auto/' folder, etc.).
+If the file is already open, it forcefully closes it and reopens it fresh
+from disk."
   (interactive)
   (require 'seq) ;; Ensure seq-remove is available
-  (let* ((all-files (directory-files-recursively default-directory ""))
-         ;; Filter out any files that reside inside a .claude folder
-         (filtered-files (seq-remove (lambda (f) (string-match-p "/\\.claude/" f))
-                                     all-files))
+  (let* ((latex-aux-regexp
+          (concat "\\."
+                  (regexp-opt
+                   '("aux" "log" "toc" "lof" "lot" "out"
+                     "nav" "snm" "vrb"
+                     "bbl" "blg" "bcf" "run.xml"
+                     "fls" "fdb_latexmk"
+                     "synctex.gz" "synctex"
+                     "idx" "ind" "ilg"
+                     "pdf" "dvi"))
+                  "\\'"))
+         (all-files (directory-files-recursively default-directory ""))
+         ;; Filter out: the .claude folder, the AUCTeX auto/ folder,
+         ;; and files whose extension marks them as LaTeX build output.
+         (filtered-files
+          (seq-remove (lambda (f)
+                        (or (string-match-p "/\\.claude/" f)
+                            (string-match-p "/auto/" f)
+                            (string-match-p latex-aux-regexp f)))
+                      all-files))
          ;; Sort the filtered files by modification time (newest first)
          (sorted-files (sort filtered-files
                              (lambda (f1 f2)
