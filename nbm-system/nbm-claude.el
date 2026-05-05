@@ -142,6 +142,7 @@ from disk."
          (filtered-files
           (seq-remove (lambda (f)
                         (or (string-match-p "/\\.claude/" f)
+			    (string-match-p "/\\.git/" f)
                             (string-match-p "/auto/" f)
                             (string-match-p latex-aux-regexp f)))
                       all-files))
