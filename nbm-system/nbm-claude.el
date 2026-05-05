@@ -68,6 +68,26 @@ Switches to `evil-normal-state` when entering copy mode, and
   (evil-define-key '(normal motion) vterm-copy-mode-map
     (kbd "i") #'nbm-vterm-copy-mode-toggle))
 
+(defun nbm-vterm-dnd-insert-path (uri _action)
+  "Insert the dropped file's path into the current vterm buffer.
+URI is a `file://' URI from a drag-and-drop event (e.g. dragging a file
+from Finder). The local path is extracted and sent to vterm with
+`shell-quote-argument' so spaces and shell metacharacters are escaped."
+  (let ((path (dnd-get-local-file-name uri t)))
+    (when path
+      (vterm-send-string (shell-quote-argument path)))
+    'private))
+
+(with-eval-after-load 'vterm
+  (add-hook 'vterm-mode-hook
+            (lambda ()
+              ;; Override the default file-drop handler (which would visit the
+              ;; file) so that dropping a file in vterm inserts its path
+              ;; instead. Buffer-local so other buffers are unaffected.
+              (setq-local dnd-protocol-alist
+                          (cons '("^file:" . nbm-vterm-dnd-insert-path)
+                                dnd-protocol-alist)))))
+
 (defun nbm-claude-insert-file-name ()
   "Prompt for a file in the current directory and its subdirectories,
 and insert its relative path at the current cursor position."
