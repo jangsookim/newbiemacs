@@ -129,7 +129,7 @@ from disk."
           (concat "\\."
                   (regexp-opt
                    '("aux" "log" "toc" "lof" "lot" "out"
-                     "nav" "snm" "vrb"
+                     "nav" "snm" "vrb" "brf"
                      "bbl" "blg" "bcf" "run.xml"
                      "fls" "fdb_latexmk"
                      "synctex.gz" "synctex"
