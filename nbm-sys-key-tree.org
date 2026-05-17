@@ -93,6 +93,7 @@
 ** key: p, description: Find pdf, function: nbm-find-pdf, level: 1
 ** key: q, description: quick menu, level: 2
 *** key: c, function: nbm-claude-open-vterm, level: 2
+*** key: C, function: nbm-claude-open-terminal, level: 2
 *** key: n, description: new study, function: nbm-latex-new-study, level: 2
 *** key: s, description: start study, function: nbm-latex-start-study, level: 2
 *** key: g, description: GTD, function: nbm-org-gtd, level: 2
