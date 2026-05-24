@@ -1,27 +1,17 @@
 (defun nbm-claude-open-vterm ()
-  "Open a vterm session and run the `claude` command.
-If starting a new session, prompts the user to choose between the 
-current directory and the default Claude directory."
+  "Open a vterm session in the current folder and run the `claude` command."
   (interactive)
   (require 'vterm)
   (let ((buf-name "*claude-vterm*"))
     (if (get-buffer buf-name)
         ;; If it's already running, just switch to it
         (switch-to-buffer buf-name)
-      
-      ;; If creating a new buffer, prompt the user for the directory
-      (let* (;; Ask the user: y = current dir, n = claude dir
-             (use-current-dir (y-or-n-p "Start claude in the current directory? "))
-             ;; Temporarily set default-directory based on the answer
-             (default-directory (if use-current-dir
-                                    default-directory
-                                  claude-dir)))
-        
-        ;; Open vterm and run the command
-        (vterm buf-name)
-        (sleep-for 0.1) 
-        (vterm-send-string "claude")
-        (vterm-send-return)))))
+
+      ;; Open vterm in the current directory and run the command
+      (vterm buf-name)
+      (sleep-for 0.1)
+      (vterm-send-string "claude")
+      (vterm-send-return))))
 
 (defun nbm-claude-open-terminal ()
   "Open a new macOS Terminal.app window in the current folder and run `claude'.
