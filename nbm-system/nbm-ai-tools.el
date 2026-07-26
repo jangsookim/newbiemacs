@@ -26,16 +26,6 @@ end run"
            (shell-quote-argument (expand-file-name default-directory))
            (shell-quote-argument program))))
 
-(defun nbm-ai-open-claude ()
-  "Open Claude Code in a new Terminal window in the current folder."
-  (interactive)
-  (nbm-ai--open-terminal "claude"))
-
-(defun nbm-ai-open-codex ()
-  "Open Codex in a new Terminal window in the current folder."
-  (interactive)
-  (nbm-ai--open-terminal "codex"))
-
 (defconst nbm-ai-command-defaults
   '(("r" . "Resolve the comment")
     ("g" . "Check the grammar")
@@ -43,7 +33,7 @@ end run"
     ("m" . "Check if the content is mathematically correct"))
   "Commands used to initialize the customizable `nbm-ai-command' menu.")
 
-(defconst nbm-ai-command-reserved-keys '("+" "-")
+(defconst nbm-ai-command-reserved-keys '("+" "-" "o")
   "Keys reserved by the `nbm-ai-command' menu.")
 
 (defun nbm-ai-command--initialize ()
@@ -70,16 +60,18 @@ Return nil after adding or deleting a command."
          (command-list
           (mapconcat
            (lambda (command)
-             (format "%s) %s\n" (car command) (cdr command)))
+             (concat (nbm-string-key (car command))
+                     ") " (cdr command) "\n"))
            data
            ""))
          (prompt
-          (concat "Command:\n"
-                  "+) Add a command\n"
-                  "-) Delete a command\n"
+          (concat "Reserved commands:\n"
+                  (nbm-string-key "+") ") Add a custom command\n"
+                  (nbm-string-key "-") ") Delete a custom command\n"
+                  (nbm-string-key "o") ") Open an AI tool\n\n"
+                  "Custom commands:\n"
                   command-list
-                  "anything else) Enter command\n"
-                  "Choice: "))
+                  (nbm-string-key "other") ") Enter command\n"))
          (choice (char-to-string (read-char prompt)))
          item)
     (cond
@@ -87,9 +79,12 @@ Return nil after adding or deleting a command."
       (let ((key
              (char-to-string
               (read-char
-               "Enter a key for the command. (+ and - are reserved): "))))
+               (concat "Enter a key for the command. ("
+                       (nbm-string-key "+") ", "
+                       (nbm-string-key "-") ", and "
+                       (nbm-string-key "o") " are reserved): ")))))
         (if (member key nbm-ai-command-reserved-keys)
-            (user-error "The key `%s' is reserved" key)
+            (user-error "The key `%s' is reserved" (nbm-string-key key))
           (nbm-data-add "ai-command" key (read-string "Command: "))))
       nil)
      ((equal choice "-")
@@ -101,8 +96,20 @@ Return nil after adding or deleting a command."
                            command-list)))))
             (if (nbm-data-get "ai-command" key)
                 (nbm-data-delete "ai-command" key)
-              (message "There is no command with key `%s'." key)))
+              (message "There is no command with key `%s'."
+                       (nbm-string-key key))))
         (message "There are no commands to delete."))
+      nil)
+     ((equal choice "o")
+      (pcase (char-to-string
+              (read-char
+               (concat "Open an AI tool:\n"
+                       (nbm-string-key "x") ") Codex\n"
+                       (nbm-string-key "l") ") Claude\n")))
+        ("x" (nbm-ai--open-terminal "codex"))
+        ("l" (nbm-ai--open-terminal "claude"))
+        (key (user-error "There is no AI tool with key `%s'"
+                         (nbm-string-key key))))
       nil)
      ((setq item (assoc choice data))
       (cdr item))
@@ -158,8 +165,8 @@ end run"
   "Send CMD to the system terminal with the current file name.
 If a region is active, also send its starting and ending line and column
 numbers.  Use + and - in the interactive menu to add and delete
-commands.  The commands are stored in nbm-ai-command.txt in the user
-variables directory."
+commands, or o to open Codex or Claude.  The commands are stored in
+nbm-ai-command.txt in the user variables directory."
   (interactive (list (nbm-ai-command--read)))
   (when cmd
     (nbm-ai-command--send-to-terminal
