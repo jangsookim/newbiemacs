@@ -98,9 +98,9 @@ Return nil after adding or deleting a command."
       (read-string "Command: ")))))
 
 (defun nbm-ai-command (cmd)
-  "Send CMD to the system terminal with the current file name and line number.
-If a region is active, send the starting and ending line numbers of the
-region instead.  Use + and - in the interactive menu to add and delete
+  "Send CMD to the system terminal with the current file name.
+If a region is active, also send its starting and ending line and column
+numbers.  Use + and - in the interactive menu to add and delete
 commands.  The commands are stored in nbm-ai-command.txt in the user
 variables directory."
   (interactive (list (nbm-ai-command--read)))
@@ -122,10 +122,7 @@ variables directory."
                          (format "%s: %s from line %d column %d to line %d column %d"
                                  cmd file
                                  sl sc el ec)))
-                      (t (format "%s: %s line %d"
-                                 cmd
-                                 file
-                                 (line-number-at-pos))))))
+                      (t (format "%s: %s" cmd file)))))
           (cond
            ((equal system-type 'darwin)
             (let ((script (format (concat "tell application \"Terminal\" to activate\n"
