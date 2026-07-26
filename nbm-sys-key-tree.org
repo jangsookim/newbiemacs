@@ -44,8 +44,8 @@
 *** key: R, function: revert-buffer, level: 2
 ** key: c, description: codex, level: 1
 *** key: c, function: nbm-ai-command, level: 1
-*** key: x, function: nbm-codex-open-terminal, level: 1
-*** key: l, function: nbm-claude-open-terminal, level: 1
+*** key: x, function: nbm-ai-open-codex, level: 1
+*** key: l, function: nbm-ai-open-claude, level: 1
 ** key: f, description: Files, function:, level: 1
 *** key: /, description: find recursively, function: helm-find, level: 3
 *** key: b, function: bookmark-set, level: 2

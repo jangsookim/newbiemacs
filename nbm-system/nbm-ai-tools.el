@@ -1,32 +1,40 @@
-(defun nbm-claude-open-terminal ()
-  "Open a new macOS Terminal.app window in the current folder and run `claude'.
-Writes a one-shot `.command' script that `cd's into the current directory
-and execs `claude', then hands it to Terminal.app via `open -a' so a fresh
-window appears every time."
-  (interactive)
-  (let* ((dir (expand-file-name default-directory))
-         (script (make-temp-file "nbm-claude-" nil ".command")))
-    (with-temp-file script
-      (insert "#!/bin/sh\n")
-      (insert (format "cd %s\n" (shell-quote-argument dir)))
-      (insert "exec claude\n"))
-    (set-file-modes script #o755)
-    (shell-command
-     (format "open -a /System/Applications/Utilities/Terminal.app %s"
-             (shell-quote-argument script)))))
+(defun nbm-ai--run-applescript (script &rest args)
+  "Run SCRIPT with ARGS and report any AppleScript error."
+  (unless (eq system-type 'darwin)
+    (error "No system-terminal support for this platform"))
+  (with-temp-buffer
+    (let ((status
+           (apply #'call-process "osascript" nil t nil
+                  "-e" script "--" args)))
+      (unless (and (integerp status) (zerop status))
+        (error "AppleScript failed: %s" (buffer-string))))))
 
-(defun nbm-codex-open-terminal ()
+(defconst nbm-ai--open-terminal-script
+  "on run argv
+  tell application id \"com.apple.Terminal\"
+    do script (item 1 of argv)
+    activate
+  end tell
+end run"
+  "AppleScript used to open an AI tool in a new Terminal window.")
+
+(defun nbm-ai--open-terminal (program)
+  "Open a new Terminal window in the current folder and run PROGRAM."
+  (nbm-ai--run-applescript
+   nbm-ai--open-terminal-script
+   (format "cd %s && exec %s"
+           (shell-quote-argument (expand-file-name default-directory))
+           (shell-quote-argument program))))
+
+(defun nbm-ai-open-claude ()
+  "Open Claude Code in a new Terminal window in the current folder."
   (interactive)
-  (let* ((dir (expand-file-name default-directory))
-         (script (make-temp-file "nbm-codex-" nil ".command")))
-    (with-temp-file script
-      (insert "#!/bin/sh\n")
-      (insert (format "cd %s\n" (shell-quote-argument dir)))
-      (insert "exec codex\n"))
-    (set-file-modes script #o755)
-    (shell-command
-     (format "open -a /System/Applications/Utilities/Terminal.app %s"
-             (shell-quote-argument script)))))
+  (nbm-ai--open-terminal "claude"))
+
+(defun nbm-ai-open-codex ()
+  "Open Codex in a new Terminal window in the current folder."
+  (interactive)
+  (nbm-ai--open-terminal "codex"))
 
 (defconst nbm-ai-command-defaults
   '(("r" . "Resolve the comment")
@@ -40,8 +48,9 @@ window appears every time."
 
 (defun nbm-ai-command--initialize ()
   "Create the user command file with the default commands if it is absent."
-  (let ((file (concat *nbm-home*
-                      "nbm-user-settings/nbm-variables/nbm-ai-command.txt")))
+  (let ((file (expand-file-name
+               "nbm-user-settings/nbm-variables/nbm-ai-command.txt"
+               *nbm-home*)))
     (unless (file-exists-p file)
       (nbm-set-user-variable
        "ai-command"
@@ -57,36 +66,39 @@ window appears every time."
   "Read a command or manage the customizable command menu.
 Return nil after adding or deleting a command."
   (nbm-ai-command--initialize)
-  (let ((data (reverse (nbm-data-get-all "ai-command")))
-        (prompt "Command:\n+) Add a command\n-) Delete a command\n")
-        command-list choice item key)
-    (dolist (command data)
-      (setq command-list
-            (concat command-list
-                    (format "%s) %s\n" (car command) (cdr command)))))
-    (setq prompt
-          (concat prompt command-list
+  (let* ((data (reverse (nbm-data-get-all "ai-command")))
+         (command-list
+          (mapconcat
+           (lambda (command)
+             (format "%s) %s\n" (car command) (cdr command)))
+           data
+           ""))
+         (prompt
+          (concat "Command:\n"
+                  "+) Add a command\n"
+                  "-) Delete a command\n"
+                  command-list
                   "anything else) Enter command\n"
                   "Choice: "))
-    (setq choice (char-to-string (read-char prompt)))
+         (choice (char-to-string (read-char prompt)))
+         item)
     (cond
      ((equal choice "+")
-      (setq key
-            (char-to-string
-             (read-char
-              "Enter a key for the command. (+ and - are reserved): ")))
-      (if (member key nbm-ai-command-reserved-keys)
-          (user-error "The key `%s' is reserved" key)
-        (nbm-data-add "ai-command" key (read-string "Command: ")))
+      (let ((key
+             (char-to-string
+              (read-char
+               "Enter a key for the command. (+ and - are reserved): "))))
+        (if (member key nbm-ai-command-reserved-keys)
+            (user-error "The key `%s' is reserved" key)
+          (nbm-data-add "ai-command" key (read-string "Command: "))))
       nil)
      ((equal choice "-")
       (if data
-          (progn
-            (setq key
-                  (char-to-string
-                   (read-char
-                    (concat "Enter the key of the command to delete:\n"
-                            command-list))))
+          (let ((key
+                 (char-to-string
+                  (read-char
+                   (concat "Enter the key of the command to delete:\n"
+                           command-list)))))
             (if (nbm-data-get "ai-command" key)
                 (nbm-data-delete "ai-command" key)
               (message "There is no command with key `%s'." key)))
@@ -97,6 +109,51 @@ Return nil after adding or deleting a command."
      (t
       (read-string "Command: ")))))
 
+(defconst nbm-ai-command--terminal-script
+  "on run argv
+  set commandText to item 1 of argv
+  tell application id \"com.apple.Terminal\"
+    if not (exists front window) then error \"No Terminal window is open\"
+    do script commandText in selected tab of front window
+    activate
+  end tell
+  tell application \"System Events\"
+    set focusDeadline to (current date) + 3
+    repeat until frontmost of application process \"Terminal\"
+      if (current date) > focusDeadline then error \"Timed out waiting for Terminal to receive focus\"
+      delay 0.01
+    end repeat
+    key code 36
+  end tell
+end run"
+  "AppleScript used to send and submit text in Terminal.")
+
+(defun nbm-ai-command--send-to-terminal (text)
+  "Send TEXT to Terminal's selected tab and submit it."
+  (nbm-ai--run-applescript nbm-ai-command--terminal-script text))
+
+(defun nbm-ai-command--format-context (cmd)
+  "Append the current file and active region location to CMD."
+  (let ((file (buffer-file-name)))
+    (unless file
+      (error "Current buffer is not visiting a file"))
+    (if (use-region-p)
+        (let* ((beg (region-beginning))
+               (end (region-end))
+               (start-line (line-number-at-pos beg))
+               (start-column
+                (save-excursion
+                  (goto-char beg)
+                  (current-column)))
+               (end-line (line-number-at-pos end))
+               (end-column
+                (save-excursion
+                  (goto-char end)
+                  (current-column))))
+          (format "%s: %s from line %d column %d to line %d column %d"
+                  cmd file start-line start-column end-line end-column))
+      (format "%s: %s" cmd file))))
+
 (defun nbm-ai-command (cmd)
   "Send CMD to the system terminal with the current file name.
 If a region is active, also send its starting and ending line and column
@@ -105,37 +162,6 @@ commands.  The commands are stored in nbm-ai-command.txt in the user
 variables directory."
   (interactive (list (nbm-ai-command--read)))
   (when cmd
-    (let* ((direct (and (consp cmd) (eq (car cmd) 'direct)))
-           (cmd (if (consp cmd) (cdr cmd) cmd)))
-      (let ((file (unless direct (buffer-file-name))))
-        (unless (or direct file)
-          (error "Current buffer is not visiting a file"))
-        (let* ((text (cond
-                      (direct cmd)
-                      ((use-region-p)
-                       (let* ((beg (region-beginning))
-                              (end (region-end))
-                              (sl (line-number-at-pos beg))
-                              (sc (save-excursion (goto-char beg) (current-column)))
-                              (el (line-number-at-pos end))
-                              (ec (save-excursion (goto-char end) (current-column))))
-                         (format "%s: %s from line %d column %d to line %d column %d"
-                                 cmd file
-                                 sl sc el ec)))
-                      (t (format "%s: %s" cmd file)))))
-          (cond
-           ((equal system-type 'darwin)
-            (let ((script (format (concat "tell application \"Terminal\" to activate\n"
-                                          "delay 0.1\n"
-                                          "tell application \"System Events\"\n"
-                                          "  keystroke \"%s\"\n"
-                                          "  delay 0.1\n"
-                                          "  key code 36\n"
-                                          "end tell\n"
-                                          "delay 0.05\n"
-                                          "tell application \"Emacs\" to activate")
-                                  (replace-regexp-in-string
-                                   "[\"\\\\]" "\\\\\\&" text))))
-              (call-process "osascript" nil nil nil "-e" script)))
-           (t (error "No system-terminal support for this platform")))
-          (deactivate-mark))))))
+    (nbm-ai-command--send-to-terminal
+     (nbm-ai-command--format-context cmd))
+    (deactivate-mark)))
