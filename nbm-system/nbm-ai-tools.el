@@ -1,13 +1,27 @@
 (defun nbm-ai--run-applescript (script &rest args)
   "Run SCRIPT with ARGS and report any AppleScript error."
   (unless (eq system-type 'darwin)
-    (error "No system-terminal support for this platform"))
+    (error "AppleScript is only available on macOS"))
   (with-temp-buffer
     (let ((status
            (apply #'call-process "osascript" nil t nil
                   "-e" script "--" args)))
       (unless (and (integerp status) (zerop status))
         (error "AppleScript failed: %s" (buffer-string))))))
+
+(defun nbm-ai--run-powershell (script)
+  "Run PowerShell SCRIPT and return its output.
+Report an error when PowerShell exits unsuccessfully."
+  (unless (eq system-type 'windows-nt)
+    (error "Windows PowerShell is only available on Windows"))
+  (with-temp-buffer
+    (let ((status
+           (call-process "powershell.exe" nil t nil
+                         "-NoLogo" "-NoProfile" "-NonInteractive"
+                         "-Command" script)))
+      (unless (and (integerp status) (zerop status))
+        (error "PowerShell failed: %s" (buffer-string)))
+      (buffer-string))))
 
 (defconst nbm-ai--open-terminal-script
   "on run argv
@@ -18,13 +32,46 @@
 end run"
   "AppleScript used to open an AI tool in a new Terminal window.")
 
+(defvar nbm-ai--windows-terminal-process-id nil
+  "Process ID of the most recently opened AI terminal on Windows.")
+
+(defconst nbm-ai--windows-open-terminal-script
+  "$arguments = '/k title Newbiemacs AI && ' + $env:NBM_AI_PROGRAM
+$process = Start-Process -FilePath $env:ComSpec -ArgumentList $arguments -WorkingDirectory $env:NBM_AI_DIRECTORY -PassThru
+$process.Id"
+  "PowerShell used to open an AI tool in a new Command Prompt window.")
+
+(defun nbm-ai--open-windows-terminal (program)
+  "Open PROGRAM in a new Windows Command Prompt window."
+  (let ((process-environment (copy-sequence process-environment))
+        output)
+    (setenv "NBM_AI_DIRECTORY"
+            (convert-standard-filename
+             (expand-file-name default-directory)))
+    (setenv "NBM_AI_PROGRAM" program)
+    (setq output
+          (nbm-ai--run-powershell
+           nbm-ai--windows-open-terminal-script))
+    (if (string-match
+         "\\`[ \t\r\n]*\\([0-9]+\\)[ \t\r\n]*\\'" output)
+        (setq nbm-ai--windows-terminal-process-id
+              (string-to-number (match-string 1 output)))
+      (error "PowerShell did not return the AI terminal process ID"))))
+
 (defun nbm-ai--open-terminal (program)
-  "Open a new Terminal window in the current folder and run PROGRAM."
-  (nbm-ai--run-applescript
-   nbm-ai--open-terminal-script
-   (format "cd %s && exec %s"
-           (shell-quote-argument (expand-file-name default-directory))
-           (shell-quote-argument program))))
+  "Open a system terminal in the current folder and run PROGRAM."
+  (cond
+   ((eq system-type 'darwin)
+    (nbm-ai--run-applescript
+     nbm-ai--open-terminal-script
+     (format "cd %s && exec %s"
+             (shell-quote-argument (expand-file-name default-directory))
+             (shell-quote-argument program))))
+   ((eq system-type 'windows-nt)
+    (nbm-ai--open-windows-terminal program))
+   (t
+    (user-error "AI terminal integration is not supported on %s"
+                system-type))))
 
 (defconst nbm-ai-command-defaults
   '(("r" . "Resolve the comment")
@@ -135,9 +182,38 @@ Return nil after adding or deleting a command."
 end run"
   "AppleScript used to send and submit text in Terminal.")
 
+(defconst nbm-ai-command--windows-terminal-script
+  "$shell = New-Object -ComObject WScript.Shell
+if (-not $shell.AppActivate([int]$env:NBM_AI_TERMINAL_PID)) {
+  throw 'The AI terminal window is no longer open'
+}
+Start-Sleep -Milliseconds 150
+$shell.SendKeys('^v')
+Start-Sleep -Milliseconds 50
+$shell.SendKeys('{ENTER}')"
+  "PowerShell used to paste and submit text in the Windows AI terminal.")
+
+(defun nbm-ai-command--send-to-windows-terminal (text)
+  "Send TEXT to the AI terminal opened by Newbiemacs on Windows."
+  (unless (integerp nbm-ai--windows-terminal-process-id)
+    (user-error "Open Codex or Claude from the AI command menu first"))
+  (kill-new text)
+  (let ((process-environment (copy-sequence process-environment)))
+    (setenv "NBM_AI_TERMINAL_PID"
+            (number-to-string nbm-ai--windows-terminal-process-id))
+    (nbm-ai--run-powershell
+     nbm-ai-command--windows-terminal-script)))
+
 (defun nbm-ai-command--send-to-terminal (text)
-  "Send TEXT to Terminal's selected tab and submit it."
-  (nbm-ai--run-applescript nbm-ai-command--terminal-script text))
+  "Send TEXT to the active AI terminal and submit it."
+  (cond
+   ((eq system-type 'darwin)
+    (nbm-ai--run-applescript nbm-ai-command--terminal-script text))
+   ((eq system-type 'windows-nt)
+    (nbm-ai-command--send-to-windows-terminal text))
+   (t
+    (user-error "AI terminal integration is not supported on %s"
+                system-type))))
 
 (defun nbm-ai-command--format-context (cmd)
   "Append the current file and active region location to CMD."
@@ -166,7 +242,8 @@ end run"
 If a region is active, also send its starting and ending line and column
 numbers.  Use + and - in the interactive menu to add and delete
 commands, or o to open Codex or Claude.  The commands are stored in
-nbm-ai-command.txt in the user variables directory."
+nbm-ai-command.txt in the user variables directory.  On Windows,
+commands are sent to the most recent AI terminal opened by this menu."
   (interactive (list (nbm-ai-command--read)))
   (when cmd
     (nbm-ai-command--send-to-terminal
