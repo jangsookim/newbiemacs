@@ -182,30 +182,12 @@ Return nil after adding or deleting a command."
 end run"
   "AppleScript used to send and submit text in Terminal.")
 
-(defconst nbm-ai-command--windows-terminal-script
-  "$shell = New-Object -ComObject WScript.Shell
-if (-not $shell.AppActivate([int]$env:NBM_AI_TERMINAL_PID)) {
-  throw 'The AI terminal window is no longer open'
-}
-Start-Sleep -Milliseconds 150
-$shell.SendKeys('^v')
-Start-Sleep -Milliseconds 50
-$shell.SendKeys('{ENTER}')"
-  "PowerShell used to paste and submit text in the Windows AI terminal.")
-
 (defun nbm-ai-command--send-to-windows-terminal (text)
-  "Send TEXT to the AI terminal opened by Newbiemacs on Windows."
-  (unless (integerp nbm-ai--windows-terminal-process-id)
-    (user-error "Open Codex or Claude from the AI command menu first"))
-  (kill-new text)
-  (let ((process-environment (copy-sequence process-environment)))
-    (setenv "NBM_AI_TERMINAL_PID"
-            (number-to-string nbm-ai--windows-terminal-process-id))
-    (nbm-ai--run-powershell
-     nbm-ai-command--windows-terminal-script)))
+  "Copy TEXT to the clipboard on Windows."
+  (kill-new text))
 
 (defun nbm-ai-command--send-to-terminal (text)
-  "Send TEXT to the active AI terminal and submit it."
+  "Send TEXT to Terminal on macOS or copy it on Windows."
   (cond
    ((eq system-type 'darwin)
     (nbm-ai--run-applescript nbm-ai-command--terminal-script text))
@@ -243,7 +225,7 @@ If a region is active, also send its starting and ending line and column
 numbers.  Use + and - in the interactive menu to add and delete
 commands, or o to open Codex or Claude.  The commands are stored in
 nbm-ai-command.txt in the user variables directory.  On Windows,
-commands are sent to the most recent AI terminal opened by this menu."
+commands are copied to the clipboard."
   (interactive (list (nbm-ai-command--read)))
   (when cmd
     (nbm-ai-command--send-to-terminal
