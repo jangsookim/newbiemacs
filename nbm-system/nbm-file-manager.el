@@ -396,17 +396,87 @@ If INCLUDE-DIR is non-nil, consider directories as well."
   (sort files 'nbm-time>))
 
 (defun nbm-rename-current-file ()
-  "Rename the current file."
+  "Rename the current file.
+When the current file is a TeX file, also rename its LaTeX output files
+and its _minted-FILENAME directory.  Existing files are never overwritten."
   (interactive)
-  (let (old new choice pos)
-    (setq old (file-name-nondirectory (buffer-file-name)))
-    (setq new (read-string "Enter a new file name of the current file: " old))
-    (setq choice (read-char (format "Rename the file?: (Type y for yes.)\nOld name: %s\nNew name: %s" old new)))
+  (unless buffer-file-name
+    (user-error "The current buffer is not visiting a file"))
+  (let* ((old-file (expand-file-name buffer-file-name))
+	 (directory (file-name-directory old-file))
+	 (old-name (file-name-nondirectory old-file))
+	 (tex-p (string-equal
+		 (downcase (or (file-name-extension old-file) ""))
+		 "tex"))
+	 (new-input (read-string
+		     "Enter a new file name of the current file: " old-name))
+	 (new-name
+	  (progn
+	    (when (string-empty-p new-input)
+	      (user-error "Enter a nonempty file name"))
+	    (if (and tex-p
+		     (not (string-equal
+			   (downcase (or (file-name-extension new-input) ""))
+			   "tex")))
+		(concat new-input ".tex")
+	      new-input)))
+	 (new-file (expand-file-name new-name directory))
+	 (old-stem (file-name-sans-extension old-file))
+	 (new-stem (file-name-sans-extension new-file))
+	 (suffixes '(".acn" ".acr" ".alg" ".aux" ".bbl" ".bcf" ".blg"
+		     ".brf" ".dvi" ".fdb_latexmk" ".fls" ".glg" ".glo"
+		     ".gls" ".idx" ".ilg" ".ind" ".ist" ".loa" ".lof"
+		     ".log" ".lol" ".lot" ".nav" ".out" ".pdf" ".ps"
+		     ".run.xml" ".snm" ".synctex" ".synctex.gz" ".toc"
+		     ".vrb" ".xdv"))
+	 (pairs (list (cons old-file new-file)))
+	 renamed choice)
+    (when (equal old-file new-file)
+      (user-error "The new file name is unchanged"))
+    (when tex-p
+      (dolist (suffix suffixes)
+	(let ((old-output (concat old-stem suffix))
+	      (new-output (concat new-stem suffix)))
+	  (when (file-exists-p old-output)
+	    (setq pairs
+		  (append pairs (list (cons old-output new-output)))))))
+      (let ((old-minted
+	     (expand-file-name
+	      (concat "_minted-" (file-name-base old-file)) directory))
+	    (new-minted
+	     (expand-file-name
+	      (concat "_minted-" (file-name-base new-file))
+	      (file-name-directory new-file))))
+	(when (file-directory-p old-minted)
+	  (setq pairs
+		(append pairs (list (cons old-minted new-minted)))))))
+    (dolist (pair pairs)
+      (when (file-exists-p (cdr pair))
+	(user-error "Cannot rename because the destination exists: %s"
+		    (abbreviate-file-name (cdr pair)))))
+    (setq choice
+	  (read-char
+	   (format "Rename the file?: (Type y for yes.)\nOld name: %s\nNew name: %s"
+		   old-name (abbreviate-file-name new-file))))
     (when (equal choice ?y)
-      (setq pos (point))
-      (rename-file old new) (find-file new) (kill-buffer old)
-      (goto-char pos)
-      (message "File name changed."))))
+      (when (buffer-modified-p)
+	(save-buffer))
+      (condition-case error-data
+	  (progn
+	    (dolist (pair pairs)
+	      (rename-file (car pair) (cdr pair))
+	      (push pair renamed))
+	    (set-visited-file-name new-file t)
+	    (set-buffer-modified-p nil)
+	    (if tex-p
+		(message "File name changed; renamed %d LaTeX output item%s"
+			 (1- (length pairs))
+			 (if (= (length pairs) 2) "" "s"))
+	      (message "File name changed.")))
+	(error
+	 (dolist (pair renamed)
+	   (ignore-errors (rename-file (cdr pair) (car pair))))
+	 (signal (car error-data) (cdr error-data)))))))
 
 (defun nbm-save-as ()
   "Save-as the current file (or the content of the buffer
