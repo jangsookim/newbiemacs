@@ -118,7 +118,7 @@ Return nil after adding or deleting a command."
                   (nbm-string-key "o") ") Open an AI tool\n\n"
                   "Custom commands:\n"
                   command-list
-                  (nbm-string-key "other") ") Enter command\n"))
+                  (nbm-string-key "c") ") Enter command (default)\n"))
          (choice (char-to-string (read-char prompt)))
          item)
     (cond
