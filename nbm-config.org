@@ -205,6 +205,7 @@
   (add-to-list 'auto-mode-alist '("\\.sage\\'" . python-mode))
 
   (setq make-backup-files nil)
+  (global-auto-revert-mode 1)
 #+end_src
 ** appearance
 #+begin_src emacs-lisp :tangle yes
