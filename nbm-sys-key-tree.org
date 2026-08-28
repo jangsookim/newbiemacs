@@ -364,3 +364,6 @@
 
 * description: vterm-mode, level: 3
 ** key: c, function: nbm-vterm-copy-mode-toggle, level: 3
+
+* description: magit-mode, level: 3
+** key: l, function: nbm-git-latex-diff, level: 3

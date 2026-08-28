@@ -549,6 +549,11 @@
   (evil-define-key 'emacs dired-mode-map (kbd "q") 'kill-current-buffer)
 #+end_src
 
+* Magit
+#+begin_src emacs-lisp :tangle yes
+  (evil-define-key 'emacs magit-mode-map (kbd ",") 'evil-send-localleader)
+#+end_src
+
 * Editing styles (Emacs, Vim, Windows)
 #+begin_src emacs-lisp :tangle yes
   (setq evil-default-state 'emacs)
